@@ -1,0 +1,571 @@
+{
+  "dropByRank": [
+    {
+      "rank": "weak",
+      "dropChance": 0.03,
+      "itemsPerDrop": 1,
+      "bonusItemChance": 0,
+      "expectedItems": 0.03,
+      "rarityTable": "monsters",
+      "comment": "Tombe vite : petite chance."
+    },
+    {
+      "rank": "normal",
+      "dropChance": 0.05,
+      "itemsPerDrop": 1,
+      "bonusItemChance": 0,
+      "expectedItems": 0.05,
+      "rarityTable": "monsters",
+      "comment": "Référence : 1 objet toutes les 20 victoires."
+    },
+    {
+      "rank": "strong",
+      "dropChance": 0.08,
+      "itemsPerDrop": 1,
+      "bonusItemChance": 0,
+      "expectedItems": 0.08,
+      "rarityTable": "monsters",
+      "comment": "Plus robuste : meilleure chance, même table de rareté."
+    },
+    {
+      "rank": "boss",
+      "dropChance": 1,
+      "itemsPerDrop": 1,
+      "bonusItemChance": 0.4,
+      "expectedItems": 1.4,
+      "rarityTable": "boss",
+      "comment": "Objet garanti, 40 % de chance d'en avoir un 2e. Table décalée vers le haut + Uniques."
+    },
+    {
+      "rank": "dragon",
+      "dropChance": 1,
+      "itemsPerDrop": 2,
+      "bonusItemChance": 0.5,
+      "expectedItems": 2.5,
+      "rarityTable": "dragon",
+      "comment": "2 objets garantis + 50 % pour un 3e. Meilleure table de la tour."
+    }
+  ],
+  "rarityTables": {
+    "monsters": [
+      {
+        "biome": "forest",
+        "element": "neutral",
+        "weights": {
+          "common": 0.8,
+          "rare": 0.2,
+          "superRare": 0,
+          "epic": 0,
+          "mythic": 0,
+          "legendary": 0,
+          "unique": 0
+        }
+      },
+      {
+        "biome": "mountain",
+        "element": "earth",
+        "weights": {
+          "common": 0.65,
+          "rare": 0.28,
+          "superRare": 0.07,
+          "epic": 0,
+          "mythic": 0,
+          "legendary": 0,
+          "unique": 0
+        }
+      },
+      {
+        "biome": "volcano",
+        "element": "fire",
+        "weights": {
+          "common": 0.52,
+          "rare": 0.32,
+          "superRare": 0.13,
+          "epic": 0.03,
+          "mythic": 0,
+          "legendary": 0,
+          "unique": 0
+        }
+      },
+      {
+        "biome": "desert",
+        "element": "wind",
+        "weights": {
+          "common": 0.42,
+          "rare": 0.33,
+          "superRare": 0.18,
+          "epic": 0.06,
+          "mythic": 0.01,
+          "legendary": 0,
+          "unique": 0
+        }
+      },
+      {
+        "biome": "swamp",
+        "element": "acid",
+        "weights": {
+          "common": 0.34,
+          "rare": 0.32,
+          "superRare": 0.22,
+          "epic": 0.094,
+          "mythic": 0.025,
+          "legendary": 0,
+          "unique": 0.001
+        }
+      },
+      {
+        "biome": "ocean",
+        "element": "water",
+        "weights": {
+          "common": 0.27,
+          "rare": 0.3,
+          "superRare": 0.25,
+          "epic": 0.128,
+          "mythic": 0.045,
+          "legendary": 0.005,
+          "unique": 0.002
+        }
+      },
+      {
+        "biome": "iceberg",
+        "element": "ice",
+        "weights": {
+          "common": 0.21,
+          "rare": 0.28,
+          "superRare": 0.27,
+          "epic": 0.16,
+          "mythic": 0.065,
+          "legendary": 0.012,
+          "unique": 0.003
+        }
+      },
+      {
+        "biome": "highMountain",
+        "element": "lightning",
+        "weights": {
+          "common": 0.16,
+          "rare": 0.25,
+          "superRare": 0.28,
+          "epic": 0.19,
+          "mythic": 0.092,
+          "legendary": 0.024,
+          "unique": 0.004
+        }
+      },
+      {
+        "biome": "celestialPalace",
+        "element": "light",
+        "weights": {
+          "common": 0.12,
+          "rare": 0.22,
+          "superRare": 0.28,
+          "epic": 0.22,
+          "mythic": 0.116,
+          "legendary": 0.039,
+          "unique": 0.005
+        }
+      },
+      {
+        "biome": "demonPalace",
+        "element": "shadow",
+        "weights": {
+          "common": 0.09,
+          "rare": 0.19,
+          "superRare": 0.27,
+          "epic": 0.24,
+          "mythic": 0.145,
+          "legendary": 0.058,
+          "unique": 0.007
+        }
+      }
+    ],
+    "boss": [
+      {
+        "biome": "forest",
+        "element": "neutral",
+        "weights": {
+          "common": 0.4,
+          "rare": 0.4,
+          "superRare": 0.15,
+          "epic": 0.04,
+          "mythic": 0,
+          "legendary": 0,
+          "unique": 0.01
+        }
+      },
+      {
+        "biome": "mountain",
+        "element": "earth",
+        "weights": {
+          "common": 0.28,
+          "rare": 0.38,
+          "superRare": 0.24,
+          "epic": 0.08,
+          "mythic": 0,
+          "legendary": 0,
+          "unique": 0.02
+        }
+      },
+      {
+        "biome": "volcano",
+        "element": "fire",
+        "weights": {
+          "common": 0.18,
+          "rare": 0.32,
+          "superRare": 0.3,
+          "epic": 0.14,
+          "mythic": 0.03,
+          "legendary": 0,
+          "unique": 0.03
+        }
+      },
+      {
+        "biome": "desert",
+        "element": "wind",
+        "weights": {
+          "common": 0.12,
+          "rare": 0.26,
+          "superRare": 0.32,
+          "epic": 0.19,
+          "mythic": 0.06,
+          "legendary": 0.01,
+          "unique": 0.04
+        }
+      },
+      {
+        "biome": "swamp",
+        "element": "acid",
+        "weights": {
+          "common": 0.08,
+          "rare": 0.21,
+          "superRare": 0.31,
+          "epic": 0.23,
+          "mythic": 0.1,
+          "legendary": 0.025,
+          "unique": 0.045
+        }
+      },
+      {
+        "biome": "ocean",
+        "element": "water",
+        "weights": {
+          "common": 0.05,
+          "rare": 0.17,
+          "superRare": 0.29,
+          "epic": 0.26,
+          "mythic": 0.14,
+          "legendary": 0.04,
+          "unique": 0.05
+        }
+      },
+      {
+        "biome": "iceberg",
+        "element": "ice",
+        "weights": {
+          "common": 0.03,
+          "rare": 0.13,
+          "superRare": 0.27,
+          "epic": 0.28,
+          "mythic": 0.175,
+          "legendary": 0.06,
+          "unique": 0.055
+        }
+      },
+      {
+        "biome": "highMountain",
+        "element": "lightning",
+        "weights": {
+          "common": 0.02,
+          "rare": 0.1,
+          "superRare": 0.24,
+          "epic": 0.29,
+          "mythic": 0.21,
+          "legendary": 0.08,
+          "unique": 0.06
+        }
+      },
+      {
+        "biome": "celestialPalace",
+        "element": "light",
+        "weights": {
+          "common": 0.01,
+          "rare": 0.08,
+          "superRare": 0.21,
+          "epic": 0.3,
+          "mythic": 0.24,
+          "legendary": 0.095,
+          "unique": 0.065
+        }
+      },
+      {
+        "biome": "demonPalace",
+        "element": "shadow",
+        "weights": {
+          "common": 0,
+          "rare": 0.06,
+          "superRare": 0.18,
+          "epic": 0.3,
+          "mythic": 0.27,
+          "legendary": 0.12,
+          "unique": 0.07
+        }
+      }
+    ],
+    "dragon": [
+      {
+        "biome": "forest",
+        "element": "neutral",
+        "weights": {
+          "common": 0.3,
+          "rare": 0.4,
+          "superRare": 0.22,
+          "epic": 0.06,
+          "mythic": 0,
+          "legendary": 0,
+          "unique": 0.02
+        }
+      },
+      {
+        "biome": "mountain",
+        "element": "earth",
+        "weights": {
+          "common": 0.2,
+          "rare": 0.36,
+          "superRare": 0.28,
+          "epic": 0.12,
+          "mythic": 0.01,
+          "legendary": 0,
+          "unique": 0.03
+        }
+      },
+      {
+        "biome": "volcano",
+        "element": "fire",
+        "weights": {
+          "common": 0.12,
+          "rare": 0.3,
+          "superRare": 0.31,
+          "epic": 0.18,
+          "mythic": 0.04,
+          "legendary": 0.005,
+          "unique": 0.045
+        }
+      },
+      {
+        "biome": "desert",
+        "element": "wind",
+        "weights": {
+          "common": 0.07,
+          "rare": 0.24,
+          "superRare": 0.31,
+          "epic": 0.23,
+          "mythic": 0.08,
+          "legendary": 0.015,
+          "unique": 0.055
+        }
+      },
+      {
+        "biome": "swamp",
+        "element": "acid",
+        "weights": {
+          "common": 0.04,
+          "rare": 0.18,
+          "superRare": 0.29,
+          "epic": 0.27,
+          "mythic": 0.13,
+          "legendary": 0.03,
+          "unique": 0.06
+        }
+      },
+      {
+        "biome": "ocean",
+        "element": "water",
+        "weights": {
+          "common": 0.02,
+          "rare": 0.13,
+          "superRare": 0.26,
+          "epic": 0.3,
+          "mythic": 0.17,
+          "legendary": 0.05,
+          "unique": 0.07
+        }
+      },
+      {
+        "biome": "iceberg",
+        "element": "ice",
+        "weights": {
+          "common": 0.01,
+          "rare": 0.09,
+          "superRare": 0.22,
+          "epic": 0.32,
+          "mythic": 0.21,
+          "legendary": 0.07,
+          "unique": 0.08
+        }
+      },
+      {
+        "biome": "highMountain",
+        "element": "lightning",
+        "weights": {
+          "common": 0,
+          "rare": 0.07,
+          "superRare": 0.18,
+          "epic": 0.33,
+          "mythic": 0.245,
+          "legendary": 0.09,
+          "unique": 0.085
+        }
+      },
+      {
+        "biome": "celestialPalace",
+        "element": "light",
+        "weights": {
+          "common": 0,
+          "rare": 0.05,
+          "superRare": 0.15,
+          "epic": 0.32,
+          "mythic": 0.28,
+          "legendary": 0.11,
+          "unique": 0.09
+        }
+      },
+      {
+        "biome": "demonPalace",
+        "element": "shadow",
+        "weights": {
+          "common": 0,
+          "rare": 0.03,
+          "superRare": 0.12,
+          "epic": 0.31,
+          "mythic": 0.31,
+          "legendary": 0.13,
+          "unique": 0.1
+        }
+      }
+    ]
+  },
+  "uniquesByBiome": [
+    {
+      "biome": "forest",
+      "element": "neutral",
+      "uniques": {
+        "warrior": "Heaume du Roi Déchu",
+        "mage": "Bâton de la Singularité",
+        "ranger": "Bague du Dernier Souffle"
+      },
+      "droppedBy": "Ours enragé (5), Dragon (9), Chef gobelin (10)"
+    },
+    {
+      "biome": "mountain",
+      "element": "earth",
+      "uniques": {
+        "warrior": "Plastron du Titan de Pierre",
+        "mage": "Sceau de la Terre Ancestrale",
+        "ranger": "Pendentif de la Sentinelle de Pierre"
+      },
+      "droppedBy": "Haut chaman gobelin (15), Dragon (19), Chef orc (20)"
+    },
+    {
+      "biome": "volcano",
+      "element": "fire",
+      "uniques": {
+        "warrior": "Jambières du Brasier Marchant",
+        "mage": "Ceinture du Feu Intérieur",
+        "ranger": "Anneau des Flèches Ardentes"
+      },
+      "droppedBy": "Malphite (25), Dragon (29), Ifrit (30)"
+    },
+    {
+      "biome": "desert",
+      "element": "wind",
+      "uniques": {
+        "warrior": "Médaillon du Serment Brisé",
+        "mage": "Chapeau du Sage des Cieux",
+        "ranger": "Arc des Mille Tempêtes"
+      },
+      "droppedBy": "Ver des sables (35), Dragon (39), Anubis (40)"
+    },
+    {
+      "biome": "swamp",
+      "element": "acid",
+      "uniques": {
+        "warrior": "Anneau du Briseur de Remparts",
+        "mage": "Anneau de l'Alchimiste Fou",
+        "ranger": "Ceinture de l'Alchimiste Chasseur"
+      },
+      "droppedBy": "Roi slime (45), Dragon (49), Nurgol le zombie (50)"
+    },
+    {
+      "biome": "ocean",
+      "element": "water",
+      "uniques": {
+        "warrior": "Chevalière du Gardien des Marées",
+        "mage": "Bottes du Voyageur des Eaux",
+        "ranger": "Veste du Brouillard Mouvant"
+      },
+      "droppedBy": "Kraken (55), Dragon (59), Roi triton (60)"
+    },
+    {
+      "biome": "iceberg",
+      "element": "ice",
+      "uniques": {
+        "warrior": "Bottes du Marcheur Glacé",
+        "mage": "Robe du Givre Éternel",
+        "ranger": "Pantalon du Pisteur Givré"
+      },
+      "droppedBy": "Yéti (65), Dragon (69), Roi elfique (70)"
+    },
+    {
+      "biome": "highMountain",
+      "element": "lightning",
+      "uniques": {
+        "warrior": "Ceinturon du Tonnerre Rugissant",
+        "mage": "Pantalon du Tisseur de Tempêtes",
+        "ranger": "Bottes du Chasseur de Foudre"
+      },
+      "droppedBy": "Géant électrique (75), Dragon (79), Wyverne mutante (80)"
+    },
+    {
+      "biome": "celestialPalace",
+      "element": "light",
+      "uniques": {
+        "warrior": "Rempart de l'Aube Éternelle",
+        "mage": "Orbe de l'Éclipse",
+        "ranger": "Capuche de l'Œil du Faucon"
+      },
+      "droppedBy": "Jésus (85), Dragon (89), Michel (90)"
+    },
+    {
+      "biome": "demonPalace",
+      "element": "shadow",
+      "uniques": {
+        "warrior": "Épée de la Mort",
+        "mage": "Amulette de l'Œil Maudit",
+        "ranger": "Carquois du Chasseur de Spectres"
+      },
+      "droppedBy": "Wyverne des ténèbres (95), Dragon (99), Roi démon (100)"
+    }
+  ],
+  "rules": [
+    {
+      "topic": "Tirage",
+      "rule": "À chaque victoire : tirage « chance de butin » du rang. Si réussi : nombre d'objets, puis pour chaque objet un tirage de rareté dans la table du biome."
+    },
+    {
+      "topic": "Biome",
+      "rule": "Le biome est celui de l'étage (ou de la zone de chasse) : zone de chasse 55 → table Océan, même si le monstre est niveau 65."
+    },
+    {
+      "topic": "Objet",
+      "rule": "Classe du joueur, slot au hasard (10 slots équiprobables). Matériau = palier de l'étage ou de la zone (zone 55 → mithril), amélioration +0. Le joueur l'améliore ensuite avec ce matériau (fichier Équipements)."
+    },
+    {
+      "topic": "Unique",
+      "rule": "Si la rareté tirée est Unique : l'Unique du biome pour la classe du joueur (section 5). S'il le possède déjà, il peut être revendu ou recyclé (à décider)."
+    },
+    {
+      "topic": "Progression",
+      "rule": "Raretés débloquées par biome : les monstres ont un biome de retard sur les boss, les dragons un peu d'avance. Les Uniques sont surtout une récompense de boss/dragon."
+    }
+  ]
+}

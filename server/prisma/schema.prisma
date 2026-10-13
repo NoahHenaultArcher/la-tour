@@ -1,0 +1,195 @@
+// Schéma de la base « La Tour ».
+// Les identifiants de contenu (objets, compétences, ressources, bâtiments) sont ceux
+// des JSON importés depuis les classeurs (shared/data) : la base ne stocke que l'état du joueur.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  player
+  admin
+}
+
+enum CharacterClass {
+  warrior
+  mage
+  ranger
+}
+
+enum EquipmentSlot {
+  hat
+  armor
+  pants
+  boots
+  necklace
+  ring1
+  ring2
+  belt
+  weapon1
+  weapon2
+}
+
+enum UpgradeTowerBranch {
+  damage
+  hp
+  defense
+  production
+  offlineDuration
+  goldXp
+}
+
+/// Un compte = un pseudo + un mot de passe = une sauvegarde.
+model User {
+  id           String    @id @default(uuid()) @db.Uuid
+  /// Pseudo tel que saisi (affiché).
+  username     String
+  /// Pseudo en minuscules : garantit l'unicité sans tenir compte de la casse.
+  usernameKey  String    @unique
+  /// Hachage argon2 du mot de passe.
+  passwordHash String
+  role         Role      @default(player)
+  createdAt    DateTime  @default(now())
+  lastLoginAt  DateTime?
+  sessions     Session[]
+  save         Save?
+}
+
+/// Session de connexion (cookie httpOnly). L'identifiant est le hachage du jeton : le jeton brut n'est jamais stocké.
+model Session {
+  id        String   @id
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([userId])
+}
+
+/// Sauvegarde unique du compte, enregistrée automatiquement par le serveur.
+model Save {
+  id                  String              @id @default(uuid()) @db.Uuid
+  userId              String              @unique @db.Uuid
+  user                User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gold                BigInt              @default(0)
+  /// Prochain étage à jouer (1 à 100).
+  currentFloor        Int                 @default(1)
+  /// Plus haut étage terminé depuis le dernier héritage (0 = aucun). Débloque zones de chasse et étages rejouables.
+  highestFloorCleared Int                 @default(0)
+  /// Plus haut étage jamais terminé, conservé à l'héritage (déblocages définitifs).
+  bestFloorEver       Int                 @default(0)
+  heritageCount       Int                 @default(0)
+  /// Éléments débloqués pour les compétences (conservés à l'héritage).
+  unlockedElements    String[]            @default([])
+  /// Dernière collecte de la production idle (horloge du serveur).
+  lastIdleCollectAt   DateTime            @default(now())
+  /// Taverne : graine de l'assortiment, tranche horaire où il a été tiré, offres déjà achetées.
+  shopSeed            Int                 @default(0)
+  shopPeriod          Int                 @default(-1)
+  shopPurchases       String[]            @default([])
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  characters          Character[]
+  items               Item[]
+  resources           ResourceStock[]
+  buildings           Building[]
+  upgradeTower        UpgradeTowerLevel[]
+  combat              CombatSession?
+}
+
+/// Combat en cours (un seul par sauvegarde) : état complet du moteur, calculé par le serveur.
+model CombatSession {
+  saveId    String   @id @db.Uuid
+  save      Save     @relation(fields: [saveId], references: [id], onDelete: Cascade)
+  /// Étage combattu.
+  floor     Int
+  /// État du moteur de combat (@la-tour/shared, CombatState), graine aléatoire comprise.
+  state     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Personnage de l'équipe : une seule fois chaque classe par sauvegarde.
+model Character {
+  id        String           @id @default(uuid()) @db.Uuid
+  saveId    String           @db.Uuid
+  save      Save             @relation(fields: [saveId], references: [id], onDelete: Cascade)
+  class     CharacterClass
+  level     Int              @default(1)
+  /// XP accumulée dans le niveau en cours.
+  xp        Int              @default(0)
+  /// Points de statistiques répartis par le joueur ({ vitality, strength, … }).
+  statPoints Json            @default("{}")
+  createdAt DateTime         @default(now())
+  equipment Item[]           @relation("EquippedItems")
+  skills    CharacterSkill[]
+
+  @@unique([saveId, class])
+}
+
+/// Objet possédé (inventaire ou équipé).
+model Item {
+  id           String         @id @default(uuid()) @db.Uuid
+  saveId       String         @db.Uuid
+  save         Save           @relation(fields: [saveId], references: [id], onDelete: Cascade)
+  /// Identifiant du catalogue (ex. GUE-AR1-P2-EPI ou GUE-CHA-UNI).
+  catalogId    String
+  upgradeLevel Int            @default(0)
+  equippedById String?        @db.Uuid
+  equippedBy   Character?     @relation("EquippedItems", fields: [equippedById], references: [id], onDelete: SetNull)
+  equippedSlot EquipmentSlot?
+  acquiredAt   DateTime       @default(now())
+
+  @@unique([equippedById, equippedSlot])
+  @@index([saveId])
+}
+
+/// Deck d'un personnage : positions 0 à 2 = actives, 3 et 4 = passives.
+model CharacterSkill {
+  characterId   String    @db.Uuid
+  character     Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  position      Int
+  /// Identifiant du catalogue des compétences (ex. GUE-A01-FEU).
+  skillId       String
+  /// Second élément d'une fusion (Tour d'alchimie), sinon null.
+  fusionElement String?
+
+  @@id([characterId, position])
+}
+
+/// Stock d'une ressource.
+model ResourceStock {
+  saveId     String @db.Uuid
+  save       Save   @relation(fields: [saveId], references: [id], onDelete: Cascade)
+  resourceId String
+  amount     Int    @default(0)
+  /// Part de ressource déjà produite mais pas encore entière (production idle).
+  fraction   Float  @default(0)
+
+  @@id([saveId, resourceId])
+}
+
+/// Bâtiment construit (niveau 1 dès son étage de déblocage).
+model Building {
+  saveId     String @db.Uuid
+  save       Save   @relation(fields: [saveId], references: [id], onDelete: Cascade)
+  buildingId String
+  level      Int    @default(1)
+
+  @@id([saveId, buildingId])
+}
+
+/// Niveau d'une branche de la Tour d'amélioration.
+model UpgradeTowerLevel {
+  saveId String             @db.Uuid
+  save   Save               @relation(fields: [saveId], references: [id], onDelete: Cascade)
+  branch UpgradeTowerBranch
+  level  Int                @default(0)
+
+  @@id([saveId, branch])
+}

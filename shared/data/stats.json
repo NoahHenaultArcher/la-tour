@@ -1,0 +1,256 @@
+{
+  "stats": [
+    {
+      "id": "vitality",
+      "name": "Vitalité",
+      "category": "Principale",
+      "improvement": "Niveau + équipement",
+      "role": "Augmente les points de vie maximum",
+      "priorities": {
+        "warrior": "Priorité forte",
+        "mage": "Priorité moyenne",
+        "ranger": "Priorité moyenne"
+      },
+      "notes": "Statistique de survie"
+    },
+    {
+      "id": "strength",
+      "name": "Force",
+      "category": "Principale",
+      "improvement": "Niveau + équipement",
+      "role": "Augmente les dégâts physiques",
+      "priorities": {
+        "warrior": "Priorité forte",
+        "mage": "Priorité faible",
+        "ranger": "Priorité moyenne"
+      },
+      "notes": "À ajuster selon les armes"
+    },
+    {
+      "id": "resistance",
+      "name": "Résistance",
+      "category": "Principale",
+      "improvement": "Niveau + équipement",
+      "role": "Réduit les dégâts reçus / peut soutenir la résistance aux effets",
+      "priorities": {
+        "warrior": "Priorité forte",
+        "mage": "Priorité faible",
+        "ranger": "Priorité moyenne"
+      },
+      "notes": "À distinguer de l’Armure"
+    },
+    {
+      "id": "magic",
+      "name": "Magie",
+      "category": "Principale",
+      "improvement": "Niveau + équipement",
+      "role": "Augmente les dégâts magiques et éventuellement les soins",
+      "priorities": {
+        "warrior": "Priorité faible",
+        "mage": "Priorité forte",
+        "ranger": "Priorité faible"
+      },
+      "notes": "Caractéristique offensive du Mage"
+    },
+    {
+      "id": "agility",
+      "name": "Agilité",
+      "category": "Principale",
+      "improvement": "Niveau + équipement",
+      "role": "Améliore l'esquive (l'ordre de jeu dépend de l'Initiative)",
+      "priorities": {
+        "warrior": "Priorité moyenne",
+        "mage": "Priorité moyenne",
+        "ranger": "Priorité forte"
+      },
+      "notes": "Éviter de lui donner trop d'effets"
+    },
+    {
+      "id": "initiative",
+      "name": "Initiative",
+      "category": "Principale",
+      "improvement": "Niveau + équipement",
+      "role": "Décide quel camp joue en premier à chaque manche : moyenne de l'initiative des héros contre celle des monstres",
+      "priorities": {
+        "warrior": "Priorité faible",
+        "mage": "Priorité moyenne",
+        "ranger": "Priorité forte"
+      },
+      "notes": "Égalité : les héros commencent. Base de classe au niveau 100 : Guerrier 70, Mage 80, Tireur 100 (bestiaire, Paramètres §9). Objets : bottes, anneau 2, ceinture / collier / capuche, carquois"
+    },
+    {
+      "id": "accuracy",
+      "name": "Précision",
+      "category": "Équipement",
+      "improvement": "Équipement uniquement",
+      "role": "Réduit le risque de rater une attaque",
+      "priorities": {
+        "warrior": "Secondaire",
+        "mage": "Secondaire",
+        "ranger": "Priorité forte"
+      },
+      "notes": "Utile pour les attaques importantes"
+    },
+    {
+      "id": "critChance",
+      "name": "Chance de critique",
+      "category": "Équipement",
+      "improvement": "Équipement uniquement",
+      "role": "Augmente la probabilité d’infliger un coup critique",
+      "priorities": {
+        "warrior": "Intéressante",
+        "mage": "Intéressante",
+        "ranger": "Priorité forte"
+      },
+      "notes": "À équilibrer avec les dégâts critiques"
+    },
+    {
+      "id": "critDamage",
+      "name": "Dégâts critiques",
+      "category": "Équipement",
+      "improvement": "Équipement uniquement",
+      "role": "Augmente les dégâts des coups critiques",
+      "priorities": {
+        "warrior": "Intéressants",
+        "mage": "Intéressants",
+        "ranger": "Priorité forte"
+      },
+      "notes": "Fonctionne avec la chance de critique"
+    },
+    {
+      "id": "armor",
+      "name": "Armure",
+      "category": "Équipement",
+      "improvement": "Équipement uniquement",
+      "role": "Réduit les dégâts physiques reçus",
+      "priorities": {
+        "warrior": "Priorité forte",
+        "mage": "Secondaire",
+        "ranger": "Secondaire"
+      },
+      "notes": "Peut être liée au type d’armure"
+    },
+    {
+      "id": "penetration",
+      "name": "Pénétration",
+      "category": "Équipement",
+      "improvement": "Équipement uniquement",
+      "role": "Ignore une partie de l’armure ennemie",
+      "priorities": {
+        "warrior": "Intéressante",
+        "mage": "Intéressante",
+        "ranger": "Priorité forte"
+      },
+      "notes": "À définir : physique seulement ou aussi magique"
+    },
+    {
+      "id": "maxHp",
+      "name": "Points de vie maximum",
+      "category": "Secondaire calculée",
+      "improvement": "Calculée",
+      "role": "Dépend principalement de la Vitalité",
+      "priorities": {
+        "warrior": "—",
+        "mage": "—",
+        "ranger": "—"
+      },
+      "notes": "Pas améliorée directement"
+    },
+    {
+      "id": "dodge",
+      "name": "Esquive",
+      "category": "Secondaire calculée",
+      "improvement": "Calculée",
+      "role": "Probabilité d’éviter une attaque",
+      "priorities": {
+        "warrior": "—",
+        "mage": "—",
+        "ranger": "—"
+      },
+      "notes": "Peut dépendre de l’Agilité et de l’équipement"
+    },
+    {
+      "id": "elementalResistance",
+      "name": "Résistances élémentaires",
+      "category": "Équipement spécialisé",
+      "improvement": "Équipement uniquement",
+      "role": "Réduit les dégâts de feu, glace, foudre, etc.",
+      "priorities": {
+        "warrior": "Variable",
+        "mage": "Variable",
+        "ranger": "Variable"
+      },
+      "notes": "Peut apparaître seulement sur certains objets"
+    },
+    {
+      "id": "healingBonus",
+      "name": "Bonus de soins",
+      "category": "Équipement spécialisé",
+      "improvement": "Équipement uniquement",
+      "role": "Augmente les soins prodigués",
+      "priorities": {
+        "warrior": "Faible utilité",
+        "mage": "Selon compétences",
+        "ranger": "Faible utilité"
+      },
+      "notes": "À prévoir si le jeu comporte des soins"
+    },
+    {
+      "id": "statusResistance",
+      "name": "Résistance aux altérations",
+      "category": "Équipement spécialisé",
+      "improvement": "Équipement uniquement",
+      "role": "Réduit les chances ou la durée des effets négatifs",
+      "priorities": {
+        "warrior": "Variable",
+        "mage": "Variable",
+        "ranger": "Variable"
+      },
+      "notes": "Poison, étourdissement, brûlure, etc."
+    }
+  ],
+  "designRules": [
+    {
+      "subject": "Statistiques principales",
+      "recommendation": "Vitalité, Force, Résistance, Magie, Agilité et Initiative : améliorables par le niveau et l'équipement."
+    },
+    {
+      "subject": "Statistiques d’équipement",
+      "recommendation": "Précision, Chance de critique, Dégâts critiques, Armure et Pénétration : équipement uniquement."
+    },
+    {
+      "subject": "Statistiques calculées",
+      "recommendation": "Points de vie et Esquive : dérivées d'autres statistiques plutôt que distribuées directement. Pas de mana."
+    },
+    {
+      "subject": "Tour par tour",
+      "recommendation": "Pas de vitesse d'attaque. À chaque manche, le camp dont l'Initiative moyenne est la plus haute joue en entier, puis l'autre camp (égalité : les héros commencent)."
+    },
+    {
+      "subject": "Équilibrage",
+      "recommendation": "Éviter qu’une seule statistique donne trop d’avantages à la fois."
+    },
+    {
+      "subject": "Actions par manche",
+      "recommendation": "Solo : 3 actions pour toute l'équipe (1 à 3 personnages). Multi : 3 actions par joueur (1 personnage chacun). Une compétence à recharge ne peut être lancée qu'une fois par manche."
+    },
+    {
+      "subject": "Recharges",
+      "recommendation": "0 pour les compétences du kit de départ (niveau 1, utilisables à chaque action), puis proportionnelles à la force de la compétence : 1 (chaque manche), 2 (1 manche de pause), 3 (2 manches de pause, ultimes)."
+    }
+  ],
+  "character": {
+    "levelCurve": {
+      "minLevel": 1,
+      "maxLevel": 100,
+      "base": 0.05,
+      "exponent": 1.2
+    },
+    "hpPerVitality": 10,
+    "baseInitiativeAtMaxLevel": {
+      "warrior": 70,
+      "mage": 80,
+      "ranger": 100
+    }
+  }
+}

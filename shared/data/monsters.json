@@ -1,0 +1,4449 @@
+{
+  "params": {
+    "levelCurve": {
+      "minLevel": 1,
+      "maxLevel": 100,
+      "base": 0.05,
+      "exponent": 1.2
+    },
+    "referencePlayer": {
+      "vitality": 1600,
+      "hpPerVitality": 10,
+      "hp": 16000,
+      "attackStat": 700,
+      "averageSkillPower": 1.5,
+      "averageMonsterReduction": 0.25,
+      "damagePerTurn": 787.5
+    },
+    "standardMonster": {
+      "resistance": 450,
+      "armor": 400,
+      "agility": 120,
+      "accuracy": 0.9,
+      "critChance": 0.05,
+      "critDamage": 0.5,
+      "penetration": 0.05,
+      "statusResistanceAtMinLevel": 0.05,
+      "statusResistanceAtMaxLevel": 0.3,
+      "statusResistanceCap": 0.75,
+      "critChanceCap": 0.5,
+      "penetrationCap": 0.5,
+      "armorReduction": 0.2,
+      "resistanceReduction": 0.15,
+      "mixedAttackShare": 0.75,
+      "initiative": 100
+    },
+    "combat": {
+      "monsterHitRate": 0.85,
+      "monsterAveragePower": 1,
+      "playerAverageReduction": 0.3,
+      "tooHardThreshold": 0.7
+    },
+    "floors": {
+      "monstersPerWave": 3,
+      "normalWaves": 3,
+      "bossWaves": 5,
+      "bossEscorts": 2,
+      "huntingLevelSpread": 10
+    },
+    "pace": {
+      "secondsPerTurn": 5,
+      "areaTurnSavings": 0.25,
+      "deadTimePerWave": 4,
+      "toleratedLevelGap": 3
+    },
+    "rewards": {
+      "xpCoefficient": 6,
+      "xpExponent": 1.25,
+      "killsPerLevelBase": 10,
+      "killsPerLevelGrowth": 0.7,
+      "goldCoefficient": 3,
+      "goldExponent": 1.35,
+      "levelGapXpStep": 0.1,
+      "levelGapMinFactor": 0.25,
+      "levelGapMaxFactor": 1.5,
+      "commonPriceInMonsters": 8,
+      "rarityPriceMultiplier": 3
+    }
+  },
+  "roles": [
+    {
+      "id": "beast",
+      "name": "Bête",
+      "multipliers": {
+        "hp": 0.95,
+        "attack": 1.05,
+        "resistance": 0.6,
+        "armor": 0.7,
+        "agility": 1.2,
+        "accuracy": 1,
+        "critChance": 1,
+        "critDamage": 1,
+        "penetration": 0.5,
+        "statusResistance": 0.8,
+        "initiative": 1.2
+      },
+      "elementalShare": 0.5,
+      "behavior": "Attaques directes et rapides ; peut enchaîner."
+    },
+    {
+      "id": "brute",
+      "name": "Brute",
+      "multipliers": {
+        "hp": 1.5,
+        "attack": 0.95,
+        "resistance": 1.2,
+        "armor": 1.5,
+        "agility": 0.6,
+        "accuracy": 0.85,
+        "critChance": 0.6,
+        "critDamage": 1,
+        "penetration": 0.8,
+        "statusResistance": 1.2,
+        "initiative": 0.7
+      },
+      "elementalShare": 0.4,
+      "behavior": "Encaisse beaucoup ; coups lourds mais peu précis."
+    },
+    {
+      "id": "warrior",
+      "name": "Guerrier",
+      "multipliers": {
+        "hp": 1.15,
+        "attack": 1,
+        "resistance": 1,
+        "armor": 1.2,
+        "agility": 0.9,
+        "accuracy": 1,
+        "critChance": 1,
+        "critDamage": 1,
+        "penetration": 1,
+        "statusResistance": 1,
+        "initiative": 0.95
+      },
+      "elementalShare": 0.5,
+      "behavior": "Équilibré, combat au corps à corps."
+    },
+    {
+      "id": "ranger",
+      "name": "Tireur",
+      "multipliers": {
+        "hp": 0.8,
+        "attack": 1.1,
+        "resistance": 0.7,
+        "armor": 0.6,
+        "agility": 1.1,
+        "accuracy": 1.3,
+        "critChance": 1.5,
+        "critDamage": 1.3,
+        "penetration": 1.4,
+        "statusResistance": 0.8,
+        "initiative": 1.1
+      },
+      "elementalShare": 0.6,
+      "behavior": "Attaque à distance, critiques fréquents."
+    },
+    {
+      "id": "mage",
+      "name": "Mage",
+      "multipliers": {
+        "hp": 0.7,
+        "attack": 1.25,
+        "resistance": 1.1,
+        "armor": 0.4,
+        "agility": 0.9,
+        "accuracy": 1,
+        "critChance": 1,
+        "critDamage": 1,
+        "penetration": 1.3,
+        "statusResistance": 1.2,
+        "initiative": 0.9
+      },
+      "elementalShare": 1,
+      "behavior": "Dégâts magiques élevés, très fragile en défense physique."
+    },
+    {
+      "id": "support",
+      "name": "Soutien",
+      "multipliers": {
+        "hp": 0.85,
+        "attack": 0.8,
+        "resistance": 1.2,
+        "armor": 0.5,
+        "agility": 0.9,
+        "accuracy": 1,
+        "critChance": 0.8,
+        "critDamage": 1,
+        "penetration": 0.8,
+        "statusResistance": 1.3,
+        "initiative": 1
+      },
+      "elementalShare": 0.7,
+      "behavior": "Soigne ou renforce ses alliés : à cibler en priorité."
+    },
+    {
+      "id": "assassin",
+      "name": "Assassin",
+      "multipliers": {
+        "hp": 0.75,
+        "attack": 1.2,
+        "resistance": 0.6,
+        "armor": 0.5,
+        "agility": 1.6,
+        "accuracy": 1.2,
+        "critChance": 1.6,
+        "critDamage": 1.4,
+        "penetration": 1.2,
+        "statusResistance": 0.8,
+        "initiative": 1.5
+      },
+      "elementalShare": 0.5,
+      "behavior": "Rapide et fragile ; critiques très fréquents."
+    },
+    {
+      "id": "elemental",
+      "name": "Élémentaire",
+      "multipliers": {
+        "hp": 1,
+        "attack": 1.2,
+        "resistance": 1.3,
+        "armor": 0.7,
+        "agility": 1,
+        "accuracy": 1,
+        "critChance": 1,
+        "critDamage": 1,
+        "penetration": 1,
+        "statusResistance": 1.5,
+        "initiative": 1
+      },
+      "elementalShare": 1,
+      "behavior": "Créature d'élément pur ; dégâts 100 % élémentaires."
+    },
+    {
+      "id": "dragon",
+      "name": "Dragon",
+      "multipliers": {
+        "hp": 1,
+        "attack": 1,
+        "resistance": 1.3,
+        "armor": 1.4,
+        "agility": 0.8,
+        "accuracy": 1,
+        "critChance": 1,
+        "critDamage": 1,
+        "penetration": 1,
+        "statusResistance": 1.3,
+        "initiative": 0.8
+      },
+      "elementalShare": 1,
+      "behavior": "Sac à PV : souffle de zone toutes les 3 tours."
+    }
+  ],
+  "ranks": [
+    {
+      "id": "weak",
+      "name": "Faible",
+      "turnsToKill": 1.5,
+      "damagePerHit": 0.01,
+      "defenseMultiplier": 0.8,
+      "rewardMultiplier": 0.7,
+      "elementalShareBonus": 0,
+      "statusResistanceBonus": 0,
+      "initiativeMultiplier": 0.9,
+      "description": "Monstre de base, tombe vite."
+    },
+    {
+      "id": "normal",
+      "name": "Normal",
+      "turnsToKill": 2,
+      "damagePerHit": 0.015,
+      "defenseMultiplier": 1,
+      "rewardMultiplier": 1,
+      "elementalShareBonus": 0,
+      "statusResistanceBonus": 0,
+      "initiativeMultiplier": 1,
+      "description": "Monstre standard de la zone."
+    },
+    {
+      "id": "strong",
+      "name": "Fort",
+      "turnsToKill": 2.8,
+      "damagePerHit": 0.019,
+      "defenseMultiplier": 1.15,
+      "rewardMultiplier": 1.4,
+      "elementalShareBonus": 0,
+      "statusResistanceBonus": 0,
+      "initiativeMultiplier": 1.05,
+      "description": "Membre robuste de la zone (plus de PV et de dégâts)."
+    },
+    {
+      "id": "boss",
+      "name": "Boss",
+      "turnsToKill": 12,
+      "damagePerHit": 0.03,
+      "defenseMultiplier": 1.3,
+      "rewardMultiplier": 8,
+      "elementalShareBonus": 0.2,
+      "statusResistanceBonus": 0.2,
+      "initiativeMultiplier": 1.15,
+      "description": "Boss de zone : 5ᵉ vague des étages ×5. Résistance partielle aux altérations."
+    },
+    {
+      "id": "dragon",
+      "name": "Dragon",
+      "turnsToKill": 20,
+      "damagePerHit": 0.03,
+      "defenseMultiplier": 1.3,
+      "rewardMultiplier": 12,
+      "elementalShareBonus": 0,
+      "statusResistanceBonus": 0.2,
+      "initiativeMultiplier": 1,
+      "description": "Sac à PV des tannières (étages ×9) : une seule vague."
+    }
+  ],
+  "alterations": [
+    {
+      "id": "saignement",
+      "name": "Saignement",
+      "element": "neutral",
+      "category": "Dégâts sur la durée",
+      "effect": "Perd 5 % de la Force du monstre par tour.",
+      "value": 0.05,
+      "unit": "% Force monstre / tour",
+      "duration": 3,
+      "maxStacks": 3,
+      "limit": "3 piles max ; durée rafraîchie.",
+      "onBoss": "Identique."
+    },
+    {
+      "id": "assomme",
+      "name": "Assommé",
+      "element": "neutral",
+      "category": "Contrôle",
+      "effect": "Le joueur perd son prochain tour.",
+      "value": 1,
+      "unit": "tours perdus",
+      "duration": 1,
+      "maxStacks": 1,
+      "limit": "Immunité 2 tours ensuite ; durée /2 en cas de résistance.",
+      "onBoss": "Durée des contrôles réduite de moitié ; jamais d'immunité totale."
+    },
+    {
+      "id": "intimide",
+      "name": "Intimidé",
+      "element": "neutral",
+      "category": "Affaiblissement",
+      "effect": "−10 % de dégâts infligés.",
+      "value": 0.1,
+      "unit": "% dégâts infligés",
+      "duration": 2,
+      "maxStacks": 1,
+      "limit": "Non cumulable.",
+      "onBoss": "Identique."
+    },
+    {
+      "id": "garde_brisee",
+      "name": "Garde brisée",
+      "element": "earth",
+      "category": "Affaiblissement",
+      "effect": "−15 % de Résistance.",
+      "value": 0.15,
+      "unit": "% Résistance",
+      "duration": 2,
+      "maxStacks": 1,
+      "limit": "Non cumulable.",
+      "onBoss": "Identique."
+    },
+    {
+      "id": "enracine",
+      "name": "Enraciné",
+      "element": "earth",
+      "category": "Affaiblissement",
+      "effect": "−15 % d'Agilité.",
+      "value": 0.15,
+      "unit": "% Agilité",
+      "duration": 2,
+      "maxStacks": 1,
+      "limit": "Non cumulable.",
+      "onBoss": "Identique."
+    },
+    {
+      "id": "brulure",
+      "name": "Brûlure",
+      "element": "fire",
+      "category": "Dégâts sur la durée",
+      "effect": "Perd 8 % de l'attaque du monstre par tour ; retirée par Mouillé.",
+      "value": 0.08,
+      "unit": "% attaque monstre / tour",
+      "duration": 3,
+      "maxStacks": 1,
+      "limit": "Non cumulable ; durée rafraîchie.",
+      "onBoss": "Identique."
+    },
+    {
+      "id": "desoriente",
+      "name": "Désorienté",
+      "element": "wind",
+      "category": "Affaiblissement",
+      "effect": "−15 % de Précision.",
+      "value": 0.15,
+      "unit": "% Précision",
+      "duration": 2,
+      "maxStacks": 1,
+      "limit": "Non cumulable.",
+      "onBoss": "Identique."
+    },
+    {
+      "id": "poison",
+      "name": "Poison",
+      "element": "acid",
+      "category": "Dégâts sur la durée",
+      "effect": "Perd 2 % des PV max par tour.",
+      "value": 0.02,
+      "unit": "% PV max / tour",
+      "duration": 4,
+      "maxStacks": 3,
+      "limit": "3 piles max ; sans effet de burst.",
+      "onBoss": "Identique."
+    },
+    {
+      "id": "corrosion",
+      "name": "Corrosion",
+      "element": "acid",
+      "category": "Affaiblissement",
+      "effect": "−5 % d'Armure par pile.",
+      "value": 0.05,
+      "unit": "% Armure / pile",
+      "duration": 3,
+      "maxStacks": 4,
+      "limit": "4 piles max (−20 %).",
+      "onBoss": "Identique."
+    },
+    {
+      "id": "mouille",
+      "name": "Mouillé",
+      "element": "water",
+      "category": "Préparation",
+      "effect": "+25 % de dégâts d'Électricité subis ; retire Brûlure.",
+      "value": 0.25,
+      "unit": "% dégâts Électricité subis",
+      "duration": 3,
+      "maxStacks": 1,
+      "limit": "Non cumulable.",
+      "onBoss": "Identique."
+    },
+    {
+      "id": "froid",
+      "name": "Froid",
+      "element": "ice",
+      "category": "Contrôle",
+      "effect": "−8 % d'Agilité par pile ; à 3 piles, déclenche Gel.",
+      "value": 0.08,
+      "unit": "% Agilité / pile",
+      "duration": 2,
+      "maxStacks": 3,
+      "limit": "3 piles max puis Gel.",
+      "onBoss": "Durée des contrôles réduite de moitié ; jamais d'immunité totale."
+    },
+    {
+      "id": "gel",
+      "name": "Gel",
+      "element": "ice",
+      "category": "Contrôle",
+      "effect": "Le joueur perd son prochain tour.",
+      "value": 1,
+      "unit": "tours perdus",
+      "duration": 1,
+      "maxStacks": 1,
+      "limit": "Immunité 2 tours ensuite ; durée /2 en cas de résistance.",
+      "onBoss": "Durée des contrôles réduite de moitié ; jamais d'immunité totale."
+    },
+    {
+      "id": "etourdissement",
+      "name": "Étourdissement",
+      "element": "lightning",
+      "category": "Contrôle",
+      "effect": "Le joueur perd son prochain tour.",
+      "value": 1,
+      "unit": "tours perdus",
+      "duration": 1,
+      "maxStacks": 1,
+      "limit": "Immunité 2 tours ensuite ; durée /2 en cas de résistance.",
+      "onBoss": "Durée des contrôles réduite de moitié ; jamais d'immunité totale."
+    },
+    {
+      "id": "eblouissement",
+      "name": "Éblouissement",
+      "element": "light",
+      "category": "Affaiblissement",
+      "effect": "−10 % de Précision et −20 % de Chance de critique.",
+      "value": 0.2,
+      "unit": "% Chance de critique",
+      "duration": 2,
+      "maxStacks": 1,
+      "limit": "Non cumulable.",
+      "onBoss": "Identique."
+    },
+    {
+      "id": "marque",
+      "name": "Marqué",
+      "element": "light",
+      "category": "Préparation",
+      "effect": "L'Esquive du joueur est annulée.",
+      "value": 1,
+      "unit": "esquive annulée",
+      "duration": 2,
+      "maxStacks": 1,
+      "limit": "Non cumulable.",
+      "onBoss": "Identique."
+    },
+    {
+      "id": "corruption",
+      "name": "Corruption",
+      "element": "shadow",
+      "category": "Affaiblissement",
+      "effect": "+10 % de dégâts subis.",
+      "value": 0.1,
+      "unit": "% dégâts subis",
+      "duration": 2,
+      "maxStacks": 1,
+      "limit": "1 pile max, non cumulable.",
+      "onBoss": "Identique."
+    },
+    {
+      "id": "terreur",
+      "name": "Terreur",
+      "element": "shadow",
+      "category": "Contrôle",
+      "effect": "25 % de chance de perdre son tour.",
+      "value": 0.25,
+      "unit": "% de perdre son tour",
+      "duration": 2,
+      "maxStacks": 1,
+      "limit": "Non cumulable ; jamais 2 tours de suite.",
+      "onBoss": "Durée des contrôles réduite de moitié ; jamais d'immunité totale."
+    }
+  ],
+  "monsters": [
+    {
+      "id": "MON-001",
+      "name": "Sanglier",
+      "diagramName": "Sanglier",
+      "zoneFloor": 5,
+      "rank": "normal",
+      "role": "beast",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "saignement",
+          "chance": 0.2
+        },
+        {
+          "id": "assomme",
+          "chance": 0.08
+        }
+      ],
+      "atZoneLevel": {
+        "level": 5,
+        "hp": 105,
+        "strength": 25,
+        "magic": 0,
+        "resistance": 19,
+        "armor": 20,
+        "agility": 10,
+        "initiative": 8,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.025,
+        "statusResistance": 0.048,
+        "physicalReduction": 0.233,
+        "magicalReduction": 0.096,
+        "elementalShare": 0,
+        "damagePerHit": 0.0158,
+        "turnsToKill": 1.9,
+        "rewardMultiplier": 1,
+        "xp": 45,
+        "gold": 26
+      },
+      "image": "monstres/MON-001_sanglier.png"
+    },
+    {
+      "id": "MON-002",
+      "name": "Loup",
+      "diagramName": "Loup",
+      "zoneFloor": 5,
+      "rank": "normal",
+      "role": "assassin",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "saignement",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 5,
+        "hp": 83,
+        "strength": 29,
+        "magic": 0,
+        "resistance": 19,
+        "armor": 14,
+        "agility": 13,
+        "initiative": 11,
+        "accuracy": 1,
+        "critChance": 0.08,
+        "critDamage": 0.7,
+        "penetration": 0.06,
+        "statusResistance": 0.048,
+        "physicalReduction": 0.196,
+        "magicalReduction": 0.096,
+        "elementalShare": 0,
+        "damagePerHit": 0.018,
+        "turnsToKill": 1.5,
+        "rewardMultiplier": 1,
+        "xp": 45,
+        "gold": 26
+      },
+      "image": "monstres/MON-002_loup.png"
+    },
+    {
+      "id": "MON-003",
+      "name": "Ours",
+      "diagramName": "Ours",
+      "zoneFloor": 5,
+      "rank": "strong",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "assomme",
+          "chance": 0.15
+        },
+        {
+          "id": "saignement",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 5,
+        "hp": 232,
+        "strength": 29,
+        "magic": 0,
+        "resistance": 44,
+        "armor": 48,
+        "agility": 5,
+        "initiative": 5,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.072,
+        "physicalReduction": 0.438,
+        "magicalReduction": 0.197,
+        "elementalShare": 0,
+        "damagePerHit": 0.0181,
+        "turnsToKill": 4.2,
+        "rewardMultiplier": 1.4,
+        "xp": 63,
+        "gold": 36
+      },
+      "image": "monstres/MON-003_ours.png"
+    },
+    {
+      "id": "MON-004",
+      "name": "Ours enragé",
+      "diagramName": "Ours enragé (Boss)",
+      "zoneFloor": 5,
+      "rank": "boss",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "saignement",
+          "chance": 0.35
+        },
+        {
+          "id": "assomme",
+          "chance": 0.25
+        }
+      ],
+      "atZoneLevel": {
+        "level": 5,
+        "hp": 995,
+        "strength": 46,
+        "magic": 0,
+        "resistance": 49,
+        "armor": 55,
+        "agility": 5,
+        "initiative": 6,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.272,
+        "physicalReduction": 0.473,
+        "magicalReduction": 0.215,
+        "elementalShare": 0,
+        "damagePerHit": 0.0285,
+        "turnsToKill": 18,
+        "rewardMultiplier": 8,
+        "xp": 360,
+        "gold": 208
+      },
+      "image": "monstres/MON-004_ours_enrage.png"
+    },
+    {
+      "id": "MON-005",
+      "name": "Dragon (Neutre)",
+      "diagramName": "Dragon (Neutre)",
+      "zoneFloor": 9,
+      "rank": "dragon",
+      "role": "dragon",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "assomme",
+          "chance": 0.2
+        },
+        {
+          "id": "saignement",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 9,
+        "hp": 1519,
+        "strength": 50,
+        "magic": 50,
+        "resistance": 73,
+        "armor": 70,
+        "agility": 9,
+        "initiative": 8,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.291,
+        "physicalReduction": 0.47,
+        "magicalReduction": 0.229,
+        "elementalShare": 0,
+        "damagePerHit": 0.03,
+        "turnsToKill": 20,
+        "rewardMultiplier": 12,
+        "xp": 1128,
+        "gold": 696
+      },
+      "image": "monstres/MON-005_dragon_neutre.png"
+    },
+    {
+      "id": "MON-006",
+      "name": "Chef gobelin",
+      "diagramName": "Chef  Gobbelin (Boss)",
+      "zoneFloor": 10,
+      "rank": "boss",
+      "role": "warrior",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "assomme",
+          "chance": 0.3
+        },
+        {
+          "id": "intimide",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 10,
+        "hp": 1124,
+        "strength": 71,
+        "magic": 0,
+        "resistance": 61,
+        "armor": 65,
+        "agility": 11,
+        "initiative": 11,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.273,
+        "physicalReduction": 0.417,
+        "magicalReduction": 0.188,
+        "elementalShare": 0,
+        "damagePerHit": 0.03,
+        "turnsToKill": 13.8,
+        "rewardMultiplier": 8,
+        "xp": 856,
+        "gold": 536
+      },
+      "image": "monstres/MON-006_chef_gobelin.png"
+    },
+    {
+      "id": "MON-007",
+      "name": "Gobelin",
+      "diagramName": "Gobbelin",
+      "zoneFloor": 10,
+      "rank": "weak",
+      "role": "assassin",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "saignement",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 10,
+        "hp": 92,
+        "strength": 28,
+        "magic": 0,
+        "resistance": 22,
+        "armor": 17,
+        "agility": 20,
+        "initiative": 14,
+        "accuracy": 1,
+        "critChance": 0.08,
+        "critDamage": 0.7,
+        "penetration": 0.06,
+        "statusResistance": 0.058,
+        "physicalReduction": 0.163,
+        "magicalReduction": 0.077,
+        "elementalShare": 0,
+        "damagePerHit": 0.012,
+        "turnsToKill": 1.13,
+        "rewardMultiplier": 0.7,
+        "xp": 75,
+        "gold": 47
+      },
+      "image": "monstres/MON-007_gobelin.png"
+    },
+    {
+      "id": "MON-008",
+      "name": "Guerrier gobelin",
+      "diagramName": "Guerrier Gobbelin",
+      "zoneFloor": 10,
+      "rank": "normal",
+      "role": "warrior",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "saignement",
+          "chance": 0.15
+        },
+        {
+          "id": "assomme",
+          "chance": 0.1
+        }
+      ],
+      "atZoneLevel": {
+        "level": 10,
+        "hp": 187,
+        "strength": 35,
+        "magic": 0,
+        "resistance": 47,
+        "armor": 50,
+        "agility": 11,
+        "initiative": 10,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.073,
+        "physicalReduction": 0.348,
+        "magicalReduction": 0.151,
+        "elementalShare": 0,
+        "damagePerHit": 0.015,
+        "turnsToKill": 2.3,
+        "rewardMultiplier": 1,
+        "xp": 107,
+        "gold": 67
+      },
+      "image": "monstres/MON-008_guerrier_gobelin.png"
+    },
+    {
+      "id": "MON-009",
+      "name": "Chaman gobelin",
+      "diagramName": "Chaman Gobbelin",
+      "zoneFloor": 10,
+      "rank": "normal",
+      "role": "support",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "intimide",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 10,
+        "hp": 139,
+        "strength": 0,
+        "magic": 28,
+        "resistance": 56,
+        "armor": 21,
+        "agility": 11,
+        "initiative": 10,
+        "accuracy": 0.9,
+        "critChance": 0.04,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.095,
+        "physicalReduction": 0.268,
+        "magicalReduction": 0.175,
+        "elementalShare": 0,
+        "damagePerHit": 0.012,
+        "turnsToKill": 1.7,
+        "rewardMultiplier": 1,
+        "xp": 107,
+        "gold": 67
+      },
+      "image": "monstres/MON-009_chaman_gobelin.png"
+    },
+    {
+      "id": "MON-010",
+      "name": "Archer gobelin",
+      "diagramName": "Archer gobbelin",
+      "zoneFloor": 10,
+      "rank": "normal",
+      "role": "ranger",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "saignement",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 10,
+        "hp": 130,
+        "strength": 39,
+        "magic": 0,
+        "resistance": 33,
+        "armor": 25,
+        "agility": 14,
+        "initiative": 11,
+        "accuracy": 1,
+        "critChance": 0.075,
+        "critDamage": 0.65,
+        "penetration": 0.07,
+        "statusResistance": 0.058,
+        "physicalReduction": 0.228,
+        "magicalReduction": 0.111,
+        "elementalShare": 0,
+        "damagePerHit": 0.0165,
+        "turnsToKill": 1.6,
+        "rewardMultiplier": 1,
+        "xp": 107,
+        "gold": 67
+      },
+      "image": "monstres/MON-010_archer_gobelin.png"
+    },
+    {
+      "id": "MON-011",
+      "name": "Haut chaman gobelin",
+      "diagramName": "Haut Chaman Gobbelin (Boss)",
+      "zoneFloor": 15,
+      "rank": "boss",
+      "role": "support",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "garde_brisee",
+          "chance": 0.35
+        },
+        {
+          "id": "intimide",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 15,
+        "hp": 1131,
+        "strength": 0,
+        "magic": 77,
+        "resistance": 99,
+        "armor": 37,
+        "agility": 15,
+        "initiative": 16,
+        "accuracy": 0.9,
+        "critChance": 0.04,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.311,
+        "physicalReduction": 0.327,
+        "magicalReduction": 0.216,
+        "elementalShare": 0.9,
+        "damagePerHit": 0.024,
+        "turnsToKill": 10.2,
+        "rewardMultiplier": 8,
+        "xp": 1416,
+        "gold": 928
+      },
+      "image": "monstres/MON-011_haut_chaman_gobelin.png"
+    },
+    {
+      "id": "MON-012",
+      "name": "Haut gobelin",
+      "diagramName": "Haut Gobbelin",
+      "zoneFloor": 15,
+      "rank": "normal",
+      "role": "warrior",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "garde_brisee",
+          "chance": 0.2
+        },
+        {
+          "id": "saignement",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 15,
+        "hp": 255,
+        "strength": 48,
+        "magic": 0,
+        "resistance": 63,
+        "armor": 68,
+        "agility": 15,
+        "initiative": 13,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.085,
+        "physicalReduction": 0.346,
+        "magicalReduction": 0.149,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.015,
+        "turnsToKill": 2.3,
+        "rewardMultiplier": 1,
+        "xp": 177,
+        "gold": 116
+      },
+      "image": "monstres/MON-012_haut_gobelin.png"
+    },
+    {
+      "id": "MON-013",
+      "name": "Haut archer gobelin",
+      "diagramName": "Haut Archer Bobbelin",
+      "zoneFloor": 15,
+      "rank": "normal",
+      "role": "ranger",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "enracine",
+          "chance": 0.2
+        },
+        {
+          "id": "saignement",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 15,
+        "hp": 177,
+        "strength": 53,
+        "magic": 0,
+        "resistance": 44,
+        "armor": 34,
+        "agility": 19,
+        "initiative": 15,
+        "accuracy": 1,
+        "critChance": 0.075,
+        "critDamage": 0.65,
+        "penetration": 0.07,
+        "statusResistance": 0.068,
+        "physicalReduction": 0.226,
+        "magicalReduction": 0.109,
+        "elementalShare": 0.6,
+        "damagePerHit": 0.0165,
+        "turnsToKill": 1.6,
+        "rewardMultiplier": 1,
+        "xp": 177,
+        "gold": 116
+      },
+      "image": "monstres/MON-013_haut_archer_gobelin.png"
+    },
+    {
+      "id": "MON-014",
+      "name": "Haut guerrier gobelin",
+      "diagramName": "Haut guerrier Gobbelin",
+      "zoneFloor": 15,
+      "rank": "strong",
+      "role": "warrior",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "garde_brisee",
+          "chance": 0.25
+        },
+        {
+          "id": "assomme",
+          "chance": 0.12
+        }
+      ],
+      "atZoneLevel": {
+        "level": 15,
+        "hp": 357,
+        "strength": 61,
+        "magic": 0,
+        "resistance": 73,
+        "armor": 78,
+        "agility": 15,
+        "initiative": 14,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.085,
+        "physicalReduction": 0.383,
+        "magicalReduction": 0.169,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.019,
+        "turnsToKill": 3.22,
+        "rewardMultiplier": 1.4,
+        "xp": 248,
+        "gold": 162
+      },
+      "image": "monstres/MON-014_haut_guerrier_gobelin.png"
+    },
+    {
+      "id": "MON-015",
+      "name": "Haut shaman gobelin",
+      "diagramName": "Haut Shaman Bobbelin",
+      "zoneFloor": 15,
+      "rank": "normal",
+      "role": "mage",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "garde_brisee",
+          "chance": 0.25
+        },
+        {
+          "id": "enracine",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 15,
+        "hp": 155,
+        "strength": 0,
+        "magic": 60,
+        "resistance": 70,
+        "armor": 23,
+        "agility": 15,
+        "initiative": 13,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.065,
+        "statusResistance": 0.102,
+        "physicalReduction": 0.241,
+        "magicalReduction": 0.163,
+        "elementalShare": 1,
+        "damagePerHit": 0.0188,
+        "turnsToKill": 1.4,
+        "rewardMultiplier": 1,
+        "xp": 177,
+        "gold": 116
+      },
+      "image": "monstres/MON-015_haut_shaman_gobelin.png"
+    },
+    {
+      "id": "MON-016",
+      "name": "Dragon (Terre)",
+      "diagramName": "Dragon (Terre)",
+      "zoneFloor": 19,
+      "rank": "dragon",
+      "role": "dragon",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "garde_brisee",
+          "chance": 0.25
+        },
+        {
+          "id": "enracine",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 19,
+        "hp": 2722,
+        "strength": 89,
+        "magic": 89,
+        "resistance": 131,
+        "armor": 126,
+        "agility": 17,
+        "initiative": 14,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.324,
+        "physicalReduction": 0.47,
+        "magicalReduction": 0.229,
+        "elementalShare": 1,
+        "damagePerHit": 0.03,
+        "turnsToKill": 20,
+        "rewardMultiplier": 12,
+        "xp": 2856,
+        "gold": 1920
+      },
+      "image": "monstres/MON-016_dragon_terre.png"
+    },
+    {
+      "id": "MON-017",
+      "name": "Chef orc",
+      "diagramName": "Chef orc",
+      "zoneFloor": 20,
+      "rank": "boss",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "garde_brisee",
+          "chance": 0.35
+        },
+        {
+          "id": "assomme",
+          "chance": 0.25
+        }
+      ],
+      "atZoneLevel": {
+        "level": 20,
+        "hp": 2567,
+        "strength": 118,
+        "magic": 0,
+        "resistance": 127,
+        "armor": 141,
+        "agility": 13,
+        "initiative": 15,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.318,
+        "physicalReduction": 0.472,
+        "magicalReduction": 0.216,
+        "elementalShare": 0.6,
+        "damagePerHit": 0.0285,
+        "turnsToKill": 18,
+        "rewardMultiplier": 8,
+        "xp": 2032,
+        "gold": 1368
+      },
+      "image": "monstres/MON-017_chef_orc.png"
+    },
+    {
+      "id": "MON-018",
+      "name": "Orc",
+      "diagramName": "Orc",
+      "zoneFloor": 20,
+      "rank": "normal",
+      "role": "warrior",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "garde_brisee",
+          "chance": 0.2
+        },
+        {
+          "id": "saignement",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 20,
+        "hp": 328,
+        "strength": 62,
+        "magic": 0,
+        "resistance": 81,
+        "armor": 87,
+        "agility": 20,
+        "initiative": 17,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.098,
+        "physicalReduction": 0.346,
+        "magicalReduction": 0.149,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.015,
+        "turnsToKill": 2.3,
+        "rewardMultiplier": 1,
+        "xp": 254,
+        "gold": 171
+      },
+      "image": "monstres/MON-018_orc.png"
+    },
+    {
+      "id": "MON-019",
+      "name": "Guerrier orc",
+      "diagramName": "Guerrier orc",
+      "zoneFloor": 20,
+      "rank": "strong",
+      "role": "warrior",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "garde_brisee",
+          "chance": 0.25
+        },
+        {
+          "id": "assomme",
+          "chance": 0.12
+        }
+      ],
+      "atZoneLevel": {
+        "level": 20,
+        "hp": 459,
+        "strength": 79,
+        "magic": 0,
+        "resistance": 94,
+        "armor": 100,
+        "agility": 20,
+        "initiative": 18,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.098,
+        "physicalReduction": 0.382,
+        "magicalReduction": 0.169,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.019,
+        "turnsToKill": 3.22,
+        "rewardMultiplier": 1.4,
+        "xp": 356,
+        "gold": 239
+      },
+      "image": "monstres/MON-019_guerrier_orc.png"
+    },
+    {
+      "id": "MON-020",
+      "name": "Chaman orc",
+      "diagramName": "Chaman orc",
+      "zoneFloor": 20,
+      "rank": "normal",
+      "role": "mage",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "enracine",
+          "chance": 0.25
+        },
+        {
+          "id": "intimide",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 20,
+        "hp": 200,
+        "strength": 0,
+        "magic": 78,
+        "resistance": 90,
+        "armor": 29,
+        "agility": 20,
+        "initiative": 16,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.065,
+        "statusResistance": 0.118,
+        "physicalReduction": 0.239,
+        "magicalReduction": 0.163,
+        "elementalShare": 1,
+        "damagePerHit": 0.0188,
+        "turnsToKill": 1.4,
+        "rewardMultiplier": 1,
+        "xp": 254,
+        "gold": 171
+      },
+      "image": "monstres/MON-020_chaman_orc.png"
+    },
+    {
+      "id": "MON-021",
+      "name": "Salamandre",
+      "diagramName": "Salamandre",
+      "zoneFloor": 25,
+      "rank": "normal",
+      "role": "beast",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "brulure",
+          "chance": 0.3
+        },
+        {
+          "id": "saignement",
+          "chance": 0.1
+        }
+      ],
+      "atZoneLevel": {
+        "level": 25,
+        "hp": 334,
+        "strength": 80,
+        "magic": 0,
+        "resistance": 60,
+        "armor": 63,
+        "agility": 32,
+        "initiative": 27,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.025,
+        "statusResistance": 0.088,
+        "physicalReduction": 0.231,
+        "magicalReduction": 0.095,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.0158,
+        "turnsToKill": 1.9,
+        "rewardMultiplier": 1,
+        "xp": 335,
+        "gold": 231
+      },
+      "image": "monstres/MON-021_salamandre.png"
+    },
+    {
+      "id": "MON-022",
+      "name": "Malphite",
+      "diagramName": "Malphite",
+      "zoneFloor": 25,
+      "rank": "boss",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "brulure",
+          "chance": 0.35
+        },
+        {
+          "id": "assomme",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 25,
+        "hp": 3168,
+        "strength": 146,
+        "magic": 0,
+        "resistance": 157,
+        "armor": 174,
+        "agility": 16,
+        "initiative": 18,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.333,
+        "physicalReduction": 0.473,
+        "magicalReduction": 0.216,
+        "elementalShare": 0.6,
+        "damagePerHit": 0.0285,
+        "turnsToKill": 18,
+        "rewardMultiplier": 8,
+        "xp": 2680,
+        "gold": 1848
+      },
+      "image": "monstres/MON-022_malphite.png"
+    },
+    {
+      "id": "MON-023",
+      "name": "Golem de feu",
+      "diagramName": "Golem de feu",
+      "zoneFloor": 25,
+      "rank": "strong",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "brulure",
+          "chance": 0.25
+        },
+        {
+          "id": "assomme",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 25,
+        "hp": 739,
+        "strength": 92,
+        "magic": 0,
+        "resistance": 139,
+        "armor": 154,
+        "agility": 16,
+        "initiative": 16,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.133,
+        "physicalReduction": 0.438,
+        "magicalReduction": 0.196,
+        "elementalShare": 0.4,
+        "damagePerHit": 0.0181,
+        "turnsToKill": 4.2,
+        "rewardMultiplier": 1.4,
+        "xp": 469,
+        "gold": 323
+      },
+      "image": "monstres/MON-023_golem_de_feu.png"
+    },
+    {
+      "id": "MON-024",
+      "name": "Dragon (Feu)",
+      "diagramName": "Dragon (Feu)",
+      "zoneFloor": 29,
+      "rank": "dragon",
+      "role": "dragon",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "brulure",
+          "chance": 0.4
+        },
+        {
+          "id": "assomme",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 29,
+        "hp": 4075,
+        "strength": 133,
+        "magic": 133,
+        "resistance": 197,
+        "armor": 188,
+        "agility": 25,
+        "initiative": 21,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.357,
+        "physicalReduction": 0.47,
+        "magicalReduction": 0.23,
+        "elementalShare": 1,
+        "damagePerHit": 0.03,
+        "turnsToKill": 20,
+        "rewardMultiplier": 12,
+        "xp": 4848,
+        "gold": 3396
+      },
+      "image": "monstres/MON-024_dragon_feu.png"
+    },
+    {
+      "id": "MON-025",
+      "name": "Ifrit",
+      "diagramName": "Ifrit",
+      "zoneFloor": 30,
+      "rank": "boss",
+      "role": "mage",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "brulure",
+          "chance": 0.45
+        },
+        {
+          "id": "assomme",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 30,
+        "hp": 1771,
+        "strength": 0,
+        "magic": 229,
+        "resistance": 172,
+        "armor": 56,
+        "agility": 29,
+        "initiative": 28,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.065,
+        "statusResistance": 0.348,
+        "physicalReduction": 0.294,
+        "magicalReduction": 0.201,
+        "elementalShare": 1,
+        "damagePerHit": 0.0375,
+        "turnsToKill": 8.4,
+        "rewardMultiplier": 8,
+        "xp": 3368,
+        "gold": 2368
+      },
+      "image": "monstres/MON-025_ifrit.png"
+    },
+    {
+      "id": "MON-026",
+      "name": "Diablotin",
+      "diagramName": "Diablotin",
+      "zoneFloor": 30,
+      "rank": "weak",
+      "role": "assassin",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "brulure",
+          "chance": 0.25
+        }
+      ],
+      "atZoneLevel": {
+        "level": 30,
+        "hp": 237,
+        "strength": 0,
+        "magic": 73,
+        "resistance": 58,
+        "armor": 43,
+        "agility": 51,
+        "initiative": 36,
+        "accuracy": 1,
+        "critChance": 0.08,
+        "critDamage": 0.7,
+        "penetration": 0.06,
+        "statusResistance": 0.099,
+        "physicalReduction": 0.162,
+        "magicalReduction": 0.078,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.012,
+        "turnsToKill": 1.13,
+        "rewardMultiplier": 0.7,
+        "xp": 295,
+        "gold": 207
+      },
+      "image": "monstres/MON-026_diablotin.png"
+    },
+    {
+      "id": "MON-027",
+      "name": "Chien des enfers",
+      "diagramName": "Chien des enfers",
+      "zoneFloor": 30,
+      "rank": "normal",
+      "role": "beast",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "brulure",
+          "chance": 0.3
+        },
+        {
+          "id": "saignement",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 30,
+        "hp": 401,
+        "strength": 96,
+        "magic": 0,
+        "resistance": 72,
+        "armor": 75,
+        "agility": 39,
+        "initiative": 32,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.025,
+        "statusResistance": 0.099,
+        "physicalReduction": 0.23,
+        "magicalReduction": 0.095,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.0158,
+        "turnsToKill": 1.9,
+        "rewardMultiplier": 1,
+        "xp": 421,
+        "gold": 296
+      },
+      "image": "monstres/MON-027_chien_des_enfers.png"
+    },
+    {
+      "id": "MON-028",
+      "name": "Élémentaire de feu",
+      "diagramName": "Élémentaire de feu",
+      "zoneFloor": 30,
+      "rank": "normal",
+      "role": "elemental",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "brulure",
+          "chance": 0.4
+        }
+      ],
+      "atZoneLevel": {
+        "level": 30,
+        "hp": 422,
+        "strength": 0,
+        "magic": 110,
+        "resistance": 157,
+        "armor": 75,
+        "agility": 32,
+        "initiative": 27,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.185,
+        "physicalReduction": 0.308,
+        "magicalReduction": 0.187,
+        "elementalShare": 1,
+        "damagePerHit": 0.018,
+        "turnsToKill": 2,
+        "rewardMultiplier": 1,
+        "xp": 421,
+        "gold": 296
+      },
+      "image": "monstres/MON-028_elementaire_de_feu.png"
+    },
+    {
+      "id": "MON-029",
+      "name": "Ver des sables",
+      "diagramName": "Ver des sable (Boss)",
+      "zoneFloor": 35,
+      "rank": "boss",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "desoriente",
+          "chance": 0.3
+        },
+        {
+          "id": "assomme",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 35,
+        "hp": 4443,
+        "strength": 204,
+        "magic": 0,
+        "resistance": 220,
+        "armor": 245,
+        "agility": 23,
+        "initiative": 25,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.363,
+        "physicalReduction": 0.473,
+        "magicalReduction": 0.216,
+        "elementalShare": 0.6,
+        "damagePerHit": 0.0285,
+        "turnsToKill": 18,
+        "rewardMultiplier": 8,
+        "xp": 4088,
+        "gold": 2912
+      },
+      "image": "monstres/MON-029_ver_des_sables.png"
+    },
+    {
+      "id": "MON-030",
+      "name": "Djin",
+      "diagramName": "Djin",
+      "zoneFloor": 35,
+      "rank": "normal",
+      "role": "mage",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "desoriente",
+          "chance": 0.3
+        },
+        {
+          "id": "intimide",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 35,
+        "hp": 346,
+        "strength": 0,
+        "magic": 134,
+        "resistance": 155,
+        "armor": 50,
+        "agility": 34,
+        "initiative": 28,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.065,
+        "statusResistance": 0.163,
+        "physicalReduction": 0.238,
+        "magicalReduction": 0.162,
+        "elementalShare": 1,
+        "damagePerHit": 0.0188,
+        "turnsToKill": 1.4,
+        "rewardMultiplier": 1,
+        "xp": 511,
+        "gold": 364
+      },
+      "image": "monstres/MON-030_djin.png"
+    },
+    {
+      "id": "MON-031",
+      "name": "Souffleur",
+      "diagramName": "Souffleur",
+      "zoneFloor": 35,
+      "rank": "normal",
+      "role": "mage",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "desoriente",
+          "chance": 0.35
+        }
+      ],
+      "atZoneLevel": {
+        "level": 35,
+        "hp": 346,
+        "strength": 0,
+        "magic": 134,
+        "resistance": 155,
+        "armor": 50,
+        "agility": 34,
+        "initiative": 28,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.065,
+        "statusResistance": 0.163,
+        "physicalReduction": 0.238,
+        "magicalReduction": 0.162,
+        "elementalShare": 1,
+        "damagePerHit": 0.0188,
+        "turnsToKill": 1.4,
+        "rewardMultiplier": 1,
+        "xp": 511,
+        "gold": 364
+      },
+      "image": "monstres/MON-031_souffleur.png"
+    },
+    {
+      "id": "MON-032",
+      "name": "Harpie",
+      "diagramName": "Harpie",
+      "zoneFloor": 35,
+      "rank": "normal",
+      "role": "assassin",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "saignement",
+          "chance": 0.2
+        },
+        {
+          "id": "desoriente",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 35,
+        "hp": 370,
+        "strength": 129,
+        "magic": 0,
+        "resistance": 85,
+        "armor": 63,
+        "agility": 60,
+        "initiative": 47,
+        "accuracy": 1,
+        "critChance": 0.08,
+        "critDamage": 0.7,
+        "penetration": 0.06,
+        "statusResistance": 0.109,
+        "physicalReduction": 0.197,
+        "magicalReduction": 0.096,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.018,
+        "turnsToKill": 1.5,
+        "rewardMultiplier": 1,
+        "xp": 511,
+        "gold": 364
+      },
+      "image": "monstres/MON-032_harpie.png"
+    },
+    {
+      "id": "MON-033",
+      "name": "Dragon (Vent)",
+      "diagramName": "Dragon (Vent)",
+      "zoneFloor": 39,
+      "rank": "dragon",
+      "role": "dragon",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "desoriente",
+          "chance": 0.35
+        },
+        {
+          "id": "assomme",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 39,
+        "hp": 5530,
+        "strength": 181,
+        "magic": 181,
+        "resistance": 267,
+        "armor": 256,
+        "agility": 34,
+        "initiative": 28,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.39,
+        "physicalReduction": 0.471,
+        "magicalReduction": 0.23,
+        "elementalShare": 1,
+        "damagePerHit": 0.03,
+        "turnsToKill": 20,
+        "rewardMultiplier": 12,
+        "xp": 7020,
+        "gold": 5064
+      },
+      "image": "monstres/MON-033_dragon_vent.png"
+    },
+    {
+      "id": "MON-034",
+      "name": "Anubis",
+      "diagramName": "Annubis (Boss)",
+      "zoneFloor": 40,
+      "rank": "boss",
+      "role": "warrior",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "desoriente",
+          "chance": 0.3
+        },
+        {
+          "id": "intimide",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 40,
+        "hp": 3919,
+        "strength": 185,
+        "magic": 185,
+        "resistance": 211,
+        "armor": 225,
+        "agility": 39,
+        "initiative": 39,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.348,
+        "physicalReduction": 0.415,
+        "magicalReduction": 0.187,
+        "elementalShare": 0.7,
+        "damagePerHit": 0.03,
+        "turnsToKill": 13.8,
+        "rewardMultiplier": 8,
+        "xp": 4832,
+        "gold": 3488
+      },
+      "image": "monstres/MON-034_anubis.png"
+    },
+    {
+      "id": "MON-035",
+      "name": "Lion humanoïde",
+      "diagramName": "Lion humaniode",
+      "zoneFloor": 40,
+      "rank": "normal",
+      "role": "warrior",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "saignement",
+          "chance": 0.2
+        },
+        {
+          "id": "desoriente",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 40,
+        "hp": 653,
+        "strength": 124,
+        "magic": 0,
+        "resistance": 162,
+        "armor": 173,
+        "agility": 39,
+        "initiative": 34,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.148,
+        "physicalReduction": 0.346,
+        "magicalReduction": 0.15,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.015,
+        "turnsToKill": 2.3,
+        "rewardMultiplier": 1,
+        "xp": 604,
+        "gold": 436
+      },
+      "image": "monstres/MON-035_lion_humanoide.png"
+    },
+    {
+      "id": "MON-036",
+      "name": "Chien humanoïde",
+      "diagramName": "Chien humaniode",
+      "zoneFloor": 40,
+      "rank": "normal",
+      "role": "assassin",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "saignement",
+          "chance": 0.25
+        },
+        {
+          "id": "desoriente",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 40,
+        "hp": 426,
+        "strength": 148,
+        "magic": 0,
+        "resistance": 97,
+        "armor": 72,
+        "agility": 69,
+        "initiative": 54,
+        "accuracy": 1,
+        "critChance": 0.08,
+        "critDamage": 0.7,
+        "penetration": 0.06,
+        "statusResistance": 0.119,
+        "physicalReduction": 0.196,
+        "magicalReduction": 0.095,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.018,
+        "turnsToKill": 1.5,
+        "rewardMultiplier": 1,
+        "xp": 604,
+        "gold": 436
+      },
+      "image": "monstres/MON-036_chien_humanoide.png"
+    },
+    {
+      "id": "MON-037",
+      "name": "Ours humanoïde",
+      "diagramName": "Ours humaniode",
+      "zoneFloor": 40,
+      "rank": "strong",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "assomme",
+          "chance": 0.15
+        },
+        {
+          "id": "desoriente",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 40,
+        "hp": 1193,
+        "strength": 149,
+        "magic": 0,
+        "resistance": 224,
+        "armor": 249,
+        "agility": 26,
+        "initiative": 27,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.178,
+        "physicalReduction": 0.438,
+        "magicalReduction": 0.196,
+        "elementalShare": 0.4,
+        "damagePerHit": 0.0181,
+        "turnsToKill": 4.2,
+        "rewardMultiplier": 1.4,
+        "xp": 846,
+        "gold": 610
+      },
+      "image": "monstres/MON-037_ours_humanoide.png"
+    },
+    {
+      "id": "MON-038",
+      "name": "Roi slime",
+      "diagramName": "Roi slime",
+      "zoneFloor": 45,
+      "rank": "boss",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "corrosion",
+          "chance": 0.35
+        },
+        {
+          "id": "poison",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 45,
+        "hp": 5798,
+        "strength": 266,
+        "magic": 0,
+        "resistance": 287,
+        "armor": 319,
+        "agility": 29,
+        "initiative": 33,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.393,
+        "physicalReduction": 0.473,
+        "magicalReduction": 0.216,
+        "elementalShare": 0.6,
+        "damagePerHit": 0.0285,
+        "turnsToKill": 18,
+        "rewardMultiplier": 8,
+        "xp": 5592,
+        "gold": 4096
+      },
+      "image": "monstres/MON-038_roi_slime.png"
+    },
+    {
+      "id": "MON-039",
+      "name": "Serpent géant",
+      "diagramName": "Serpent géant",
+      "zoneFloor": 45,
+      "rank": "strong",
+      "role": "beast",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "poison",
+          "chance": 0.35
+        },
+        {
+          "id": "corrosion",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 45,
+        "hp": 857,
+        "strength": 187,
+        "magic": 0,
+        "resistance": 127,
+        "armor": 132,
+        "agility": 59,
+        "initiative": 52,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.025,
+        "statusResistance": 0.129,
+        "physicalReduction": 0.258,
+        "magicalReduction": 0.109,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.02,
+        "turnsToKill": 2.66,
+        "rewardMultiplier": 1.4,
+        "xp": 979,
+        "gold": 717
+      },
+      "image": "monstres/MON-039_serpent_geant.png"
+    },
+    {
+      "id": "MON-040",
+      "name": "Cracheur toxique",
+      "diagramName": "Cracheur toxic",
+      "zoneFloor": 45,
+      "rank": "normal",
+      "role": "ranger",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "poison",
+          "chance": 0.3
+        },
+        {
+          "id": "corrosion",
+          "chance": 0.25
+        }
+      ],
+      "atZoneLevel": {
+        "level": 45,
+        "hp": 515,
+        "strength": 0,
+        "magic": 154,
+        "resistance": 129,
+        "armor": 98,
+        "agility": 54,
+        "initiative": 45,
+        "accuracy": 1,
+        "critChance": 0.075,
+        "critDamage": 0.65,
+        "penetration": 0.07,
+        "statusResistance": 0.129,
+        "physicalReduction": 0.226,
+        "magicalReduction": 0.11,
+        "elementalShare": 0.6,
+        "damagePerHit": 0.0165,
+        "turnsToKill": 1.6,
+        "rewardMultiplier": 1,
+        "xp": 699,
+        "gold": 512
+      },
+      "image": "monstres/MON-040_cracheur_toxique.png"
+    },
+    {
+      "id": "MON-041",
+      "name": "Slime",
+      "diagramName": "Slime",
+      "zoneFloor": 45,
+      "rank": "weak",
+      "role": "beast",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "corrosion",
+          "chance": 0.25
+        },
+        {
+          "id": "poison",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 45,
+        "hp": 459,
+        "strength": 98,
+        "magic": 0,
+        "resistance": 88,
+        "armor": 92,
+        "agility": 59,
+        "initiative": 44,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.025,
+        "statusResistance": 0.129,
+        "physicalReduction": 0.191,
+        "magicalReduction": 0.078,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.0105,
+        "turnsToKill": 1.43,
+        "rewardMultiplier": 0.7,
+        "xp": 489,
+        "gold": 358
+      },
+      "image": "monstres/MON-041_slime.png"
+    },
+    {
+      "id": "MON-042",
+      "name": "Dragon (Acide)",
+      "diagramName": "Dragon (Acide)",
+      "zoneFloor": 49,
+      "rank": "dragon",
+      "role": "dragon",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "corrosion",
+          "chance": 0.35
+        },
+        {
+          "id": "poison",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 49,
+        "hp": 7064,
+        "strength": 231,
+        "magic": 231,
+        "resistance": 341,
+        "armor": 327,
+        "agility": 43,
+        "initiative": 36,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.423,
+        "physicalReduction": 0.471,
+        "magicalReduction": 0.23,
+        "elementalShare": 1,
+        "damagePerHit": 0.03,
+        "turnsToKill": 20,
+        "rewardMultiplier": 12,
+        "xp": 9336,
+        "gold": 6888
+      },
+      "image": "monstres/MON-042_dragon_acide.png"
+    },
+    {
+      "id": "MON-043",
+      "name": "Nurgol le zombie",
+      "diagramName": "Nurgol Zombie (Boss)",
+      "zoneFloor": 50,
+      "rank": "boss",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "poison",
+          "chance": 0.4
+        },
+        {
+          "id": "corrosion",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 50,
+        "hp": 6499,
+        "strength": 299,
+        "magic": 0,
+        "resistance": 322,
+        "armor": 358,
+        "agility": 33,
+        "initiative": 37,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.408,
+        "physicalReduction": 0.473,
+        "magicalReduction": 0.216,
+        "elementalShare": 0.6,
+        "damagePerHit": 0.0285,
+        "turnsToKill": 18,
+        "rewardMultiplier": 8,
+        "xp": 6384,
+        "gold": 4720
+      },
+      "image": "monstres/MON-043_nurgol_le_zombie.png"
+    },
+    {
+      "id": "MON-044",
+      "name": "Zombie",
+      "diagramName": "Zombie",
+      "zoneFloor": 50,
+      "rank": "normal",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "poison",
+          "chance": 0.25
+        },
+        {
+          "id": "corrosion",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 50,
+        "hp": 1083,
+        "strength": 149,
+        "magic": 0,
+        "resistance": 248,
+        "armor": 275,
+        "agility": 33,
+        "initiative": 32,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.208,
+        "physicalReduction": 0.4,
+        "magicalReduction": 0.175,
+        "elementalShare": 0.4,
+        "damagePerHit": 0.0143,
+        "turnsToKill": 3,
+        "rewardMultiplier": 1,
+        "xp": 798,
+        "gold": 590
+      },
+      "image": "monstres/MON-044_zombie.png"
+    },
+    {
+      "id": "MON-045",
+      "name": "Claqueur",
+      "diagramName": "Claqueur",
+      "zoneFloor": 50,
+      "rank": "normal",
+      "role": "assassin",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "poison",
+          "chance": 0.3
+        },
+        {
+          "id": "saignement",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 50,
+        "hp": 542,
+        "strength": 189,
+        "magic": 0,
+        "resistance": 124,
+        "armor": 92,
+        "agility": 88,
+        "initiative": 69,
+        "accuracy": 1,
+        "critChance": 0.08,
+        "critDamage": 0.7,
+        "penetration": 0.06,
+        "statusResistance": 0.139,
+        "physicalReduction": 0.197,
+        "magicalReduction": 0.096,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.018,
+        "turnsToKill": 1.5,
+        "rewardMultiplier": 1,
+        "xp": 798,
+        "gold": 590
+      },
+      "image": "monstres/MON-045_claqueur.png"
+    },
+    {
+      "id": "MON-046",
+      "name": "Zombie renforcé",
+      "diagramName": "Zombie renforcé",
+      "zoneFloor": 50,
+      "rank": "strong",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "poison",
+          "chance": 0.3
+        },
+        {
+          "id": "corrosion",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 50,
+        "hp": 1517,
+        "strength": 189,
+        "magic": 0,
+        "resistance": 285,
+        "armor": 316,
+        "agility": 33,
+        "initiative": 34,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.208,
+        "physicalReduction": 0.438,
+        "magicalReduction": 0.196,
+        "elementalShare": 0.4,
+        "damagePerHit": 0.0181,
+        "turnsToKill": 4.2,
+        "rewardMultiplier": 1.4,
+        "xp": 1117,
+        "gold": 826
+      },
+      "image": "monstres/MON-046_zombie_renforce.png"
+    },
+    {
+      "id": "MON-047",
+      "name": "Kraken",
+      "diagramName": "Kraken",
+      "zoneFloor": 55,
+      "rank": "boss",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "mouille",
+          "chance": 0.35
+        },
+        {
+          "id": "assomme",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 55,
+        "hp": 7215,
+        "strength": 332,
+        "magic": 0,
+        "resistance": 357,
+        "armor": 397,
+        "agility": 37,
+        "initiative": 41,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.424,
+        "physicalReduction": 0.473,
+        "magicalReduction": 0.216,
+        "elementalShare": 0.6,
+        "damagePerHit": 0.0285,
+        "turnsToKill": 18,
+        "rewardMultiplier": 8,
+        "xp": 7192,
+        "gold": 5368
+      },
+      "image": "monstres/MON-047_kraken.png"
+    },
+    {
+      "id": "MON-048",
+      "name": "Sirène",
+      "diagramName": "Sirene",
+      "zoneFloor": 55,
+      "rank": "normal",
+      "role": "mage",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "mouille",
+          "chance": 0.3
+        },
+        {
+          "id": "desoriente",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 55,
+        "hp": 561,
+        "strength": 0,
+        "magic": 218,
+        "resistance": 252,
+        "armor": 81,
+        "agility": 55,
+        "initiative": 46,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.065,
+        "statusResistance": 0.224,
+        "physicalReduction": 0.238,
+        "magicalReduction": 0.163,
+        "elementalShare": 1,
+        "damagePerHit": 0.0188,
+        "turnsToKill": 1.4,
+        "rewardMultiplier": 1,
+        "xp": 899,
+        "gold": 671
+      },
+      "image": "monstres/MON-048_sirene.png"
+    },
+    {
+      "id": "MON-049",
+      "name": "Crabe géant",
+      "diagramName": "Crabes Geant",
+      "zoneFloor": 55,
+      "rank": "strong",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "saignement",
+          "chance": 0.25
+        },
+        {
+          "id": "mouille",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 55,
+        "hp": 1684,
+        "strength": 210,
+        "magic": 0,
+        "resistance": 316,
+        "armor": 351,
+        "agility": 37,
+        "initiative": 37,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.224,
+        "physicalReduction": 0.438,
+        "magicalReduction": 0.196,
+        "elementalShare": 0.4,
+        "damagePerHit": 0.0181,
+        "turnsToKill": 4.2,
+        "rewardMultiplier": 1.4,
+        "xp": 1259,
+        "gold": 939
+      },
+      "image": "monstres/MON-049_crabe_geant.png"
+    },
+    {
+      "id": "MON-050",
+      "name": "Requin",
+      "diagramName": "Requins",
+      "zoneFloor": 55,
+      "rank": "normal",
+      "role": "assassin",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "saignement",
+          "chance": 0.35
+        },
+        {
+          "id": "mouille",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 55,
+        "hp": 601,
+        "strength": 209,
+        "magic": 0,
+        "resistance": 137,
+        "armor": 102,
+        "agility": 98,
+        "initiative": 76,
+        "accuracy": 1,
+        "critChance": 0.08,
+        "critDamage": 0.7,
+        "penetration": 0.06,
+        "statusResistance": 0.149,
+        "physicalReduction": 0.196,
+        "magicalReduction": 0.095,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.018,
+        "turnsToKill": 1.5,
+        "rewardMultiplier": 1,
+        "xp": 899,
+        "gold": 671
+      },
+      "image": "monstres/MON-050_requin.png"
+    },
+    {
+      "id": "MON-051",
+      "name": "Dragon (Eau)",
+      "diagramName": "Dragon (Eau)",
+      "zoneFloor": 59,
+      "rank": "dragon",
+      "role": "dragon",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "mouille",
+          "chance": 0.4
+        },
+        {
+          "id": "assomme",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 59,
+        "hp": 8664,
+        "strength": 283,
+        "magic": 283,
+        "resistance": 418,
+        "armor": 400,
+        "agility": 53,
+        "initiative": 44,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.455,
+        "physicalReduction": 0.47,
+        "magicalReduction": 0.23,
+        "elementalShare": 1,
+        "damagePerHit": 0.03,
+        "turnsToKill": 20,
+        "rewardMultiplier": 12,
+        "xp": 11772,
+        "gold": 8856
+      },
+      "image": "monstres/MON-051_dragon_eau.png"
+    },
+    {
+      "id": "MON-052",
+      "name": "Roi triton",
+      "diagramName": "Roi triton",
+      "zoneFloor": 60,
+      "rank": "boss",
+      "role": "warrior",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "mouille",
+          "chance": 0.35
+        },
+        {
+          "id": "intimide",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 60,
+        "hp": 6091,
+        "strength": 288,
+        "magic": 288,
+        "resistance": 328,
+        "armor": 350,
+        "agility": 61,
+        "initiative": 61,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.399,
+        "physicalReduction": 0.415,
+        "magicalReduction": 0.187,
+        "elementalShare": 0.7,
+        "damagePerHit": 0.03,
+        "turnsToKill": 13.8,
+        "rewardMultiplier": 8,
+        "xp": 8016,
+        "gold": 6032
+      },
+      "image": "monstres/MON-052_roi_triton.png"
+    },
+    {
+      "id": "MON-053",
+      "name": "Triton",
+      "diagramName": "Triton",
+      "zoneFloor": 60,
+      "rank": "normal",
+      "role": "warrior",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "mouille",
+          "chance": 0.25
+        },
+        {
+          "id": "saignement",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 60,
+        "hp": 1015,
+        "strength": 192,
+        "magic": 0,
+        "resistance": 252,
+        "armor": 269,
+        "agility": 61,
+        "initiative": 53,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.199,
+        "physicalReduction": 0.346,
+        "magicalReduction": 0.15,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.015,
+        "turnsToKill": 2.3,
+        "rewardMultiplier": 1,
+        "xp": 1002,
+        "gold": 754
+      },
+      "image": "monstres/MON-053_triton.png"
+    },
+    {
+      "id": "MON-054",
+      "name": "Lancier triton",
+      "diagramName": "Lancier triton",
+      "zoneFloor": 60,
+      "rank": "normal",
+      "role": "ranger",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "saignement",
+          "chance": 0.25
+        },
+        {
+          "id": "mouille",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 60,
+        "hp": 706,
+        "strength": 211,
+        "magic": 0,
+        "resistance": 177,
+        "armor": 135,
+        "agility": 74,
+        "initiative": 62,
+        "accuracy": 1,
+        "critChance": 0.075,
+        "critDamage": 0.65,
+        "penetration": 0.07,
+        "statusResistance": 0.159,
+        "physicalReduction": 0.227,
+        "magicalReduction": 0.11,
+        "elementalShare": 0.6,
+        "damagePerHit": 0.0165,
+        "turnsToKill": 1.6,
+        "rewardMultiplier": 1,
+        "xp": 1002,
+        "gold": 754
+      },
+      "image": "monstres/MON-054_lancier_triton.png"
+    },
+    {
+      "id": "MON-055",
+      "name": "Mage des eaux triton",
+      "diagramName": "Mage eau triton",
+      "zoneFloor": 60,
+      "rank": "normal",
+      "role": "mage",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "mouille",
+          "chance": 0.35
+        },
+        {
+          "id": "intimide",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 60,
+        "hp": 618,
+        "strength": 0,
+        "magic": 240,
+        "resistance": 277,
+        "armor": 90,
+        "agility": 61,
+        "initiative": 50,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.065,
+        "statusResistance": 0.239,
+        "physicalReduction": 0.239,
+        "magicalReduction": 0.162,
+        "elementalShare": 1,
+        "damagePerHit": 0.0188,
+        "turnsToKill": 1.4,
+        "rewardMultiplier": 1,
+        "xp": 1002,
+        "gold": 754
+      },
+      "image": "monstres/MON-055_mage_des_eaux_triton.png"
+    },
+    {
+      "id": "MON-056",
+      "name": "Yéti",
+      "diagramName": "Yeti (Boss)",
+      "zoneFloor": 65,
+      "rank": "boss",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "froid",
+          "chance": 0.4
+        },
+        {
+          "id": "assomme",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 65,
+        "hp": 8687,
+        "strength": 399,
+        "magic": 0,
+        "resistance": 430,
+        "armor": 478,
+        "agility": 44,
+        "initiative": 49,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.454,
+        "physicalReduction": 0.473,
+        "magicalReduction": 0.216,
+        "elementalShare": 0.6,
+        "damagePerHit": 0.0285,
+        "turnsToKill": 18,
+        "rewardMultiplier": 8,
+        "xp": 8856,
+        "gold": 6728
+      },
+      "image": "monstres/MON-056_yeti.png"
+    },
+    {
+      "id": "MON-057",
+      "name": "Mammouth de glace",
+      "diagramName": "Mammouth de glace",
+      "zoneFloor": 65,
+      "rank": "strong",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "froid",
+          "chance": 0.3
+        },
+        {
+          "id": "assomme",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 65,
+        "hp": 2027,
+        "strength": 253,
+        "magic": 0,
+        "resistance": 381,
+        "armor": 423,
+        "agility": 44,
+        "initiative": 45,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.254,
+        "physicalReduction": 0.438,
+        "magicalReduction": 0.196,
+        "elementalShare": 0.4,
+        "damagePerHit": 0.0181,
+        "turnsToKill": 4.2,
+        "rewardMultiplier": 1.4,
+        "xp": 1550,
+        "gold": 1177
+      },
+      "image": "monstres/MON-057_mammouth_de_glace.png"
+    },
+    {
+      "id": "MON-058",
+      "name": "Loup givré",
+      "diagramName": "loup givré",
+      "zoneFloor": 65,
+      "rank": "normal",
+      "role": "beast",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "froid",
+          "chance": 0.3
+        },
+        {
+          "id": "saignement",
+          "chance": 0.25
+        }
+      ],
+      "atZoneLevel": {
+        "level": 65,
+        "hp": 917,
+        "strength": 221,
+        "magic": 0,
+        "resistance": 165,
+        "armor": 172,
+        "agility": 88,
+        "initiative": 74,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.025,
+        "statusResistance": 0.169,
+        "physicalReduction": 0.23,
+        "magicalReduction": 0.096,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.0158,
+        "turnsToKill": 1.9,
+        "rewardMultiplier": 1,
+        "xp": 1107,
+        "gold": 841
+      },
+      "image": "monstres/MON-058_loup_givre.png"
+    },
+    {
+      "id": "MON-059",
+      "name": "Zombie gelé",
+      "diagramName": "Zombie gelé",
+      "zoneFloor": 65,
+      "rank": "normal",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "froid",
+          "chance": 0.3
+        },
+        {
+          "id": "intimide",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 65,
+        "hp": 1448,
+        "strength": 200,
+        "magic": 0,
+        "resistance": 331,
+        "armor": 368,
+        "agility": 44,
+        "initiative": 43,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.254,
+        "physicalReduction": 0.4,
+        "magicalReduction": 0.175,
+        "elementalShare": 0.4,
+        "damagePerHit": 0.0143,
+        "turnsToKill": 3,
+        "rewardMultiplier": 1,
+        "xp": 1107,
+        "gold": 841
+      },
+      "image": "monstres/MON-059_zombie_gele.png"
+    },
+    {
+      "id": "MON-060",
+      "name": "Dragon (Glace)",
+      "diagramName": "Dragon (Glace)",
+      "zoneFloor": 69,
+      "rank": "dragon",
+      "role": "dragon",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "froid",
+          "chance": 0.45
+        },
+        {
+          "id": "gel",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 69,
+        "hp": 10321,
+        "strength": 337,
+        "magic": 337,
+        "resistance": 498,
+        "armor": 477,
+        "agility": 63,
+        "initiative": 52,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.488,
+        "physicalReduction": 0.47,
+        "magicalReduction": 0.23,
+        "elementalShare": 1,
+        "damagePerHit": 0.03,
+        "turnsToKill": 20,
+        "rewardMultiplier": 12,
+        "xp": 14316,
+        "gold": 10932
+      },
+      "image": "monstres/MON-060_dragon_glace.png"
+    },
+    {
+      "id": "MON-061",
+      "name": "Roi elfique",
+      "diagramName": "Roi elfique",
+      "zoneFloor": 70,
+      "rank": "boss",
+      "role": "mage",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "froid",
+          "chance": 0.4
+        },
+        {
+          "id": "gel",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 70,
+        "hp": 4406,
+        "strength": 428,
+        "magic": 428,
+        "resistance": 429,
+        "armor": 139,
+        "agility": 72,
+        "initiative": 69,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.065,
+        "statusResistance": 0.469,
+        "physicalReduction": 0.294,
+        "magicalReduction": 0.202,
+        "elementalShare": 1,
+        "damagePerHit": 0.0375,
+        "turnsToKill": 8.4,
+        "rewardMultiplier": 8,
+        "xp": 9720,
+        "gold": 7432
+      },
+      "image": "monstres/MON-061_roi_elfique.png"
+    },
+    {
+      "id": "MON-062",
+      "name": "Elfe",
+      "diagramName": "Elfe",
+      "zoneFloor": 70,
+      "rank": "normal",
+      "role": "assassin",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "froid",
+          "chance": 0.25
+        },
+        {
+          "id": "saignement",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 70,
+        "hp": 787,
+        "strength": 274,
+        "magic": 0,
+        "resistance": 180,
+        "armor": 133,
+        "agility": 128,
+        "initiative": 100,
+        "accuracy": 1,
+        "critChance": 0.08,
+        "critDamage": 0.7,
+        "penetration": 0.06,
+        "statusResistance": 0.179,
+        "physicalReduction": 0.196,
+        "magicalReduction": 0.096,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.018,
+        "turnsToKill": 1.5,
+        "rewardMultiplier": 1,
+        "xp": 1215,
+        "gold": 929
+      },
+      "image": "monstres/MON-062_elfe.png"
+    },
+    {
+      "id": "MON-063",
+      "name": "Guerrier elfe",
+      "diagramName": "Guerrier elfe",
+      "zoneFloor": 70,
+      "rank": "normal",
+      "role": "warrior",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "froid",
+          "chance": 0.25
+        },
+        {
+          "id": "intimide",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 70,
+        "hp": 1206,
+        "strength": 228,
+        "magic": 0,
+        "resistance": 300,
+        "armor": 320,
+        "agility": 72,
+        "initiative": 63,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.224,
+        "physicalReduction": 0.346,
+        "magicalReduction": 0.15,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.015,
+        "turnsToKill": 2.3,
+        "rewardMultiplier": 1,
+        "xp": 1215,
+        "gold": 929
+      },
+      "image": "monstres/MON-063_guerrier_elfe.png"
+    },
+    {
+      "id": "MON-064",
+      "name": "Archer elfe",
+      "diagramName": "Archer elfe",
+      "zoneFloor": 70,
+      "rank": "normal",
+      "role": "ranger",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "froid",
+          "chance": 0.3
+        },
+        {
+          "id": "saignement",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 70,
+        "hp": 839,
+        "strength": 251,
+        "magic": 0,
+        "resistance": 210,
+        "armor": 160,
+        "agility": 88,
+        "initiative": 73,
+        "accuracy": 1,
+        "critChance": 0.075,
+        "critDamage": 0.65,
+        "penetration": 0.07,
+        "statusResistance": 0.179,
+        "physicalReduction": 0.226,
+        "magicalReduction": 0.11,
+        "elementalShare": 0.6,
+        "damagePerHit": 0.0165,
+        "turnsToKill": 1.6,
+        "rewardMultiplier": 1,
+        "xp": 1215,
+        "gold": 929
+      },
+      "image": "monstres/MON-064_archer_elfe.png"
+    },
+    {
+      "id": "MON-065",
+      "name": "Élémentaliste elfe",
+      "diagramName": "Élémentaliste elfe",
+      "zoneFloor": 70,
+      "rank": "normal",
+      "role": "mage",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "froid",
+          "chance": 0.35
+        },
+        {
+          "id": "gel",
+          "chance": 0.1
+        }
+      ],
+      "atZoneLevel": {
+        "level": 70,
+        "hp": 734,
+        "strength": 0,
+        "magic": 285,
+        "resistance": 330,
+        "armor": 107,
+        "agility": 72,
+        "initiative": 60,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.065,
+        "statusResistance": 0.269,
+        "physicalReduction": 0.239,
+        "magicalReduction": 0.163,
+        "elementalShare": 1,
+        "damagePerHit": 0.0188,
+        "turnsToKill": 1.4,
+        "rewardMultiplier": 1,
+        "xp": 1215,
+        "gold": 929
+      },
+      "image": "monstres/MON-065_elementaliste_elfe.png"
+    },
+    {
+      "id": "MON-066",
+      "name": "Géant électrique",
+      "diagramName": "Géant électrique",
+      "zoneFloor": 75,
+      "rank": "boss",
+      "role": "brute",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "etourdissement",
+          "chance": 0.35
+        },
+        {
+          "id": "assomme",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 75,
+        "hp": 10205,
+        "strength": 352,
+        "magic": 352,
+        "resistance": 505,
+        "armor": 562,
+        "agility": 52,
+        "initiative": 58,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.484,
+        "physicalReduction": 0.473,
+        "magicalReduction": 0.216,
+        "elementalShare": 0.6,
+        "damagePerHit": 0.0285,
+        "turnsToKill": 18,
+        "rewardMultiplier": 8,
+        "xp": 10592,
+        "gold": 8160
+      },
+      "image": "monstres/MON-066_geant_electrique.png"
+    },
+    {
+      "id": "MON-067",
+      "name": "Géant",
+      "diagramName": "Géant",
+      "zoneFloor": 75,
+      "rank": "strong",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "etourdissement",
+          "chance": 0.2
+        },
+        {
+          "id": "assomme",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 75,
+        "hp": 2381,
+        "strength": 297,
+        "magic": 0,
+        "resistance": 447,
+        "armor": 497,
+        "agility": 52,
+        "initiative": 53,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.284,
+        "physicalReduction": 0.438,
+        "magicalReduction": 0.196,
+        "elementalShare": 0.4,
+        "damagePerHit": 0.0181,
+        "turnsToKill": 4.2,
+        "rewardMultiplier": 1.4,
+        "xp": 1854,
+        "gold": 1428
+      },
+      "image": "monstres/MON-067_geant.png"
+    },
+    {
+      "id": "MON-068",
+      "name": "Géant tireur",
+      "diagramName": "Geant tireur (Caillou electrique)",
+      "zoneFloor": 75,
+      "rank": "normal",
+      "role": "ranger",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "etourdissement",
+          "chance": 0.25
+        },
+        {
+          "id": "eblouissement",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 75,
+        "hp": 907,
+        "strength": 204,
+        "magic": 204,
+        "resistance": 227,
+        "armor": 173,
+        "agility": 95,
+        "initiative": 79,
+        "accuracy": 1,
+        "critChance": 0.075,
+        "critDamage": 0.65,
+        "penetration": 0.07,
+        "statusResistance": 0.189,
+        "physicalReduction": 0.226,
+        "magicalReduction": 0.11,
+        "elementalShare": 0.6,
+        "damagePerHit": 0.0165,
+        "turnsToKill": 1.6,
+        "rewardMultiplier": 1,
+        "xp": 1324,
+        "gold": 1020
+      },
+      "image": "monstres/MON-068_geant_tireur.png"
+    },
+    {
+      "id": "MON-069",
+      "name": "Dragon (Électricité)",
+      "diagramName": "Dragon (Électricité)",
+      "zoneFloor": 79,
+      "rank": "dragon",
+      "role": "dragon",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "etourdissement",
+          "chance": 0.35
+        },
+        {
+          "id": "eblouissement",
+          "chance": 0.25
+        }
+      ],
+      "atZoneLevel": {
+        "level": 79,
+        "hp": 12027,
+        "strength": 393,
+        "magic": 393,
+        "resistance": 581,
+        "armor": 556,
+        "agility": 73,
+        "initiative": 61,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.521,
+        "physicalReduction": 0.471,
+        "magicalReduction": 0.23,
+        "elementalShare": 1,
+        "damagePerHit": 0.03,
+        "turnsToKill": 20,
+        "rewardMultiplier": 12,
+        "xp": 16956,
+        "gold": 13128
+      },
+      "image": "monstres/MON-069_dragon_electricite.png"
+    },
+    {
+      "id": "MON-070",
+      "name": "Wyverne mutante",
+      "diagramName": "Wyverne mutante",
+      "zoneFloor": 80,
+      "rank": "boss",
+      "role": "assassin",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "etourdissement",
+          "chance": 0.35
+        },
+        {
+          "id": "saignement",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 80,
+        "hp": 5490,
+        "strength": 478,
+        "magic": 478,
+        "resistance": 272,
+        "armor": 201,
+        "agility": 149,
+        "initiative": 134,
+        "accuracy": 1,
+        "critChance": 0.08,
+        "critDamage": 0.7,
+        "penetration": 0.06,
+        "statusResistance": 0.4,
+        "physicalReduction": 0.244,
+        "magicalReduction": 0.121,
+        "elementalShare": 0.7,
+        "damagePerHit": 0.036,
+        "turnsToKill": 9,
+        "rewardMultiplier": 8,
+        "xp": 11488,
+        "gold": 8896
+      },
+      "image": "monstres/MON-070_wyverne_mutante.png"
+    },
+    {
+      "id": "MON-071",
+      "name": "Wyverne",
+      "diagramName": "Wyverne",
+      "zoneFloor": 80,
+      "rank": "normal",
+      "role": "assassin",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "saignement",
+          "chance": 0.25
+        },
+        {
+          "id": "etourdissement",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 80,
+        "hp": 915,
+        "strength": 319,
+        "magic": 0,
+        "resistance": 209,
+        "armor": 155,
+        "agility": 149,
+        "initiative": 116,
+        "accuracy": 1,
+        "critChance": 0.08,
+        "critDamage": 0.7,
+        "penetration": 0.06,
+        "statusResistance": 0.2,
+        "physicalReduction": 0.196,
+        "magicalReduction": 0.096,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.018,
+        "turnsToKill": 1.5,
+        "rewardMultiplier": 1,
+        "xp": 1436,
+        "gold": 1112
+      },
+      "image": "monstres/MON-071_wyverne.png"
+    },
+    {
+      "id": "MON-072",
+      "name": "Oiseau électrique",
+      "diagramName": "Oiseau électrique",
+      "zoneFloor": 80,
+      "rank": "normal",
+      "role": "beast",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "etourdissement",
+          "chance": 0.3
+        },
+        {
+          "id": "eblouissement",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 80,
+        "hp": 1159,
+        "strength": 0,
+        "magic": 279,
+        "resistance": 209,
+        "armor": 217,
+        "agility": 112,
+        "initiative": 93,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.025,
+        "statusResistance": 0.2,
+        "physicalReduction": 0.23,
+        "magicalReduction": 0.096,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.0158,
+        "turnsToKill": 1.9,
+        "rewardMultiplier": 1,
+        "xp": 1436,
+        "gold": 1112
+      },
+      "image": "monstres/MON-072_oiseau_electrique.png"
+    },
+    {
+      "id": "MON-073",
+      "name": "Jésus",
+      "diagramName": "Jesus (Boss)",
+      "zoneFloor": 85,
+      "rank": "boss",
+      "role": "support",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "eblouissement",
+          "chance": 0.4
+        },
+        {
+          "id": "marque",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 85,
+        "hp": 6667,
+        "strength": 0,
+        "magic": 455,
+        "resistance": 583,
+        "armor": 216,
+        "agility": 90,
+        "initiative": 95,
+        "accuracy": 0.9,
+        "critChance": 0.04,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.541,
+        "physicalReduction": 0.326,
+        "magicalReduction": 0.216,
+        "elementalShare": 0.9,
+        "damagePerHit": 0.024,
+        "turnsToKill": 10.2,
+        "rewardMultiplier": 8,
+        "xp": 12392,
+        "gold": 9656
+      },
+      "image": "monstres/MON-073_jesus.png"
+    },
+    {
+      "id": "MON-074",
+      "name": "Croyant",
+      "diagramName": "Croyant",
+      "zoneFloor": 85,
+      "rank": "weak",
+      "role": "support",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "eblouissement",
+          "chance": 0.2
+        },
+        {
+          "id": "marque",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 85,
+        "hp": 833,
+        "strength": 0,
+        "magic": 152,
+        "resistance": 359,
+        "armor": 133,
+        "agility": 90,
+        "initiative": 75,
+        "accuracy": 0.9,
+        "critChance": 0.04,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.341,
+        "physicalReduction": 0.223,
+        "magicalReduction": 0.145,
+        "elementalShare": 0.7,
+        "damagePerHit": 0.008,
+        "turnsToKill": 1.28,
+        "rewardMultiplier": 0.7,
+        "xp": 1084,
+        "gold": 845
+      },
+      "image": "monstres/MON-074_croyant.png"
+    },
+    {
+      "id": "MON-075",
+      "name": "Apôtre",
+      "diagramName": "Apotres",
+      "zoneFloor": 85,
+      "rank": "normal",
+      "role": "warrior",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "eblouissement",
+          "chance": 0.3
+        },
+        {
+          "id": "marque",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 85,
+        "hp": 1503,
+        "strength": 213,
+        "magic": 213,
+        "resistance": 374,
+        "armor": 398,
+        "agility": 90,
+        "initiative": 79,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.262,
+        "physicalReduction": 0.346,
+        "magicalReduction": 0.15,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.015,
+        "turnsToKill": 2.3,
+        "rewardMultiplier": 1,
+        "xp": 1549,
+        "gold": 1207
+      },
+      "image": "monstres/MON-075_apotre.png"
+    },
+    {
+      "id": "MON-076",
+      "name": "Dragon (Lumière)",
+      "diagramName": "Dragon (Lumière)",
+      "zoneFloor": 89,
+      "rank": "dragon",
+      "role": "dragon",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "eblouissement",
+          "chance": 0.4
+        },
+        {
+          "id": "marque",
+          "chance": 0.25
+        }
+      ],
+      "atZoneLevel": {
+        "level": 89,
+        "hp": 13778,
+        "strength": 450,
+        "magic": 450,
+        "resistance": 665,
+        "armor": 637,
+        "agility": 84,
+        "initiative": 70,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.554,
+        "physicalReduction": 0.471,
+        "magicalReduction": 0.23,
+        "elementalShare": 1,
+        "damagePerHit": 0.03,
+        "turnsToKill": 20,
+        "rewardMultiplier": 12,
+        "xp": 19680,
+        "gold": 15420
+      },
+      "image": "monstres/MON-076_dragon_lumiere.png"
+    },
+    {
+      "id": "MON-077",
+      "name": "Michel",
+      "diagramName": "Michel",
+      "zoneFloor": 90,
+      "rank": "boss",
+      "role": "warrior",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "eblouissement",
+          "chance": 0.35
+        },
+        {
+          "id": "marque",
+          "chance": 0.35
+        }
+      ],
+      "atZoneLevel": {
+        "level": 90,
+        "hp": 9629,
+        "strength": 456,
+        "magic": 456,
+        "resistance": 518,
+        "armor": 553,
+        "agility": 96,
+        "initiative": 97,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.475,
+        "physicalReduction": 0.415,
+        "magicalReduction": 0.187,
+        "elementalShare": 0.7,
+        "damagePerHit": 0.03,
+        "turnsToKill": 13.8,
+        "rewardMultiplier": 8,
+        "xp": 13304,
+        "gold": 10432
+      },
+      "image": "monstres/MON-077_michel.png"
+    },
+    {
+      "id": "MON-078",
+      "name": "Ange",
+      "diagramName": "Ange",
+      "zoneFloor": 90,
+      "rank": "normal",
+      "role": "support",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "eblouissement",
+          "chance": 0.3
+        },
+        {
+          "id": "marque",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 90,
+        "hp": 1186,
+        "strength": 0,
+        "magic": 243,
+        "resistance": 478,
+        "armor": 177,
+        "agility": 96,
+        "initiative": 89,
+        "accuracy": 0.9,
+        "critChance": 0.04,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.357,
+        "physicalReduction": 0.266,
+        "magicalReduction": 0.175,
+        "elementalShare": 0.7,
+        "damagePerHit": 0.012,
+        "turnsToKill": 1.7,
+        "rewardMultiplier": 1,
+        "xp": 1663,
+        "gold": 1304
+      },
+      "image": "monstres/MON-078_ange.png"
+    },
+    {
+      "id": "MON-079",
+      "name": "Archange",
+      "diagramName": "Archange",
+      "zoneFloor": 90,
+      "rank": "strong",
+      "role": "warrior",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "eblouissement",
+          "chance": 0.3
+        },
+        {
+          "id": "marque",
+          "chance": 0.25
+        }
+      ],
+      "atZoneLevel": {
+        "level": 90,
+        "hp": 2247,
+        "strength": 289,
+        "magic": 289,
+        "resistance": 459,
+        "armor": 489,
+        "agility": 96,
+        "initiative": 88,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.275,
+        "physicalReduction": 0.382,
+        "magicalReduction": 0.169,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.019,
+        "turnsToKill": 3.22,
+        "rewardMultiplier": 1.4,
+        "xp": 2328,
+        "gold": 1826
+      },
+      "image": "monstres/MON-079_archange.png"
+    },
+    {
+      "id": "MON-080",
+      "name": "Séraphin",
+      "diagramName": "Seraphin",
+      "zoneFloor": 90,
+      "rank": "strong",
+      "role": "mage",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "eblouissement",
+          "chance": 0.35
+        },
+        {
+          "id": "marque",
+          "chance": 0.3
+        }
+      ],
+      "atZoneLevel": {
+        "level": 90,
+        "hp": 1368,
+        "strength": 0,
+        "magic": 481,
+        "resistance": 504,
+        "armor": 163,
+        "agility": 96,
+        "initiative": 84,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.065,
+        "statusResistance": 0.33,
+        "physicalReduction": 0.267,
+        "magicalReduction": 0.182,
+        "elementalShare": 1,
+        "damagePerHit": 0.0238,
+        "turnsToKill": 1.96,
+        "rewardMultiplier": 1.4,
+        "xp": 2328,
+        "gold": 1826
+      },
+      "image": "monstres/MON-080_seraphin.png"
+    },
+    {
+      "id": "MON-081",
+      "name": "Wyverne des ténèbres",
+      "diagramName": "Wyverne Tenebre (Boss)",
+      "zoneFloor": 95,
+      "rank": "boss",
+      "role": "assassin",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "corruption",
+          "chance": 0.4
+        },
+        {
+          "id": "terreur",
+          "chance": 0.25
+        }
+      ],
+      "atZoneLevel": {
+        "level": 95,
+        "hp": 6682,
+        "strength": 582,
+        "magic": 582,
+        "resistance": 331,
+        "armor": 245,
+        "agility": 181,
+        "initiative": 163,
+        "accuracy": 1,
+        "critChance": 0.08,
+        "critDamage": 0.7,
+        "penetration": 0.06,
+        "statusResistance": 0.43,
+        "physicalReduction": 0.244,
+        "magicalReduction": 0.121,
+        "elementalShare": 0.7,
+        "damagePerHit": 0.036,
+        "turnsToKill": 9,
+        "rewardMultiplier": 8,
+        "xp": 14240,
+        "gold": 11224
+      },
+      "image": "monstres/MON-081_wyverne_des_tenebres.png"
+    },
+    {
+      "id": "MON-082",
+      "name": "Orc démoniaque",
+      "diagramName": "Orc Démoniqua",
+      "zoneFloor": 95,
+      "rank": "normal",
+      "role": "warrior",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "corruption",
+          "chance": 0.25
+        },
+        {
+          "id": "terreur",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 95,
+        "hp": 1707,
+        "strength": 323,
+        "magic": 0,
+        "resistance": 424,
+        "armor": 453,
+        "agility": 102,
+        "initiative": 90,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.287,
+        "physicalReduction": 0.346,
+        "magicalReduction": 0.15,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.015,
+        "turnsToKill": 2.3,
+        "rewardMultiplier": 1,
+        "xp": 1780,
+        "gold": 1403
+      },
+      "image": "monstres/MON-082_orc_demoniaque.png"
+    },
+    {
+      "id": "MON-083",
+      "name": "Gobelin démoniaque",
+      "diagramName": "Gobbelin démoniaque",
+      "zoneFloor": 95,
+      "rank": "weak",
+      "role": "assassin",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "corruption",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 95,
+        "hp": 835,
+        "strength": 259,
+        "magic": 0,
+        "resistance": 204,
+        "armor": 151,
+        "agility": 181,
+        "initiative": 127,
+        "accuracy": 1,
+        "critChance": 0.08,
+        "critDamage": 0.7,
+        "penetration": 0.06,
+        "statusResistance": 0.23,
+        "physicalReduction": 0.162,
+        "magicalReduction": 0.078,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.012,
+        "turnsToKill": 1.13,
+        "rewardMultiplier": 0.7,
+        "xp": 1246,
+        "gold": 982
+      },
+      "image": "monstres/MON-083_gobelin_demoniaque.png"
+    },
+    {
+      "id": "MON-084",
+      "name": "Triton démoniaque",
+      "diagramName": "Triton Demoniaque",
+      "zoneFloor": 95,
+      "rank": "normal",
+      "role": "warrior",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "corruption",
+          "chance": 0.25
+        },
+        {
+          "id": "terreur",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 95,
+        "hp": 1707,
+        "strength": 323,
+        "magic": 0,
+        "resistance": 424,
+        "armor": 453,
+        "agility": 102,
+        "initiative": 90,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.287,
+        "physicalReduction": 0.346,
+        "magicalReduction": 0.15,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.015,
+        "turnsToKill": 2.3,
+        "rewardMultiplier": 1,
+        "xp": 1780,
+        "gold": 1403
+      },
+      "image": "monstres/MON-084_triton_demoniaque.png"
+    },
+    {
+      "id": "MON-085",
+      "name": "Elfe démoniaque",
+      "diagramName": "Elfe Démonique",
+      "zoneFloor": 95,
+      "rank": "normal",
+      "role": "mage",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "corruption",
+          "chance": 0.3
+        },
+        {
+          "id": "terreur",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 95,
+        "hp": 1039,
+        "strength": 0,
+        "magic": 404,
+        "resistance": 467,
+        "armor": 151,
+        "agility": 102,
+        "initiative": 85,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.065,
+        "statusResistance": 0.345,
+        "physicalReduction": 0.239,
+        "magicalReduction": 0.163,
+        "elementalShare": 1,
+        "damagePerHit": 0.0188,
+        "turnsToKill": 1.4,
+        "rewardMultiplier": 1,
+        "xp": 1780,
+        "gold": 1403
+      },
+      "image": "monstres/MON-085_elfe_demoniaque.png"
+    },
+    {
+      "id": "MON-086",
+      "name": "Zombie démoniaque",
+      "diagramName": "Zombie Demoniaque",
+      "zoneFloor": 95,
+      "rank": "strong",
+      "role": "brute",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "corruption",
+          "chance": 0.25
+        },
+        {
+          "id": "terreur",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 95,
+        "hp": 3118,
+        "strength": 389,
+        "magic": 0,
+        "resistance": 585,
+        "armor": 650,
+        "agility": 68,
+        "initiative": 69,
+        "accuracy": 0.765,
+        "critChance": 0.03,
+        "critDamage": 0.5,
+        "penetration": 0.04,
+        "statusResistance": 0.345,
+        "physicalReduction": 0.438,
+        "magicalReduction": 0.196,
+        "elementalShare": 0.4,
+        "damagePerHit": 0.0181,
+        "turnsToKill": 4.2,
+        "rewardMultiplier": 1.4,
+        "xp": 2492,
+        "gold": 1964
+      },
+      "image": "monstres/MON-086_zombie_demoniaque.png"
+    },
+    {
+      "id": "MON-087",
+      "name": "Dragon (Ombre)",
+      "diagramName": "Dragon (Ombre)",
+      "zoneFloor": 99,
+      "rank": "dragon",
+      "role": "dragon",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "corruption",
+          "chance": 0.45
+        },
+        {
+          "id": "terreur",
+          "chance": 0.25
+        }
+      ],
+      "atZoneLevel": {
+        "level": 99,
+        "hp": 15569,
+        "strength": 508,
+        "magic": 508,
+        "resistance": 752,
+        "armor": 720,
+        "agility": 95,
+        "initiative": 79,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.587,
+        "physicalReduction": 0.471,
+        "magicalReduction": 0.23,
+        "elementalShare": 1,
+        "damagePerHit": 0.03,
+        "turnsToKill": 20,
+        "rewardMultiplier": 12,
+        "xp": 22488,
+        "gold": 17796
+      },
+      "image": "monstres/MON-087_dragon_ombre.png"
+    },
+    {
+      "id": "MON-088",
+      "name": "Roi démon",
+      "diagramName": "Roi démon",
+      "zoneFloor": 100,
+      "rank": "boss",
+      "role": "mage",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "corruption",
+          "chance": 0.45
+        },
+        {
+          "id": "terreur",
+          "chance": 0.35
+        }
+      ],
+      "atZoneLevel": {
+        "level": 100,
+        "hp": 6615,
+        "strength": 643,
+        "magic": 643,
+        "resistance": 644,
+        "armor": 208,
+        "agility": 108,
+        "initiative": 103,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.065,
+        "statusResistance": 0.56,
+        "physicalReduction": 0.293,
+        "magicalReduction": 0.202,
+        "elementalShare": 1,
+        "damagePerHit": 0.0375,
+        "turnsToKill": 8.4,
+        "rewardMultiplier": 8,
+        "xp": 15176,
+        "gold": 12032
+      },
+      "image": "monstres/MON-088_roi_demon.png"
+    },
+    {
+      "id": "MON-089",
+      "name": "Archidémon",
+      "diagramName": "Archidémon",
+      "zoneFloor": 100,
+      "rank": "strong",
+      "role": "mage",
+      "attackType": "magical",
+      "alterations": [
+        {
+          "id": "corruption",
+          "chance": 0.35
+        },
+        {
+          "id": "terreur",
+          "chance": 0.25
+        }
+      ],
+      "atZoneLevel": {
+        "level": 100,
+        "hp": 1544,
+        "strength": 0,
+        "magic": 543,
+        "resistance": 569,
+        "armor": 184,
+        "agility": 108,
+        "initiative": 95,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.065,
+        "statusResistance": 0.36,
+        "physicalReduction": 0.267,
+        "magicalReduction": 0.182,
+        "elementalShare": 1,
+        "damagePerHit": 0.0238,
+        "turnsToKill": 1.96,
+        "rewardMultiplier": 1.4,
+        "xp": 2656,
+        "gold": 2106
+      },
+      "image": "monstres/MON-089_archidemon.png"
+    },
+    {
+      "id": "MON-090",
+      "name": "Démon inférieur",
+      "diagramName": "Démon inférieur",
+      "zoneFloor": 100,
+      "rank": "weak",
+      "role": "assassin",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "corruption",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 100,
+        "hp": 886,
+        "strength": 274,
+        "magic": 0,
+        "resistance": 216,
+        "armor": 160,
+        "agility": 192,
+        "initiative": 135,
+        "accuracy": 1,
+        "critChance": 0.08,
+        "critDamage": 0.7,
+        "penetration": 0.06,
+        "statusResistance": 0.24,
+        "physicalReduction": 0.162,
+        "magicalReduction": 0.078,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.012,
+        "turnsToKill": 1.13,
+        "rewardMultiplier": 0.7,
+        "xp": 1328,
+        "gold": 1053
+      },
+      "image": "monstres/MON-090_demon_inferieur.png"
+    },
+    {
+      "id": "MON-091",
+      "name": "Démon",
+      "diagramName": "Démon",
+      "zoneFloor": 100,
+      "rank": "normal",
+      "role": "warrior",
+      "attackType": "physical",
+      "alterations": [
+        {
+          "id": "corruption",
+          "chance": 0.3
+        },
+        {
+          "id": "terreur",
+          "chance": 0.15
+        }
+      ],
+      "atZoneLevel": {
+        "level": 100,
+        "hp": 1811,
+        "strength": 343,
+        "magic": 0,
+        "resistance": 450,
+        "armor": 480,
+        "agility": 108,
+        "initiative": 95,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.3,
+        "physicalReduction": 0.346,
+        "magicalReduction": 0.15,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.015,
+        "turnsToKill": 2.3,
+        "rewardMultiplier": 1,
+        "xp": 1897,
+        "gold": 1504
+      },
+      "image": "monstres/MON-091_demon.png"
+    },
+    {
+      "id": "MON-092",
+      "name": "Démon supérieur",
+      "diagramName": "Démon supérieur",
+      "zoneFloor": 100,
+      "rank": "strong",
+      "role": "warrior",
+      "attackType": "mixed",
+      "alterations": [
+        {
+          "id": "corruption",
+          "chance": 0.35
+        },
+        {
+          "id": "terreur",
+          "chance": 0.2
+        }
+      ],
+      "atZoneLevel": {
+        "level": 100,
+        "hp": 2536,
+        "strength": 326,
+        "magic": 326,
+        "resistance": 518,
+        "armor": 552,
+        "agility": 108,
+        "initiative": 100,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.3,
+        "physicalReduction": 0.382,
+        "magicalReduction": 0.169,
+        "elementalShare": 0.5,
+        "damagePerHit": 0.019,
+        "turnsToKill": 3.22,
+        "rewardMultiplier": 1.4,
+        "xp": 2656,
+        "gold": 2106
+      },
+      "image": "monstres/MON-092_demon_superieur.png"
+    }
+  ]
+}

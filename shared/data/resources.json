@@ -1,0 +1,268 @@
+{
+  "resources": [
+    {
+      "id": "bois",
+      "name": "bois",
+      "tier": 1,
+      "source": "scierie",
+      "unlockFloor": 0,
+      "image": "ressources/bois.png"
+    },
+    {
+      "id": "cuir",
+      "name": "cuir",
+      "tier": 1,
+      "source": "terrain_de_chasse",
+      "unlockFloor": 0,
+      "image": "ressources/cuir.png"
+    },
+    {
+      "id": "lin",
+      "name": "lin",
+      "tier": 1,
+      "source": "champs",
+      "unlockFloor": 0,
+      "image": "ressources/lin.png"
+    },
+    {
+      "id": "toile",
+      "name": "toile",
+      "tier": 1,
+      "source": "taverne",
+      "unlockFloor": 0,
+      "image": "ressources/toile.png"
+    },
+    {
+      "id": "verre",
+      "name": "verre",
+      "tier": 1,
+      "source": "taverne",
+      "unlockFloor": 0,
+      "image": "ressources/verre.png"
+    },
+    {
+      "id": "cuivre",
+      "name": "cuivre",
+      "tier": 1,
+      "source": "taverne",
+      "unlockFloor": 0,
+      "image": "ressources/cuivre.png"
+    },
+    {
+      "id": "fer",
+      "name": "fer",
+      "tier": 2,
+      "source": "mine",
+      "unlockFloor": 15,
+      "image": "ressources/fer.png"
+    },
+    {
+      "id": "laine",
+      "name": "laine",
+      "tier": 2,
+      "source": "champs",
+      "unlockFloor": 15,
+      "image": "ressources/laine.png"
+    },
+    {
+      "id": "chene",
+      "name": "chêne",
+      "tier": 2,
+      "source": "scierie",
+      "unlockFloor": 15,
+      "image": "ressources/chene.png"
+    },
+    {
+      "id": "frene",
+      "name": "frêne",
+      "tier": 2,
+      "source": "scierie",
+      "unlockFloor": 15,
+      "image": "ressources/frene.png"
+    },
+    {
+      "id": "quartz",
+      "name": "quartz",
+      "tier": 2,
+      "source": "mine",
+      "unlockFloor": 15,
+      "image": "ressources/quartz.png"
+    },
+    {
+      "id": "argent",
+      "name": "argent",
+      "tier": 2,
+      "source": "mine",
+      "unlockFloor": 15,
+      "image": "ressources/argent.png"
+    },
+    {
+      "id": "acier",
+      "name": "acier",
+      "tier": 3,
+      "source": "mine",
+      "unlockFloor": 30,
+      "image": "ressources/acier.png"
+    },
+    {
+      "id": "cuir_cloute",
+      "name": "cuir clouté",
+      "tier": 3,
+      "source": "terrain_de_chasse",
+      "unlockFloor": 30,
+      "image": "ressources/cuir_cloute.png"
+    },
+    {
+      "id": "soie",
+      "name": "soie",
+      "tier": 3,
+      "source": "champs",
+      "unlockFloor": 30,
+      "image": "ressources/soie.png"
+    },
+    {
+      "id": "ebene",
+      "name": "ébène",
+      "tier": 3,
+      "source": "scierie",
+      "unlockFloor": 30,
+      "image": "ressources/ebene.png"
+    },
+    {
+      "id": "if",
+      "name": "if",
+      "tier": 3,
+      "source": "scierie",
+      "unlockFloor": 30,
+      "image": "ressources/if.png"
+    },
+    {
+      "id": "amethyste",
+      "name": "améthyste",
+      "tier": 3,
+      "source": "mine",
+      "unlockFloor": 30,
+      "image": "ressources/amethyste.png"
+    },
+    {
+      "id": "or",
+      "name": "or",
+      "tier": 3,
+      "source": "mine",
+      "unlockFloor": 30,
+      "image": "ressources/or.png"
+    },
+    {
+      "id": "mithril",
+      "name": "mithril",
+      "tier": 4,
+      "source": "mine",
+      "unlockFloor": 50,
+      "image": "ressources/mithril.png"
+    },
+    {
+      "id": "ecailles",
+      "name": "écailles",
+      "tier": 4,
+      "source": "terrain_de_chasse",
+      "unlockFloor": 50,
+      "image": "ressources/ecailles.png"
+    },
+    {
+      "id": "velours_enchante",
+      "name": "velours enchanté",
+      "tier": 4,
+      "source": "champs",
+      "unlockFloor": 50,
+      "image": "ressources/velours_enchante.png"
+    },
+    {
+      "id": "cristal",
+      "name": "cristal",
+      "tier": 4,
+      "source": "mine",
+      "unlockFloor": 50,
+      "image": "ressources/cristal.png"
+    },
+    {
+      "id": "saphir",
+      "name": "saphir",
+      "tier": 4,
+      "source": "mine",
+      "unlockFloor": 50,
+      "image": "ressources/saphir.png"
+    },
+    {
+      "id": "platine",
+      "name": "platine",
+      "tier": 4,
+      "source": "mine",
+      "unlockFloor": 50,
+      "image": "ressources/platine.png"
+    },
+    {
+      "id": "adamantite",
+      "name": "adamantite",
+      "tier": 5,
+      "source": "mine",
+      "unlockFloor": 70,
+      "image": "ressources/adamantite.png"
+    },
+    {
+      "id": "peau_de_dragon",
+      "name": "peau de dragon",
+      "tier": 5,
+      "source": "terrain_de_chasse",
+      "unlockFloor": 70,
+      "image": "ressources/peau_de_dragon.png"
+    },
+    {
+      "id": "etoffe_astrale",
+      "name": "étoffe astrale",
+      "tier": 5,
+      "source": "champs",
+      "unlockFloor": 70,
+      "image": "ressources/etoffe_astrale.png"
+    },
+    {
+      "id": "ether",
+      "name": "éther",
+      "tier": 5,
+      "source": "tour_alchimie",
+      "unlockFloor": 85,
+      "image": "ressources/ether.png"
+    },
+    {
+      "id": "diamant",
+      "name": "diamant",
+      "tier": 5,
+      "source": "mine",
+      "unlockFloor": 70,
+      "image": "ressources/diamant.png"
+    },
+    {
+      "id": "os_de_dragon",
+      "name": "os de dragon",
+      "tier": 5,
+      "source": "terrain_de_chasse",
+      "unlockFloor": 70,
+      "image": "ressources/os_de_dragon.png"
+    },
+    {
+      "id": "orichalque",
+      "name": "orichalque",
+      "tier": 5,
+      "source": "mine",
+      "unlockFloor": 70,
+      "image": "ressources/orichalque.png"
+    },
+    {
+      "id": "charbon",
+      "name": "charbon",
+      "tier": 2,
+      "source": "mine",
+      "unlockFloor": 15,
+      "image": "ressources/charbon.png"
+    }
+  ]
+}

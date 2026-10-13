@@ -1,0 +1,1764 @@
+{
+  "levels": [
+    {
+      "level": 1,
+      "levelFactor": 0.05,
+      "xpPerNormalMonster": 6,
+      "goldPerNormalMonster": 3,
+      "xpToNextLevel": 64,
+      "cumulativeXp": 0,
+      "itemPrices": {
+        "common": 24,
+        "rare": 72,
+        "superRare": 216,
+        "epic": 648,
+        "mythic": 1944,
+        "legendary": 5832
+      }
+    },
+    {
+      "level": 2,
+      "levelFactor": 0.0538279069456756,
+      "xpPerNormalMonster": 14,
+      "goldPerNormalMonster": 8,
+      "xpToNextLevel": 160,
+      "cumulativeXp": 64,
+      "itemPrices": {
+        "common": 64,
+        "rare": 192,
+        "superRare": 576,
+        "epic": 1728,
+        "mythic": 5184,
+        "legendary": 15552
+      }
+    },
+    {
+      "level": 3,
+      "levelFactor": 0.0587942208231587,
+      "xpPerNormalMonster": 24,
+      "goldPerNormalMonster": 13,
+      "xpToNextLevel": 290,
+      "cumulativeXp": 224,
+      "itemPrices": {
+        "common": 104,
+        "rare": 312,
+        "superRare": 936,
+        "epic": 2808,
+        "mythic": 8424,
+        "legendary": 25272
+      }
+    },
+    {
+      "level": 4,
+      "levelFactor": 0.0643056263485918,
+      "xpPerNormalMonster": 34,
+      "goldPerNormalMonster": 19,
+      "xpToNextLevel": 435,
+      "cumulativeXp": 514,
+      "itemPrices": {
+        "common": 152,
+        "rare": 456,
+        "superRare": 1368,
+        "epic": 4104,
+        "mythic": 12312,
+        "legendary": 36936
+      }
+    },
+    {
+      "level": 5,
+      "levelFactor": 0.0702038139860861,
+      "xpPerNormalMonster": 45,
+      "goldPerNormalMonster": 26,
+      "xpToNextLevel": 608,
+      "cumulativeXp": 949,
+      "itemPrices": {
+        "common": 208,
+        "rare": 624,
+        "superRare": 1872,
+        "epic": 5616,
+        "mythic": 16848,
+        "legendary": 50544
+      }
+    },
+    {
+      "level": 6,
+      "levelFactor": 0.0764073837713104,
+      "xpPerNormalMonster": 56,
+      "goldPerNormalMonster": 34,
+      "xpToNextLevel": 795,
+      "cumulativeXp": 1557,
+      "itemPrices": {
+        "common": 272,
+        "rare": 816,
+        "superRare": 2448,
+        "epic": 7344,
+        "mythic": 22032,
+        "legendary": 66096
+      }
+    },
+    {
+      "level": 7,
+      "levelFactor": 0.0828656989076594,
+      "xpPerNormalMonster": 68,
+      "goldPerNormalMonster": 41,
+      "xpToNextLevel": 1013,
+      "cumulativeXp": 2352,
+      "itemPrices": {
+        "common": 328,
+        "rare": 984,
+        "superRare": 2952,
+        "epic": 8856,
+        "mythic": 26568,
+        "legendary": 79704
+      }
+    },
+    {
+      "level": 8,
+      "levelFactor": 0.0895438563485664,
+      "xpPerNormalMonster": 81,
+      "goldPerNormalMonster": 50,
+      "xpToNextLevel": 1264,
+      "cumulativeXp": 3365,
+      "itemPrices": {
+        "common": 400,
+        "rare": 1200,
+        "superRare": 3600,
+        "epic": 10800,
+        "mythic": 32400,
+        "legendary": 97200
+      }
+    },
+    {
+      "level": 9,
+      "levelFactor": 0.0964161757809663,
+      "xpPerNormalMonster": 94,
+      "goldPerNormalMonster": 58,
+      "xpToNextLevel": 1532,
+      "cumulativeXp": 4629,
+      "itemPrices": {
+        "common": 464,
+        "rare": 1392,
+        "superRare": 4176,
+        "epic": 12528,
+        "mythic": 37584,
+        "legendary": 112752
+      }
+    },
+    {
+      "level": 10,
+      "levelFactor": 0.103462884059059,
+      "xpPerNormalMonster": 107,
+      "goldPerNormalMonster": 67,
+      "xpToNextLevel": 1819,
+      "cumulativeXp": 6161,
+      "itemPrices": {
+        "common": 536,
+        "rare": 1608,
+        "superRare": 4824,
+        "epic": 14472,
+        "mythic": 43416,
+        "legendary": 130248
+      }
+    },
+    {
+      "level": 11,
+      "levelFactor": 0.110668236595759,
+      "xpPerNormalMonster": 120,
+      "goldPerNormalMonster": 76,
+      "xpToNextLevel": 2124,
+      "cumulativeXp": 7980,
+      "itemPrices": {
+        "common": 608,
+        "rare": 1824,
+        "superRare": 5472,
+        "epic": 16416,
+        "mythic": 49248,
+        "legendary": 147744
+      }
+    },
+    {
+      "level": 12,
+      "levelFactor": 0.118019368247599,
+      "xpPerNormalMonster": 134,
+      "goldPerNormalMonster": 86,
+      "xpToNextLevel": 2466,
+      "cumulativeXp": 10104,
+      "itemPrices": {
+        "common": 688,
+        "rare": 2064,
+        "superRare": 6192,
+        "epic": 18576,
+        "mythic": 55728,
+        "legendary": 167184
+      }
+    },
+    {
+      "level": 13,
+      "levelFactor": 0.125505548542112,
+      "xpPerNormalMonster": 148,
+      "goldPerNormalMonster": 96,
+      "xpToNextLevel": 2827,
+      "cumulativeXp": 12570,
+      "itemPrices": {
+        "common": 768,
+        "rare": 2304,
+        "superRare": 6912,
+        "epic": 20736,
+        "mythic": 62208,
+        "legendary": 186624
+      }
+    },
+    {
+      "level": 14,
+      "levelFactor": 0.13311767654553,
+      "xpPerNormalMonster": 162,
+      "goldPerNormalMonster": 106,
+      "xpToNextLevel": 3208,
+      "cumulativeXp": 15397,
+      "itemPrices": {
+        "common": 848,
+        "rare": 2544,
+        "superRare": 7632,
+        "epic": 22896,
+        "mythic": 68688,
+        "legendary": 206064
+      }
+    },
+    {
+      "level": 15,
+      "levelFactor": 0.140847925475674,
+      "xpPerNormalMonster": 177,
+      "goldPerNormalMonster": 116,
+      "xpToNextLevel": 3629,
+      "cumulativeXp": 18605,
+      "itemPrices": {
+        "common": 928,
+        "rare": 2784,
+        "superRare": 8352,
+        "epic": 25056,
+        "mythic": 75168,
+        "legendary": 225504
+      }
+    },
+    {
+      "level": 16,
+      "levelFactor": 0.148689484994666,
+      "xpPerNormalMonster": 192,
+      "goldPerNormalMonster": 127,
+      "xpToNextLevel": 4070,
+      "cumulativeXp": 22234,
+      "itemPrices": {
+        "common": 1016,
+        "rare": 3048,
+        "superRare": 9144,
+        "epic": 27432,
+        "mythic": 82296,
+        "legendary": 246888
+      }
+    },
+    {
+      "level": 17,
+      "levelFactor": 0.156636369529698,
+      "xpPerNormalMonster": 207,
+      "goldPerNormalMonster": 137,
+      "xpToNextLevel": 4533,
+      "cumulativeXp": 26304,
+      "itemPrices": {
+        "common": 1096,
+        "rare": 3288,
+        "superRare": 9864,
+        "epic": 29592,
+        "mythic": 88776,
+        "legendary": 266328
+      }
+    },
+    {
+      "level": 18,
+      "levelFactor": 0.1646832725879,
+      "xpPerNormalMonster": 222,
+      "goldPerNormalMonster": 149,
+      "xpToNextLevel": 5017,
+      "cumulativeXp": 30837,
+      "itemPrices": {
+        "common": 1192,
+        "rare": 3576,
+        "superRare": 10728,
+        "epic": 32184,
+        "mythic": 96552,
+        "legendary": 289656
+      }
+    },
+    {
+      "level": 19,
+      "levelFactor": 0.172825453944077,
+      "xpPerNormalMonster": 238,
+      "goldPerNormalMonster": 160,
+      "xpToNextLevel": 5545,
+      "cumulativeXp": 35854,
+      "itemPrices": {
+        "common": 1280,
+        "rare": 3840,
+        "superRare": 11520,
+        "epic": 34560,
+        "mythic": 103680,
+        "legendary": 311040
+      }
+    },
+    {
+      "level": 20,
+      "levelFactor": 0.181058650851904,
+      "xpPerNormalMonster": 254,
+      "goldPerNormalMonster": 171,
+      "xpToNextLevel": 6096,
+      "cumulativeXp": 41399,
+      "itemPrices": {
+        "common": 1368,
+        "rare": 4104,
+        "superRare": 12312,
+        "epic": 36936,
+        "mythic": 110808,
+        "legendary": 332424
+      }
+    },
+    {
+      "level": 21,
+      "levelFactor": 0.189379007156239,
+      "xpPerNormalMonster": 270,
+      "goldPerNormalMonster": 183,
+      "xpToNextLevel": 6669,
+      "cumulativeXp": 47495,
+      "itemPrices": {
+        "common": 1464,
+        "rare": 4392,
+        "superRare": 13176,
+        "epic": 39528,
+        "mythic": 118584,
+        "legendary": 355752
+      }
+    },
+    {
+      "level": 22,
+      "levelFactor": 0.197783015975362,
+      "xpPerNormalMonster": 286,
+      "goldPerNormalMonster": 195,
+      "xpToNextLevel": 7264,
+      "cumulativeXp": 54164,
+      "itemPrices": {
+        "common": 1560,
+        "rare": 4680,
+        "superRare": 14040,
+        "epic": 42120,
+        "mythic": 126360,
+        "legendary": 379080
+      }
+    },
+    {
+      "level": 23,
+      "levelFactor": 0.206267472827909,
+      "xpPerNormalMonster": 302,
+      "goldPerNormalMonster": 207,
+      "xpToNextLevel": 7882,
+      "cumulativeXp": 61428,
+      "itemPrices": {
+        "common": 1656,
+        "rare": 4968,
+        "superRare": 14904,
+        "epic": 44712,
+        "mythic": 134136,
+        "legendary": 402408
+      }
+    },
+    {
+      "level": 24,
+      "levelFactor": 0.214829436909506,
+      "xpPerNormalMonster": 319,
+      "goldPerNormalMonster": 219,
+      "xpToNextLevel": 8549,
+      "cumulativeXp": 69310,
+      "itemPrices": {
+        "common": 1752,
+        "rare": 5256,
+        "superRare": 15768,
+        "epic": 47304,
+        "mythic": 141912,
+        "legendary": 425736
+      }
+    },
+    {
+      "level": 25,
+      "levelFactor": 0.223466198806946,
+      "xpPerNormalMonster": 335,
+      "goldPerNormalMonster": 231,
+      "xpToNextLevel": 9213,
+      "cumulativeXp": 77859,
+      "itemPrices": {
+        "common": 1848,
+        "rare": 5544,
+        "superRare": 16632,
+        "epic": 49896,
+        "mythic": 149688,
+        "legendary": 449064
+      }
+    },
+    {
+      "level": 26,
+      "levelFactor": 0.232175253354332,
+      "xpPerNormalMonster": 352,
+      "goldPerNormalMonster": 244,
+      "xpToNextLevel": 9926,
+      "cumulativeXp": 87072,
+      "itemPrices": {
+        "common": 1952,
+        "rare": 5856,
+        "superRare": 17568,
+        "epic": 52704,
+        "mythic": 158112,
+        "legendary": 474336
+      }
+    },
+    {
+      "level": 27,
+      "levelFactor": 0.240954276638051,
+      "xpPerNormalMonster": 369,
+      "goldPerNormalMonster": 257,
+      "xpToNextLevel": 10664,
+      "cumulativeXp": 96998,
+      "itemPrices": {
+        "common": 2056,
+        "rare": 6168,
+        "superRare": 18504,
+        "epic": 55512,
+        "mythic": 166536,
+        "legendary": 499608
+      }
+    },
+    {
+      "level": 28,
+      "levelFactor": 0.249801106380343,
+      "xpPerNormalMonster": 386,
+      "goldPerNormalMonster": 270,
+      "xpToNextLevel": 11426,
+      "cumulativeXp": 107662,
+      "itemPrices": {
+        "common": 2160,
+        "rare": 6480,
+        "superRare": 19440,
+        "epic": 58320,
+        "mythic": 174960,
+        "legendary": 524880
+      }
+    },
+    {
+      "level": 29,
+      "levelFactor": 0.258713725097601,
+      "xpPerNormalMonster": 404,
+      "goldPerNormalMonster": 283,
+      "xpToNextLevel": 12241,
+      "cumulativeXp": 119088,
+      "itemPrices": {
+        "common": 2264,
+        "rare": 6792,
+        "superRare": 20376,
+        "epic": 61128,
+        "mythic": 183384,
+        "legendary": 550152
+      }
+    },
+    {
+      "level": 30,
+      "levelFactor": 0.26769024555533,
+      "xpPerNormalMonster": 421,
+      "goldPerNormalMonster": 296,
+      "xpToNextLevel": 13051,
+      "cumulativeXp": 131329,
+      "itemPrices": {
+        "common": 2368,
+        "rare": 7104,
+        "superRare": 21312,
+        "epic": 63936,
+        "mythic": 191808,
+        "legendary": 575424
+      }
+    },
+    {
+      "level": 31,
+      "levelFactor": 0.276728898137755,
+      "xpPerNormalMonster": 439,
+      "goldPerNormalMonster": 309,
+      "xpToNextLevel": 13916,
+      "cumulativeXp": 144380,
+      "itemPrices": {
+        "common": 2472,
+        "rare": 7416,
+        "superRare": 22248,
+        "epic": 66744,
+        "mythic": 200232,
+        "legendary": 600696
+      }
+    },
+    {
+      "level": 32,
+      "levelFactor": 0.285828019824335,
+      "xpPerNormalMonster": 457,
+      "goldPerNormalMonster": 323,
+      "xpToNextLevel": 14807,
+      "cumulativeXp": 158296,
+      "itemPrices": {
+        "common": 2584,
+        "rare": 7752,
+        "superRare": 23256,
+        "epic": 69768,
+        "mythic": 209304,
+        "legendary": 627912
+      }
+    },
+    {
+      "level": 33,
+      "levelFactor": 0.294986044523241,
+      "xpPerNormalMonster": 475,
+      "goldPerNormalMonster": 337,
+      "xpToNextLevel": 15722,
+      "cumulativeXp": 173103,
+      "itemPrices": {
+        "common": 2696,
+        "rare": 8088,
+        "superRare": 24264,
+        "epic": 72792,
+        "mythic": 218376,
+        "legendary": 655128
+      }
+    },
+    {
+      "level": 34,
+      "levelFactor": 0.304201494557406,
+      "xpPerNormalMonster": 493,
+      "goldPerNormalMonster": 350,
+      "xpToNextLevel": 16663,
+      "cumulativeXp": 188825,
+      "itemPrices": {
+        "common": 2800,
+        "rare": 8400,
+        "superRare": 25200,
+        "epic": 75600,
+        "mythic": 226800,
+        "legendary": 680400
+      }
+    },
+    {
+      "level": 35,
+      "levelFactor": 0.313472973134794,
+      "xpPerNormalMonster": 511,
+      "goldPerNormalMonster": 364,
+      "xpToNextLevel": 17630,
+      "cumulativeXp": 205488,
+      "itemPrices": {
+        "common": 2912,
+        "rare": 8736,
+        "superRare": 26208,
+        "epic": 78624,
+        "mythic": 235872,
+        "legendary": 707616
+      }
+    },
+    {
+      "level": 36,
+      "levelFactor": 0.322799157663392,
+      "xpPerNormalMonster": 529,
+      "goldPerNormalMonster": 379,
+      "xpToNextLevel": 18621,
+      "cumulativeXp": 223118,
+      "itemPrices": {
+        "common": 3032,
+        "rare": 9096,
+        "superRare": 27288,
+        "epic": 81864,
+        "mythic": 245592,
+        "legendary": 736776
+      }
+    },
+    {
+      "level": 37,
+      "levelFactor": 0.332178793794652,
+      "xpPerNormalMonster": 548,
+      "goldPerNormalMonster": 393,
+      "xpToNextLevel": 19673,
+      "cumulativeXp": 241739,
+      "itemPrices": {
+        "common": 3144,
+        "rare": 9432,
+        "superRare": 28296,
+        "epic": 84888,
+        "mythic": 254664,
+        "legendary": 763992
+      }
+    },
+    {
+      "level": 38,
+      "levelFactor": 0.341610690097877,
+      "xpPerNormalMonster": 566,
+      "goldPerNormalMonster": 407,
+      "xpToNextLevel": 20716,
+      "cumulativeXp": 261412,
+      "itemPrices": {
+        "common": 3256,
+        "rare": 9768,
+        "superRare": 29304,
+        "epic": 87912,
+        "mythic": 263736,
+        "legendary": 791208
+      }
+    },
+    {
+      "level": 39,
+      "levelFactor": 0.351093713283426,
+      "xpPerNormalMonster": 585,
+      "goldPerNormalMonster": 422,
+      "xpToNextLevel": 21821,
+      "cumulativeXp": 282128,
+      "itemPrices": {
+        "common": 3376,
+        "rare": 10128,
+        "superRare": 30384,
+        "epic": 91152,
+        "mythic": 273456,
+        "legendary": 820368
+      }
+    },
+    {
+      "level": 40,
+      "levelFactor": 0.360626783905164,
+      "xpPerNormalMonster": 604,
+      "goldPerNormalMonster": 436,
+      "xpToNextLevel": 22952,
+      "cumulativeXp": 303949,
+      "itemPrices": {
+        "common": 3488,
+        "rare": 10464,
+        "superRare": 31392,
+        "epic": 94176,
+        "mythic": 282528,
+        "legendary": 847584
+      }
+    },
+    {
+      "level": 41,
+      "levelFactor": 0.370208872482984,
+      "xpPerNormalMonster": 622,
+      "goldPerNormalMonster": 451,
+      "xpToNextLevel": 24071,
+      "cumulativeXp": 326901,
+      "itemPrices": {
+        "common": 3608,
+        "rare": 10824,
+        "superRare": 32472,
+        "epic": 97416,
+        "mythic": 292248,
+        "legendary": 876744
+      }
+    },
+    {
+      "level": 42,
+      "levelFactor": 0.379838995994824,
+      "xpPerNormalMonster": 642,
+      "goldPerNormalMonster": 466,
+      "xpToNextLevel": 25295,
+      "cumulativeXp": 350972,
+      "itemPrices": {
+        "common": 3728,
+        "rare": 11184,
+        "superRare": 33552,
+        "epic": 100656,
+        "mythic": 301968,
+        "legendary": 905904
+      }
+    },
+    {
+      "level": 43,
+      "levelFactor": 0.389516214694797,
+      "xpPerNormalMonster": 661,
+      "goldPerNormalMonster": 481,
+      "xpToNextLevel": 26506,
+      "cumulativeXp": 376267,
+      "itemPrices": {
+        "common": 3848,
+        "rare": 11544,
+        "superRare": 34632,
+        "epic": 103896,
+        "mythic": 311688,
+        "legendary": 935064
+      }
+    },
+    {
+      "level": 44,
+      "levelFactor": 0.399239629220033,
+      "xpPerNormalMonster": 680,
+      "goldPerNormalMonster": 496,
+      "xpToNextLevel": 27744,
+      "cumulativeXp": 402773,
+      "itemPrices": {
+        "common": 3968,
+        "rare": 11904,
+        "superRare": 35712,
+        "epic": 107136,
+        "mythic": 321408,
+        "legendary": 964224
+      }
+    },
+    {
+      "level": 45,
+      "levelFactor": 0.409008377953926,
+      "xpPerNormalMonster": 699,
+      "goldPerNormalMonster": 512,
+      "xpToNextLevel": 29009,
+      "cumulativeXp": 430517,
+      "itemPrices": {
+        "common": 4096,
+        "rare": 12288,
+        "superRare": 36864,
+        "epic": 110592,
+        "mythic": 331776,
+        "legendary": 995328
+      }
+    },
+    {
+      "level": 46,
+      "levelFactor": 0.418821634617731,
+      "xpPerNormalMonster": 719,
+      "goldPerNormalMonster": 527,
+      "xpToNextLevel": 30342,
+      "cumulativeXp": 459526,
+      "itemPrices": {
+        "common": 4216,
+        "rare": 12648,
+        "superRare": 37944,
+        "epic": 113832,
+        "mythic": 341496,
+        "legendary": 1024488
+      }
+    },
+    {
+      "level": 47,
+      "levelFactor": 0.428678606066074,
+      "xpPerNormalMonster": 738,
+      "goldPerNormalMonster": 543,
+      "xpToNextLevel": 31660,
+      "cumulativeXp": 489868,
+      "itemPrices": {
+        "common": 4344,
+        "rare": 13032,
+        "superRare": 39096,
+        "epic": 117288,
+        "mythic": 351864,
+        "legendary": 1055592
+      }
+    },
+    {
+      "level": 48,
+      "levelFactor": 0.438578530265059,
+      "xpPerNormalMonster": 758,
+      "goldPerNormalMonster": 558,
+      "xpToNextLevel": 33049,
+      "cumulativeXp": 521528,
+      "itemPrices": {
+        "common": 4464,
+        "rare": 13392,
+        "superRare": 40176,
+        "epic": 120528,
+        "mythic": 361584,
+        "legendary": 1084752
+      }
+    },
+    {
+      "level": 49,
+      "levelFactor": 0.448520674434256,
+      "xpPerNormalMonster": 778,
+      "goldPerNormalMonster": 574,
+      "xpToNextLevel": 34465,
+      "cumulativeXp": 554577,
+      "itemPrices": {
+        "common": 4592,
+        "rare": 13776,
+        "superRare": 41328,
+        "epic": 123984,
+        "mythic": 371952,
+        "legendary": 1115856
+      }
+    },
+    {
+      "level": 50,
+      "levelFactor": 0.458504333336152,
+      "xpPerNormalMonster": 798,
+      "goldPerNormalMonster": 590,
+      "xpToNextLevel": 35910,
+      "cumulativeXp": 589042,
+      "itemPrices": {
+        "common": 4720,
+        "rare": 14160,
+        "superRare": 42480,
+        "epic": 127440,
+        "mythic": 382320,
+        "legendary": 1146960
+      }
+    },
+    {
+      "level": 51,
+      "levelFactor": 0.468528827698579,
+      "xpPerNormalMonster": 818,
+      "goldPerNormalMonster": 606,
+      "xpToNextLevel": 37383,
+      "cumulativeXp": 624952,
+      "itemPrices": {
+        "common": 4848,
+        "rare": 14544,
+        "superRare": 43632,
+        "epic": 130896,
+        "mythic": 392688,
+        "legendary": 1178064
+      }
+    },
+    {
+      "level": 52,
+      "levelFactor": 0.47859350275732,
+      "xpPerNormalMonster": 838,
+      "goldPerNormalMonster": 622,
+      "xpToNextLevel": 38883,
+      "cumulativeXp": 662335,
+      "itemPrices": {
+        "common": 4976,
+        "rare": 14928,
+        "superRare": 44784,
+        "epic": 134352,
+        "mythic": 403056,
+        "legendary": 1209168
+      }
+    },
+    {
+      "level": 53,
+      "levelFactor": 0.488697726907557,
+      "xpPerNormalMonster": 858,
+      "goldPerNormalMonster": 638,
+      "xpToNextLevel": 40412,
+      "cumulativeXp": 701218,
+      "itemPrices": {
+        "common": 5104,
+        "rare": 15312,
+        "superRare": 45936,
+        "epic": 137808,
+        "mythic": 413424,
+        "legendary": 1240272
+      }
+    },
+    {
+      "level": 54,
+      "levelFactor": 0.498840890454092,
+      "xpPerNormalMonster": 878,
+      "goldPerNormalMonster": 654,
+      "xpToNextLevel": 41968,
+      "cumulativeXp": 741630,
+      "itemPrices": {
+        "common": 5232,
+        "rare": 15696,
+        "superRare": 47088,
+        "epic": 141264,
+        "mythic": 423792,
+        "legendary": 1271376
+      }
+    },
+    {
+      "level": 55,
+      "levelFactor": 0.509022404451374,
+      "xpPerNormalMonster": 899,
+      "goldPerNormalMonster": 671,
+      "xpToNextLevel": 43602,
+      "cumulativeXp": 783598,
+      "itemPrices": {
+        "common": 5368,
+        "rare": 16104,
+        "superRare": 48312,
+        "epic": 144936,
+        "mythic": 434808,
+        "legendary": 1304424
+      }
+    },
+    {
+      "level": 56,
+      "levelFactor": 0.519241699625328,
+      "xpPerNormalMonster": 919,
+      "goldPerNormalMonster": 687,
+      "xpToNextLevel": 45215,
+      "cumulativeXp": 827200,
+      "itemPrices": {
+        "common": 5496,
+        "rare": 16488,
+        "superRare": 49464,
+        "epic": 148392,
+        "mythic": 445176,
+        "legendary": 1335528
+      }
+    },
+    {
+      "level": 57,
+      "levelFactor": 0.529498225369835,
+      "xpPerNormalMonster": 940,
+      "goldPerNormalMonster": 704,
+      "xpToNextLevel": 46906,
+      "cumulativeXp": 872415,
+      "itemPrices": {
+        "common": 5632,
+        "rare": 16896,
+        "superRare": 50688,
+        "epic": 152064,
+        "mythic": 456192,
+        "legendary": 1368576
+      }
+    },
+    {
+      "level": 58,
+      "levelFactor": 0.539791448811454,
+      "xpPerNormalMonster": 960,
+      "goldPerNormalMonster": 721,
+      "xpToNextLevel": 48576,
+      "cumulativeXp": 919321,
+      "itemPrices": {
+        "common": 5768,
+        "rare": 17304,
+        "superRare": 51912,
+        "epic": 155736,
+        "mythic": 467208,
+        "legendary": 1401624
+      }
+    },
+    {
+      "level": 59,
+      "levelFactor": 0.550120853936616,
+      "xpPerNormalMonster": 981,
+      "goldPerNormalMonster": 738,
+      "xpToNextLevel": 50325,
+      "cumulativeXp": 967897,
+      "itemPrices": {
+        "common": 5904,
+        "rare": 17712,
+        "superRare": 53136,
+        "epic": 159408,
+        "mythic": 478224,
+        "legendary": 1434672
+      }
+    },
+    {
+      "level": 60,
+      "levelFactor": 0.560485940776121,
+      "xpPerNormalMonster": 1002,
+      "goldPerNormalMonster": 754,
+      "xpToNextLevel": 52104,
+      "cumulativeXp": 1018222,
+      "itemPrices": {
+        "common": 6032,
+        "rare": 18096,
+        "superRare": 54288,
+        "epic": 162864,
+        "mythic": 488592,
+        "legendary": 1465776
+      }
+    },
+    {
+      "level": 61,
+      "levelFactor": 0.57088622464226,
+      "xpPerNormalMonster": 1023,
+      "goldPerNormalMonster": 771,
+      "xpToNextLevel": 53912,
+      "cumulativeXp": 1070326,
+      "itemPrices": {
+        "common": 6168,
+        "rare": 18504,
+        "superRare": 55512,
+        "epic": 166536,
+        "mythic": 499608,
+        "legendary": 1498824
+      }
+    },
+    {
+      "level": 62,
+      "levelFactor": 0.581321235414347,
+      "xpPerNormalMonster": 1044,
+      "goldPerNormalMonster": 789,
+      "xpToNextLevel": 55750,
+      "cumulativeXp": 1124238,
+      "itemPrices": {
+        "common": 6312,
+        "rare": 18936,
+        "superRare": 56808,
+        "epic": 170424,
+        "mythic": 511272,
+        "legendary": 1533816
+      }
+    },
+    {
+      "level": 63,
+      "levelFactor": 0.591790516868843,
+      "xpPerNormalMonster": 1065,
+      "goldPerNormalMonster": 806,
+      "xpToNextLevel": 57616,
+      "cumulativeXp": 1179988,
+      "itemPrices": {
+        "common": 6448,
+        "rare": 19344,
+        "superRare": 58032,
+        "epic": 174096,
+        "mythic": 522288,
+        "legendary": 1566864
+      }
+    },
+    {
+      "level": 64,
+      "levelFactor": 0.602293626050607,
+      "xpPerNormalMonster": 1086,
+      "goldPerNormalMonster": 823,
+      "xpToNextLevel": 59513,
+      "cumulativeXp": 1237604,
+      "itemPrices": {
+        "common": 6584,
+        "rare": 19752,
+        "superRare": 59256,
+        "epic": 177768,
+        "mythic": 533304,
+        "legendary": 1599912
+      }
+    },
+    {
+      "level": 65,
+      "levelFactor": 0.612830132682154,
+      "xpPerNormalMonster": 1107,
+      "goldPerNormalMonster": 841,
+      "xpToNextLevel": 61439,
+      "cumulativeXp": 1297117,
+      "itemPrices": {
+        "common": 6728,
+        "rare": 20184,
+        "superRare": 60552,
+        "epic": 181656,
+        "mythic": 544968,
+        "legendary": 1634904
+      }
+    },
+    {
+      "level": 66,
+      "levelFactor": 0.623399618608033,
+      "xpPerNormalMonster": 1129,
+      "goldPerNormalMonster": 858,
+      "xpToNextLevel": 63450,
+      "cumulativeXp": 1358556,
+      "itemPrices": {
+        "common": 6864,
+        "rare": 20592,
+        "superRare": 61776,
+        "epic": 185328,
+        "mythic": 555984,
+        "legendary": 1667952
+      }
+    },
+    {
+      "level": 67,
+      "levelFactor": 0.634001677271761,
+      "xpPerNormalMonster": 1150,
+      "goldPerNormalMonster": 876,
+      "xpToNextLevel": 65435,
+      "cumulativeXp": 1422006,
+      "itemPrices": {
+        "common": 7008,
+        "rare": 21024,
+        "superRare": 63072,
+        "epic": 189216,
+        "mythic": 567648,
+        "legendary": 1702944
+      }
+    },
+    {
+      "level": 68,
+      "levelFactor": 0.644635913222915,
+      "xpPerNormalMonster": 1172,
+      "goldPerNormalMonster": 893,
+      "xpToNextLevel": 67507,
+      "cumulativeXp": 1487441,
+      "itemPrices": {
+        "common": 7144,
+        "rare": 21432,
+        "superRare": 64296,
+        "epic": 192888,
+        "mythic": 578664,
+        "legendary": 1735992
+      }
+    },
+    {
+      "level": 69,
+      "levelFactor": 0.655301941652231,
+      "xpPerNormalMonster": 1193,
+      "goldPerNormalMonster": 911,
+      "xpToNextLevel": 69552,
+      "cumulativeXp": 1554948,
+      "itemPrices": {
+        "common": 7288,
+        "rare": 21864,
+        "superRare": 65592,
+        "epic": 196776,
+        "mythic": 590328,
+        "legendary": 1770984
+      }
+    },
+    {
+      "level": 70,
+      "levelFactor": 0.665999387952727,
+      "xpPerNormalMonster": 1215,
+      "goldPerNormalMonster": 929,
+      "xpToNextLevel": 71685,
+      "cumulativeXp": 1624500,
+      "itemPrices": {
+        "common": 7432,
+        "rare": 22296,
+        "superRare": 66888,
+        "epic": 200664,
+        "mythic": 601992,
+        "legendary": 1805976
+      }
+    },
+    {
+      "level": 71,
+      "levelFactor": 0.67672788730503,
+      "xpPerNormalMonster": 1237,
+      "goldPerNormalMonster": 947,
+      "xpToNextLevel": 73849,
+      "cumulativeXp": 1696185,
+      "itemPrices": {
+        "common": 7576,
+        "rare": 22728,
+        "superRare": 68184,
+        "epic": 204552,
+        "mythic": 613656,
+        "legendary": 1840968
+      }
+    },
+    {
+      "level": 72,
+      "levelFactor": 0.687487084285261,
+      "xpPerNormalMonster": 1258,
+      "goldPerNormalMonster": 965,
+      "xpToNextLevel": 75983,
+      "cumulativeXp": 1770034,
+      "itemPrices": {
+        "common": 7720,
+        "rare": 23160,
+        "superRare": 69480,
+        "epic": 208440,
+        "mythic": 625320,
+        "legendary": 1875960
+      }
+    },
+    {
+      "level": 73,
+      "levelFactor": 0.698276632493928,
+      "xpPerNormalMonster": 1280,
+      "goldPerNormalMonster": 983,
+      "xpToNextLevel": 78208,
+      "cumulativeXp": 1846017,
+      "itemPrices": {
+        "common": 7864,
+        "rare": 23592,
+        "superRare": 70776,
+        "epic": 212328,
+        "mythic": 636984,
+        "legendary": 1910952
+      }
+    },
+    {
+      "level": 74,
+      "levelFactor": 0.709096194204443,
+      "xpPerNormalMonster": 1302,
+      "goldPerNormalMonster": 1001,
+      "xpToNextLevel": 80464,
+      "cumulativeXp": 1924225,
+      "itemPrices": {
+        "common": 8008,
+        "rare": 24024,
+        "superRare": 72072,
+        "epic": 216216,
+        "mythic": 648648,
+        "legendary": 1945944
+      }
+    },
+    {
+      "level": 75,
+      "levelFactor": 0.719945440029963,
+      "xpPerNormalMonster": 1324,
+      "goldPerNormalMonster": 1020,
+      "xpToNextLevel": 82750,
+      "cumulativeXp": 2004689,
+      "itemPrices": {
+        "common": 8160,
+        "rare": 24480,
+        "superRare": 73440,
+        "epic": 220320,
+        "mythic": 660960,
+        "legendary": 1982880
+      }
+    },
+    {
+      "level": 76,
+      "levelFactor": 0.730824048607362,
+      "xpPerNormalMonster": 1346,
+      "goldPerNormalMonster": 1038,
+      "xpToNextLevel": 85067,
+      "cumulativeXp": 2087439,
+      "itemPrices": {
+        "common": 8304,
+        "rare": 24912,
+        "superRare": 74736,
+        "epic": 224208,
+        "mythic": 672624,
+        "legendary": 2017872
+      }
+    },
+    {
+      "level": 77,
+      "levelFactor": 0.741731706297242,
+      "xpPerNormalMonster": 1369,
+      "goldPerNormalMonster": 1057,
+      "xpToNextLevel": 87479,
+      "cumulativeXp": 2172506,
+      "itemPrices": {
+        "common": 8456,
+        "rare": 25368,
+        "superRare": 76104,
+        "epic": 228312,
+        "mythic": 684936,
+        "legendary": 2054808
+      }
+    },
+    {
+      "level": 78,
+      "levelFactor": 0.752668106898964,
+      "xpPerNormalMonster": 1391,
+      "goldPerNormalMonster": 1075,
+      "xpToNextLevel": 89859,
+      "cumulativeXp": 2259985,
+      "itemPrices": {
+        "common": 8600,
+        "rare": 25800,
+        "superRare": 77400,
+        "epic": 232200,
+        "mythic": 696600,
+        "legendary": 2089800
+      }
+    },
+    {
+      "level": 79,
+      "levelFactor": 0.763632951379764,
+      "xpPerNormalMonster": 1413,
+      "goldPerNormalMonster": 1094,
+      "xpToNextLevel": 92269,
+      "cumulativeXp": 2349844,
+      "itemPrices": {
+        "common": 8752,
+        "rare": 26256,
+        "superRare": 78768,
+        "epic": 236304,
+        "mythic": 708912,
+        "legendary": 2126736
+      }
+    },
+    {
+      "level": 80,
+      "levelFactor": 0.774625947617085,
+      "xpPerNormalMonster": 1436,
+      "goldPerNormalMonster": 1112,
+      "xpToNextLevel": 94776,
+      "cumulativeXp": 2442113,
+      "itemPrices": {
+        "common": 8896,
+        "rare": 26688,
+        "superRare": 80064,
+        "epic": 240192,
+        "mythic": 720576,
+        "legendary": 2161728
+      }
+    },
+    {
+      "level": 81,
+      "levelFactor": 0.785646810153318,
+      "xpPerNormalMonster": 1458,
+      "goldPerNormalMonster": 1131,
+      "xpToNextLevel": 97249,
+      "cumulativeXp": 2536889,
+      "itemPrices": {
+        "common": 9048,
+        "rare": 27144,
+        "superRare": 81432,
+        "epic": 244296,
+        "mythic": 732888,
+        "legendary": 2198664
+      }
+    },
+    {
+      "level": 82,
+      "levelFactor": 0.796695259962212,
+      "xpPerNormalMonster": 1481,
+      "goldPerNormalMonster": 1150,
+      "xpToNextLevel": 99819,
+      "cumulativeXp": 2634138,
+      "itemPrices": {
+        "common": 9200,
+        "rare": 27600,
+        "superRare": 82800,
+        "epic": 248400,
+        "mythic": 745200,
+        "legendary": 2235600
+      }
+    },
+    {
+      "level": 83,
+      "levelFactor": 0.807771024226257,
+      "xpPerNormalMonster": 1503,
+      "goldPerNormalMonster": 1169,
+      "xpToNextLevel": 102354,
+      "cumulativeXp": 2733957,
+      "itemPrices": {
+        "common": 9352,
+        "rare": 28056,
+        "superRare": 84168,
+        "epic": 252504,
+        "mythic": 757512,
+        "legendary": 2272536
+      }
+    },
+    {
+      "level": 84,
+      "levelFactor": 0.818873836124395,
+      "xpPerNormalMonster": 1526,
+      "goldPerNormalMonster": 1188,
+      "xpToNextLevel": 104989,
+      "cumulativeXp": 2836311,
+      "itemPrices": {
+        "common": 9504,
+        "rare": 28512,
+        "superRare": 85536,
+        "epic": 256608,
+        "mythic": 769824,
+        "legendary": 2309472
+      }
+    },
+    {
+      "level": 85,
+      "levelFactor": 0.830003434629468,
+      "xpPerNormalMonster": 1549,
+      "goldPerNormalMonster": 1207,
+      "xpToNextLevel": 107656,
+      "cumulativeXp": 2941300,
+      "itemPrices": {
+        "common": 9656,
+        "rare": 28968,
+        "superRare": 86904,
+        "epic": 260712,
+        "mythic": 782136,
+        "legendary": 2346408
+      }
+    },
+    {
+      "level": 86,
+      "levelFactor": 0.841159564314835,
+      "xpPerNormalMonster": 1571,
+      "goldPerNormalMonster": 1227,
+      "xpToNextLevel": 110284,
+      "cumulativeXp": 3048956,
+      "itemPrices": {
+        "common": 9816,
+        "rare": 29448,
+        "superRare": 88344,
+        "epic": 265032,
+        "mythic": 795096,
+        "legendary": 2385288
+      }
+    },
+    {
+      "level": 87,
+      "levelFactor": 0.852341975169652,
+      "xpPerNormalMonster": 1594,
+      "goldPerNormalMonster": 1246,
+      "xpToNextLevel": 113015,
+      "cumulativeXp": 3159240,
+      "itemPrices": {
+        "common": 9968,
+        "rare": 29904,
+        "superRare": 89712,
+        "epic": 269136,
+        "mythic": 807408,
+        "legendary": 2422224
+      }
+    },
+    {
+      "level": 88,
+      "levelFactor": 0.863550422422321,
+      "xpPerNormalMonster": 1617,
+      "goldPerNormalMonster": 1265,
+      "xpToNextLevel": 115777,
+      "cumulativeXp": 3272255,
+      "itemPrices": {
+        "common": 10120,
+        "rare": 30360,
+        "superRare": 91080,
+        "epic": 273240,
+        "mythic": 819720,
+        "legendary": 2459160
+      }
+    },
+    {
+      "level": 89,
+      "levelFactor": 0.874784666371658,
+      "xpPerNormalMonster": 1640,
+      "goldPerNormalMonster": 1285,
+      "xpToNextLevel": 118572,
+      "cumulativeXp": 3388032,
+      "itemPrices": {
+        "common": 10280,
+        "rare": 30840,
+        "superRare": 92520,
+        "epic": 277560,
+        "mythic": 832680,
+        "legendary": 2498040
+      }
+    },
+    {
+      "level": 90,
+      "levelFactor": 0.886044472225366,
+      "xpPerNormalMonster": 1663,
+      "goldPerNormalMonster": 1304,
+      "xpToNextLevel": 121399,
+      "cumulativeXp": 3506604,
+      "itemPrices": {
+        "common": 10432,
+        "rare": 31296,
+        "superRare": 93888,
+        "epic": 281664,
+        "mythic": 844992,
+        "legendary": 2534976
+      }
+    },
+    {
+      "level": 91,
+      "levelFactor": 0.89732960994541,
+      "xpPerNormalMonster": 1686,
+      "goldPerNormalMonster": 1324,
+      "xpToNextLevel": 124258,
+      "cumulativeXp": 3628003,
+      "itemPrices": {
+        "common": 10592,
+        "rare": 31776,
+        "superRare": 95328,
+        "epic": 285984,
+        "mythic": 857952,
+        "legendary": 2573856
+      }
+    },
+    {
+      "level": 92,
+      "levelFactor": 0.908639854099929,
+      "xpPerNormalMonster": 1710,
+      "goldPerNormalMonster": 1343,
+      "xpToNextLevel": 127224,
+      "cumulativeXp": 3752261,
+      "itemPrices": {
+        "common": 10744,
+        "rare": 32232,
+        "superRare": 96696,
+        "epic": 290088,
+        "mythic": 870264,
+        "legendary": 2610792
+      }
+    },
+    {
+      "level": 93,
+      "levelFactor": 0.919974983721339,
+      "xpPerNormalMonster": 1733,
+      "goldPerNormalMonster": 1363,
+      "xpToNextLevel": 130148,
+      "cumulativeXp": 3879485,
+      "itemPrices": {
+        "common": 10904,
+        "rare": 32712,
+        "superRare": 98136,
+        "epic": 294408,
+        "mythic": 883224,
+        "legendary": 2649672
+      }
+    },
+    {
+      "level": 94,
+      "levelFactor": 0.931334782170305,
+      "xpPerNormalMonster": 1756,
+      "goldPerNormalMonster": 1383,
+      "xpToNextLevel": 133105,
+      "cumulativeXp": 4009633,
+      "itemPrices": {
+        "common": 11064,
+        "rare": 33192,
+        "superRare": 99576,
+        "epic": 298728,
+        "mythic": 896184,
+        "legendary": 2688552
+      }
+    },
+    {
+      "level": 95,
+      "levelFactor": 0.942719037005277,
+      "xpPerNormalMonster": 1780,
+      "goldPerNormalMonster": 1403,
+      "xpToNextLevel": 136170,
+      "cumulativeXp": 4142738,
+      "itemPrices": {
+        "common": 11224,
+        "rare": 33672,
+        "superRare": 101016,
+        "epic": 303048,
+        "mythic": 909144,
+        "legendary": 2727432
+      }
+    },
+    {
+      "level": 96,
+      "levelFactor": 0.954127539857307,
+      "xpPerNormalMonster": 1803,
+      "goldPerNormalMonster": 1423,
+      "xpToNextLevel": 139192,
+      "cumulativeXp": 4278908,
+      "itemPrices": {
+        "common": 11384,
+        "rare": 34152,
+        "superRare": 102456,
+        "epic": 307368,
+        "mythic": 922104,
+        "legendary": 2766312
+      }
+    },
+    {
+      "level": 97,
+      "levelFactor": 0.965560086309877,
+      "xpPerNormalMonster": 1826,
+      "goldPerNormalMonster": 1443,
+      "xpToNextLevel": 142245,
+      "cumulativeXp": 4418100,
+      "itemPrices": {
+        "common": 11544,
+        "rare": 34632,
+        "superRare": 103896,
+        "epic": 311688,
+        "mythic": 935064,
+        "legendary": 2805192
+      }
+    },
+    {
+      "level": 98,
+      "levelFactor": 0.977016475783491,
+      "xpPerNormalMonster": 1850,
+      "goldPerNormalMonster": 1463,
+      "xpToNextLevel": 145410,
+      "cumulativeXp": 4560345,
+      "itemPrices": {
+        "common": 11704,
+        "rare": 35112,
+        "superRare": 105336,
+        "epic": 316008,
+        "mythic": 948024,
+        "legendary": 2844072
+      }
+    },
+    {
+      "level": 99,
+      "levelFactor": 0.988496511424796,
+      "xpPerNormalMonster": 1874,
+      "goldPerNormalMonster": 1483,
+      "xpToNextLevel": 148608,
+      "cumulativeXp": 4705755,
+      "itemPrices": {
+        "common": 11864,
+        "rare": 35592,
+        "superRare": 106776,
+        "epic": 320328,
+        "mythic": 960984,
+        "legendary": 2882952
+      }
+    },
+    {
+      "level": 100,
+      "levelFactor": 1,
+      "xpPerNormalMonster": 1897,
+      "goldPerNormalMonster": 1504,
+      "xpToNextLevel": null,
+      "cumulativeXp": 4854363,
+      "itemPrices": {
+        "common": 12032,
+        "rare": 36096,
+        "superRare": 108288,
+        "epic": 324864,
+        "mythic": 974592,
+        "legendary": 2923776
+      }
+    },
+    {
+      "level": 101,
+      "levelFactor": 1.01152675179239,
+      "xpPerNormalMonster": 1921,
+      "goldPerNormalMonster": 1524,
+      "xpToNextLevel": null,
+      "cumulativeXp": null,
+      "itemPrices": {
+        "common": 12192,
+        "rare": 36576,
+        "superRare": 109728,
+        "epic": 329184,
+        "mythic": 987552,
+        "legendary": 2962656
+      }
+    },
+    {
+      "level": 102,
+      "levelFactor": 1.02307658050375,
+      "xpPerNormalMonster": 1945,
+      "goldPerNormalMonster": 1544,
+      "xpToNextLevel": null,
+      "cumulativeXp": null,
+      "itemPrices": {
+        "common": 12352,
+        "rare": 37056,
+        "superRare": 111168,
+        "epic": 333504,
+        "mythic": 1000512,
+        "legendary": 3001536
+      }
+    },
+    {
+      "level": 103,
+      "levelFactor": 1.0346493031595,
+      "xpPerNormalMonster": 1969,
+      "goldPerNormalMonster": 1565,
+      "xpToNextLevel": null,
+      "cumulativeXp": null,
+      "itemPrices": {
+        "common": 12520,
+        "rare": 37560,
+        "superRare": 112680,
+        "epic": 338040,
+        "mythic": 1014120,
+        "legendary": 3042360
+      }
+    },
+    {
+      "level": 104,
+      "levelFactor": 1.04624474001734,
+      "xpPerNormalMonster": 1993,
+      "goldPerNormalMonster": 1585,
+      "xpToNextLevel": null,
+      "cumulativeXp": null,
+      "itemPrices": {
+        "common": 12680,
+        "rare": 38040,
+        "superRare": 114120,
+        "epic": 342360,
+        "mythic": 1027080,
+        "legendary": 3081240
+      }
+    },
+    {
+      "level": 105,
+      "levelFactor": 1.0578627144793,
+      "xpPerNormalMonster": 2017,
+      "goldPerNormalMonster": 1606,
+      "xpToNextLevel": null,
+      "cumulativeXp": null,
+      "itemPrices": {
+        "common": 12848,
+        "rare": 38544,
+        "superRare": 115632,
+        "epic": 346896,
+        "mythic": 1040688,
+        "legendary": 3122064
+      }
+    },
+    {
+      "level": 106,
+      "levelFactor": 1.06950305300702,
+      "xpPerNormalMonster": 2041,
+      "goldPerNormalMonster": 1627,
+      "xpToNextLevel": null,
+      "cumulativeXp": null,
+      "itemPrices": {
+        "common": 13016,
+        "rare": 39048,
+        "superRare": 117144,
+        "epic": 351432,
+        "mythic": 1054296,
+        "legendary": 3162888
+      }
+    },
+    {
+      "level": 107,
+      "levelFactor": 1.08116558504004,
+      "xpPerNormalMonster": 2065,
+      "goldPerNormalMonster": 1647,
+      "xpToNextLevel": null,
+      "cumulativeXp": null,
+      "itemPrices": {
+        "common": 13176,
+        "rare": 39528,
+        "superRare": 118584,
+        "epic": 355752,
+        "mythic": 1067256,
+        "legendary": 3201768
+      }
+    },
+    {
+      "level": 108,
+      "levelFactor": 1.0928501429171,
+      "xpPerNormalMonster": 2089,
+      "goldPerNormalMonster": 1668,
+      "xpToNextLevel": null,
+      "cumulativeXp": null,
+      "itemPrices": {
+        "common": 13344,
+        "rare": 40032,
+        "superRare": 120096,
+        "epic": 360288,
+        "mythic": 1080864,
+        "legendary": 3242592
+      }
+    },
+    {
+      "level": 109,
+      "levelFactor": 1.10455656180015,
+      "xpPerNormalMonster": 2113,
+      "goldPerNormalMonster": 1689,
+      "xpToNextLevel": null,
+      "cumulativeXp": null,
+      "itemPrices": {
+        "common": 13512,
+        "rare": 40536,
+        "superRare": 121608,
+        "epic": 364824,
+        "mythic": 1094472,
+        "legendary": 3283416
+      }
+    },
+    {
+      "level": 110,
+      "levelFactor": 1.11628467960114,
+      "xpPerNormalMonster": 2137,
+      "goldPerNormalMonster": 1710,
+      "xpToNextLevel": null,
+      "cumulativeXp": null,
+      "itemPrices": {
+        "common": 13680,
+        "rare": 41040,
+        "superRare": 123120,
+        "epic": 369360,
+        "mythic": 1108080,
+        "legendary": 3324240
+      }
+    }
+  ]
+}

@@ -1,0 +1,1864 @@
+{
+  "equipmentProgression": {
+    "itemId": "GUE-AR1-P2-EPI",
+    "rows": [
+      {
+        "upgrade": 0,
+        "effectiveLevel": 15,
+        "factor": 0.140847925475674,
+        "stats": {
+          "vitality": 0,
+          "strength": 12,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.006,
+          "critChance": 0.004,
+          "critDamage": 0.011,
+          "armor": 0,
+          "penetration": 0.005,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": null,
+        "cumulativeCost": 0
+      },
+      {
+        "upgrade": 1,
+        "effectiveLevel": 16,
+        "factor": 0.148689484994666,
+        "stats": {
+          "vitality": 0,
+          "strength": 12,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.006,
+          "critChance": 0.004,
+          "critDamage": 0.012,
+          "armor": 0,
+          "penetration": 0.005,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 5,
+        "cumulativeCost": 5
+      },
+      {
+        "upgrade": 2,
+        "effectiveLevel": 17,
+        "factor": 0.156636369529698,
+        "stats": {
+          "vitality": 0,
+          "strength": 13,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.007,
+          "critChance": 0.005,
+          "critDamage": 0.012,
+          "armor": 0,
+          "penetration": 0.006,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 12,
+        "cumulativeCost": 17
+      },
+      {
+        "upgrade": 3,
+        "effectiveLevel": 18,
+        "factor": 0.1646832725879,
+        "stats": {
+          "vitality": 0,
+          "strength": 14,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.007,
+          "critChance": 0.005,
+          "critDamage": 0.013,
+          "armor": 0,
+          "penetration": 0.006,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 21,
+        "cumulativeCost": 38
+      },
+      {
+        "upgrade": 4,
+        "effectiveLevel": 19,
+        "factor": 0.172825453944077,
+        "stats": {
+          "vitality": 0,
+          "strength": 15,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.007,
+          "critChance": 0.005,
+          "critDamage": 0.014,
+          "armor": 0,
+          "penetration": 0.006,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 30,
+        "cumulativeCost": 68
+      },
+      {
+        "upgrade": 5,
+        "effectiveLevel": 20,
+        "factor": 0.181058650851904,
+        "stats": {
+          "vitality": 0,
+          "strength": 15,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.008,
+          "critChance": 0.005,
+          "critDamage": 0.014,
+          "armor": 0,
+          "penetration": 0.007,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 39,
+        "cumulativeCost": 107
+      },
+      {
+        "upgrade": 6,
+        "effectiveLevel": 21,
+        "factor": 0.189379007156239,
+        "stats": {
+          "vitality": 0,
+          "strength": 16,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.008,
+          "critChance": 0.006,
+          "critDamage": 0.015,
+          "armor": 0,
+          "penetration": 0.007,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 49,
+        "cumulativeCost": 156
+      },
+      {
+        "upgrade": 7,
+        "effectiveLevel": 22,
+        "factor": 0.197783015975362,
+        "stats": {
+          "vitality": 0,
+          "strength": 17,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.008,
+          "critChance": 0.006,
+          "critDamage": 0.016,
+          "armor": 0,
+          "penetration": 0.007,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 60,
+        "cumulativeCost": 216
+      },
+      {
+        "upgrade": 8,
+        "effectiveLevel": 23,
+        "factor": 0.206267472827909,
+        "stats": {
+          "vitality": 0,
+          "strength": 17,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.009,
+          "critChance": 0.006,
+          "critDamage": 0.016,
+          "armor": 0,
+          "penetration": 0.008,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 71,
+        "cumulativeCost": 287
+      },
+      {
+        "upgrade": 9,
+        "effectiveLevel": 24,
+        "factor": 0.214829436909506,
+        "stats": {
+          "vitality": 0,
+          "strength": 18,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.009,
+          "critChance": 0.006,
+          "critDamage": 0.017,
+          "armor": 0,
+          "penetration": 0.008,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 82,
+        "cumulativeCost": 369
+      },
+      {
+        "upgrade": 10,
+        "effectiveLevel": 25,
+        "factor": 0.223466198806946,
+        "stats": {
+          "vitality": 0,
+          "strength": 19,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.009,
+          "critChance": 0.007,
+          "critDamage": 0.018,
+          "armor": 0,
+          "penetration": 0.008,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 93,
+        "cumulativeCost": 462
+      },
+      {
+        "upgrade": 11,
+        "effectiveLevel": 26,
+        "factor": 0.232175253354332,
+        "stats": {
+          "vitality": 0,
+          "strength": 20,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.01,
+          "critChance": 0.007,
+          "critDamage": 0.018,
+          "armor": 0,
+          "penetration": 0.009,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 105,
+        "cumulativeCost": 567
+      },
+      {
+        "upgrade": 12,
+        "effectiveLevel": 27,
+        "factor": 0.240954276638051,
+        "stats": {
+          "vitality": 0,
+          "strength": 20,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.01,
+          "critChance": 0.007,
+          "critDamage": 0.019,
+          "armor": 0,
+          "penetration": 0.009,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 117,
+        "cumulativeCost": 684
+      },
+      {
+        "upgrade": 13,
+        "effectiveLevel": 28,
+        "factor": 0.249801106380343,
+        "stats": {
+          "vitality": 0,
+          "strength": 21,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.01,
+          "critChance": 0.007,
+          "critDamage": 0.02,
+          "armor": 0,
+          "penetration": 0.009,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 130,
+        "cumulativeCost": 814
+      },
+      {
+        "upgrade": 14,
+        "effectiveLevel": 29,
+        "factor": 0.258713725097601,
+        "stats": {
+          "vitality": 0,
+          "strength": 22,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.011,
+          "critChance": 0.008,
+          "critDamage": 0.02,
+          "armor": 0,
+          "penetration": 0.01,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 142,
+        "cumulativeCost": 956
+      },
+      {
+        "upgrade": 15,
+        "effectiveLevel": 30,
+        "factor": 0.26769024555533,
+        "stats": {
+          "vitality": 0,
+          "strength": 22,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.011,
+          "critChance": 0.008,
+          "critDamage": 0.021,
+          "armor": 0,
+          "penetration": 0.01,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 155,
+        "cumulativeCost": 1111
+      },
+      {
+        "upgrade": 16,
+        "effectiveLevel": 31,
+        "factor": 0.276728898137755,
+        "stats": {
+          "vitality": 0,
+          "strength": 23,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.012,
+          "critChance": 0.008,
+          "critDamage": 0.022,
+          "armor": 0,
+          "penetration": 0.01,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 168,
+        "cumulativeCost": 1279
+      },
+      {
+        "upgrade": 17,
+        "effectiveLevel": 32,
+        "factor": 0.285828019824335,
+        "stats": {
+          "vitality": 0,
+          "strength": 24,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.012,
+          "critChance": 0.008,
+          "critDamage": 0.023,
+          "armor": 0,
+          "penetration": 0.011,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 181,
+        "cumulativeCost": 1460
+      },
+      {
+        "upgrade": 18,
+        "effectiveLevel": 33,
+        "factor": 0.294986044523241,
+        "stats": {
+          "vitality": 0,
+          "strength": 25,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.012,
+          "critChance": 0.009,
+          "critDamage": 0.023,
+          "armor": 0,
+          "penetration": 0.011,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 195,
+        "cumulativeCost": 1655
+      },
+      {
+        "upgrade": 19,
+        "effectiveLevel": 34,
+        "factor": 0.304201494557406,
+        "stats": {
+          "vitality": 0,
+          "strength": 26,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.013,
+          "critChance": 0.009,
+          "critDamage": 0.024,
+          "armor": 0,
+          "penetration": 0.011,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 208,
+        "cumulativeCost": 1863
+      },
+      {
+        "upgrade": 20,
+        "effectiveLevel": 35,
+        "factor": 0.313472973134794,
+        "stats": {
+          "vitality": 0,
+          "strength": 26,
+          "resistance": 0,
+          "magic": 0,
+          "agility": 0,
+          "initiative": 0,
+          "accuracy": 0.013,
+          "critChance": 0.009,
+          "critDamage": 0.025,
+          "armor": 0,
+          "penetration": 0.012,
+          "elementalResistance": 0,
+          "healingBonus": 0,
+          "statusResistance": 0
+        },
+        "cost": 222,
+        "cumulativeCost": 2085
+      }
+    ]
+  },
+  "upgradeCosts": [
+    {
+      "level": 1,
+      "costs": {
+        "common": 3,
+        "rare": 4,
+        "superRare": 4,
+        "epic": 5,
+        "mythic": 6,
+        "legendary": 8,
+        "unique": 9
+      }
+    },
+    {
+      "level": 2,
+      "costs": {
+        "common": 7,
+        "rare": 9,
+        "superRare": 10,
+        "epic": 12,
+        "mythic": 15,
+        "legendary": 18,
+        "unique": 21
+      }
+    },
+    {
+      "level": 3,
+      "costs": {
+        "common": 12,
+        "rare": 14,
+        "superRare": 17,
+        "epic": 21,
+        "mythic": 25,
+        "legendary": 30,
+        "unique": 36
+      }
+    },
+    {
+      "level": 4,
+      "costs": {
+        "common": 17,
+        "rare": 20,
+        "superRare": 25,
+        "epic": 30,
+        "mythic": 36,
+        "legendary": 42,
+        "unique": 51
+      }
+    },
+    {
+      "level": 5,
+      "costs": {
+        "common": 22,
+        "rare": 27,
+        "superRare": 33,
+        "epic": 39,
+        "mythic": 47,
+        "legendary": 56,
+        "unique": 67
+      }
+    },
+    {
+      "level": 6,
+      "costs": {
+        "common": 28,
+        "rare": 34,
+        "superRare": 41,
+        "epic": 49,
+        "mythic": 59,
+        "legendary": 70,
+        "unique": 85
+      }
+    },
+    {
+      "level": 7,
+      "costs": {
+        "common": 34,
+        "rare": 41,
+        "superRare": 50,
+        "epic": 60,
+        "mythic": 72,
+        "legendary": 85,
+        "unique": 102
+      }
+    },
+    {
+      "level": 8,
+      "costs": {
+        "common": 40,
+        "rare": 48,
+        "superRare": 59,
+        "epic": 71,
+        "mythic": 85,
+        "legendary": 101,
+        "unique": 121
+      }
+    },
+    {
+      "level": 9,
+      "costs": {
+        "common": 47,
+        "rare": 56,
+        "superRare": 68,
+        "epic": 82,
+        "mythic": 98,
+        "legendary": 117,
+        "unique": 140
+      }
+    },
+    {
+      "level": 10,
+      "costs": {
+        "common": 53,
+        "rare": 64,
+        "superRare": 77,
+        "epic": 93,
+        "mythic": 112,
+        "legendary": 133,
+        "unique": 160
+      }
+    },
+    {
+      "level": 11,
+      "costs": {
+        "common": 60,
+        "rare": 72,
+        "superRare": 87,
+        "epic": 105,
+        "mythic": 126,
+        "legendary": 150,
+        "unique": 180
+      }
+    },
+    {
+      "level": 12,
+      "costs": {
+        "common": 67,
+        "rare": 80,
+        "superRare": 97,
+        "epic": 117,
+        "mythic": 141,
+        "legendary": 168,
+        "unique": 201
+      }
+    },
+    {
+      "level": 13,
+      "costs": {
+        "common": 74,
+        "rare": 89,
+        "superRare": 107,
+        "epic": 130,
+        "mythic": 156,
+        "legendary": 185,
+        "unique": 222
+      }
+    },
+    {
+      "level": 14,
+      "costs": {
+        "common": 81,
+        "rare": 97,
+        "superRare": 118,
+        "epic": 142,
+        "mythic": 171,
+        "legendary": 203,
+        "unique": 244
+      }
+    },
+    {
+      "level": 15,
+      "costs": {
+        "common": 89,
+        "rare": 106,
+        "superRare": 128,
+        "epic": 155,
+        "mythic": 186,
+        "legendary": 221,
+        "unique": 266
+      }
+    },
+    {
+      "level": 16,
+      "costs": {
+        "common": 96,
+        "rare": 115,
+        "superRare": 139,
+        "epic": 168,
+        "mythic": 202,
+        "legendary": 240,
+        "unique": 288
+      }
+    },
+    {
+      "level": 17,
+      "costs": {
+        "common": 104,
+        "rare": 124,
+        "superRare": 150,
+        "epic": 181,
+        "mythic": 217,
+        "legendary": 259,
+        "unique": 311
+      }
+    },
+    {
+      "level": 18,
+      "costs": {
+        "common": 111,
+        "rare": 133,
+        "superRare": 161,
+        "epic": 195,
+        "mythic": 234,
+        "legendary": 278,
+        "unique": 334
+      }
+    },
+    {
+      "level": 19,
+      "costs": {
+        "common": 119,
+        "rare": 143,
+        "superRare": 173,
+        "epic": 208,
+        "mythic": 250,
+        "legendary": 298,
+        "unique": 357
+      }
+    },
+    {
+      "level": 20,
+      "costs": {
+        "common": 127,
+        "rare": 152,
+        "superRare": 184,
+        "epic": 222,
+        "mythic": 266,
+        "legendary": 317,
+        "unique": 381
+      }
+    },
+    {
+      "level": 21,
+      "costs": {
+        "common": 135,
+        "rare": 162,
+        "superRare": 196,
+        "epic": 236,
+        "mythic": 283,
+        "legendary": 337,
+        "unique": 405
+      }
+    },
+    {
+      "level": 22,
+      "costs": {
+        "common": 143,
+        "rare": 172,
+        "superRare": 207,
+        "epic": 250,
+        "mythic": 300,
+        "legendary": 357,
+        "unique": 429
+      }
+    },
+    {
+      "level": 23,
+      "costs": {
+        "common": 151,
+        "rare": 181,
+        "superRare": 219,
+        "epic": 264,
+        "mythic": 317,
+        "legendary": 378,
+        "unique": 453
+      }
+    },
+    {
+      "level": 24,
+      "costs": {
+        "common": 159,
+        "rare": 191,
+        "superRare": 231,
+        "epic": 279,
+        "mythic": 335,
+        "legendary": 398,
+        "unique": 478
+      }
+    },
+    {
+      "level": 25,
+      "costs": {
+        "common": 168,
+        "rare": 201,
+        "superRare": 243,
+        "epic": 293,
+        "mythic": 352,
+        "legendary": 419,
+        "unique": 503
+      }
+    },
+    {
+      "level": 26,
+      "costs": {
+        "common": 176,
+        "rare": 211,
+        "superRare": 255,
+        "epic": 308,
+        "mythic": 370,
+        "legendary": 440,
+        "unique": 528
+      }
+    },
+    {
+      "level": 27,
+      "costs": {
+        "common": 185,
+        "rare": 222,
+        "superRare": 268,
+        "epic": 323,
+        "mythic": 388,
+        "legendary": 462,
+        "unique": 554
+      }
+    },
+    {
+      "level": 28,
+      "costs": {
+        "common": 193,
+        "rare": 232,
+        "superRare": 280,
+        "epic": 338,
+        "mythic": 406,
+        "legendary": 483,
+        "unique": 580
+      }
+    },
+    {
+      "level": 29,
+      "costs": {
+        "common": 202,
+        "rare": 242,
+        "superRare": 293,
+        "epic": 353,
+        "mythic": 424,
+        "legendary": 505,
+        "unique": 606
+      }
+    },
+    {
+      "level": 30,
+      "costs": {
+        "common": 211,
+        "rare": 253,
+        "superRare": 305,
+        "epic": 369,
+        "mythic": 442,
+        "legendary": 527,
+        "unique": 632
+      }
+    },
+    {
+      "level": 31,
+      "costs": {
+        "common": 219,
+        "rare": 263,
+        "superRare": 318,
+        "epic": 384,
+        "mythic": 461,
+        "legendary": 549,
+        "unique": 658
+      }
+    },
+    {
+      "level": 32,
+      "costs": {
+        "common": 228,
+        "rare": 274,
+        "superRare": 331,
+        "epic": 400,
+        "mythic": 479,
+        "legendary": 571,
+        "unique": 685
+      }
+    },
+    {
+      "level": 33,
+      "costs": {
+        "common": 237,
+        "rare": 285,
+        "superRare": 344,
+        "epic": 415,
+        "mythic": 498,
+        "legendary": 593,
+        "unique": 712
+      }
+    },
+    {
+      "level": 34,
+      "costs": {
+        "common": 246,
+        "rare": 296,
+        "superRare": 357,
+        "epic": 431,
+        "mythic": 517,
+        "legendary": 616,
+        "unique": 739
+      }
+    },
+    {
+      "level": 35,
+      "costs": {
+        "common": 255,
+        "rare": 306,
+        "superRare": 370,
+        "epic": 447,
+        "mythic": 536,
+        "legendary": 638,
+        "unique": 766
+      }
+    },
+    {
+      "level": 36,
+      "costs": {
+        "common": 265,
+        "rare": 317,
+        "superRare": 384,
+        "epic": 463,
+        "mythic": 556,
+        "legendary": 661,
+        "unique": 794
+      }
+    },
+    {
+      "level": 37,
+      "costs": {
+        "common": 274,
+        "rare": 329,
+        "superRare": 397,
+        "epic": 479,
+        "mythic": 575,
+        "legendary": 684,
+        "unique": 821
+      }
+    },
+    {
+      "level": 38,
+      "costs": {
+        "common": 283,
+        "rare": 340,
+        "superRare": 410,
+        "epic": 495,
+        "mythic": 594,
+        "legendary": 708,
+        "unique": 849
+      }
+    },
+    {
+      "level": 39,
+      "costs": {
+        "common": 292,
+        "rare": 351,
+        "superRare": 424,
+        "epic": 512,
+        "mythic": 614,
+        "legendary": 731,
+        "unique": 877
+      }
+    },
+    {
+      "level": 40,
+      "costs": {
+        "common": 302,
+        "rare": 362,
+        "superRare": 438,
+        "epic": 528,
+        "mythic": 634,
+        "legendary": 754,
+        "unique": 905
+      }
+    },
+    {
+      "level": 41,
+      "costs": {
+        "common": 311,
+        "rare": 373,
+        "superRare": 451,
+        "epic": 545,
+        "mythic": 654,
+        "legendary": 778,
+        "unique": 934
+      }
+    },
+    {
+      "level": 42,
+      "costs": {
+        "common": 321,
+        "rare": 385,
+        "superRare": 465,
+        "epic": 561,
+        "mythic": 674,
+        "legendary": 802,
+        "unique": 962
+      }
+    },
+    {
+      "level": 43,
+      "costs": {
+        "common": 330,
+        "rare": 396,
+        "superRare": 479,
+        "epic": 578,
+        "mythic": 694,
+        "legendary": 826,
+        "unique": 991
+      }
+    },
+    {
+      "level": 44,
+      "costs": {
+        "common": 340,
+        "rare": 408,
+        "superRare": 493,
+        "epic": 595,
+        "mythic": 714,
+        "legendary": 850,
+        "unique": 1020
+      }
+    },
+    {
+      "level": 45,
+      "costs": {
+        "common": 350,
+        "rare": 420,
+        "superRare": 507,
+        "epic": 612,
+        "mythic": 734,
+        "legendary": 874,
+        "unique": 1049
+      }
+    },
+    {
+      "level": 46,
+      "costs": {
+        "common": 359,
+        "rare": 431,
+        "superRare": 521,
+        "epic": 629,
+        "mythic": 755,
+        "legendary": 898,
+        "unique": 1078
+      }
+    },
+    {
+      "level": 47,
+      "costs": {
+        "common": 369,
+        "rare": 443,
+        "superRare": 535,
+        "epic": 646,
+        "mythic": 775,
+        "legendary": 923,
+        "unique": 1108
+      }
+    },
+    {
+      "level": 48,
+      "costs": {
+        "common": 379,
+        "rare": 455,
+        "superRare": 550,
+        "epic": 663,
+        "mythic": 796,
+        "legendary": 948,
+        "unique": 1137
+      }
+    },
+    {
+      "level": 49,
+      "costs": {
+        "common": 389,
+        "rare": 467,
+        "superRare": 564,
+        "epic": 681,
+        "mythic": 817,
+        "legendary": 972,
+        "unique": 1167
+      }
+    },
+    {
+      "level": 50,
+      "costs": {
+        "common": 399,
+        "rare": 479,
+        "superRare": 578,
+        "epic": 698,
+        "mythic": 838,
+        "legendary": 997,
+        "unique": 1197
+      }
+    },
+    {
+      "level": 51,
+      "costs": {
+        "common": 409,
+        "rare": 491,
+        "superRare": 593,
+        "epic": 716,
+        "mythic": 859,
+        "legendary": 1022,
+        "unique": 1227
+      }
+    },
+    {
+      "level": 52,
+      "costs": {
+        "common": 419,
+        "rare": 503,
+        "superRare": 607,
+        "epic": 733,
+        "mythic": 880,
+        "legendary": 1047,
+        "unique": 1257
+      }
+    },
+    {
+      "level": 53,
+      "costs": {
+        "common": 429,
+        "rare": 515,
+        "superRare": 622,
+        "epic": 751,
+        "mythic": 901,
+        "legendary": 1073,
+        "unique": 1287
+      }
+    },
+    {
+      "level": 54,
+      "costs": {
+        "common": 439,
+        "rare": 527,
+        "superRare": 637,
+        "epic": 769,
+        "mythic": 922,
+        "legendary": 1098,
+        "unique": 1317
+      }
+    },
+    {
+      "level": 55,
+      "costs": {
+        "common": 449,
+        "rare": 539,
+        "superRare": 652,
+        "epic": 786,
+        "mythic": 944,
+        "legendary": 1123,
+        "unique": 1348
+      }
+    },
+    {
+      "level": 56,
+      "costs": {
+        "common": 460,
+        "rare": 551,
+        "superRare": 666,
+        "epic": 804,
+        "mythic": 965,
+        "legendary": 1149,
+        "unique": 1379
+      }
+    },
+    {
+      "level": 57,
+      "costs": {
+        "common": 470,
+        "rare": 564,
+        "superRare": 681,
+        "epic": 822,
+        "mythic": 987,
+        "legendary": 1175,
+        "unique": 1410
+      }
+    },
+    {
+      "level": 58,
+      "costs": {
+        "common": 480,
+        "rare": 576,
+        "superRare": 696,
+        "epic": 840,
+        "mythic": 1008,
+        "legendary": 1200,
+        "unique": 1441
+      }
+    },
+    {
+      "level": 59,
+      "costs": {
+        "common": 491,
+        "rare": 589,
+        "superRare": 711,
+        "epic": 858,
+        "mythic": 1030,
+        "legendary": 1226,
+        "unique": 1472
+      }
+    },
+    {
+      "level": 60,
+      "costs": {
+        "common": 501,
+        "rare": 601,
+        "superRare": 726,
+        "epic": 877,
+        "mythic": 1052,
+        "legendary": 1252,
+        "unique": 1503
+      }
+    },
+    {
+      "level": 61,
+      "costs": {
+        "common": 511,
+        "rare": 614,
+        "superRare": 742,
+        "epic": 895,
+        "mythic": 1074,
+        "legendary": 1279,
+        "unique": 1534
+      }
+    },
+    {
+      "level": 62,
+      "costs": {
+        "common": 522,
+        "rare": 626,
+        "superRare": 757,
+        "epic": 913,
+        "mythic": 1096,
+        "legendary": 1305,
+        "unique": 1566
+      }
+    },
+    {
+      "level": 63,
+      "costs": {
+        "common": 532,
+        "rare": 639,
+        "superRare": 772,
+        "epic": 932,
+        "mythic": 1118,
+        "legendary": 1331,
+        "unique": 1597
+      }
+    },
+    {
+      "level": 64,
+      "costs": {
+        "common": 543,
+        "rare": 652,
+        "superRare": 787,
+        "epic": 950,
+        "mythic": 1140,
+        "legendary": 1358,
+        "unique": 1629
+      }
+    },
+    {
+      "level": 65,
+      "costs": {
+        "common": 554,
+        "rare": 664,
+        "superRare": 803,
+        "epic": 969,
+        "mythic": 1163,
+        "legendary": 1384,
+        "unique": 1661
+      }
+    },
+    {
+      "level": 66,
+      "costs": {
+        "common": 564,
+        "rare": 677,
+        "superRare": 818,
+        "epic": 988,
+        "mythic": 1185,
+        "legendary": 1411,
+        "unique": 1693
+      }
+    },
+    {
+      "level": 67,
+      "costs": {
+        "common": 575,
+        "rare": 690,
+        "superRare": 834,
+        "epic": 1006,
+        "mythic": 1208,
+        "legendary": 1438,
+        "unique": 1725
+      }
+    },
+    {
+      "level": 68,
+      "costs": {
+        "common": 586,
+        "rare": 703,
+        "superRare": 849,
+        "epic": 1025,
+        "mythic": 1230,
+        "legendary": 1465,
+        "unique": 1757
+      }
+    },
+    {
+      "level": 69,
+      "costs": {
+        "common": 597,
+        "rare": 716,
+        "superRare": 865,
+        "epic": 1044,
+        "mythic": 1253,
+        "legendary": 1491,
+        "unique": 1790
+      }
+    },
+    {
+      "level": 70,
+      "costs": {
+        "common": 607,
+        "rare": 729,
+        "superRare": 881,
+        "epic": 1063,
+        "mythic": 1276,
+        "legendary": 1519,
+        "unique": 1822
+      }
+    },
+    {
+      "level": 71,
+      "costs": {
+        "common": 618,
+        "rare": 742,
+        "superRare": 897,
+        "epic": 1082,
+        "mythic": 1298,
+        "legendary": 1546,
+        "unique": 1855
+      }
+    },
+    {
+      "level": 72,
+      "costs": {
+        "common": 629,
+        "rare": 755,
+        "superRare": 912,
+        "epic": 1101,
+        "mythic": 1321,
+        "legendary": 1573,
+        "unique": 1888
+      }
+    },
+    {
+      "level": 73,
+      "costs": {
+        "common": 640,
+        "rare": 768,
+        "superRare": 928,
+        "epic": 1120,
+        "mythic": 1344,
+        "legendary": 1600,
+        "unique": 1920
+      }
+    },
+    {
+      "level": 74,
+      "costs": {
+        "common": 651,
+        "rare": 781,
+        "superRare": 944,
+        "epic": 1139,
+        "mythic": 1367,
+        "legendary": 1628,
+        "unique": 1953
+      }
+    },
+    {
+      "level": 75,
+      "costs": {
+        "common": 662,
+        "rare": 795,
+        "superRare": 960,
+        "epic": 1159,
+        "mythic": 1390,
+        "legendary": 1655,
+        "unique": 1986
+      }
+    },
+    {
+      "level": 76,
+      "costs": {
+        "common": 673,
+        "rare": 808,
+        "superRare": 976,
+        "epic": 1178,
+        "mythic": 1414,
+        "legendary": 1683,
+        "unique": 2020
+      }
+    },
+    {
+      "level": 77,
+      "costs": {
+        "common": 684,
+        "rare": 821,
+        "superRare": 992,
+        "epic": 1197,
+        "mythic": 1437,
+        "legendary": 1711,
+        "unique": 2053
+      }
+    },
+    {
+      "level": 78,
+      "costs": {
+        "common": 695,
+        "rare": 834,
+        "superRare": 1008,
+        "epic": 1217,
+        "mythic": 1460,
+        "legendary": 1739,
+        "unique": 2086
+      }
+    },
+    {
+      "level": 79,
+      "costs": {
+        "common": 707,
+        "rare": 848,
+        "superRare": 1025,
+        "epic": 1236,
+        "mythic": 1484,
+        "legendary": 1766,
+        "unique": 2120
+      }
+    },
+    {
+      "level": 80,
+      "costs": {
+        "common": 718,
+        "rare": 861,
+        "superRare": 1041,
+        "epic": 1256,
+        "mythic": 1507,
+        "legendary": 1794,
+        "unique": 2153
+      }
+    },
+    {
+      "level": 81,
+      "costs": {
+        "common": 729,
+        "rare": 875,
+        "superRare": 1057,
+        "epic": 1276,
+        "mythic": 1531,
+        "legendary": 1823,
+        "unique": 2187
+      }
+    },
+    {
+      "level": 82,
+      "costs": {
+        "common": 740,
+        "rare": 888,
+        "superRare": 1073,
+        "epic": 1295,
+        "mythic": 1555,
+        "legendary": 1851,
+        "unique": 2221
+      }
+    },
+    {
+      "level": 83,
+      "costs": {
+        "common": 752,
+        "rare": 902,
+        "superRare": 1090,
+        "epic": 1315,
+        "mythic": 1578,
+        "legendary": 1879,
+        "unique": 2255
+      }
+    },
+    {
+      "level": 84,
+      "costs": {
+        "common": 763,
+        "rare": 915,
+        "superRare": 1106,
+        "epic": 1335,
+        "mythic": 1602,
+        "legendary": 1907,
+        "unique": 2289
+      }
+    },
+    {
+      "level": 85,
+      "costs": {
+        "common": 774,
+        "rare": 929,
+        "superRare": 1123,
+        "epic": 1355,
+        "mythic": 1626,
+        "legendary": 1936,
+        "unique": 2323
+      }
+    },
+    {
+      "level": 86,
+      "costs": {
+        "common": 786,
+        "rare": 943,
+        "superRare": 1139,
+        "epic": 1375,
+        "mythic": 1650,
+        "legendary": 1964,
+        "unique": 2357
+      }
+    },
+    {
+      "level": 87,
+      "costs": {
+        "common": 797,
+        "rare": 957,
+        "superRare": 1156,
+        "epic": 1395,
+        "mythic": 1674,
+        "legendary": 1993,
+        "unique": 2391
+      }
+    },
+    {
+      "level": 88,
+      "costs": {
+        "common": 809,
+        "rare": 970,
+        "superRare": 1172,
+        "epic": 1415,
+        "mythic": 1698,
+        "legendary": 2021,
+        "unique": 2426
+      }
+    },
+    {
+      "level": 89,
+      "costs": {
+        "common": 820,
+        "rare": 984,
+        "superRare": 1189,
+        "epic": 1435,
+        "mythic": 1722,
+        "legendary": 2050,
+        "unique": 2460
+      }
+    },
+    {
+      "level": 90,
+      "costs": {
+        "common": 832,
+        "rare": 998,
+        "superRare": 1206,
+        "epic": 1455,
+        "mythic": 1746,
+        "legendary": 2079,
+        "unique": 2495
+      }
+    },
+    {
+      "level": 91,
+      "costs": {
+        "common": 843,
+        "rare": 1012,
+        "superRare": 1223,
+        "epic": 1476,
+        "mythic": 1771,
+        "legendary": 2108,
+        "unique": 2530
+      }
+    },
+    {
+      "level": 92,
+      "costs": {
+        "common": 855,
+        "rare": 1026,
+        "superRare": 1239,
+        "epic": 1496,
+        "mythic": 1795,
+        "legendary": 2137,
+        "unique": 2564
+      }
+    },
+    {
+      "level": 93,
+      "costs": {
+        "common": 866,
+        "rare": 1040,
+        "superRare": 1256,
+        "epic": 1516,
+        "mythic": 1819,
+        "legendary": 2166,
+        "unique": 2599
+      }
+    },
+    {
+      "level": 94,
+      "costs": {
+        "common": 878,
+        "rare": 1054,
+        "superRare": 1273,
+        "epic": 1537,
+        "mythic": 1844,
+        "legendary": 2195,
+        "unique": 2634
+      }
+    },
+    {
+      "level": 95,
+      "costs": {
+        "common": 890,
+        "rare": 1068,
+        "superRare": 1290,
+        "epic": 1557,
+        "mythic": 1869,
+        "legendary": 2224,
+        "unique": 2669
+      }
+    },
+    {
+      "level": 96,
+      "costs": {
+        "common": 901,
+        "rare": 1082,
+        "superRare": 1307,
+        "epic": 1578,
+        "mythic": 1893,
+        "legendary": 2254,
+        "unique": 2704
+      }
+    },
+    {
+      "level": 97,
+      "costs": {
+        "common": 913,
+        "rare": 1096,
+        "superRare": 1324,
+        "epic": 1598,
+        "mythic": 1918,
+        "legendary": 2283,
+        "unique": 2740
+      }
+    },
+    {
+      "level": 98,
+      "costs": {
+        "common": 925,
+        "rare": 1110,
+        "superRare": 1341,
+        "epic": 1619,
+        "mythic": 1943,
+        "legendary": 2313,
+        "unique": 2775
+      }
+    },
+    {
+      "level": 99,
+      "costs": {
+        "common": 937,
+        "rare": 1124,
+        "superRare": 1358,
+        "epic": 1639,
+        "mythic": 1967,
+        "legendary": 2342,
+        "unique": 2811
+      }
+    }
+  ],
+  "fullSet": {
+    "classId": "warrior",
+    "tier": 5,
+    "upgrade": 30,
+    "totals": {
+      "common": {
+        "vitality": 280,
+        "strength": 78,
+        "resistance": 84,
+        "magic": 0,
+        "agility": 14,
+        "initiative": 0,
+        "accuracy": 0.024,
+        "critChance": 0.011,
+        "critDamage": 0,
+        "armor": 120,
+        "penetration": 0,
+        "elementalResistance": 0,
+        "healingBonus": 0,
+        "statusResistance": 0
+      },
+      "rare": {
+        "vitality": 384,
+        "strength": 94,
+        "resistance": 174,
+        "magic": 0,
+        "agility": 17,
+        "initiative": 13,
+        "accuracy": 0.029,
+        "critChance": 0.013,
+        "critDamage": 0.086,
+        "armor": 173,
+        "penetration": 0,
+        "elementalResistance": 0.034,
+        "healingBonus": 0,
+        "statusResistance": 0
+      },
+      "superRare": {
+        "vitality": 495,
+        "strength": 163,
+        "resistance": 233,
+        "magic": 0,
+        "agility": 21,
+        "initiative": 16,
+        "accuracy": 0.035,
+        "critChance": 0.04,
+        "critDamage": 0.104,
+        "armor": 232,
+        "penetration": 0,
+        "elementalResistance": 0.068,
+        "healingBonus": 0,
+        "statusResistance": 0.042
+      },
+      "epic": {
+        "vitality": 596,
+        "strength": 196,
+        "resistance": 281,
+        "magic": 0,
+        "agility": 38,
+        "initiative": 31,
+        "accuracy": 0.063,
+        "critChance": 0.048,
+        "critDamage": 0.126,
+        "armor": 315,
+        "penetration": 0.053,
+        "elementalResistance": 0.119,
+        "healingBonus": 0,
+        "statusResistance": 0.103
+      },
+      "mythic": {
+        "vitality": 757,
+        "strength": 288,
+        "resistance": 339,
+        "magic": 0,
+        "agility": 58,
+        "initiative": 38,
+        "accuracy": 0.075,
+        "critChance": 0.058,
+        "critDamage": 0.152,
+        "armor": 402,
+        "penetration": 0.085,
+        "elementalResistance": 0.161,
+        "healingBonus": 0,
+        "statusResistance": 0.161
+      },
+      "legendary": {
+        "vitality": 864,
+        "strength": 346,
+        "resistance": 384,
+        "magic": 0,
+        "agility": 104,
+        "initiative": 55,
+        "accuracy": 0.112,
+        "critChance": 0.066,
+        "critDamage": 0.202,
+        "armor": 462,
+        "penetration": 0.097,
+        "elementalResistance": 0.202,
+        "healingBonus": 0,
+        "statusResistance": 0.202
+      },
+      "unique": {
+        "vitality": 901,
+        "strength": 362,
+        "resistance": 404,
+        "magic": 0,
+        "agility": 108,
+        "initiative": 59,
+        "accuracy": 0.116,
+        "critChance": 0.069,
+        "critDamage": 0.211,
+        "armor": 480,
+        "penetration": 0.102,
+        "elementalResistance": 0.212,
+        "healingBonus": 0,
+        "statusResistance": 0.212
+      }
+    }
+  },
+  "monsterCalculator": {
+    "monsterId": "MON-053",
+    "levels": [
+      {
+        "level": 30,
+        "hp": 485,
+        "strength": 92,
+        "magic": 0,
+        "resistance": 120,
+        "armor": 128,
+        "agility": 29,
+        "initiative": 25,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.123,
+        "physicalReduction": 0.345,
+        "magicalReduction": 0.15,
+        "damagePerHit": 0.015,
+        "xp": 421,
+        "gold": 296
+      },
+      {
+        "level": 60,
+        "hp": 1015,
+        "strength": 192,
+        "magic": 0,
+        "resistance": 252,
+        "armor": 269,
+        "agility": 61,
+        "initiative": 53,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.199,
+        "physicalReduction": 0.346,
+        "magicalReduction": 0.15,
+        "damagePerHit": 0.015,
+        "xp": 1002,
+        "gold": 754
+      },
+      {
+        "level": 70,
+        "hp": 1206,
+        "strength": 228,
+        "magic": 0,
+        "resistance": 300,
+        "armor": 320,
+        "agility": 72,
+        "initiative": 63,
+        "accuracy": 0.9,
+        "critChance": 0.05,
+        "critDamage": 0.5,
+        "penetration": 0.05,
+        "statusResistance": 0.224,
+        "physicalReduction": 0.346,
+        "magicalReduction": 0.15,
+        "damagePerHit": 0.015,
+        "xp": 1215,
+        "gold": 929
+      }
+    ]
+  }
+}

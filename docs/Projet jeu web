@@ -1,0 +1,764 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="ox6BesEef_g1uQdtjQxw">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="3300" pageHeight="2339" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Idée RPG Tour avec déblocage de zone a chaque palier de 5 niveaux" vertex="1">
+          <mxGeometry height="110" width="170" x="1575" y="2210" as="geometry" />
+        </mxCell>
+        <mxCell id="t7ED_FCyXAtfCUHatH83-4" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" value="" vertex="1">
+          <mxGeometry height="1640" width="270" x="1530" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-3" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;aspect=fixed;" value="Village de debut&lt;br&gt;Taverne (Marchand)&lt;br&gt;Entrepot (stockage)&lt;br&gt;Scirie (bois)&lt;br&gt;Terrain chasse (Cuir)&lt;br&gt;Champs (lin)" vertex="1">
+          <mxGeometry height="150" width="150" x="2030" y="1810" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-7" edge="1" parent="1" source="d_5pyCsBiI8nXGrhojWF-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="d_5pyCsBiI8nXGrhojWF-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-11" edge="1" parent="1" source="d_5pyCsBiI8nXGrhojWF-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="d_5pyCsBiI8nXGrhojWF-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-12" edge="1" parent="1" source="d_5pyCsBiI8nXGrhojWF-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="d_5pyCsBiI8nXGrhojWF-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="Classe" vertex="1">
+          <mxGeometry height="60" width="120" x="2790" y="1100" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="Guerrier" vertex="1">
+          <mxGeometry height="60" width="120" x="2610" y="1220" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="Tireur" vertex="1">
+          <mxGeometry height="60" width="120" x="2790" y="1220" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="Mage" vertex="1">
+          <mxGeometry height="60" width="120" x="2970" y="1220" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-13" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;Guerrier peux manier toute les armes (epee hache bouclier,...)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="80" width="80" x="2630" y="1310" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-14" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;Archer peut manier toute les armes de distance (arc, arbalette, fusil,...)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="80" width="80" x="2810" y="1310" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-15" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;Mage peut manier tout les armes de magie (baton, baguette,....)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="80" width="80" x="2990" y="1310" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Equipement" vertex="1">
+          <mxGeometry height="60" width="120" x="2680" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-17" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;Chapeau&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2800" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-18" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Armure&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2800" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-19" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;pantalon&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2800" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-20" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Botte&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2800" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-21" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Collier&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2640" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-22" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Anneau 1&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2640" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-23" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Anneau 2&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2640" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-24" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Ceinture&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2640" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-26" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Arme 1&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2690" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-27" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Arme 2&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2750" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-28" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Pour arme 1 et arme 2 ça dépend de la classe exemple éppe (1) et bouclier (2) pour le guerrier" vertex="1">
+          <mxGeometry height="160" width="160" x="2930" y="780" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-29" edge="1" parent="1" source="d_5pyCsBiI8nXGrhojWF-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1810" y="1885" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-30" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 5&amp;nbsp;" vertex="1">
+          <mxGeometry height="20" width="70" x="1875" y="1850" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-82" edge="1" parent="1" source="d_5pyCsBiI8nXGrhojWF-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1810" y="1684.734939759036" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-31" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;aspect=fixed;" value="Mine (fer/charbon)&lt;br&gt;Atelier fabrication (Forge + fabrication equipement + amélioration equipement)&amp;nbsp; &amp;nbsp; Champs (laine)&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="150" width="150" x="2040" y="1610" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-32" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 15" vertex="1">
+          <mxGeometry height="20" width="70" x="1885" y="1640" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-36" edge="1" parent="1" style="shape=link;html=1;rounded=0;" value="">
+          <mxGeometry relative="1" width="100" as="geometry">
+            <mxPoint x="2605" y="1910" as="sourcePoint" />
+            <mxPoint x="2715" y="1830" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-37" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="2715" y="1830" as="sourcePoint" />
+            <mxPoint x="2735" y="1760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-38" edge="1" parent="1" style="shape=link;html=1;rounded=0;" value="">
+          <mxGeometry relative="1" width="100" as="geometry">
+            <mxPoint x="2735" y="1760" as="sourcePoint" />
+            <mxPoint x="2845" y="1680" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-39" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="2845" y="1680" as="sourcePoint" />
+            <mxPoint x="2865" y="1610" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-41" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Niveau 1 à 5" vertex="1">
+          <mxGeometry height="60" width="120" x="2765" y="1850" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-42" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Niveau 6 à 10" vertex="1">
+          <mxGeometry height="60" width="120" x="2815" y="1720" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-43" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Niveau 10 à 11&lt;br&gt;etc ...." vertex="1">
+          <mxGeometry height="60" width="120" x="2915" y="1620" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-44" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Monter en niveau de la difficulté" vertex="1">
+          <mxGeometry height="60" width="230" x="2745" y="1520" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-58" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Trophé&lt;br&gt;Ame&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2580" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-59" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Trophé&lt;/span&gt;&lt;br style=&quot;font-size: 8px;&quot;&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;Ame&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2635" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-60" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Trophé&lt;/span&gt;&lt;br style=&quot;font-size: 8px;&quot;&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;Ame&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2690" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-61" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Trophé&lt;/span&gt;&lt;br style=&quot;font-size: 8px;&quot;&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;Ame&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2750" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-62" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Trophé&lt;/span&gt;&lt;br style=&quot;font-size: 8px;&quot;&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;Ame&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2810" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-63" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Trophé&lt;/span&gt;&lt;br style=&quot;font-size: 8px;&quot;&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;Ame&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="40" x="2870" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-64" parent="1" style="swimlane;startSize=0;" value="" vertex="1">
+          <mxGeometry height="335" width="560" x="2560" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-65" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Rarete" vertex="1">
+          <mxGeometry height="60" width="120" x="2650" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-66" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Commun" vertex="1">
+          <mxGeometry height="40" width="80" x="2670" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-67" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" value="Rare" vertex="1">
+          <mxGeometry height="40" width="80" x="2670" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-68" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" value="Super rare" vertex="1">
+          <mxGeometry height="40" width="80" x="2670" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-69" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6a00ff;fontColor=#ffffff;strokeColor=#3700CC;" value="Epique" vertex="1">
+          <mxGeometry height="40" width="80" x="2670" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="CYTc-HVs913fsKwp2z4y-1" edge="1" parent="1" source="d_5pyCsBiI8nXGrhojWF-70" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="d_5pyCsBiI8nXGrhojWF-69" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-70" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=light-dark(#E51400,#FF3333);fontColor=#ffffff;strokeColor=light-dark(#B20000,#FF0000);" value="Mythique" vertex="1">
+          <mxGeometry height="40" width="80" x="2670" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-71" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0a30a;fontColor=#000000;strokeColor=#BD7000;" value="Légendaire" vertex="1">
+          <mxGeometry height="40" width="80" x="2670" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-72" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Offre des stats seulement" vertex="1">
+          <mxGeometry height="80" width="80" x="2800" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-73" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Offre stats et passif" vertex="1">
+          <mxGeometry height="80" width="80" x="2810" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-74" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Nom des equipements sera le nom + materiaux ex : épée en bois (commun), épées en fer (rare)" vertex="1">
+          <mxGeometry height="90" width="140" x="2900" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-75" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Nom des equipements unique ex épées de la mort (légendaire)" vertex="1">
+          <mxGeometry height="90" width="140" x="2900" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-76" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Statisque donné par l&#39;equiment change en fonction du niveau et de la rarete" vertex="1">
+          <mxGeometry height="60" width="120" x="2860" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-78" edge="1" parent="1" source="d_5pyCsBiI8nXGrhojWF-77" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1810" y="1495" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-77" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;aspect=fixed;" value="Mine (Acier)&lt;br&gt;Terrain de chasse ( cuir cloute)&lt;br&gt;Champs (soie)" vertex="1">
+          <mxGeometry height="150" width="150" x="2040" y="1420" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-79" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 30" vertex="1">
+          <mxGeometry height="20" width="70" x="1885" y="1440" as="geometry" />
+        </mxCell>
+        <mxCell id="RARnqhkovSD88i4c_OZm-1" edge="1" parent="1" source="RARnqhkovSD88i4c_OZm-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1800" y="1275" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RARnqhkovSD88i4c_OZm-2" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;aspect=fixed;" value="Mine (mithril)&amp;nbsp;&lt;br&gt;Terrain de chasse (écailles)&lt;br&gt;Champs (velour enchanté)" vertex="1">
+          <mxGeometry height="150" width="150" x="2030" y="1200" as="geometry" />
+        </mxCell>
+        <mxCell id="RARnqhkovSD88i4c_OZm-4" edge="1" parent="1" source="RARnqhkovSD88i4c_OZm-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1800" y="1045" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RARnqhkovSD88i4c_OZm-5" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;aspect=fixed;" value="Mine ( adamantite)&lt;br&gt;Terrain de chasse (peau de dragon)&lt;br&gt;&lt;div&gt;Champs étoffe astral)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="150" width="150" x="2030" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="RARnqhkovSD88i4c_OZm-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 70" vertex="1">
+          <mxGeometry height="20" width="70" x="1885" y="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="RARnqhkovSD88i4c_OZm-13" edge="1" parent="1" source="RARnqhkovSD88i4c_OZm-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1800" y="435" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RARnqhkovSD88i4c_OZm-14" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;aspect=fixed;" value="tour d&#39;amélioration" vertex="1">
+          <mxGeometry height="150" width="150" x="2030" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="RARnqhkovSD88i4c_OZm-15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 100" vertex="1">
+          <mxGeometry height="20" width="70" x="1890" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-85" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Chaque étage à le niveau de son étage ex etage 84 - ennemie niveau 84" vertex="1">
+          <mxGeometry height="100" width="100" x="1610" y="2040" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-86" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Chaque zone débloquable dans les biomes seront débloquer tout les tranche de 5 étage et auront des adversaire affrontable a l&#39;infini" vertex="1">
+          <mxGeometry height="150" width="150" x="1070" y="2120" as="geometry" />
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-17" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="1450" width="220.00000000000023" x="1310" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-2" edge="1" parent="-XuL1hWMJ0MTMC0_t4hX-17" source="-XuL1hWMJ0MTMC0_t4hX-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220.00000000000023" y="1409.8981481481478" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-1" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;" value="&lt;br&gt;&lt;br&gt;Biome Forêt (neutre)&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="120" y="1370" as="geometry" />
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-3" edge="1" parent="-XuL1hWMJ0MTMC0_t4hX-17" source="-XuL1hWMJ0MTMC0_t4hX-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220.00000000000023" y="1249.8981481481478" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-4" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;" value="&lt;br&gt;&lt;br&gt;Biome Montagne (Terre)&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="120" y="1210" as="geometry" />
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-5" edge="1" parent="-XuL1hWMJ0MTMC0_t4hX-17" source="-XuL1hWMJ0MTMC0_t4hX-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220.00000000000023" y="1109.8981481481478" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-6" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;" value="&lt;br&gt;&lt;br&gt;Biome Volcan (feu)&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="120" y="1070" as="geometry" />
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-7" edge="1" parent="-XuL1hWMJ0MTMC0_t4hX-17" source="-XuL1hWMJ0MTMC0_t4hX-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220.00000000000023" y="949.8981481481478" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-8" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;" value="&lt;br&gt;&lt;br&gt;Biome Desert (Vent)&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="120" y="910" as="geometry" />
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-9" edge="1" parent="-XuL1hWMJ0MTMC0_t4hX-17" source="-XuL1hWMJ0MTMC0_t4hX-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220.00000000000023" y="809.8981481481478" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-10" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;" value="&lt;br&gt;&lt;br&gt;Biome Marais (Acide)" vertex="1">
+          <mxGeometry height="80" width="120" y="770" as="geometry" />
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-11" edge="1" parent="-XuL1hWMJ0MTMC0_t4hX-17" source="-XuL1hWMJ0MTMC0_t4hX-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220.00000000000023" y="649.8981481481478" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-12" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;" value="&lt;br&gt;&lt;br&gt;Biome Ocean/Ile (Eau)&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="120" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-13" edge="1" parent="-XuL1hWMJ0MTMC0_t4hX-17" source="-XuL1hWMJ0MTMC0_t4hX-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220.00000000000023" y="509.8981481481478" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-14" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;" value="&lt;br&gt;&lt;br&gt;Biome Iceberg (Glace)&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="120" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-15" edge="1" parent="-XuL1hWMJ0MTMC0_t4hX-17" source="-XuL1hWMJ0MTMC0_t4hX-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220.00000000000023" y="349.8981481481478" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-16" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;" value="&lt;br&gt;&lt;br&gt;Biome Haute Montagne (Electricité)&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="120" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-88" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 1-10" vertex="1">
+          <mxGeometry height="20" width="70" x="130" y="1380" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-107" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 11-20" vertex="1">
+          <mxGeometry height="20" width="70" x="130" y="1210" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-108" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 21-30" vertex="1">
+          <mxGeometry height="20" width="70" x="130" y="1080" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-109" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 31-40" vertex="1">
+          <mxGeometry height="20" width="70" x="130" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-110" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 41-50" vertex="1">
+          <mxGeometry height="20" width="70" x="130" y="780" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-111" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 51-60" vertex="1">
+          <mxGeometry height="20" width="70" x="130" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-112" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 61-70" vertex="1">
+          <mxGeometry height="20" width="70" x="140" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-113" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 71-80" vertex="1">
+          <mxGeometry height="20" width="70" x="130" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-114" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 81-90" vertex="1">
+          <mxGeometry height="20" width="70" x="130" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-115" parent="-XuL1hWMJ0MTMC0_t4hX-17" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 91-100" vertex="1">
+          <mxGeometry height="20" width="80" x="130" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-87" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="De plus les ennemie de zone auront un niveau variable niv étage +10 max ex zone étage 5 les ennemis seront de niveau 5 à 15" vertex="1">
+          <mxGeometry height="150" width="150" x="1250" y="2120" as="geometry" />
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-25" edge="1" parent="1" source="-XuL1hWMJ0MTMC0_t4hX-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1530.0000000000002" y="649.8981481481478" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-26" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;" value="&lt;br&gt;&lt;br&gt;Biome Palais Céleste (Lumière)&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="120" x="1310" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-27" edge="1" parent="1" source="-XuL1hWMJ0MTMC0_t4hX-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1530.0000000000002" y="509.8981481481478" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-XuL1hWMJ0MTMC0_t4hX-28" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;" value="&lt;br&gt;&lt;br&gt;Biome Palais Démonique (Ombre)&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="120" x="1310" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-116" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Etage normal 3 vague d&#39;ennemi" vertex="1">
+          <mxGeometry height="80" width="80" x="1340" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-118" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Etage Boss (5-10-15-etc...) 5 vague d&#39;ennemi" vertex="1">
+          <mxGeometry height="80" width="80" x="1440" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-119" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Foret de chasse (5)" vertex="1">
+          <mxGeometry height="150" width="140" x="1140" y="1815" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-120" parent="d_5pyCsBiI8nXGrhojWF-119" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Sanglier" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-121" parent="d_5pyCsBiI8nXGrhojWF-119" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Loup" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-122" parent="d_5pyCsBiI8nXGrhojWF-119" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Ours" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="dJ39JVgeNW_719BEMyop-2" parent="d_5pyCsBiI8nXGrhojWF-119" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Ours&amp;nbsp;enragé (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-123" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Tannière dragon (9)" vertex="1">
+          <mxGeometry height="60" width="140" x="980" y="1815" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-124" parent="d_5pyCsBiI8nXGrhojWF-123" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Dragon Boss (Neutre)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-127" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Village Gobbelin (10)" vertex="1">
+          <mxGeometry height="180" width="140" x="820" y="1815" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-128" parent="d_5pyCsBiI8nXGrhojWF-127" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Chef&amp;nbsp; Gobbelin (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-129" parent="d_5pyCsBiI8nXGrhojWF-127" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Gobbelin" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-131" parent="d_5pyCsBiI8nXGrhojWF-127" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Guerrier Gobbelin" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-130" parent="d_5pyCsBiI8nXGrhojWF-127" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Chaman Gobbelin" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-132" parent="d_5pyCsBiI8nXGrhojWF-127" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Archer gobbelin" vertex="1">
+          <mxGeometry height="30" width="140" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-133" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Mine Abandonnée (15)" vertex="1">
+          <mxGeometry height="180" width="140" x="1140" y="1630" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-134" parent="d_5pyCsBiI8nXGrhojWF-133" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Haut Chaman Gobbelin (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-135" parent="d_5pyCsBiI8nXGrhojWF-133" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Haut Gobbelin&amp;nbsp;" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-172" parent="d_5pyCsBiI8nXGrhojWF-133" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Haut Archer Bobbelin" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-136" parent="d_5pyCsBiI8nXGrhojWF-133" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Haut guerrier Gobbelin" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-137" parent="d_5pyCsBiI8nXGrhojWF-133" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Haut Shaman Bobbelin" vertex="1">
+          <mxGeometry height="30" width="140" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-138" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Tannière dragon (19)" vertex="1">
+          <mxGeometry height="60" width="140" x="980" y="1630" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-139" parent="d_5pyCsBiI8nXGrhojWF-138" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Dragon (Boss) (Terre)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-140" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Grotte Profonde (20)" vertex="1">
+          <mxGeometry height="150" width="140" x="820" y="1630" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-141" parent="d_5pyCsBiI8nXGrhojWF-140" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Chef Orc (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-142" parent="d_5pyCsBiI8nXGrhojWF-140" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Orc" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-143" parent="d_5pyCsBiI8nXGrhojWF-140" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Guerrier Orc" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-145" parent="d_5pyCsBiI8nXGrhojWF-140" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Chaman Orc" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-146" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Ocean de lave (25)" vertex="1">
+          <mxGeometry height="120" width="140" x="1140" y="1450" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-148" parent="d_5pyCsBiI8nXGrhojWF-146" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Salamandre" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-149" parent="d_5pyCsBiI8nXGrhojWF-146" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Malphite (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-150" parent="d_5pyCsBiI8nXGrhojWF-146" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Golem de feu" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-151" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Tannière dragon (29)" vertex="1">
+          <mxGeometry height="60" width="140" x="980" y="1450" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-152" parent="d_5pyCsBiI8nXGrhojWF-151" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Dragon Boss (Feu)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-153" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Coeur du Volcan (30)" vertex="1">
+          <mxGeometry height="150" width="140" x="820" y="1450" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-154" parent="d_5pyCsBiI8nXGrhojWF-153" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Ifrit (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-173" parent="d_5pyCsBiI8nXGrhojWF-153" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Diablotin" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-155" parent="d_5pyCsBiI8nXGrhojWF-153" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Chien des enfers" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-156" parent="d_5pyCsBiI8nXGrhojWF-153" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Elementaire de feu" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-174" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Etage Dragon une vague le dragon (sac à pv)" vertex="1">
+          <mxGeometry height="80" width="80" x="1240" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-175" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Desert d&#39;arrakis(35)" vertex="1">
+          <mxGeometry height="150" width="140" x="1140" y="1290" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-176" parent="d_5pyCsBiI8nXGrhojWF-175" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Ver des sable (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-177" parent="d_5pyCsBiI8nXGrhojWF-175" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Djin" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-178" parent="d_5pyCsBiI8nXGrhojWF-175" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Souffleur" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-186" parent="d_5pyCsBiI8nXGrhojWF-175" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Harpie" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-179" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Tannière dragon (39)" vertex="1">
+          <mxGeometry height="60" width="140" x="980" y="1290" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-180" parent="d_5pyCsBiI8nXGrhojWF-179" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Dragon Boss (Vent)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-181" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Pyramide (40)" vertex="1">
+          <mxGeometry height="150" width="140" x="820" y="1290" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-182" parent="d_5pyCsBiI8nXGrhojWF-181" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Annubis (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-183" parent="d_5pyCsBiI8nXGrhojWF-181" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Lion humaniode" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-184" parent="d_5pyCsBiI8nXGrhojWF-181" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Chien humaniode" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-185" parent="d_5pyCsBiI8nXGrhojWF-181" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Ours humaniode" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-200" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Ancienne Tour (45)" vertex="1">
+          <mxGeometry height="150" width="140" x="1140" y="1130" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-201" parent="d_5pyCsBiI8nXGrhojWF-200" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Roi slime (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-202" parent="d_5pyCsBiI8nXGrhojWF-200" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Serpent Geant" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-203" parent="d_5pyCsBiI8nXGrhojWF-200" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Cracheur toxic" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-212" parent="d_5pyCsBiI8nXGrhojWF-200" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Slime" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-205" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Tannière dragon (49)" vertex="1">
+          <mxGeometry height="60" width="140" x="980" y="1130" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-206" parent="d_5pyCsBiI8nXGrhojWF-205" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Dragon Boss (Acide)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-207" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Maris des morts (50)" vertex="1">
+          <mxGeometry height="150" width="140" x="820" y="1130" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-213" parent="d_5pyCsBiI8nXGrhojWF-207" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Nurgol Zombie (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-209" parent="d_5pyCsBiI8nXGrhojWF-207" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Zombie" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-210" parent="d_5pyCsBiI8nXGrhojWF-207" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Claqueur" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-211" parent="d_5pyCsBiI8nXGrhojWF-207" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Zombie renforcé" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-214" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Ocean Profond (55)" vertex="1">
+          <mxGeometry height="150" width="140" x="1140" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-215" parent="d_5pyCsBiI8nXGrhojWF-214" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Kraken (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-216" parent="d_5pyCsBiI8nXGrhojWF-214" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Sirene" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-217" parent="d_5pyCsBiI8nXGrhojWF-214" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Crabes Geant" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-218" parent="d_5pyCsBiI8nXGrhojWF-214" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Requins" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-219" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Tannière dragon (59)" vertex="1">
+          <mxGeometry height="60" width="140" x="980" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-220" parent="d_5pyCsBiI8nXGrhojWF-219" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Dragon Boss (Eau)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-221" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Palais Des Atlantes (60)" vertex="1">
+          <mxGeometry height="150" width="140" x="670" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-222" parent="d_5pyCsBiI8nXGrhojWF-221" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Roi triton (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-223" parent="d_5pyCsBiI8nXGrhojWF-221" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Triton" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-224" parent="d_5pyCsBiI8nXGrhojWF-221" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Lancier Triton" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-225" parent="d_5pyCsBiI8nXGrhojWF-221" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Mage eau triton" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-226" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Plaine enneigé (65)" vertex="1">
+          <mxGeometry height="150" width="140" x="1140" y="810" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-227" parent="d_5pyCsBiI8nXGrhojWF-226" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Yeti (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-228" parent="d_5pyCsBiI8nXGrhojWF-226" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Mamout de glace" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-229" parent="d_5pyCsBiI8nXGrhojWF-226" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="loup givré" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-230" parent="d_5pyCsBiI8nXGrhojWF-226" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Zombie gelé" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-231" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Tannière dragon (69)" vertex="1">
+          <mxGeometry height="60" width="140" x="980" y="810" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-232" parent="d_5pyCsBiI8nXGrhojWF-231" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Dragon Boss (Glace)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-233" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Palais Des Glaces(70)" vertex="1">
+          <mxGeometry height="180" width="140" x="820" y="810" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-234" parent="d_5pyCsBiI8nXGrhojWF-233" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Roi elfique (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-235" parent="d_5pyCsBiI8nXGrhojWF-233" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Elfe" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-236" parent="d_5pyCsBiI8nXGrhojWF-233" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Guerrier elfe" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-238" parent="d_5pyCsBiI8nXGrhojWF-233" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Archer elfe" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-237" parent="d_5pyCsBiI8nXGrhojWF-233" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Elementaliste elfe" vertex="1">
+          <mxGeometry height="30" width="140" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-239" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Sommet des montagnes (75)" vertex="1">
+          <mxGeometry height="120" width="140" x="1140" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-240" parent="d_5pyCsBiI8nXGrhojWF-239" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Geant éléctrique (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-241" parent="d_5pyCsBiI8nXGrhojWF-239" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Geant" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-242" parent="d_5pyCsBiI8nXGrhojWF-239" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Geant tireur (Caillou electrique)" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-244" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Tannière dragon (79)" vertex="1">
+          <mxGeometry height="60" width="140" x="980" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-245" parent="d_5pyCsBiI8nXGrhojWF-244" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Dragon Boss (Electricite)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-246" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Orage (80)" vertex="1">
+          <mxGeometry height="120" width="140" x="660" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-247" parent="d_5pyCsBiI8nXGrhojWF-246" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Wyverne mutante (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-248" parent="d_5pyCsBiI8nXGrhojWF-246" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Wyverne" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-249" parent="d_5pyCsBiI8nXGrhojWF-246" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Oiseau electrique" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-251" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=20;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Ciel (85)" vertex="1">
+          <mxGeometry height="110" width="140" x="1140" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-252" parent="d_5pyCsBiI8nXGrhojWF-251" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Jesus (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-253" parent="d_5pyCsBiI8nXGrhojWF-251" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Croyant" vertex="1">
+          <mxGeometry height="30" width="140" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-254" parent="d_5pyCsBiI8nXGrhojWF-251" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Apotres" vertex="1">
+          <mxGeometry height="30" width="140" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-255" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Tannière dragon (89)" vertex="1">
+          <mxGeometry height="60" width="140" x="980" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-256" parent="d_5pyCsBiI8nXGrhojWF-255" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Dragon Boss (Lumière)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-257" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Paradis (90)" vertex="1">
+          <mxGeometry height="150" width="140" x="820" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-258" parent="d_5pyCsBiI8nXGrhojWF-257" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Michel (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-259" parent="d_5pyCsBiI8nXGrhojWF-257" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Ange" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-271" parent="d_5pyCsBiI8nXGrhojWF-257" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Archange" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-260" parent="d_5pyCsBiI8nXGrhojWF-257" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Seraphin" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-274" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Plaine Démoniaque (95)" vertex="1">
+          <mxGeometry height="210" width="140" x="1140" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-275" parent="d_5pyCsBiI8nXGrhojWF-274" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Wyverne Tenebre (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-276" parent="d_5pyCsBiI8nXGrhojWF-274" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Orc Démoniqua" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-284" parent="d_5pyCsBiI8nXGrhojWF-274" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Gobbelin démoniaque" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-286" parent="d_5pyCsBiI8nXGrhojWF-274" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Triton Demoniaque" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-285" parent="d_5pyCsBiI8nXGrhojWF-274" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Elfe Démonique" vertex="1">
+          <mxGeometry height="30" width="140" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-277" parent="d_5pyCsBiI8nXGrhojWF-274" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Zombie Demoniaque" vertex="1">
+          <mxGeometry height="30" width="140" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-278" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Tannière dragon (99)" vertex="1">
+          <mxGeometry height="60" width="140" x="980" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-279" parent="d_5pyCsBiI8nXGrhojWF-278" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Dragon Boss (Ombre)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-280" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Palais Démoniaque (100)" vertex="1">
+          <mxGeometry height="180" width="140" x="820" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-281" parent="d_5pyCsBiI8nXGrhojWF-280" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Roi Démon (Boss)" vertex="1">
+          <mxGeometry height="30" width="140" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-282" parent="d_5pyCsBiI8nXGrhojWF-280" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Archidémon" vertex="1">
+          <mxGeometry height="30" width="140" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-288" parent="d_5pyCsBiI8nXGrhojWF-280" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Démon inférieur" vertex="1">
+          <mxGeometry height="30" width="140" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-287" parent="d_5pyCsBiI8nXGrhojWF-280" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Démon" vertex="1">
+          <mxGeometry height="30" width="140" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d_5pyCsBiI8nXGrhojWF-283" parent="d_5pyCsBiI8nXGrhojWF-280" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" value="Démon supérieur" vertex="1">
+          <mxGeometry height="30" width="140" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="NoUSWwTfitbZhSEmZKZ3-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" value="Unique" vertex="1">
+          <mxGeometry height="40" width="80" x="2670" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="NoUSWwTfitbZhSEmZKZ3-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 50" vertex="1">
+          <mxGeometry height="20" width="70" x="1885" y="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="NoUSWwTfitbZhSEmZKZ3-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Amélioration Deblocable au different palier&amp;nbsp;&lt;br&gt;Cout de fabrication pour amliorer exemple la mine il faut des ressources&lt;br&gt;(Pas de temps de fabrication)" vertex="1">
+          <mxGeometry height="110" width="230" x="2240" y="1030" as="geometry" />
+        </mxCell>
+        <mxCell id="NoUSWwTfitbZhSEmZKZ3-15" edge="1" parent="1" source="NoUSWwTfitbZhSEmZKZ3-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1810" y="714.942196531792" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NoUSWwTfitbZhSEmZKZ3-13" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;aspect=fixed;" value="Tour d&#39;alchimie" vertex="1">
+          <mxGeometry height="150" width="150" x="2040" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="NoUSWwTfitbZhSEmZKZ3-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Sers a creer des sorts en melangent les elements&lt;br&gt;Sers a infuser les sors avec les elements" vertex="1">
+          <mxGeometry height="110" width="230" x="2220" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="NoUSWwTfitbZhSEmZKZ3-16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Etage 85" vertex="1">
+          <mxGeometry height="20" width="70" x="1885" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="NoUSWwTfitbZhSEmZKZ3-17" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Sers a ameliorer légérement les stats avec des ressources ex niv 1 augmentation de 1% des dégats etc...." vertex="1">
+          <mxGeometry height="110" width="230" x="2200" y="380" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

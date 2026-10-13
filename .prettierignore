@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+pnpm-lock.yaml
+docs
+assets_rpg_tour
+shared/data
+server/prisma/migrations

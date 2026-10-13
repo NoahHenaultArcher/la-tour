@@ -1,0 +1,15 @@
+packages:
+  - client
+  - server
+  - shared
+  - scripts
+
+# N'installe que des versions publiées depuis au moins 14 jours (en minutes).
+minimumReleaseAge: 20160
+
+onlyBuiltDependencies:
+  - '@prisma/client'
+  - '@prisma/engines'
+  - argon2
+  - esbuild
+  - prisma

@@ -1,0 +1,1053 @@
+{
+  "elements": [
+    {
+      "id": "neutral",
+      "name": "Neutre",
+      "icon": "⚪",
+      "role": "Dégâts fiables / polyvalence",
+      "baseEffect": "Force arcanique : dégâts stables, sans altération élémentaire native.",
+      "identity": "Pas de bonus ni de malus élémentaire ; utile contre les résistances spécialisées.",
+      "biome": "forest",
+      "unlockFloor": 0,
+      "skillVariantSuffix": null,
+      "skillAlteration": null,
+      "attackEffect": "Aucune altération ; ignore 10 % de la Résistance de la cible. Fiable contre tous les biomes.",
+      "supportEffect": "Aucun bonus élémentaire : effet de base seul.",
+      "affinityPassive": "Maîtrise arcanique",
+      "weakAgainst": [],
+      "resists": [],
+      "inflictedAlterations": [
+        "Saignement",
+        "Assommé",
+        "Intimidé"
+      ],
+      "image": "elements/neutre.png"
+    },
+    {
+      "id": "earth",
+      "name": "Terre",
+      "icon": "🪨",
+      "role": "Défense / rupture",
+      "baseEffect": "Stabilité : renforce la défense, crée des obstacles ou brise une garde.",
+      "identity": "Résiste aux chaînes électriques ; vulnérable à la corrosion.",
+      "biome": "mountain",
+      "unlockFloor": 20,
+      "skillVariantSuffix": "de pierre",
+      "skillAlteration": "Garde brisée",
+      "attackEffect": "30 % : Garde brisée (−15 % Résistance, 2 tours).",
+      "supportEffect": "+15 % d'Armure pendant la durée de l'effet.",
+      "affinityPassive": "Affinité tellurique",
+      "weakAgainst": [
+        "acid",
+        "wind"
+      ],
+      "resists": [
+        "lightning"
+      ],
+      "inflictedAlterations": [
+        "Garde brisée",
+        "Enraciné"
+      ],
+      "image": "elements/terre.png"
+    },
+    {
+      "id": "fire",
+      "name": "Feu",
+      "icon": "🔥",
+      "role": "Dégâts sur la durée / propagation",
+      "baseEffect": "Brûlure : inflige des dégâts pendant plusieurs tours.",
+      "identity": "Fort contre les cibles gelées ; risque de perdre en efficacité sous la pluie.",
+      "biome": "volcano",
+      "unlockFloor": 30,
+      "skillVariantSuffix": "de feu",
+      "skillAlteration": "Brûlure",
+      "attackEffect": "35 % : Brûlure (8 % de la stat d'attaque par tour, 3 tours, non cumulable).",
+      "supportEffect": "Les ennemis qui frappent le lanceur ont 40 % de subir Brûlure (pendant la durée).",
+      "affinityPassive": "Affinité ardente",
+      "weakAgainst": [
+        "water"
+      ],
+      "resists": [
+        "ice"
+      ],
+      "inflictedAlterations": [
+        "Brûlure"
+      ],
+      "image": "elements/feu.png"
+    },
+    {
+      "id": "wind",
+      "name": "Vent",
+      "icon": "🌪️",
+      "role": "Mobilité / déplacement",
+      "baseEffect": "Rafale : repousse, attire ou déplace selon la compétence.",
+      "identity": "Peut disperser les nuages et déplacer les zones élémentaires.",
+      "biome": "desert",
+      "unlockFloor": 40,
+      "skillVariantSuffix": "de vent",
+      "skillAlteration": "Désorienté",
+      "attackEffect": "+10 % de chance de critique ; 30 % : Désorienté (−15 % Précision, 2 tours).",
+      "supportEffect": "+10 % d'Agilité (esquive) pendant la durée de l'effet.",
+      "affinityPassive": "Affinité des vents",
+      "weakAgainst": [
+        "ice"
+      ],
+      "resists": [
+        "earth"
+      ],
+      "inflictedAlterations": [
+        "Désorienté"
+      ],
+      "image": "elements/vent.png"
+    },
+    {
+      "id": "acid",
+      "name": "Acide",
+      "icon": "☣️",
+      "role": "Affaiblissement / anti-armure",
+      "baseEffect": "Corrosion : réduit temporairement l’armure de la cible.",
+      "identity": "Efficace contre les ennemis blindés ; les effets peuvent se cumuler avec une limite.",
+      "biome": "swamp",
+      "unlockFloor": 50,
+      "skillVariantSuffix": "d'acide",
+      "skillAlteration": "Corrosion",
+      "attackEffect": "50 % : 1 pile de Corrosion (−5 % Armure par pile, 4 piles max, 3 tours).",
+      "supportEffect": "Les ennemis qui frappent le lanceur prennent 1 pile de Corrosion (40 %).",
+      "affinityPassive": "Affinité corrosive",
+      "weakAgainst": [],
+      "resists": [
+        "earth",
+        "light"
+      ],
+      "inflictedAlterations": [
+        "Poison",
+        "Corrosion"
+      ],
+      "image": "elements/acide.png"
+    },
+    {
+      "id": "water",
+      "name": "Eau",
+      "icon": "💧",
+      "role": "Préparation / soutien",
+      "baseEffect": "Imprégnation : mouille la cible, facilite l’Électricité et atténue le Feu.",
+      "identity": "Peut aussi nettoyer certains effets négatifs ou soigner selon la compétence.",
+      "biome": "ocean",
+      "unlockFloor": 60,
+      "skillVariantSuffix": "d'eau",
+      "skillAlteration": "Mouillé",
+      "attackEffect": "50 % : Mouillé (+25 % de dégâts d'Électricité subis, retire Brûlure, 3 tours).",
+      "supportEffect": "Soin supplémentaire de 4 % des PV max ; retire Brûlure du lanceur.",
+      "affinityPassive": "Affinité des marées",
+      "weakAgainst": [
+        "lightning"
+      ],
+      "resists": [
+        "fire"
+      ],
+      "inflictedAlterations": [
+        "Mouillé"
+      ],
+      "image": "elements/eau.png"
+    },
+    {
+      "id": "ice",
+      "name": "Glace",
+      "icon": "❄️",
+      "role": "Contrôle / ralentissement",
+      "baseEffect": "Froid : réduit la vitesse ; plusieurs applications peuvent geler.",
+      "identity": "Très utile pour contrôler les groupes et interrompre les ennemis mobiles.",
+      "biome": "iceberg",
+      "unlockFloor": 70,
+      "skillVariantSuffix": "de glace",
+      "skillAlteration": "Froid / Gel",
+      "attackEffect": "40 % : 1 pile de Froid (−8 % Agilité ; à 3 piles : Gel, la cible perd 1 tour).",
+      "supportEffect": "Les ennemis qui frappent le lanceur prennent 1 pile de Froid (40 %).",
+      "affinityPassive": "Affinité glaciale",
+      "weakAgainst": [
+        "fire"
+      ],
+      "resists": [
+        "wind"
+      ],
+      "inflictedAlterations": [
+        "Froid",
+        "Gel"
+      ],
+      "image": "elements/glace.png"
+    },
+    {
+      "id": "lightning",
+      "name": "Électricité",
+      "icon": "⚡",
+      "role": "Propagation / étourdissement",
+      "baseEffect": "Conductivité : les attaques peuvent rebondir entre les ennemis.",
+      "identity": "Les cibles mouillées transmettent mieux les dégâts électriques.",
+      "biome": "highMountain",
+      "unlockFloor": 80,
+      "skillVariantSuffix": "de foudre",
+      "skillAlteration": "Étourdissement",
+      "attackEffect": "Rebondit sur 1 autre ennemi (40 % des dégâts) ; 10 % : Étourdissement (1 tour).",
+      "supportEffect": "La prochaine attaque du lanceur inflige +15 % de dégâts.",
+      "affinityPassive": "Affinité orageuse",
+      "weakAgainst": [
+        "earth"
+      ],
+      "resists": [
+        "water"
+      ],
+      "inflictedAlterations": [
+        "Étourdissement"
+      ],
+      "image": "elements/electricite.png"
+    },
+    {
+      "id": "light",
+      "name": "Lumière",
+      "icon": "✨",
+      "role": "Soin / protection / révélation",
+      "baseEffect": "Radiance : soigne ou protège les alliés et révèle les cibles cachées.",
+      "identity": "Le soin peut être inversé en dégâts contre certains ennemis corrompus.",
+      "biome": "celestialPalace",
+      "unlockFloor": 90,
+      "skillVariantSuffix": "de lumière",
+      "skillAlteration": "Éblouissement",
+      "attackEffect": "Soigne le lanceur de 5 % des dégâts infligés ; 25 % : Éblouissement (−20 % chance de critique, 2 tours).",
+      "supportEffect": "+20 % sur les soins et boucliers de la compétence.",
+      "affinityPassive": "Affinité solaire",
+      "weakAgainst": [
+        "shadow"
+      ],
+      "resists": [
+        "acid"
+      ],
+      "inflictedAlterations": [
+        "Éblouissement",
+        "Marqué"
+      ],
+      "image": "elements/lumiere.png"
+    },
+    {
+      "id": "shadow",
+      "name": "Ombre",
+      "icon": "🌑",
+      "role": "Malédiction / affaiblissement",
+      "baseEffect": "Corruption : applique une malédiction qui amplifie certains dégâts subis.",
+      "identity": "Lumière et Ombre se contrent mutuellement ; les malédictions devraient être plafonnées.",
+      "biome": "demonPalace",
+      "unlockFloor": 100,
+      "skillVariantSuffix": "d'ombre",
+      "skillAlteration": "Corruption",
+      "attackEffect": "Vol de vie 5 % ; 30 % : Corruption (+10 % de dégâts subis, 2 tours).",
+      "supportEffect": "Les ennemis qui frappent le lanceur subissent Corruption (25 %).",
+      "affinityPassive": "Affinité ténébreuse",
+      "weakAgainst": [
+        "light"
+      ],
+      "resists": [],
+      "inflictedAlterations": [
+        "Corruption",
+        "Terreur"
+      ],
+      "image": "elements/ombre.png"
+    }
+  ],
+  "biomes": [
+    {
+      "id": "forest",
+      "name": "Forêt",
+      "element": "neutral",
+      "floorMin": 1,
+      "floorMax": 10
+    },
+    {
+      "id": "mountain",
+      "name": "Montagne",
+      "element": "earth",
+      "floorMin": 11,
+      "floorMax": 20
+    },
+    {
+      "id": "volcano",
+      "name": "Volcan",
+      "element": "fire",
+      "floorMin": 21,
+      "floorMax": 30
+    },
+    {
+      "id": "desert",
+      "name": "Désert",
+      "element": "wind",
+      "floorMin": 31,
+      "floorMax": 40
+    },
+    {
+      "id": "swamp",
+      "name": "Marais",
+      "element": "acid",
+      "floorMin": 41,
+      "floorMax": 50
+    },
+    {
+      "id": "ocean",
+      "name": "Océan / Île",
+      "element": "water",
+      "floorMin": 51,
+      "floorMax": 60
+    },
+    {
+      "id": "iceberg",
+      "name": "Iceberg",
+      "element": "ice",
+      "floorMin": 61,
+      "floorMax": 70
+    },
+    {
+      "id": "highMountain",
+      "name": "Haute montagne",
+      "element": "lightning",
+      "floorMin": 71,
+      "floorMax": 80
+    },
+    {
+      "id": "celestialPalace",
+      "name": "Palais céleste",
+      "element": "light",
+      "floorMin": 81,
+      "floorMax": 90
+    },
+    {
+      "id": "demonPalace",
+      "name": "Palais démoniaque",
+      "element": "shadow",
+      "floorMin": 91,
+      "floorMax": 100
+    }
+  ],
+  "matrix": {
+    "neutral": {
+      "neutral": 1,
+      "earth": 1,
+      "fire": 1,
+      "wind": 1,
+      "acid": 1,
+      "water": 1,
+      "ice": 1,
+      "lightning": 1,
+      "light": 1,
+      "shadow": 1
+    },
+    "earth": {
+      "neutral": 1,
+      "earth": 1,
+      "fire": 1,
+      "wind": 1.5,
+      "acid": 1.5,
+      "water": 1,
+      "ice": 1,
+      "lightning": 0.75,
+      "light": 1,
+      "shadow": 1
+    },
+    "fire": {
+      "neutral": 1,
+      "earth": 1,
+      "fire": 1,
+      "wind": 1,
+      "acid": 1,
+      "water": 1.5,
+      "ice": 0.75,
+      "lightning": 1,
+      "light": 1,
+      "shadow": 1
+    },
+    "wind": {
+      "neutral": 1,
+      "earth": 0.75,
+      "fire": 1,
+      "wind": 1,
+      "acid": 1,
+      "water": 1,
+      "ice": 1.5,
+      "lightning": 1,
+      "light": 1,
+      "shadow": 1
+    },
+    "acid": {
+      "neutral": 1,
+      "earth": 0.75,
+      "fire": 1,
+      "wind": 1,
+      "acid": 1,
+      "water": 1,
+      "ice": 1,
+      "lightning": 1,
+      "light": 0.75,
+      "shadow": 1
+    },
+    "water": {
+      "neutral": 1,
+      "earth": 1,
+      "fire": 0.75,
+      "wind": 1,
+      "acid": 1,
+      "water": 1,
+      "ice": 1,
+      "lightning": 1.5,
+      "light": 1,
+      "shadow": 1
+    },
+    "ice": {
+      "neutral": 1,
+      "earth": 1,
+      "fire": 1.5,
+      "wind": 0.75,
+      "acid": 1,
+      "water": 1,
+      "ice": 1,
+      "lightning": 1,
+      "light": 1,
+      "shadow": 1
+    },
+    "lightning": {
+      "neutral": 1,
+      "earth": 1.5,
+      "fire": 1,
+      "wind": 1,
+      "acid": 1,
+      "water": 0.75,
+      "ice": 1,
+      "lightning": 1,
+      "light": 1,
+      "shadow": 1
+    },
+    "light": {
+      "neutral": 1,
+      "earth": 1,
+      "fire": 1,
+      "wind": 1,
+      "acid": 0.75,
+      "water": 1,
+      "ice": 1,
+      "lightning": 1,
+      "light": 1,
+      "shadow": 1.5
+    },
+    "shadow": {
+      "neutral": 1,
+      "earth": 1,
+      "fire": 1,
+      "wind": 1,
+      "acid": 1,
+      "water": 1,
+      "ice": 1,
+      "lightning": 1,
+      "light": 1.5,
+      "shadow": 1
+    }
+  },
+  "fusions": [
+    {
+      "element1": "fire",
+      "element2": "fire",
+      "name": "Brasier",
+      "proposedEffect": "Brûlure renforcée ; peut se propager aux ennemis proches.",
+      "role": "Dégâts / propagation",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_brasier.png"
+    },
+    {
+      "element1": "fire",
+      "element2": "lightning",
+      "name": "Plasma",
+      "proposedEffect": "Éclairs surchauffés qui rebondissent et appliquent une brûlure.",
+      "role": "Dégâts / chaîne",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_plasma.png"
+    },
+    {
+      "element1": "fire",
+      "element2": "acid",
+      "name": "Brimstone",
+      "proposedEffect": "Les cibles corrodées explosent et infligent des dégâts de zone.",
+      "role": "Explosion / anti-armure",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_brimstone.png"
+    },
+    {
+      "element1": "fire",
+      "element2": "ice",
+      "name": "Cryopyre",
+      "proposedEffect": "Choc thermique ; consomme une partie du gel pour infliger un burst.",
+      "role": "Burst / anti-contrôle",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_cryopyre.png"
+    },
+    {
+      "element1": "fire",
+      "element2": "water",
+      "name": "Vapeur",
+      "proposedEffect": "Nuage brûlant qui inflige des dégâts et gêne la visibilité.",
+      "role": "Zone persistante",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_vapeur.png"
+    },
+    {
+      "element1": "fire",
+      "element2": "wind",
+      "name": "Feu follet",
+      "proposedEffect": "Les flammes sont poussées dans une direction et se propagent plus loin.",
+      "role": "Propagation / zone",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_feu_follet.png"
+    },
+    {
+      "element1": "fire",
+      "element2": "earth",
+      "name": "Magma",
+      "proposedEffect": "Crée des flaques de lave qui infligent des dégâts au passage.",
+      "role": "Zone persistante",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_magma.png"
+    },
+    {
+      "element1": "fire",
+      "element2": "shadow",
+      "name": "Feu maudit",
+      "proposedEffect": "Les ennemis brûlés transmettent une malédiction à leur mort.",
+      "role": "Propagation / malédiction",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_feu_maudit.png"
+    },
+    {
+      "element1": "fire",
+      "element2": "light",
+      "name": "Feu solaire",
+      "proposedEffect": "Explosion lumineuse qui brûle et dissipe les effets d’ombre.",
+      "role": "Burst / purification",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_feu_solaire.png"
+    },
+    {
+      "element1": "fire",
+      "element2": "neutral",
+      "name": "Flamme arcanique",
+      "proposedEffect": "Flamme concentrée qui ignore une petite partie des résistances.",
+      "role": "Dégâts fiables",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_flamme_arcanique.png"
+    },
+    {
+      "element1": "lightning",
+      "element2": "lightning",
+      "name": "Foudre",
+      "proposedEffect": "Impact électrique puissant avec chance d’étourdissement.",
+      "role": "Burst / contrôle",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_foudre.png"
+    },
+    {
+      "element1": "lightning",
+      "element2": "acid",
+      "name": "Flux corrosif",
+      "proposedEffect": "Les arcs électriques rebondissent et appliquent la corrosion.",
+      "role": "Chaîne / anti-armure",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_flux_corrosif.png"
+    },
+    {
+      "element1": "lightning",
+      "element2": "ice",
+      "name": "Cryo-éclair",
+      "proposedEffect": "Les chaînes électriques ralentissent les cibles touchées.",
+      "role": "Chaîne / contrôle",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_cryo_eclair.png"
+    },
+    {
+      "element1": "lightning",
+      "element2": "water",
+      "name": "Orage",
+      "proposedEffect": "Les cibles mouillées conduisent les éclairs vers les ennemis proches.",
+      "role": "Chaîne / synergie Eau",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_orage.png"
+    },
+    {
+      "element1": "lightning",
+      "element2": "wind",
+      "name": "Tempête",
+      "proposedEffect": "Rafales et éclairs frappent une zone mobile.",
+      "role": "Zone / déplacement",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_tempete.png"
+    },
+    {
+      "element1": "lightning",
+      "element2": "earth",
+      "name": "Magnétisme",
+      "proposedEffect": "Attire certaines cibles métalliques et peut désarmer temporairement.",
+      "role": "Contrôle",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_magnetisme.png"
+    },
+    {
+      "element1": "lightning",
+      "element2": "shadow",
+      "name": "Foudre spectrale",
+      "proposedEffect": "Les éclairs traversent les ennemis et appliquent une corruption légère.",
+      "role": "Perforation / malédiction",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_foudre_spectrale.png"
+    },
+    {
+      "element1": "lightning",
+      "element2": "light",
+      "name": "Arc céleste",
+      "proposedEffect": "Frappe les ennemis et recharge légèrement les boucliers alliés.",
+      "role": "Dégâts / soutien",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_arc_celeste.png"
+    },
+    {
+      "element1": "lightning",
+      "element2": "neutral",
+      "name": "Surcharge",
+      "proposedEffect": "Consomme une charge d’énergie pour libérer une décharge concentrée.",
+      "role": "Burst / gestion de ressource",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_surcharge.png"
+    },
+    {
+      "element1": "acid",
+      "element2": "acid",
+      "name": "Corrosion",
+      "proposedEffect": "Réduit fortement l’armure, avec une limite de cumul.",
+      "role": "Anti-armure",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_corrosion.png"
+    },
+    {
+      "element1": "acid",
+      "element2": "ice",
+      "name": "Cryocorrosion",
+      "proposedEffect": "Fragilise les cibles gelées et réduit leur résistance.",
+      "role": "Anti-armure / contrôle",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_cryocorrosion.png"
+    },
+    {
+      "element1": "acid",
+      "element2": "water",
+      "name": "Solution caustique",
+      "proposedEffect": "Étend une flaque corrosive sur une surface plus large.",
+      "role": "Zone persistante",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_solution_caustique.png"
+    },
+    {
+      "element1": "acid",
+      "element2": "wind",
+      "name": "Brume toxique",
+      "proposedEffect": "Nuage acide mobile qui corrode les ennemis traversés.",
+      "role": "Zone / altération",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_brume_toxique.png"
+    },
+    {
+      "element1": "acid",
+      "element2": "earth",
+      "name": "Putréfaction",
+      "proposedEffect": "Corrompt le sol et crée une zone qui affaiblit les ennemis.",
+      "role": "Zone / affaiblissement",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_putrefaction.png"
+    },
+    {
+      "element1": "acid",
+      "element2": "shadow",
+      "name": "Fléau",
+      "proposedEffect": "Les ennemis maudits propagent la corrosion lorsqu’ils sont touchés.",
+      "role": "Propagation / malédiction",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_fleau.png"
+    },
+    {
+      "element1": "acid",
+      "element2": "light",
+      "name": "Alchimie",
+      "proposedEffect": "Convertit une petite partie des dégâts en soin ou en bouclier.",
+      "role": "Soutien / conversion",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_alchimie.png"
+    },
+    {
+      "element1": "acid",
+      "element2": "neutral",
+      "name": "Dissolution",
+      "proposedEffect": "Ignore une partie de l’armure et détruit les boucliers.",
+      "role": "Anti-armure / anti-bouclier",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_dissolution.png"
+    },
+    {
+      "element1": "ice",
+      "element2": "ice",
+      "name": "Grand Gel",
+      "proposedEffect": "Augmente la durée du ralentissement et les chances de gel.",
+      "role": "Contrôle",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_grand_gel.png"
+    },
+    {
+      "element1": "ice",
+      "element2": "water",
+      "name": "Glacier",
+      "proposedEffect": "Crée une surface gelée qui ralentit et fait glisser les ennemis.",
+      "role": "Zone / contrôle",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_glacier.png"
+    },
+    {
+      "element1": "ice",
+      "element2": "wind",
+      "name": "Blizzard",
+      "proposedEffect": "Tempête de neige qui ralentit et repousse les ennemis.",
+      "role": "Zone / contrôle",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_blizzard.png"
+    },
+    {
+      "element1": "ice",
+      "element2": "earth",
+      "name": "Permafrost",
+      "proposedEffect": "Crée des murs de glace renforcés qui bloquent les passages.",
+      "role": "Défense / contrôle",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_permafrost.png"
+    },
+    {
+      "element1": "ice",
+      "element2": "shadow",
+      "name": "Froid spectral",
+      "proposedEffect": "Les cibles gelées sont maudites et infligent moins de dégâts.",
+      "role": "Contrôle / malédiction",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_froid_spectral.png"
+    },
+    {
+      "element1": "ice",
+      "element2": "light",
+      "name": "Cristal sacré",
+      "proposedEffect": "Protège les alliés dans une zone glacée et renvoie quelques projectiles.",
+      "role": "Défense / soutien",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_cristal_sacre.png"
+    },
+    {
+      "element1": "ice",
+      "element2": "neutral",
+      "name": "Zéro absolu",
+      "proposedEffect": "Attaque concentrée avec une forte chance de gel sur une cible.",
+      "role": "Burst / contrôle",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_zero_absolu.png"
+    },
+    {
+      "element1": "water",
+      "element2": "water",
+      "name": "Marée",
+      "proposedEffect": "Vague qui repousse les ennemis et soigne légèrement les alliés.",
+      "role": "Déplacement / soutien",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_maree.png"
+    },
+    {
+      "element1": "water",
+      "element2": "wind",
+      "name": "Typhon",
+      "proposedEffect": "Tourbillon qui rassemble les ennemis puis les projette.",
+      "role": "Regroupement / déplacement",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_typhon.png"
+    },
+    {
+      "element1": "water",
+      "element2": "earth",
+      "name": "Bourbier",
+      "proposedEffect": "Immobilise partiellement les ennemis et réduit leur vitesse d’attaque.",
+      "role": "Contrôle",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_bourbier.png"
+    },
+    {
+      "element1": "water",
+      "element2": "shadow",
+      "name": "Eau noire",
+      "proposedEffect": "Dégâts progressifs ; la corruption peut se transmettre à proximité.",
+      "role": "Dégâts sur la durée",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_eau_noire.png"
+    },
+    {
+      "element1": "water",
+      "element2": "light",
+      "name": "Eau bénite",
+      "proposedEffect": "Soigne les alliés et blesse davantage les créatures maudites.",
+      "role": "Soutien / anti-Ombre",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_eau_benite.png"
+    },
+    {
+      "element1": "water",
+      "element2": "neutral",
+      "name": "Onde arcanique",
+      "proposedEffect": "Vague d’énergie qui traverse les cibles et dissipe un effet négatif léger.",
+      "role": "Perforation / utilitaire",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_onde_arcanique.png"
+    },
+    {
+      "element1": "wind",
+      "element2": "wind",
+      "name": "Ouragan",
+      "proposedEffect": "Repousse les ennemis dans une large zone et dévie les projectiles.",
+      "role": "Zone / déplacement",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_ouragan.png"
+    },
+    {
+      "element1": "wind",
+      "element2": "earth",
+      "name": "Tempête de sable",
+      "proposedEffect": "Réduit la précision et inflige des dégâts aux ennemis dans la zone.",
+      "role": "Zone / affaiblissement",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_tempete_de_sable.png"
+    },
+    {
+      "element1": "wind",
+      "element2": "shadow",
+      "name": "Vent funeste",
+      "proposedEffect": "Souffle spectral qui traverse les ennemis et réduit leur vitesse.",
+      "role": "Perforation / affaiblissement",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_vent_funeste.png"
+    },
+    {
+      "element1": "wind",
+      "element2": "light",
+      "name": "Ailes célestes",
+      "proposedEffect": "Augmente temporairement vitesse et esquive des alliés.",
+      "role": "Mobilité / soutien",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_ailes_celestes.png"
+    },
+    {
+      "element1": "wind",
+      "element2": "neutral",
+      "name": "Lame d’air",
+      "proposedEffect": "Projectiles rapides qui traversent les ennemis.",
+      "role": "Perforation",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_lame_dair.png"
+    },
+    {
+      "element1": "earth",
+      "element2": "earth",
+      "name": "Séisme",
+      "proposedEffect": "Onde de choc qui renverse les ennemis proches.",
+      "role": "Zone / contrôle",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_seisme.png"
+    },
+    {
+      "element1": "earth",
+      "element2": "shadow",
+      "name": "Tombeau",
+      "proposedEffect": "Emprisonne une cible dans la terre et lui applique une malédiction.",
+      "role": "Contrôle / malédiction",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_tombeau.png"
+    },
+    {
+      "element1": "earth",
+      "element2": "light",
+      "name": "Bastion sacré",
+      "proposedEffect": "Rempart qui protège les alliés et bloque les projectiles.",
+      "role": "Défense",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_bastion_sacre.png"
+    },
+    {
+      "element1": "earth",
+      "element2": "neutral",
+      "name": "Gravité",
+      "proposedEffect": "Attire les ennemis vers un point et réduit leur mobilité.",
+      "role": "Regroupement / contrôle",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_gravite.png"
+    },
+    {
+      "element1": "shadow",
+      "element2": "shadow",
+      "name": "Néant",
+      "proposedEffect": "La corruption se propage et amplifie les dégâts subis.",
+      "role": "Malédiction / propagation",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_neant.png"
+    },
+    {
+      "element1": "shadow",
+      "element2": "light",
+      "name": "Crépuscule",
+      "proposedEffect": "Alterner les phases de lumière et d’ombre produit dégâts ou affaiblissement.",
+      "role": "Polyvalence",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_crepuscule.png"
+    },
+    {
+      "element1": "shadow",
+      "element2": "neutral",
+      "name": "Distorsion",
+      "proposedEffect": "Déforme l’espace et perturbe brièvement les actions de la cible.",
+      "role": "Contrôle",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_distorsion.png"
+    },
+    {
+      "element1": "light",
+      "element2": "light",
+      "name": "Révélation",
+      "proposedEffect": "Déflagration sacrée qui soigne les alliés et blesse les ennemis.",
+      "role": "Soutien / zone",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_revelation.png"
+    },
+    {
+      "element1": "light",
+      "element2": "neutral",
+      "name": "Équilibre",
+      "proposedEffect": "Convertit une partie des dégâts en énergie de compétence.",
+      "role": "Ressource / soutien",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_equilibre.png"
+    },
+    {
+      "element1": "neutral",
+      "element2": "neutral",
+      "name": "Singularité",
+      "proposedEffect": "Concentre la magie avant une explosion arcanique.",
+      "role": "Burst / dégâts fiables",
+      "advantageNote": "À équilibrer selon la règle de fusion",
+      "status": "Proposition",
+      "image": "competences/fusions/fusion_singularite.png"
+    }
+  ],
+  "rules": [
+    {
+      "subject": "Bonus d’avantage",
+      "rule": "Une attaque avec avantage inflige ×1,5 dégâts.",
+      "reason": "Impact visible sans rendre un matchup automatiquement gagnant."
+    },
+    {
+      "subject": "Résistance",
+      "rule": "Une attaque résistée inflige ×0,75 dégâts.",
+      "reason": "La résistance compte sans rendre l’élément inutile."
+    },
+    {
+      "subject": "Neutre",
+      "rule": "Les attaques Neutres infligent ×1,0 contre tous les éléments ; pas d’avantage ni de faiblesse.",
+      "reason": "Option fiable contre les ennemis spécialisés."
+    },
+    {
+      "subject": "Fusions à deux éléments",
+      "rule": "Par défaut, une fusion utilise l’élément principal pour le calcul d’avantage ; l’élément secondaire sert à l’effet secondaire.",
+      "reason": "Évite qu’une fusion bénéficie de tous les avantages à la fois."
+    },
+    {
+      "subject": "Alternative pour les fusions",
+      "rule": "Pour une fusion équilibrée entre deux éléments, calcule la moyenne des multiplicateurs des deux éléments puis plafonne entre ×0,75 et ×1,5.",
+      "reason": "Plus systémique, mais plus complexe à expliquer."
+    },
+    {
+      "subject": "Effets de statut",
+      "rule": "Brûlure, gel, corrosion et malédiction ne se cumulent pas à l’infini ; définir une durée, un plafond et une règle de rafraîchissement.",
+      "reason": "Évite les stratégies qui deviennent incontrôlables."
+    },
+    {
+      "subject": "Synergie Eau + Électricité",
+      "rule": "Une cible Mouillée peut subir +25 % de dégâts électriques, ou faire rebondir une fois supplémentaire l’éclair.",
+      "reason": "Donne une synergie lisible et encourage la préparation."
+    },
+    {
+      "subject": "Eau contre Feu",
+      "rule": "L’Eau peut réduire la durée de Brûlure en plus de son avantage de dégâts.",
+      "reason": "L’avantage élémentaire peut modifier les statuts, pas seulement les dégâts."
+    },
+    {
+      "subject": "Boss",
+      "rule": "Les boss peuvent avoir une résistance partielle plutôt qu’une immunité totale.",
+      "reason": "Évite qu’un choix de classe rende un combat impossible."
+    },
+    {
+      "subject": "Découverte",
+      "rule": "Débloquer les recettes de fusion en montant la tour, via boss, salles secrètes ou marchands.",
+      "reason": "Donne un sentiment de progression et de découverte."
+    }
+  ]
+}

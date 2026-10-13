@@ -1,0 +1,410 @@
+{
+  "settings": {
+    "refreshMinutes": 60,
+    "itemOffers": 6,
+    "resourceLots": 4,
+    "unitsPerLot": 10,
+    "resourcePriceFactor": 0.6,
+    "resaleRatio": 0.2
+  },
+  "characters": [
+    {
+      "purchaseNumber": 2,
+      "referenceFloor": 10,
+      "huntingHours": 1,
+      "goldPerHour": 50400.9813275181,
+      "price": 50400
+    },
+    {
+      "purchaseNumber": 3,
+      "referenceFloor": 30,
+      "huntingHours": 1.5,
+      "goldPerHour": 154943.685073811,
+      "price": 232400
+    }
+  ],
+  "resources": [
+    {
+      "resourceId": "bois",
+      "tier": 1,
+      "unlockFloor": 1,
+      "referenceLevel": 10,
+      "goldPerMonster": 67,
+      "unitPrice": 40,
+      "lotPrice": 400,
+      "huntingMinutes": 1
+    },
+    {
+      "resourceId": "cuir",
+      "tier": 1,
+      "unlockFloor": 1,
+      "referenceLevel": 10,
+      "goldPerMonster": 67,
+      "unitPrice": 40,
+      "lotPrice": 400,
+      "huntingMinutes": 1
+    },
+    {
+      "resourceId": "lin",
+      "tier": 1,
+      "unlockFloor": 1,
+      "referenceLevel": 10,
+      "goldPerMonster": 67,
+      "unitPrice": 40,
+      "lotPrice": 400,
+      "huntingMinutes": 1
+    },
+    {
+      "resourceId": "toile",
+      "tier": 1,
+      "unlockFloor": 1,
+      "referenceLevel": 10,
+      "goldPerMonster": 67,
+      "unitPrice": 40,
+      "lotPrice": 400,
+      "huntingMinutes": 1
+    },
+    {
+      "resourceId": "verre",
+      "tier": 1,
+      "unlockFloor": 1,
+      "referenceLevel": 10,
+      "goldPerMonster": 67,
+      "unitPrice": 40,
+      "lotPrice": 400,
+      "huntingMinutes": 1
+    },
+    {
+      "resourceId": "cuivre",
+      "tier": 1,
+      "unlockFloor": 1,
+      "referenceLevel": 10,
+      "goldPerMonster": 67,
+      "unitPrice": 40,
+      "lotPrice": 400,
+      "huntingMinutes": 1
+    },
+    {
+      "resourceId": "fer",
+      "tier": 2,
+      "unlockFloor": 15,
+      "referenceLevel": 25,
+      "goldPerMonster": 231,
+      "unitPrice": 139,
+      "lotPrice": 1390,
+      "huntingMinutes": 1.1
+    },
+    {
+      "resourceId": "laine",
+      "tier": 2,
+      "unlockFloor": 15,
+      "referenceLevel": 25,
+      "goldPerMonster": 231,
+      "unitPrice": 139,
+      "lotPrice": 1390,
+      "huntingMinutes": 1.1
+    },
+    {
+      "resourceId": "chene",
+      "tier": 2,
+      "unlockFloor": 15,
+      "referenceLevel": 25,
+      "goldPerMonster": 231,
+      "unitPrice": 139,
+      "lotPrice": 1390,
+      "huntingMinutes": 1.1
+    },
+    {
+      "resourceId": "frene",
+      "tier": 2,
+      "unlockFloor": 15,
+      "referenceLevel": 25,
+      "goldPerMonster": 231,
+      "unitPrice": 139,
+      "lotPrice": 1390,
+      "huntingMinutes": 1.1
+    },
+    {
+      "resourceId": "quartz",
+      "tier": 2,
+      "unlockFloor": 15,
+      "referenceLevel": 25,
+      "goldPerMonster": 231,
+      "unitPrice": 139,
+      "lotPrice": 1390,
+      "huntingMinutes": 1.1
+    },
+    {
+      "resourceId": "argent",
+      "tier": 2,
+      "unlockFloor": 15,
+      "referenceLevel": 25,
+      "goldPerMonster": 231,
+      "unitPrice": 139,
+      "lotPrice": 1390,
+      "huntingMinutes": 1.1
+    },
+    {
+      "resourceId": "acier",
+      "tier": 3,
+      "unlockFloor": 30,
+      "referenceLevel": 42,
+      "goldPerMonster": 466,
+      "unitPrice": 280,
+      "lotPrice": 2800,
+      "huntingMinutes": 1.1
+    },
+    {
+      "resourceId": "cuir_cloute",
+      "tier": 3,
+      "unlockFloor": 30,
+      "referenceLevel": 42,
+      "goldPerMonster": 466,
+      "unitPrice": 280,
+      "lotPrice": 2800,
+      "huntingMinutes": 1.1
+    },
+    {
+      "resourceId": "soie",
+      "tier": 3,
+      "unlockFloor": 30,
+      "referenceLevel": 42,
+      "goldPerMonster": 466,
+      "unitPrice": 280,
+      "lotPrice": 2800,
+      "huntingMinutes": 1.1
+    },
+    {
+      "resourceId": "ebene",
+      "tier": 3,
+      "unlockFloor": 30,
+      "referenceLevel": 42,
+      "goldPerMonster": 466,
+      "unitPrice": 280,
+      "lotPrice": 2800,
+      "huntingMinutes": 1.1
+    },
+    {
+      "resourceId": "if",
+      "tier": 3,
+      "unlockFloor": 30,
+      "referenceLevel": 42,
+      "goldPerMonster": 466,
+      "unitPrice": 280,
+      "lotPrice": 2800,
+      "huntingMinutes": 1.1
+    },
+    {
+      "resourceId": "amethyste",
+      "tier": 3,
+      "unlockFloor": 30,
+      "referenceLevel": 42,
+      "goldPerMonster": 466,
+      "unitPrice": 280,
+      "lotPrice": 2800,
+      "huntingMinutes": 1.1
+    },
+    {
+      "resourceId": "or",
+      "tier": 3,
+      "unlockFloor": 30,
+      "referenceLevel": 42,
+      "goldPerMonster": 466,
+      "unitPrice": 280,
+      "lotPrice": 2800,
+      "huntingMinutes": 1.1
+    },
+    {
+      "resourceId": "mithril",
+      "tier": 4,
+      "unlockFloor": 50,
+      "referenceLevel": 62,
+      "goldPerMonster": 789,
+      "unitPrice": 473,
+      "lotPrice": 4730,
+      "huntingMinutes": 1.3
+    },
+    {
+      "resourceId": "ecailles",
+      "tier": 4,
+      "unlockFloor": 50,
+      "referenceLevel": 62,
+      "goldPerMonster": 789,
+      "unitPrice": 473,
+      "lotPrice": 4730,
+      "huntingMinutes": 1.3
+    },
+    {
+      "resourceId": "velours_enchante",
+      "tier": 4,
+      "unlockFloor": 50,
+      "referenceLevel": 62,
+      "goldPerMonster": 789,
+      "unitPrice": 473,
+      "lotPrice": 4730,
+      "huntingMinutes": 1.3
+    },
+    {
+      "resourceId": "cristal",
+      "tier": 4,
+      "unlockFloor": 50,
+      "referenceLevel": 62,
+      "goldPerMonster": 789,
+      "unitPrice": 473,
+      "lotPrice": 4730,
+      "huntingMinutes": 1.3
+    },
+    {
+      "resourceId": "saphir",
+      "tier": 4,
+      "unlockFloor": 50,
+      "referenceLevel": 62,
+      "goldPerMonster": 789,
+      "unitPrice": 473,
+      "lotPrice": 4730,
+      "huntingMinutes": 1.3
+    },
+    {
+      "resourceId": "platine",
+      "tier": 4,
+      "unlockFloor": 50,
+      "referenceLevel": 62,
+      "goldPerMonster": 789,
+      "unitPrice": 473,
+      "lotPrice": 4730,
+      "huntingMinutes": 1.3
+    },
+    {
+      "resourceId": "adamantite",
+      "tier": 5,
+      "unlockFloor": 70,
+      "referenceLevel": 85,
+      "goldPerMonster": 1207,
+      "unitPrice": 724,
+      "lotPrice": 7240,
+      "huntingMinutes": 0.9
+    },
+    {
+      "resourceId": "peau_de_dragon",
+      "tier": 5,
+      "unlockFloor": 70,
+      "referenceLevel": 85,
+      "goldPerMonster": 1207,
+      "unitPrice": 724,
+      "lotPrice": 7240,
+      "huntingMinutes": 0.9
+    },
+    {
+      "resourceId": "etoffe_astrale",
+      "tier": 5,
+      "unlockFloor": 70,
+      "referenceLevel": 85,
+      "goldPerMonster": 1207,
+      "unitPrice": 724,
+      "lotPrice": 7240,
+      "huntingMinutes": 0.9
+    },
+    {
+      "resourceId": "diamant",
+      "tier": 5,
+      "unlockFloor": 70,
+      "referenceLevel": 85,
+      "goldPerMonster": 1207,
+      "unitPrice": 724,
+      "lotPrice": 7240,
+      "huntingMinutes": 0.9
+    },
+    {
+      "resourceId": "os_de_dragon",
+      "tier": 5,
+      "unlockFloor": 70,
+      "referenceLevel": 85,
+      "goldPerMonster": 1207,
+      "unitPrice": 724,
+      "lotPrice": 7240,
+      "huntingMinutes": 0.9
+    },
+    {
+      "resourceId": "orichalque",
+      "tier": 5,
+      "unlockFloor": 70,
+      "referenceLevel": 85,
+      "goldPerMonster": 1207,
+      "unitPrice": 724,
+      "lotPrice": 7240,
+      "huntingMinutes": 0.9
+    },
+    {
+      "resourceId": "ether",
+      "tier": 5,
+      "unlockFloor": 85,
+      "referenceLevel": 85,
+      "goldPerMonster": 1207,
+      "unitPrice": 724,
+      "lotPrice": 7240,
+      "huntingMinutes": 0.9
+    }
+  ],
+  "equipment": [
+    {
+      "tier": 1,
+      "referenceLevel": 10,
+      "prices": {
+        "common": 536,
+        "rare": 1608,
+        "superRare": 4824,
+        "epic": 14472
+      },
+      "epicResale": 2894,
+      "epicHuntingMinutes": 34.4
+    },
+    {
+      "tier": 2,
+      "referenceLevel": 25,
+      "prices": {
+        "common": 1848,
+        "rare": 5544,
+        "superRare": 16632,
+        "epic": 49896
+      },
+      "epicResale": 9979,
+      "epicHuntingMinutes": 41.2
+    },
+    {
+      "tier": 3,
+      "referenceLevel": 42,
+      "prices": {
+        "common": 3728,
+        "rare": 11184,
+        "superRare": 33552,
+        "epic": 100656
+      },
+      "epicResale": 20131,
+      "epicHuntingMinutes": 39
+    },
+    {
+      "tier": 4,
+      "referenceLevel": 62,
+      "prices": {
+        "common": 6312,
+        "rare": 18936,
+        "superRare": 56808,
+        "epic": 170424
+      },
+      "epicResale": 34085,
+      "epicHuntingMinutes": 45.6
+    },
+    {
+      "tier": 5,
+      "referenceLevel": 85,
+      "prices": {
+        "common": 9656,
+        "rare": 28968,
+        "superRare": 86904,
+        "epic": 260712
+      },
+      "epicResale": 52142,
+      "epicHuntingMinutes": 32.8
+    }
+  ]
+}

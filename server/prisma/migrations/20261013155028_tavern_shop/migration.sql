@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Save" ADD COLUMN     "shopPeriod" INTEGER NOT NULL DEFAULT -1,
+ADD COLUMN     "shopPurchases" TEXT[] DEFAULT ARRAY[]::TEXT[],
+ADD COLUMN     "shopSeed" INTEGER NOT NULL DEFAULT 0;
