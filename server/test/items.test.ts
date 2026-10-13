@@ -150,7 +150,8 @@ describeWithDb('équipement, Atelier et butin', () => {
     const { loot, save } = response!.outcome!;
     expect(loot.length).toBeGreaterThanOrEqual(1);
     for (const drop of loot) {
-      expect(drop.catalogId.startsWith('MAG-')).toBe(true);
+      // Toutes les classes peuvent tomber, même celles absentes de l'équipe (ici un seul Mage).
+      expect(drop.catalogId).toMatch(/^(GUE|MAG|TIR)-/);
       expect(save.items.some((i) => i.id === drop.itemId && i.upgradeLevel === 0)).toBe(true);
     }
   });

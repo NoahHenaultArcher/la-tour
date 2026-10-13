@@ -10,6 +10,10 @@ export type EquipItemBody = z.infer<typeof equipItemBodySchema>;
 export const itemIdBodySchema = z.strictObject({ itemId: z.uuid() });
 export type ItemIdBody = z.infer<typeof itemIdBodySchema>;
 
+/** Revente groupée (« Tout vendre ») : tous les objets ou aucun. */
+export const itemIdsBodySchema = z.strictObject({ itemIds: z.array(z.uuid()).min(1).max(500) });
+export type ItemIdsBody = z.infer<typeof itemIdsBodySchema>;
+
 /** Fabrication à l'Atelier : un objet Commun +0 d'une classe possédée, d'un palier ouvert. */
 export const craftItemBodySchema = z.strictObject({
   classId: z.enum(CLASS_IDS),

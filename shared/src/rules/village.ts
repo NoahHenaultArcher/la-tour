@@ -164,6 +164,30 @@ export function upgradeTowerCost(
   };
 }
 
+export interface UpgradeTowerStep {
+  branch: UpgradeTowerBranchId;
+  /** Niveau visé. */
+  level: number;
+  gold: number;
+  ether: number;
+  /** Ressource propre à la branche (adamantite, peau de dragon…) et quantité. */
+  resourceId: string;
+  branchResource: number;
+}
+
+/** Prochain niveau d'une branche de la Tour d'amélioration (null au niveau maximum). */
+export function nextUpgradeTowerStep(
+  data: VillageData,
+  levels: Partial<Record<UpgradeTowerBranchId, number>>,
+  branch: UpgradeTowerBranchId,
+): UpgradeTowerStep | null {
+  const info = data.upgradeTower.branches.find((b) => b.id === branch);
+  if (!info) return null;
+  const level = (levels[branch] ?? 0) + 1;
+  if (level > info.maxLevel) return null;
+  return { branch, level, ...upgradeTowerCost(data, level), resourceId: info.resourceId };
+}
+
 export interface IdleStock {
   amount: number;
   /** Part de ressource produite mais pas encore entière. */

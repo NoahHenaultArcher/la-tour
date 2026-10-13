@@ -4,9 +4,29 @@
  */
 import { COMBAT_RULES } from '../balance.ts';
 import { chance, type Rng } from '../rules/random.ts';
+import { isControlImmune, modifierStatFactor, modifierSum } from './modifiers.ts';
 import type { ActiveAlteration, CombatData, CombatEvent, Combatant } from './types.ts';
 
-type ModifiedStat = 'resistance' | 'agility' | 'accuracy' | 'critChance' | 'armor';
+type ModifiedStat =
+  'resistance' | 'agility' | 'accuracy' | 'critChance' | 'armor' | 'strength' | 'magic';
+
+/** Réglages d'une application d'altération (fusions, passifs). */
+export interface AlterationOptions {
+  /** Piles ajoutées d'un coup (2 piles de Corrosion…). */
+  stacks?: number;
+  /** Valeur remplaçant celle du bestiaire (Brûlure à 12 %, Corruption à 15 %). */
+  value?: number;
+  /** Piles maximum (Corrosion jusqu'à 5 ou 6 piles). */
+  maxStacks?: number;
+  /** Manches en plus (Persistance, Affinité ardente, Tour d'alchimie). */
+  extraDuration?: number;
+  /** Durée imposée (Poison de l'Eau noire : 3 tours). */
+  duration?: number;
+  /** Piles de Froid qui déclenchent le Gel (3 par défaut). */
+  freezeAt?: number;
+  /** Le Gel fait perdre un tour de plus (Grand Gel, hors boss). */
+  longFreeze?: boolean;
+}
 
 interface AlterationRule {
   kind: 'dot' | 'control' | 'debuff' | 'terror';
@@ -50,39 +70,73 @@ function info(data: CombatData, id: string) {
   return alteration;
 }
 
-function active(target: Combatant, id: string): ActiveAlteration | undefined {
+export function activeAlteration(target: Combatant, id: string): ActiveAlteration | undefined {
   return target.alterations.find((a) => a.id === id);
 }
+const active = activeAlteration;
 
-/** Valeur effective d'une stat, altérations comprises. */
+/** Valeur effective d'une stat : altérations et effets temporaires compris. */
 export function effectiveStat(data: CombatData, c: Combatant, stat: ModifiedStat): number {
   let value = c.stats[stat];
   for (const a of c.alterations) {
     const rule = ALTERATION_RULES[a.id];
-    if (rule?.stat === stat) value *= Math.max(0, 1 - info(data, a.id).value * a.stacks);
+    if (rule?.stat === stat) value *= Math.max(0, 1 - alterationValue(data, a) * a.stacks);
     if (stat === 'accuracy' && a.id === 'eblouissement') value *= 1 - DAZZLE_ACCURACY_MALUS;
   }
-  return value;
+  if (stat === 'critChance') return Math.max(0, value + modifierSum(c, 'critChance'));
+  return value * modifierStatFactor(c, stat);
 }
 
-/** Multiplicateurs de dégâts liés aux altérations. */
+/** Valeur d'une altération active (celle du bestiaire, sauf si une fusion l'a renforcée). */
+function alterationValue(data: CombatData, a: ActiveAlteration): number {
+  return a.value ?? info(data, a.id).value;
+}
+
+/** Multiplicateurs de dégâts liés aux altérations et aux effets temporaires. */
 export function alterationDamageFactors(
   data: CombatData,
   attacker: Combatant,
   defender: Combatant,
 ) {
-  let dealt = 1;
+  let dealt = 1 + modifierSum(attacker, 'damageDealt');
   for (const a of attacker.alterations) {
-    if (ALTERATION_RULES[a.id]?.damageDealt) dealt *= 1 - info(data, a.id).value;
+    if (ALTERATION_RULES[a.id]?.damageDealt) dealt *= 1 - alterationValue(data, a);
   }
-  let taken = 1;
+  let taken = 1 + modifierSum(defender, 'damageTaken');
   let lightning = 1;
   for (const a of defender.alterations) {
     const rule = ALTERATION_RULES[a.id];
-    if (rule?.damageTaken) taken *= 1 + info(data, a.id).value;
-    if (rule?.lightningTaken) lightning *= 1 + info(data, a.id).value;
+    if (rule?.damageTaken) taken *= 1 + alterationValue(data, a);
+    if (rule?.lightningTaken) lightning *= 1 + alterationValue(data, a);
   }
-  return { dealt, taken, lightning };
+  return { dealt: Math.max(0, dealt), taken: Math.max(0, taken), lightning };
+}
+
+/** Le combattant porte au moins une altération (Chasseur, Explosion arcanique). */
+export function hasAlteration(c: Combatant): boolean {
+  return c.alterations.length > 0;
+}
+
+/** Retire jusqu'à `count` altérations (les plus récentes d'abord) ; renvoie le nombre retiré. */
+export function cleanse(c: Combatant, count: number, events: CombatEvent[]): number {
+  const removed = c.alterations.slice(-count);
+  if (removed.length === 0) return 0;
+  c.alterations = c.alterations.slice(0, c.alterations.length - removed.length);
+  if (removed.some((a) => ALTERATION_RULES[a.id]?.kind === 'control')) c.skipNextTurn = false;
+  for (const a of removed)
+    events.push({ type: 'alterationEnd', targetId: c.id, alterationId: a.id });
+  events.push({ type: 'cleanse', targetId: c.id, count: removed.length });
+  return removed.length;
+}
+
+/** Retire une altération précise (consommée par une fusion) ; renvoie ses piles. */
+export function removeAlteration(c: Combatant, id: string, events: CombatEvent[]): number {
+  const existing = active(c, id);
+  if (!existing) return 0;
+  c.alterations = c.alterations.filter((a) => a.id !== id);
+  if (ALTERATION_RULES[id]?.kind === 'control') c.skipNextTurn = false;
+  events.push({ type: 'alterationEnd', targetId: c.id, alterationId: id });
+  return existing.stacks;
 }
 
 export function isDodgeCancelled(c: Combatant): boolean {
@@ -101,16 +155,23 @@ export function tryApplyAlteration(
   alterationId: string,
   baseChance: number,
   events: CombatEvent[],
-): void {
+  options: AlterationOptions = {},
+): boolean {
   const rule = ALTERATION_RULES[alterationId];
-  if (!rule || target.hp <= 0) return;
+  if (!rule || target.hp <= 0) return false;
   let probability = baseChance * (1 - Math.min(1, target.stats.statusResistance));
   if (rule.kind === 'control') {
-    if (target.controlImmunity > 0 || target.skipNextTurn) return;
+    if (!canBeControlled(target)) return false;
     if (target.isBoss) probability *= COMBAT_RULES.bossControlFactor;
   }
-  if (!chance(rng, probability)) return;
-  applyAlteration(data, source, target, alterationId, events);
+  if (!chance(rng, probability)) return false;
+  applyAlteration(data, source, target, alterationId, events, options);
+  return true;
+}
+
+/** Un contrôle peut-il encore toucher ce combattant (immunités, contrôle déjà en attente) ? */
+export function canBeControlled(target: Combatant): boolean {
+  return target.controlImmunity === 0 && !target.skipNextTurn && !isControlImmune(target);
 }
 
 /** Applique une altération sans tirage (règles de cumul, de durée et d'interaction). */
@@ -120,12 +181,15 @@ export function applyAlteration(
   target: Combatant,
   alterationId: string,
   events: CombatEvent[],
+  options: AlterationOptions = {},
 ): void {
   const rule = ALTERATION_RULES[alterationId]!;
   const alteration = info(data, alterationId);
 
   if (rule.kind === 'control') {
+    if (!canBeControlled(target)) return;
     target.skipNextTurn = true;
+    if (options.longFreeze && alterationId === 'gel' && !target.isBoss) target.extraSkips = 1;
     target.alterations = target.alterations.filter((a) => a.id !== alterationId);
     target.alterations.push({ id: alterationId, stacks: 1, remaining: 1, damagePerStack: 0 });
     events.push({ type: 'alteration', targetId: target.id, alterationId, stacks: 1 });
@@ -138,36 +202,52 @@ export function applyAlteration(
     events.push({ type: 'alterationEnd', targetId: target.id, alterationId: 'brulure' });
   }
 
+  const value = options.value ?? alteration.value;
   const damagePerStack =
     rule.dot === 'sourceStrength'
-      ? alteration.value * (source?.stats.strength ?? 0)
+      ? value * (source?.stats.strength ?? 0)
       : rule.dot === 'sourceAttack'
-        ? alteration.value * Math.max(source?.stats.strength ?? 0, source?.stats.magic ?? 0)
+        ? value * Math.max(source?.stats.strength ?? 0, source?.stats.magic ?? 0)
         : rule.dot === 'maxHp'
-          ? alteration.value * target.stats.maxHp
+          ? value * target.stats.maxHp
           : 0;
+  const maxStacks = Math.max(
+    alteration.maxStacks,
+    options.maxStacks ?? 0,
+    active(target, alterationId)?.maxStacks ?? 0,
+  );
+  const duration = (options.duration ?? alteration.duration) + (options.extraDuration ?? 0);
+  const added = Math.max(1, options.stacks ?? 1);
 
   const existing = active(target, alterationId);
   if (existing) {
-    existing.stacks = Math.min(alteration.maxStacks, existing.stacks + 1);
-    existing.remaining = alteration.duration;
+    existing.stacks = Math.min(maxStacks, existing.stacks + added);
+    existing.remaining = Math.max(existing.remaining, duration);
     existing.damagePerStack = Math.max(existing.damagePerStack, damagePerStack);
+    if (options.value !== undefined) existing.value = Math.max(existing.value ?? 0, value);
+    if (maxStacks > alteration.maxStacks)
+      existing.maxStacks = Math.max(existing.maxStacks ?? 0, maxStacks);
   } else {
     target.alterations.push({
       id: alterationId,
-      stacks: 1,
-      remaining: alteration.duration,
+      stacks: Math.min(maxStacks, added),
+      remaining: duration,
       damagePerStack,
+      ...(options.value !== undefined ? { value } : {}),
+      ...(maxStacks > alteration.maxStacks ? { maxStacks } : {}),
     });
   }
   const stacks = active(target, alterationId)!.stacks;
   events.push({ type: 'alteration', targetId: target.id, alterationId, stacks });
 
-  // Froid : à 3 piles, la cible gèle.
-  if (alterationId === 'froid' && stacks >= alteration.maxStacks) {
+  // Froid : à 3 piles (2 avec l'Affinité glaciale, jamais moins de 3 sur un boss), la cible gèle.
+  const freezeAt = target.isBoss
+    ? alteration.maxStacks
+    : Math.min(alteration.maxStacks, options.freezeAt ?? alteration.maxStacks);
+  if (alterationId === 'froid' && stacks >= freezeAt) {
     target.alterations = target.alterations.filter((a) => a.id !== 'froid');
-    if (target.controlImmunity === 0 && !target.skipNextTurn)
-      applyAlteration(data, source, target, 'gel', events);
+    if (canBeControlled(target))
+      applyAlteration(data, source, target, 'gel', events, { longFreeze: options.longFreeze });
   }
 }
 
@@ -185,9 +265,15 @@ export function resolveTurnStart(
   if (c.hp <= 0) return;
   if (c.skipNextTurn) {
     const control = c.alterations.find((a) => ALTERATION_RULES[a.id]?.kind === 'control');
-    c.skipNextTurn = false;
     c.stunnedThisPhase = true;
     c.lostLastTurn = true;
+    // Gel prolongé : un tour de plus avant que le contrôle (et l'immunité) ne se termine.
+    if (c.extraSkips > 0) {
+      c.extraSkips -= 1;
+      events.push({ type: 'stunned', targetId: c.id, alterationId: control?.id ?? 'gel' });
+      return;
+    }
+    c.skipNextTurn = false;
     c.controlImmunity = COMBAT_RULES.controlImmunityRounds + 1;
     c.alterations = c.alterations.filter((a) => ALTERATION_RULES[a.id]?.kind !== 'control');
     events.push({ type: 'stunned', targetId: c.id, alterationId: control?.id ?? 'assomme' });

@@ -1,11 +1,15 @@
 import type { PrismaClient } from '@prisma/client';
-import { upgradeBuildingBodySchema, type CollectResponse } from '@la-tour/shared';
+import {
+  upgradeBuildingBodySchema,
+  upgradeTowerBranchBodySchema,
+  type CollectResponse,
+} from '@la-tour/shared';
 import type { FastifyInstance } from 'fastify';
 import { currentUser, requireUser } from '../auth/guards.ts';
 import { parseInput } from '../http/errors.ts';
 import { perUser, type RateLimits } from '../http/rate-limits.ts';
 import { getSaveId, loadSave } from '../save/service.ts';
-import { collectIdleFor, upgradeBuilding } from './service.ts';
+import { collectIdleFor, upgradeBuilding, upgradeTowerBranch } from './service.ts';
 
 export async function villageRoutes(
   app: FastifyInstance,
@@ -27,6 +31,14 @@ export async function villageRoutes(
     const { buildingId } = parseInput(upgradeBuildingBodySchema, request.body);
     const userId = currentUser(request).id;
     await upgradeBuilding(prisma, await getSaveId(prisma, userId), buildingId);
+    return loadSave(prisma, userId);
+  });
+
+  // Tour d'amélioration : une branche monte d'un niveau.
+  app.post('/api/village/upgrade-tower', options, async (request) => {
+    const { branch } = parseInput(upgradeTowerBranchBodySchema, request.body);
+    const userId = currentUser(request).id;
+    await upgradeTowerBranch(prisma, await getSaveId(prisma, userId), branch);
     return loadSave(prisma, userId);
   });
 }

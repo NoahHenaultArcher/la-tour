@@ -22,6 +22,8 @@ export interface CharacterDto {
   id: string;
   classId: ClassId;
   level: number;
+  /** Meilleur niveau atteint (déblocages des compétences, conservés après un héritage). */
+  bestLevel: number;
   /** XP accumulée dans le niveau en cours. */
   xp: number;
   /** XP pour passer au niveau suivant (null au niveau maximum). */

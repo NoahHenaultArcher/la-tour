@@ -9,10 +9,15 @@ import { errorMessage, t } from './i18n/index.ts';
 import { AuthPage } from './pages/AuthPage.tsx';
 import { ChooseClassPage } from './pages/ChooseClassPage.tsx';
 import { CombatPage } from './pages/CombatPage.tsx';
+import { HeritagePage } from './pages/HeritagePage.tsx';
 import { HuntPage } from './pages/HuntPage.tsx';
+import { MultiPage } from './pages/MultiPage.tsx';
+import { RoomPage } from './pages/RoomPage.tsx';
+import { SkillsPage } from './pages/SkillsPage.tsx';
 import { TeamPage } from './pages/TeamPage.tsx';
 import { TowerPage } from './pages/TowerPage.tsx';
 import { VillagePage } from './pages/VillagePage.tsx';
+import { useRoom } from './stores/room.ts';
 import { useSession } from './stores/session.ts';
 
 /** Collecte régulière de la production tant que le joueur est en ligne. */
@@ -49,6 +54,13 @@ export function App() {
     init().catch((error: unknown) => setFatal(errorMessage(error)));
   }, [init]);
   useIdleCollection(status === 'ready');
+  // Connexion temps réel (multijoueur) dès qu'un joueur a un héros ; coupée à la déconnexion.
+  const connectRoom = useRoom((s) => s.connect);
+  const disconnectRoom = useRoom((s) => s.disconnect);
+  useEffect(() => {
+    if (status === 'ready' && hasCharacter) connectRoom();
+    if (status === 'anonymous') disconnectRoom();
+  }, [status, hasCharacter, connectRoom, disconnectRoom]);
 
   if (fatal) return <p className="error center">{fatal}</p>;
   if (status === 'loading') return <p className="muted center">{t('app.loading')}</p>;
@@ -81,6 +93,22 @@ export function App() {
         <Route
           path="/equipe"
           element={home === '/village' ? <TeamPage /> : <Navigate to={home} replace />}
+        />
+        <Route
+          path="/competences"
+          element={home === '/village' ? <SkillsPage /> : <Navigate to={home} replace />}
+        />
+        <Route
+          path="/multi"
+          element={home === '/village' ? <MultiPage /> : <Navigate to={home} replace />}
+        />
+        <Route
+          path="/salon"
+          element={home === '/village' ? <RoomPage /> : <Navigate to={home} replace />}
+        />
+        <Route
+          path="/heritage"
+          element={home === '/village' ? <HeritagePage /> : <Navigate to={home} replace />}
         />
         <Route
           path="/combat"

@@ -2,8 +2,10 @@ import { canPlayFloor } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
+import { ElementBadge } from '../components/ElementBadge.tsx';
 import { Tooltip } from '../components/Tooltip.tsx';
 import { TopBar } from '../components/TopBar.tsx';
+import { elementStyle } from '../game/elements.ts';
 import { t } from '../i18n/index.ts';
 import { useCombat } from '../stores/combat.ts';
 import { useNotifications } from '../stores/notifications.ts';
@@ -17,7 +19,6 @@ function FloorTooltip({ floor }: { floor: FloorInfo }) {
       m.zoneFloor === floor.zoneFloor &&
       (floor.type !== 'normal' || (m.rank !== 'boss' && m.rank !== 'dragon')),
   );
-  const element = gameData.elements.elements.find((e) => e.id === floor.element);
   return (
     <div className="tooltip-body">
       <strong>{t('tower.floor', { floor: floor.floor })}</strong>
@@ -26,7 +27,7 @@ function FloorTooltip({ floor }: { floor: FloorInfo }) {
       </span>
       <span>{t('tower.monsterLevel', { level: floor.monsterLevel })}</span>
       <span>
-        {t('tower.element')} : {element?.name}
+        {t('tower.element')} : <ElementBadge element={floor.element} />
       </span>
       <span>
         {t('tower.waves', { waves: floor.waves })} ·{' '}
@@ -95,7 +96,11 @@ export function TowerPage() {
             .filter((f) => f.floor >= biome.floorMin && f.floor <= biome.floorMax)
             .reverse();
           return (
-            <section key={biome.id} className={`biome biome-${biome.element}`}>
+            <section
+              key={biome.id}
+              className="biome element-themed"
+              style={elementStyle(biome.element)}
+            >
               <h2>
                 {biome.name}
                 <span className="muted">

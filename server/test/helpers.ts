@@ -5,6 +5,7 @@ import { buildApp } from '../src/app.ts';
 import type { Config } from '../src/config.ts';
 import { createPrisma } from '../src/db.ts';
 import type { RateLimits } from '../src/http/rate-limits.ts';
+import type { ManagerOptions } from '../src/multiplayer/manager.ts';
 
 export const testDatabaseUrl = inject('testDatabaseUrl');
 
@@ -37,9 +38,16 @@ const RELAXED_RATE_LIMITS: RateLimits = {
 export async function createTestContext(
   overrides: Partial<Config> = {},
   rateLimits: RateLimits = RELAXED_RATE_LIMITS,
+  multiplayer?: ManagerOptions,
 ): Promise<TestContext> {
   const prisma = createPrisma(testDatabaseUrl!);
-  const app = buildApp({ prisma, config: testConfig(overrides), logger: false, rateLimits });
+  const app = buildApp({
+    prisma,
+    config: testConfig(overrides),
+    logger: false,
+    rateLimits,
+    multiplayer,
+  });
   await app.ready();
   return { prisma, app };
 }

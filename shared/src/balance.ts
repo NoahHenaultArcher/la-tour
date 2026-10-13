@@ -94,4 +94,24 @@ export const COMBAT_RULES = {
   bossControlFactor: 0.5,
   /** Les attaques Neutres ignorent 10 % de la Résistance (onglet Éléments des compétences). */
   neutralResistanceIgnore: 0.1,
+  /** Esquive maximale, tous bonus compris (Roulade, Pas léger, Ailes célestes…). */
+  maxDodge: 0.6,
+  /** Durée par défaut des effets des compétences dont le texte ne la précise pas (« 2 tours »). */
+  defaultEffectRounds: 2,
+} as const;
+
+/**
+ * Tour d'alchimie : fusions (décisions de l'utilisateur, 13/10/2026 ; absentes des classeurs).
+ * Une fusion ajoute un 2e élément à une compétence d'attaque du deck.
+ */
+export const ALCHEMY = {
+  /** Coût d'une fusion posée sur une compétence (la retirer est gratuit, la reposer coûte à nouveau). */
+  fusionCost: { ether: 500, gold: 100_000 },
+  /** Niveau 4 : fusions −20 %. */
+  discountLevel: 4,
+  discount: 0.2,
+  /** Compétences fusionnées par héros selon le niveau de la tour (index = niveau). */
+  fusionsPerHero: [0, 1, 3, 3, 3, 3],
+  /** Niveau 3 : les altérations appliquées par les fusions durent 1 manche de plus. */
+  extraDurationLevel: 3,
 } as const;

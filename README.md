@@ -39,9 +39,22 @@ d'un classeur, relancer `pnpm import-data` puis `pnpm test`. L'import échoue av
 ## Équilibrage hors classeurs
 
 Les réglages absents des classeurs (stats de base des héros, formules de combat : esquive,
-variance, comportement des monstres…) sont regroupés dans `shared/src/balance.ts`. Après une
-modification, `pnpm test` relance la simulation `shared/src/combat/simulation.test.ts`, qui vérifie
-que le début de partie reste faisable sans équipement.
+variance, comportement des monstres, coût des fusions…) sont regroupés dans `shared/src/balance.ts`.
+Les effets des compétences, décrits en texte libre dans `Competences_RPG_Tour.xlsx`, sont traduits
+en règles dans `shared/src/combat/effects.ts` (un test vérifie que les 79 compétences de base et les
+55 fusions en ont toutes une). Après une modification, `pnpm test` relance la simulation
+`shared/src/combat/simulation.test.ts`, qui vérifie que le début de partie reste faisable sans
+équipement et qu'un deck complet aide sans rendre la tour triviale.
+
+## Multijoueur
+
+Le temps réel passe par Socket.IO, sur le même serveur que l'API (`/socket.io`, relayé par Vite
+en développement). La connexion est authentifiée par le cookie de session et chaque événement est
+validé par Zod (`shared/src/api/multiplayer.ts`). Les salons vivent en mémoire du serveur
+(`server/src/multiplayer/manager.ts`) : un redémarrage les ferme, mais les récompenses d'un combat
+sont écrites en base dès sa fin (ou dès qu'un joueur retire son héros d'une chasse). Pour tester à
+plusieurs sur une seule machine, ouvrez un second navigateur (ou une fenêtre privée) avec un autre
+compte.
 
 ## Mode debug
 

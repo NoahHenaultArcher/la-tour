@@ -7,6 +7,7 @@ import { randomInt } from 'node:crypto';
 import type { Prisma } from '@prisma/client';
 import { type PrismaClient } from '@prisma/client';
 import {
+  CLASS_IDS,
   CombatError,
   TOWER_FLOORS,
   addXp,
@@ -28,6 +29,7 @@ import {
   type CombatState,
   type ElementId,
   type HeroSetup,
+  type Rng,
   type UpgradeTowerBranchId,
 } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
@@ -37,31 +39,122 @@ import { lockSave } from '../village/service.ts';
 
 type Tx = Prisma.TransactionClient;
 
-function towerLevels(rows: { branch: string; level: number }[]) {
+export function towerLevels(rows: { branch: string; level: number }[]) {
   return Object.fromEntries(rows.map((t) => [t.branch as UpgradeTowerBranchId, t.level]));
+}
+
+const characterInclude = { skills: true, equipment: true } as const;
+type CharacterWithGear = Prisma.CharacterGetPayload<{ include: typeof characterInclude }>;
+
+/** Héros prêt pour le moteur : niveau, équipement, deck et points répartis. */
+function heroSetupOf(heritageCount: number, c: CharacterWithGear): HeroSetup {
+  return {
+    characterId: c.id,
+    classId: c.class,
+    level: c.level,
+    heritageCount,
+    equipment: c.equipment.map((item) => {
+      const catalogItem = gameData.equipment.catalog.find((i) => i.id === item.catalogId);
+      if (!catalogItem) throw new Error(`Objet inconnu : ${item.catalogId}`);
+      return itemStats(gameData.equipment, catalogItem, item.upgradeLevel);
+    }),
+    deck: c.skills.map((s) => ({
+      position: s.position,
+      skillId: s.skillId,
+      fusionElement: s.fusionElement as ElementId | null,
+    })),
+    allocation: toAllocation(c.statPoints),
+  };
 }
 
 /** Équipe d'une sauvegarde : tous les personnages (1 à 3), avec équipement et deck. */
 async function loadTeam(tx: Tx, saveId: string): Promise<HeroSetup[]> {
   const save = await tx.save.findUniqueOrThrow({
     where: { id: saveId },
+    include: { characters: { include: characterInclude, orderBy: { createdAt: 'asc' } } },
+  });
+  return save.characters.map((c) => heroSetupOf(save.heritageCount, c));
+}
+
+/**
+ * Multijoueur : un héros précis avec les bonus de son propriétaire
+ * (Tour d'amélioration, Tour d'alchimie).
+ */
+export async function loadHeroSetup(
+  db: Tx | PrismaClient,
+  saveId: string,
+  characterId: string,
+): Promise<HeroSetup> {
+  const save = await db.save.findUniqueOrThrow({
+    where: { id: saveId },
     include: {
-      characters: { include: { skills: true, equipment: true }, orderBy: { createdAt: 'asc' } },
+      characters: { where: { id: characterId }, include: characterInclude },
+      upgradeTower: true,
+      buildings: { where: { buildingId: 'tour_alchimie' } },
     },
   });
-  return save.characters.map((c) => ({
-    characterId: c.id,
-    classId: c.class,
-    level: c.level,
-    heritageCount: save.heritageCount,
-    equipment: c.equipment.map((item) => {
-      const catalogItem = gameData.equipment.catalog.find((i) => i.id === item.catalogId);
-      if (!catalogItem) throw new Error(`Objet inconnu : ${item.catalogId}`);
-      return itemStats(gameData.equipment, catalogItem, item.upgradeLevel);
-    }),
-    deck: c.skills.map((s) => ({ position: s.position, skillId: s.skillId })),
-    allocation: toAllocation(c.statPoints),
-  }));
+  const character = save.characters[0];
+  if (!character) throw new HttpError(404, 'NOT_FOUND');
+  return {
+    ...heroSetupOf(save.heritageCount, character),
+    tower: towerLevels(save.upgradeTower),
+    alchemyLevel: save.buildings[0]?.level ?? 0,
+  };
+}
+
+/**
+ * Victoire sur l'étage courant : le joueur monte d'un étage. Renvoie ce qui vient d'être débloqué
+ * (éléments, bâtiments, zone de chasse).
+ */
+export async function applyFloorVictory(
+  tx: Tx,
+  saveId: string,
+  save: {
+    highestFloorCleared: number;
+    bestFloorEver: number;
+    unlockedElements: string[];
+    buildings: { buildingId: string }[];
+  },
+  floor: number,
+): Promise<CombatOutcome['unlocked']> {
+  const highest = Math.max(save.highestFloorCleared, floor);
+  const elementsBefore = new Set(save.unlockedElements);
+  const buildingsBefore = new Set(save.buildings.map((b) => b.buildingId));
+  await applyTowerProgress(tx, saveId, {
+    currentFloor: Math.min(floor + 1, TOWER_FLOORS),
+    highestFloorCleared: highest,
+  });
+  const bestFloor = Math.max(save.bestFloorEver, highest);
+  return {
+    elements: unlockedElements(gameData.elements, highest).filter(
+      (e: ElementId) => !elementsBefore.has(e),
+    ),
+    buildings: unlockedBuildings(gameData.village, bestFloor).filter(
+      (b) => !buildingsBefore.has(b),
+    ),
+    huntingZones: gameData.zones.zones
+      .filter((z) => z.hasHuntingZone && z.floor === floor && floor > save.highestFloorCleared)
+      .map((z) => z.name),
+  };
+}
+
+/**
+ * Butin d'un tirage (sur les monstres vaincus) : objets de n'importe quelle classe,
+ * ajoutés à l'inventaire.
+ */
+export async function grantLoot(
+  tx: Tx,
+  saveId: string,
+  rng: Rng,
+  killed: CombatState['killed'],
+  floor: number,
+): Promise<CombatOutcome['loot']> {
+  const loot: CombatOutcome['loot'] = [];
+  for (const drop of rollLoot(gameData, rng, killed, floor, CLASS_IDS)) {
+    const item = await tx.item.create({ data: { saveId, catalogId: drop.catalogId } });
+    loot.push({ itemId: item.id, catalogId: drop.catalogId });
+  }
+  return loot;
 }
 
 export async function getCombat(prisma: PrismaClient, saveId: string): Promise<CombatResponse> {
@@ -90,7 +183,7 @@ export async function startCombat(
     }
     const save = await tx.save.findUniqueOrThrow({
       where: { id: saveId },
-      include: { upgradeTower: true },
+      include: { upgradeTower: true, buildings: { where: { buildingId: 'tour_alchimie' } } },
     });
     if (mode === 'tower' && !canPlayFloor(save, floor)) throw new HttpError(409, 'FLOOR_LOCKED');
     if (
@@ -108,6 +201,7 @@ export async function startCombat(
       heroes,
       tower: towerLevels(save.upgradeTower),
       seed: randomInt(0, 2 ** 32 - 1),
+      alchemyLevel: save.buildings[0]?.level ?? 0,
     });
     await tx.combatSession.create({
       data: { saveId, floor, state: state as unknown as Prisma.InputJsonValue },
@@ -176,7 +270,11 @@ async function finishCombat(
       levelUps.push({ characterId: character.id, from: character.level, to: next.level });
     await tx.character.update({
       where: { id: character.id },
-      data: { level: next.level, xp: next.xp },
+      data: {
+        level: next.level,
+        xp: next.xp,
+        bestLevel: Math.max(character.bestLevel, next.level),
+      },
     });
   }
   if (rewards.gold > 0) {
@@ -191,43 +289,13 @@ async function finishCombat(
   const mode = state.mode ?? 'tower';
   // La chasse ne fait jamais monter dans la tour.
   const floorCleared = mode === 'tower' && victory && state.floor === save.currentFloor;
-  const unlocked: CombatOutcome['unlocked'] = { elements: [], buildings: [], huntingZones: [] };
-  if (floorCleared) {
-    const highest = Math.max(save.highestFloorCleared, state.floor);
-    const elementsBefore = new Set(save.unlockedElements);
-    const buildingsBefore = new Set(save.buildings.map((b) => b.buildingId));
-    await applyTowerProgress(tx, saveId, {
-      currentFloor: Math.min(state.floor + 1, TOWER_FLOORS),
-      highestFloorCleared: highest,
-    });
-    const bestFloor = Math.max(save.bestFloorEver, highest);
-    unlocked.elements = unlockedElements(gameData.elements, highest).filter(
-      (e: ElementId) => !elementsBefore.has(e),
-    );
-    unlocked.buildings = unlockedBuildings(gameData.village, bestFloor).filter(
-      (b) => !buildingsBefore.has(b),
-    );
-    unlocked.huntingZones = gameData.zones.zones
-      .filter(
-        (z) =>
-          z.hasHuntingZone && z.floor === state.floor && state.floor > save.highestFloorCleared,
-      )
-      .map((z) => z.name);
-  }
+  const unlocked: CombatOutcome['unlocked'] = floorCleared
+    ? await applyFloorVictory(tx, saveId, save, state.floor)
+    : { elements: [], buildings: [], huntingZones: [] };
 
   // Butin : un tirage pour l'équipe (solo), sur les monstres vaincus, même en cas de défaite.
-  const drops = rollLoot(
-    gameData,
-    state.rng,
-    state.killed,
-    state.floor,
-    state.heroes.map((h) => h.classId!),
-  );
-  const loot: CombatOutcome['loot'] = [];
-  for (const drop of drops) {
-    const item = await tx.item.create({ data: { saveId, catalogId: drop.catalogId } });
-    loot.push({ itemId: item.id, catalogId: drop.catalogId });
-  }
+  // Les objets peuvent être de n'importe quelle classe, même absente de l'équipe (à revendre ou garder).
+  const loot = await grantLoot(tx, saveId, state.rng, state.killed, state.floor);
 
   return {
     result: state.phase === 'retreat' ? 'retreat' : victory ? 'victory' : 'defeat',

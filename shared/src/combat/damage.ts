@@ -9,6 +9,7 @@ import { elementMultiplier } from '../rules/elements.ts';
 import { clamp, levelFactor } from '../rules/math.ts';
 import { chance, nextFloat, type Rng } from '../rules/random.ts';
 import { alterationDamageFactors, effectiveStat, isDodgeCancelled } from './alterations.ts';
+import { modifierSum } from './modifiers.ts';
 import type { CombatData, CombatEvent, Combatant } from './types.ts';
 
 export interface AttackSpec {
@@ -20,6 +21,19 @@ export interface AttackSpec {
   resistanceIgnore: number;
   neverMiss: boolean;
   bonusCrit: number;
+  /** Coup critique assuré (Tir mortel, Premier sang). */
+  guaranteedCrit?: boolean;
+  /** Bonus de dégâts multiplicatif (+0,5 = +50 %) : exécution, Rage, Visée… */
+  damageBonus?: number;
+  /** Ignore l'avantage et la résistance élémentaires (Singularité : toujours ×1). */
+  ignoreElement?: boolean;
+}
+
+export interface AttackResult {
+  /** Dégâts infligés (0 si l'attaque a raté). */
+  amount: number;
+  critical: boolean;
+  missed: boolean;
 }
 
 /** Constantes K du niveau de l'attaquant. */
@@ -47,10 +61,14 @@ export function dodgeFromAgility(
   return agility <= 0 ? 0 : (COMBAT_RULES.dodgeCap * agility) / (agility + k);
 }
 
-/** Esquive en combat, annulée par « Marqué ». */
+/** Esquive en combat (Agilité, passifs, effets temporaires), annulée par « Marqué ». */
 export function dodgeChance(data: CombatData, defender: Combatant, attackerLevel: number): number {
   if (isDodgeCancelled(defender)) return 0;
-  return dodgeFromAgility(data, effectiveStat(data, defender, 'agility'), attackerLevel);
+  const dodge =
+    dodgeFromAgility(data, effectiveStat(data, defender, 'agility'), attackerLevel) +
+    defender.stats.dodgeBonus +
+    modifierSum(defender, 'dodge');
+  return clamp(dodge, 0, COMBAT_RULES.maxDodge);
 }
 
 export function hitChance(data: CombatData, attacker: Combatant, defender: Combatant): number {
@@ -101,10 +119,10 @@ export function attack(
   defender: Combatant,
   spec: AttackSpec,
   events: CombatEvent[],
-): number {
+): AttackResult {
   if (!spec.neverMiss && !chance(rng, hitChance(data, attacker, defender))) {
     events.push({ type: 'miss', sourceId: attacker.id, targetId: defender.id });
-    return 0;
+    return { amount: 0, critical: false, missed: true };
   }
 
   const physicalShare =
@@ -117,7 +135,7 @@ export function attack(
   if (physicalShare > 0) {
     damage += mitigate(
       data,
-      attacker.stats.strength * spec.power * physicalShare,
+      effectiveStat(data, attacker, 'strength') * spec.power * physicalShare,
       'physical',
       attacker,
       defender,
@@ -127,7 +145,7 @@ export function attack(
   if (physicalShare < 1) {
     damage += mitigate(
       data,
-      attacker.stats.magic * spec.power * (1 - physicalShare),
+      effectiveStat(data, attacker, 'magic') * spec.power * (1 - physicalShare),
       'magical',
       attacker,
       defender,
@@ -136,7 +154,9 @@ export function attack(
   }
 
   // Élément : seule la part élémentaire subit l'avantage et la Résistance élémentaire.
-  const multiplier = elementMultiplier(data.elements, spec.element, defender.element);
+  const multiplier = spec.ignoreElement
+    ? 1
+    : elementMultiplier(data.elements, spec.element, defender.element);
   const factors = alterationDamageFactors(data, attacker, defender);
   const lightning = spec.element === 'lightning' ? factors.lightning : 1;
   const elemental =
@@ -146,13 +166,12 @@ export function attack(
     (1 - Math.min(1, defender.stats.elementalResistance));
   damage *= 1 - spec.elementalShare + elemental;
 
-  const critical = chance(
-    rng,
-    clamp(effectiveStat(data, attacker, 'critChance') + spec.bonusCrit, 0, 1),
-  );
+  const critical =
+    spec.guaranteedCrit === true ||
+    chance(rng, clamp(effectiveStat(data, attacker, 'critChance') + spec.bonusCrit, 0, 1));
   if (critical) damage *= 1 + attacker.stats.critDamage;
 
-  damage *= factors.dealt * factors.taken;
+  damage *= factors.dealt * factors.taken * (1 + (spec.damageBonus ?? 0));
   damage *= (1 + attacker.damageBonus) * (1 - defender.defenseBonus);
   const variance = COMBAT_RULES.damageVariance;
   damage *= 1 - variance + 2 * variance * nextFloat(rng);
@@ -169,5 +188,31 @@ export function attack(
     cause: 'attack',
   });
   if (defender.hp <= 0) events.push({ type: 'death', targetId: defender.id });
-  return amount;
+  return { amount, critical, missed: false };
+}
+
+/**
+ * Dégâts directs, sans jet ni réduction (explosions, renvois, contre-coups) : ils passent
+ * quand même par le bouclier. Renvoie les dégâts infligés.
+ */
+export function directDamage(
+  source: Combatant | null,
+  target: Combatant,
+  amount: number,
+  events: CombatEvent[],
+): number {
+  if (target.hp <= 0) return 0;
+  const value = Math.max(1, Math.round(amount));
+  inflictDamage(target, value);
+  events.push({
+    type: 'damage',
+    sourceId: source?.id ?? null,
+    targetId: target.id,
+    amount: value,
+    critical: false,
+    elementMultiplier: 1,
+    cause: 'attack',
+  });
+  if (target.hp <= 0) events.push({ type: 'death', targetId: target.id });
+  return value;
 }

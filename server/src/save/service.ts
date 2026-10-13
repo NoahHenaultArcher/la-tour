@@ -4,7 +4,10 @@
  */
 import type { Prisma, PrismaClient } from '@prisma/client';
 import {
+  MAX_HERO_LEVEL,
   availableStatPoints,
+  canInherit,
+  emptyAllocation,
   starterDeckFor,
   toAllocation,
   totalStatPoints,
@@ -74,6 +77,7 @@ export async function loadSave(db: Db, userId: string): Promise<SaveDto> {
       id: c.id,
       classId: c.class,
       level: c.level,
+      bestLevel: Math.max(c.bestLevel, c.level),
       xp: c.xp,
       xpToNextLevel: xpToNextLevel(gameData.monsters, c.level),
       statPoints: {
@@ -167,5 +171,37 @@ export async function applyTowerProgress(
       level: 1,
     })),
     skipDuplicates: true,
+  });
+}
+
+/**
+ * Héritage (compte entier, dès qu'un héros est niveau 100) : tous les héros reviennent au niveau 1
+ * (points de stats remis à zéro), la tour et les zones de chasse sont à refaire ; +25 % de stats
+ * par héritage, cumulatif. Or, objets, village, compétences et éléments débloqués sont conservés.
+ */
+export async function performHeritage(prisma: PrismaClient, saveId: string): Promise<void> {
+  await prisma.$transaction(async (tx) => {
+    await lockSave(tx, saveId);
+    if (await tx.combatSession.findUnique({ where: { saveId }, select: { saveId: true } })) {
+      throw new HttpError(409, 'COMBAT_IN_PROGRESS');
+    }
+    const characters = await tx.character.findMany({ where: { saveId } });
+    if (!canInherit(characters, MAX_HERO_LEVEL)) throw new HttpError(409, 'HERITAGE_LOCKED');
+    for (const character of characters) {
+      await tx.character.update({
+        where: { id: character.id },
+        data: {
+          level: 1,
+          xp: 0,
+          bestLevel: Math.max(character.bestLevel, character.level),
+          statPoints: emptyAllocation(),
+        },
+      });
+    }
+    // Le meilleur étage atteint (bestFloorEver) reste : les déblocages du village sont définitifs.
+    await tx.save.update({
+      where: { id: saveId },
+      data: { heritageCount: { increment: 1 }, currentFloor: 1, highestFloorCleared: 0 },
+    });
   });
 }

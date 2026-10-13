@@ -1,75 +1,112 @@
 /**
- * Effets mécaniques des compétences. Les classeurs décrivent les effets en texte libre :
- * on les traduit ici en règles. Phase 4 : kit de départ des 3 classes (les autres compétences
- * infligent leurs dégâts de base ; leurs effets propres arrivent avec les decks en phase 7).
+ * Compétences en combat : effet complet d'une compétence (base + élément, ou base + fusion)
+ * et passifs d'un héros. Les effets eux-mêmes sont décrits dans effects.ts.
  */
-import { COMBAT_RULES } from '../balance.ts';
 import type { ElementId } from '../constants.ts';
+import {
+  ATTACK_EFFECTS,
+  ELEMENT_ATTACK_EFFECTS,
+  FUSION_EFFECTS,
+  PASSIVE_EFFECTS,
+  SUPPORT_EFFECTS,
+  fusionKey,
+  type AttackEffect,
+  type PassiveEffect,
+} from './effects.ts';
 import type { CombatData } from './types.ts';
 
-export interface ActiveEffect {
-  /** Part de l'Armure ignorée (« Perce la garde : ignore 20 % de l'Armure »). */
-  armorIgnore?: number;
-  /** Part de la Résistance ignorée. */
-  resistanceIgnore?: number;
-  /** Ne rate jamais. */
-  neverMiss?: boolean;
-  /** Chance de critique en plus. */
-  bonusCrit?: number;
-}
+export type CatalogSkill = CombatData['skills']['catalog'][number];
 
-export interface PassiveEffect {
-  /** Stat multipliée par (1 + valeur). */
-  multiply?: Partial<Record<'resistance' | 'magic' | 'strength', number>>;
-  /** Stat augmentée de la valeur. */
-  add?: Partial<Record<'critChance' | 'critDamage' | 'penetration', number>>;
-}
-
-/** Effets propres des compétences actives, par compétence de base. */
-export const ACTIVE_EFFECTS: Record<string, ActiveEffect> = {
-  'GUE-A01': {}, // Frappe rapide : coup simple et fiable.
-  'GUE-A02': { armorIgnore: 0.2 }, // Coup d'estoc : ignore 20 % de l'Armure.
-  'MAG-A01': {}, // Boule arcanique : projectile fiable.
-  'MAG-A02': { resistanceIgnore: 0.15 }, // Lance arcanique : ignore 15 % de la Résistance.
-  'TIR-A01': {}, // Tir rapide : tir fiable.
-  'TIR-A02': { neverMiss: true, bonusCrit: 0.2 }, // Tir précis : ne rate jamais, +20 % de critique.
-};
-
-/** Effets des passifs, par compétence de base. */
-export const PASSIVE_EFFECTS: Record<string, PassiveEffect> = {
-  'GUE-P01': { multiply: { resistance: 0.08 } }, // Peau dure : +8 % de Résistance.
-  'MAG-P01': { multiply: { magic: 0.08 } }, // Concentration arcanique : +8 % de Magie.
-  'TIR-P01': { add: { critChance: 0.05 } }, // Œil vif : +5 % de chance de critique.
-};
-
-export function skillById(data: CombatData, skillId: string) {
+export function skillById(data: CombatData, skillId: string): CatalogSkill {
   const skill = data.skills.catalog.find((s) => s.id === skillId);
   if (!skill) throw new Error(`Compétence inconnue : ${skillId}`);
   return skill;
 }
 
-export interface ResolvedAttack {
-  power: number;
-  element: ElementId;
-  area: boolean;
-  armorIgnore: number;
-  resistanceIgnore: number;
-  neverMiss: boolean;
-  bonusCrit: number;
+/** Une compétence qui frappe : les attaques, et les soutiens qui ont une puissance (Coup de bouclier…). */
+export function dealsDamage(skill: CatalogSkill): boolean {
+  return skill.family === 'attack' || (skill.family === 'support' && skill.power > 0);
 }
 
-/** Paramètres d'attaque d'une compétence active (effet propre + effet de l'élément). */
-export function resolveAttack(data: CombatData, skillId: string): ResolvedAttack {
-  const skill = skillById(data, skillId);
-  const effect = ACTIVE_EFFECTS[skill.baseId] ?? {};
-  const neutralIgnore = skill.element === 'neutral' ? COMBAT_RULES.neutralResistanceIgnore : 0;
-  return {
-    power: skill.power,
-    element: skill.element,
-    area: skill.target === 'area',
-    armorIgnore: effect.armorIgnore ?? 0,
-    resistanceIgnore: (effect.resistanceIgnore ?? 0) + neutralIgnore,
-    neverMiss: effect.neverMiss ?? false,
-    bonusCrit: effect.bonusCrit ?? 0,
-  };
+/** Effet propre d'une compétence qui frappe (sans l'élément). */
+export function baseAttackEffect(skill: CatalogSkill): AttackEffect {
+  return (
+    ATTACK_EFFECTS[skill.baseId] ??
+    (skill.family === 'support' ? SUPPORT_EFFECTS[skill.baseId]?.attack : undefined) ??
+    {}
+  );
+}
+
+/**
+ * Effet de l'élément d'une attaque : celui de son élément, ou celui de la fusion s'il y en a une
+ * (la fusion remplace l'effet simple). Les soutiens ont leur propre effet d'élément.
+ */
+export function elementalAttackEffect(
+  skill: CatalogSkill,
+  fusion: ElementId | null | undefined,
+): AttackEffect {
+  if (skill.family !== 'attack') return {};
+  if (fusion) return FUSION_EFFECTS[fusionKey(skill.element, fusion)] ?? {};
+  return ELEMENT_ATTACK_EFFECTS[skill.element];
+}
+
+const ADDITIVE = [
+  'armorIgnore',
+  'resistanceIgnore',
+  'bonusCrit',
+  'damageBonus',
+  'alterationChanceBonus',
+  'bonusVsAltered',
+  'lifesteal',
+  'shieldFromDamage',
+  'selfHeal',
+  'selfShield',
+  'cleanseSelf',
+  'dispel',
+] as const;
+
+/** Combine deux effets : valeurs additionnées, drapeaux cumulés, altérations mises bout à bout. */
+export function mergeEffects(a: AttackEffect, b: AttackEffect): AttackEffect {
+  const merged: AttackEffect = { ...a, ...b };
+  for (const key of ADDITIVE) {
+    const sum = (a[key] ?? 0) + (b[key] ?? 0);
+    if (sum) merged[key] = sum;
+  }
+  merged.neverMiss = a.neverMiss || b.neverMiss;
+  merged.guaranteedCrit = a.guaranteedCrit || b.guaranteedCrit;
+  merged.ignoreElement = a.ignoreElement || b.ignoreElement;
+  merged.destroyShield = a.destroyShield || b.destroyShield;
+  merged.guaranteedOnPrimary = a.guaranteedOnPrimary || b.guaranteedOnPrimary;
+  merged.hits = Math.max(a.hits ?? 1, b.hits ?? 1);
+  // Un seul rebond : celui qui touche le plus (traversée du Tir perçant ou rebond de l'élément).
+  const reach = (e: AttackEffect) =>
+    e.extraTargets ? e.extraTargets.count * e.extraTargets.share : 0;
+  merged.extraTargets = reach(b) >= reach(a) ? (b.extraTargets ?? a.extraTargets) : a.extraTargets;
+  merged.alterations = [...(a.alterations ?? []), ...(b.alterations ?? [])];
+  merged.preAlterations = [...(a.preAlterations ?? []), ...(b.preAlterations ?? [])];
+  merged.deathSpread = [...(a.deathSpread ?? []), ...(b.deathSpread ?? [])];
+  return merged;
+}
+
+/** Effet complet d'une compétence qui frappe (avec son élément ou sa fusion). */
+export function attackEffectOf(
+  skill: CatalogSkill,
+  fusion: ElementId | null | undefined,
+): AttackEffect {
+  return mergeEffects(baseAttackEffect(skill), elementalAttackEffect(skill, fusion));
+}
+
+/** Passifs d'un héros (identifiants du catalogue → effets). */
+export function passiveEffectsOf(data: CombatData, passives: readonly string[]): PassiveEffect[] {
+  return passives
+    .map((id) => PASSIVE_EFFECTS[skillById(data, id).baseId])
+    .filter((effect): effect is PassiveEffect => effect !== undefined);
+}
+
+/** Somme d'une valeur numérique des passifs. */
+export function passiveSum(
+  passives: readonly PassiveEffect[],
+  pick: (effect: PassiveEffect) => number | undefined,
+): number {
+  return passives.reduce((sum, effect) => sum + (pick(effect) ?? 0), 0);
 }

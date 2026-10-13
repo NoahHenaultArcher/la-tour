@@ -741,35 +741,34 @@ button.danger {
   margin-bottom: 8px;
 }
 
-.biome-neutral {
-  border-color: #4f7a3a;
+/* Thème d'un élément : --el est posé en style (voir game/elements.ts). */
+.element-themed {
+  border-color: var(--el);
+  background: color-mix(in srgb, var(--el) 10%, var(--panel));
 }
-.biome-earth {
-  border-color: #8a6a3e;
+
+.element-themed > h2,
+.element-themed > header h2 {
+  color: color-mix(in srgb, var(--el) 70%, white);
 }
-.biome-fire {
-  border-color: #c2451d;
+
+.element-badge {
+  display: inline-block;
+  padding: 0 6px;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--el) 75%, white);
+  background: color-mix(in srgb, var(--el) 22%, #120e18);
+  border: 1px solid color-mix(in srgb, var(--el) 65%, transparent);
 }
-.biome-wind {
-  border-color: #c9b06b;
-}
-.biome-acid {
-  border-color: #6b9b2b;
-}
-.biome-water {
-  border-color: #2f74c0;
-}
-.biome-ice {
-  border-color: #8fd0e8;
-}
-.biome-lightning {
-  border-color: #e6c619;
-}
-.biome-light {
-  border-color: #f3e9b0;
-}
-.biome-shadow {
-  border-color: #7a3db8;
+
+.fusion-badge {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  align-items: center;
 }
 
 .floor-list {
@@ -785,7 +784,7 @@ button.danger {
   gap: 8px;
   padding: 5px 10px;
   text-align: left;
-  background: #1d1826;
+  background: color-mix(in srgb, var(--el, #1d1826) 8%, #1d1826);
   border: 1px solid var(--panel-border);
 }
 
@@ -846,29 +845,25 @@ button.danger {
 
 /* --- Combat --- */
 
+/* Fond de la page de combat teinté par l'élément du biome (--el). */
+.page.combat-backdrop {
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    color-mix(in srgb, var(--el) 18%, var(--bg)) 0%,
+    var(--bg) 70%
+  );
+}
+
 .combat-page {
   max-width: 1100px;
   margin: 0 auto;
   padding: 12px 16px 24px;
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  grid-template-areas:
-    'header header'
-    'initiative initiative'
-    'scene log'
-    'controls log';
+  display: flex;
+  flex-direction: column;
   gap: 12px;
 }
 
-@media (max-width: 900px) {
-  .combat-page {
-    grid-template-columns: 1fr;
-    grid-template-areas: 'header' 'initiative' 'scene' 'controls' 'log';
-  }
-}
-
 .combat-header {
-  grid-area: header;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -880,7 +875,6 @@ button.danger {
 }
 
 .initiative-bar {
-  grid-area: initiative;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -907,22 +901,38 @@ button.danger {
 }
 
 .combat-scene {
-  grid-area: scene;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 16px;
   min-height: 260px;
   padding: 16px;
   border-radius: 6px;
-  background: radial-gradient(circle at 50% 60%, #2b3a2a 0%, #1a2219 70%);
-  border: 2px solid #1a2e15;
+  background: radial-gradient(
+    circle at 50% 60%,
+    color-mix(in srgb, var(--el, #2b3a2a) 30%, #1a1622) 0%,
+    color-mix(in srgb, var(--el, #2b3a2a) 10%, #100d15) 75%
+  );
+  border: 2px solid color-mix(in srgb, var(--el, #2b3a2a) 45%, #100d15);
 }
 
+/* Héros et monstres alignés sur une seule ligne chacun. */
 .combat-side {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 10px;
-  align-content: center;
+  align-items: flex-end;
+}
+
+@media (max-width: 900px) {
+  .combat-scene {
+    flex-direction: column;
+  }
+
+  .combat-side {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 
 .combat-side.monsters {
@@ -953,6 +963,10 @@ button.danger {
 
 .combatant.selected {
   box-shadow: 0 0 0 2px var(--ok);
+}
+
+.combatant[role='button'] {
+  cursor: pointer;
 }
 
 .combatant.targetable {
@@ -1025,7 +1039,9 @@ button.danger {
   font-size: 0.65rem;
   padding: 0 4px;
   border-radius: 3px;
-  background: #4a2a5a;
+  background: color-mix(in srgb, var(--el, #4a2a5a) 35%, #2a1d33);
+  border: 1px solid color-mix(in srgb, var(--el, #4a2a5a) 70%, transparent);
+  cursor: help;
 }
 
 .alteration.stunned {
@@ -1073,7 +1089,6 @@ button.danger {
 }
 
 .combat-controls {
-  grid-area: controls;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -1098,6 +1113,7 @@ button.danger {
 }
 
 .skill-button {
+  border-color: color-mix(in srgb, var(--el, var(--panel-border)) 55%, var(--panel-border));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1144,15 +1160,13 @@ button.danger {
 }
 
 .combat-log {
-  grid-area: log;
   display: flex;
   flex-direction: column;
-  max-height: 520px;
+  max-height: 260px;
 }
 
-.combat-log h2 {
-  font-size: 1rem;
-  margin-bottom: 6px;
+.combat-log-toggle {
+  margin-left: auto;
 }
 
 .combat-log ol {
@@ -1246,23 +1260,22 @@ button.danger {
 /* --- Page Équipe --- */
 
 .team-page {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 16px;
   display: grid;
-  grid-template-columns: 300px 1fr 1fr;
+  grid-template-columns: 300px minmax(0, 1fr) minmax(0, 1.2fr);
   grid-template-areas:
     'header header header'
-    'sheet equipment inventory'
-    'sheet deck deck';
+    'sheet equipment inventory';
   gap: 12px;
   align-items: start;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
   .team-page {
     grid-template-columns: 1fr;
-    grid-template-areas: 'header' 'sheet' 'equipment' 'inventory' 'deck';
+    grid-template-areas: 'header' 'sheet' 'equipment' 'inventory';
   }
 }
 
@@ -1288,10 +1301,6 @@ button.danger {
 
 .inventory-panel {
   grid-area: inventory;
-}
-
-.deck-panel {
-  grid-area: deck;
 }
 
 .panel h2 {
@@ -1328,29 +1337,48 @@ button.danger {
   font-variant-numeric: tabular-nums;
 }
 
-.slot-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-}
-
-.slot {
+/* Emplacements d'équipement : une ligne par emplacement. */
+.slot-list {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 4px;
-  padding: 6px 2px;
-  background: #1d1826;
-  color: var(--text);
 }
 
-.slot.selected {
+.slot-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px;
+  text-align: left;
+  background: #1d1826;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.slot-row.selected {
   border-color: var(--accent);
+  background: #2e2416;
+}
+
+.slot-row-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.slot-row-text .item-name,
+.slot-row-text .slot-empty-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .slot-empty {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border: 2px dashed var(--panel-border);
   border-radius: 4px;
   box-sizing: border-box;
@@ -1361,11 +1389,66 @@ button.danger {
   color: var(--muted);
 }
 
-.slot-detail {
+.slot-empty-text {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.slot-summary {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.inventory-toolbar {
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 6px;
   align-items: center;
-  margin-top: 10px;
+  margin-bottom: 8px;
+}
+
+.inventory-toolbar .spacer {
+  flex: 1;
+}
+
+.sell-all-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 6px 8px;
+  border: 1px solid var(--error);
+  border-radius: 4px;
+}
+
+.inventory-row-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.stat-deltas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 10px;
+  font-size: 0.75rem;
+}
+
+.stat-deltas .better {
+  color: var(--ok);
+}
+
+.stat-deltas .worse {
+  color: var(--error);
+}
+
+.tab-count {
+  margin-left: 4px;
+  font-size: 0.75rem;
+  opacity: 0.8;
 }
 
 .inventory-list,
@@ -1385,6 +1468,12 @@ button.danger {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.outcome-loot li {
+  padding: 4px 6px;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
 }
 
 .inventory-item {
@@ -1429,6 +1518,53 @@ button.danger {
 .deck-skill {
   display: inline-flex;
   align-items: center;
+  gap: 6px;
+}
+
+/* Page Compétences */
+.skills-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skill-catalog {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 6px;
+}
+
+.skill-catalog li {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+}
+
+.skill-catalog li.locked {
+  opacity: 0.5;
+}
+
+.skill-catalog li.in-deck {
+  border-color: var(--accent);
+}
+
+.skill-catalog-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.element-list {
+  display: flex;
+  flex-wrap: wrap;
   gap: 6px;
 }
 
@@ -1533,4 +1669,323 @@ button.danger {
   gap: 4px;
   min-width: 90px;
   justify-content: flex-end;
+}
+
+/* --- Éditeur de deck --- */
+
+.deck-slot.editable {
+  cursor: pointer;
+  min-width: 170px;
+  border-color: color-mix(in srgb, var(--el, var(--panel-border)) 55%, var(--panel-border));
+}
+
+.deck-slot.editable.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.deck-slot select {
+  font-size: 0.8rem;
+  padding: 2px 4px;
+}
+
+.skill-catalog li.skill-row {
+  align-items: flex-start;
+}
+
+.variant-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 4px;
+}
+
+.variant-button {
+  padding: 0 5px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--el) 75%, white);
+  background: color-mix(in srgb, var(--el) 22%, #120e18);
+  border: 1px solid color-mix(in srgb, var(--el) 65%, transparent);
+}
+
+.variant-button[aria-disabled='true'] {
+  opacity: 0.3;
+}
+
+.skill-fusion {
+  font-size: 0.7rem;
+  color: #b1ddf0;
+}
+
+/* --- Effets en combat --- */
+
+.modifier {
+  font-size: 0.65rem;
+  padding: 0 4px;
+  border-radius: 3px;
+  cursor: help;
+}
+
+.modifier.buff {
+  background: #1f3d24;
+  border: 1px solid var(--ok);
+}
+
+.modifier.debuff {
+  background: #3d1f2a;
+  border: 1px solid var(--error);
+}
+
+.shield-fill {
+  position: absolute;
+  inset: auto auto 0 0;
+  height: 3px;
+  background: #b1ddf0;
+}
+
+.floater.shield {
+  color: #b1ddf0;
+}
+
+/* --- Tour d'alchimie et Tour d'amélioration --- */
+
+.fusion-recipes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.fusion-recipes li.locked {
+  opacity: 0.4;
+}
+
+.upgrade-tower-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upgrade-tower-list > li {
+  border-top: 1px solid var(--panel-border);
+  padding-top: 8px;
+}
+
+.upgrade-tower-list p {
+  margin: 2px 0;
+}
+
+.upgrade-tower-next {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+}
+
+.upgrade-tower-next .cost-list {
+  margin: 0;
+}
+
+/* --- Héritage --- */
+
+.heritage-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.heritage-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.heritage-lost {
+  border-color: var(--error);
+}
+
+.heritage-kept {
+  border-color: var(--panel-border);
+}
+
+.heritage-gained {
+  border-color: var(--ok);
+}
+
+.heritage-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* --- Multijoueur --- */
+
+.multi-page {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.multi-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.join-form {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.join-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.join-form input {
+  width: 9ch;
+  font-family: monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.room-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    'header header'
+    'players chat'
+    'content chat';
+  gap: 12px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .room-page {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'header' 'players' 'content' 'chat';
+  }
+}
+
+.room-page > header {
+  grid-area: header;
+}
+
+.room-players {
+  grid-area: players;
+}
+
+.room-content {
+  grid-area: content;
+}
+
+.room-chat {
+  grid-area: chat;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.room-players ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.room-players li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.room-players li.offline {
+  opacity: 0.5;
+}
+
+.room-player-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.room-ready {
+  font-weight: bold;
+}
+
+.room-chat ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-height: 200px;
+  max-height: 360px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+}
+
+.room-chat form {
+  display: flex;
+  gap: 6px;
+}
+
+.room-chat input {
+  flex: 1;
+}
+
+.who-got-what {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.who-got-what li {
+  padding: 6px 8px;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.who-got-what li.mine {
+  border-color: var(--accent);
+}
+
+.who-loot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
 }

@@ -10,6 +10,8 @@ import type { Config } from './config.ts';
 import { debugRoutes } from './debug/routes.ts';
 import { HttpError, registerErrorHandling } from './http/errors.ts';
 import { itemRoutes } from './items/routes.ts';
+import type { ManagerOptions } from './multiplayer/manager.ts';
+import { attachMultiplayer } from './multiplayer/socket.ts';
 import { DEFAULT_RATE_LIMITS, type RateLimits } from './http/rate-limits.ts';
 import { saveRoutes } from './save/routes.ts';
 import { shopRoutes } from './shop/routes.ts';
@@ -22,6 +24,8 @@ export interface AppDependencies {
   /** Vérifie que la base répond ; par défaut « SELECT 1 » via Prisma. */
   checkDatabase?: () => Promise<void>;
   rateLimits?: RateLimits;
+  /** Réglages du multijoueur (durée des tours…), surtout pour les tests. */
+  multiplayer?: ManagerOptions;
 }
 
 export function buildApp({
@@ -30,6 +34,7 @@ export function buildApp({
   logger = true,
   checkDatabase,
   rateLimits = DEFAULT_RATE_LIMITS,
+  multiplayer: multiplayerOptions,
 }: AppDependencies): FastifyInstance {
   const app = Fastify({ logger });
   const pingDatabase =
@@ -69,10 +74,13 @@ export function buildApp({
     });
   });
 
+  // Multijoueur temps réel (Socket.IO sur le même serveur HTTP).
+  const multiplayer = attachMultiplayer(app, { prisma, config, options: multiplayerOptions });
+
   app.register(authRoutes, { prisma, config, rateLimits });
-  app.register(saveRoutes, { prisma, rateLimits });
+  app.register(saveRoutes, { prisma, rateLimits, multiplayer });
   app.register(villageRoutes, { prisma, rateLimits });
-  app.register(combatRoutes, { prisma, rateLimits });
+  app.register(combatRoutes, { prisma, rateLimits, multiplayer });
   app.register(itemRoutes, { prisma, rateLimits });
   app.register(characterRoutes, { prisma, rateLimits });
   app.register(shopRoutes, { prisma, rateLimits });

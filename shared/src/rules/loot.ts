@@ -2,8 +2,8 @@
  * Butin (bestiaire, onglet Butin) :
  *  1. pour chaque monstre vaincu, tirage de la chance de butin de son rang ;
  *  2. si réussi : le nombre d'objets du rang (+1 avec la chance d'objet bonus) ;
- *  3. pour chaque objet : une classe de l'équipe au hasard, une rareté tirée dans la table du biome
- *     (monstres, boss ou dragon), un slot au hasard, le matériau du palier de l'étage, amélioration +0.
+ *  3. pour chaque objet : une classe au hasard (les trois, même hors de l'équipe), une rareté tirée
+ *     dans la table du biome (monstres, boss ou dragon), un slot au hasard, le matériau du palier de l'étage, amélioration +0.
  *  Si la rareté tirée est Unique : l'Unique du biome pour cette classe.
  */
 import { RARITY_IDS, SLOT_IDS, type ClassId, type RarityId } from '../constants.ts';
@@ -68,8 +68,8 @@ export function catalogItemFor(
 }
 
 /**
- * Butin d'un combat pour une équipe (solo : un seul tirage pour l'équipe ;
- * la classe de chaque objet est tirée parmi celles de l'équipe).
+ * Butin d'un combat (solo : un seul tirage pour l'équipe ;
+ * la classe de chaque objet est tirée parmi `classes` ; le serveur passe les trois classes).
  */
 export function rollLoot(
   data: LootRulesData,

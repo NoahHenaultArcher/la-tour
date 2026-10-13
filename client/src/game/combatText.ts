@@ -3,11 +3,22 @@ import type { CombatEvent, CombatView } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { t } from '../i18n/index.ts';
 
+/** Multijoueur : pseudo du joueur de chaque héros (h0, h1…), renseigné par le salon. */
+let heroNames: Record<string, string> = {};
+
+export function setHeroNames(names: Record<string, string>): void {
+  heroNames = names;
+}
+
 export function combatantName(view: CombatView | null, id: string | null): string {
   if (!id) return '';
   const c = view && [...view.heroes, ...view.monsters].find((x) => x.id === id);
-  if (!c) return id.startsWith('h') ? t('combat.hero') : t('combat.monster');
-  return c.classId ? t(`class.name.${c.classId}`) : c.name;
+  if (!c) return id.startsWith('h') ? (heroNames[id] ?? t('combat.hero')) : t('combat.monster');
+  if (!c.classId) return c.name;
+  const className = t(`class.name.${c.classId}`);
+  return heroNames[c.id]
+    ? t('combat.playerHero', { player: heroNames[c.id]!, hero: className })
+    : className;
 }
 
 export function skillName(skillId: string): string {
@@ -37,7 +48,9 @@ export function describeEvent(event: CombatEvent, view: CombatView | null): stri
     case 'action':
       return event.skillId
         ? t('combat.log.skill', { actor: name(event.actorId), skill: skillName(event.skillId) })
-        : t('combat.log.attack', { actor: name(event.actorId) });
+        : t(event.actorId.startsWith('h') ? 'combat.log.freeShot' : 'combat.log.attack', {
+            actor: name(event.actorId),
+          });
     case 'damage':
       return event.cause === 'alteration'
         ? t('combat.log.dot', {
@@ -58,6 +71,15 @@ export function describeEvent(event: CombatEvent, view: CombatView | null): stri
       return t('combat.log.miss', { source: name(event.sourceId), target: name(event.targetId) });
     case 'heal':
       return t('combat.log.heal', { target: name(event.targetId), amount: event.amount });
+    case 'shield':
+      return t('combat.log.shield', { target: name(event.targetId), amount: event.amount });
+    case 'modifier':
+      return t(event.kind === 'buff' ? 'combat.log.buff' : 'combat.log.debuff', {
+        target: name(event.targetId),
+        effect: event.skillId ? skillName(event.skillId) : t('modifier.sunder'),
+      });
+    case 'cleanse':
+      return t('combat.log.cleanse', { target: name(event.targetId), count: event.count });
     case 'alteration':
       return t('combat.log.alteration', {
         target: name(event.targetId),

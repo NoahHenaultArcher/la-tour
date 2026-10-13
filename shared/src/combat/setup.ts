@@ -2,14 +2,14 @@
  * Préparation d'un combat : composition des vagues d'un étage et création des combattants.
  */
 import { EARLY_GAME, earlyGameFactor } from '../balance.ts';
-import type { ClassId, StatBlock } from '../constants.ts';
+import type { ClassId, ElementId, StatBlock } from '../constants.ts';
 import { classAttackStat, heroStats } from '../rules/heroes.ts';
 import { monsterStats } from '../rules/monsters.ts';
 import { nextInt, pick, type Rng } from '../rules/random.ts';
 import type { StatAllocation } from '../rules/statPoints.ts';
 import { floorType, zoneFloorOf } from '../rules/tower.ts';
 import { upgradeTowerBonus, type UpgradeTowerLevels } from '../rules/village.ts';
-import { PASSIVE_EFFECTS, skillById } from './skills.ts';
+import { passiveEffectsOf, skillById } from './skills.ts';
 import type { CombatData, CombatStats, Combatant, MonsterSpawn } from './types.ts';
 
 /** Positions du deck : 0 à 2 actives, 3 et 4 passives. */
@@ -22,9 +22,12 @@ export interface HeroSetup {
   heritageCount: number;
   /** Stats des objets équipés. */
   equipment: StatBlock[];
-  deck: { position: number; skillId: string }[];
+  deck: { position: number; skillId: string; fusionElement?: ElementId | null }[];
   /** Points de statistiques répartis. */
   allocation?: StatAllocation;
+  /** Multijoueur : Tour d'amélioration et Tour d'alchimie du propriétaire du héros. */
+  tower?: UpgradeTowerLevels;
+  alchemyLevel?: number;
 }
 
 /**
@@ -66,13 +69,17 @@ export function heroCombatStats(
   tower: UpgradeTowerLevels,
 ): CombatStats {
   const stats = heroStats(data.stats, hero);
-  for (const { skillId } of hero.deck.filter((s) => !ACTIVE_POSITIONS.includes(s.position))) {
-    const effect = PASSIVE_EFFECTS[skillById(data, skillId).baseId];
-    for (const [stat, value] of Object.entries(effect?.multiply ?? {})) {
+  let dodgeBonus = 0;
+  const passives = hero.deck
+    .filter((s) => !ACTIVE_POSITIONS.includes(s.position))
+    .map((s) => s.skillId);
+  for (const effect of passiveEffectsOf(data, passives)) {
+    for (const [stat, value] of Object.entries(effect.multiply ?? {})) {
       stats[stat as keyof StatBlock] = Math.round(stats[stat as keyof StatBlock] * (1 + value));
     }
-    for (const [stat, value] of Object.entries(effect?.add ?? {})) {
-      stats[stat as keyof StatBlock] += value;
+    for (const [stat, value] of Object.entries(effect.add ?? {})) {
+      if (stat === 'dodgeBonus') dodgeBonus += value;
+      else stats[stat as keyof StatBlock] += value;
     }
   }
   return {
@@ -95,6 +102,7 @@ export function heroCombatStats(
     healingBonus: stats.healingBonus,
     statusResistance: stats.statusResistance,
     elementalShare: 0,
+    dodgeBonus,
   };
 }
 
@@ -138,7 +146,11 @@ export function createHeroCombatant(
     stats,
     hp: stats.maxHp,
     shield: 0,
+    shieldRemaining: 0,
     alterations: [],
+    modifiers: [],
+    counters: {},
+    extraSkips: 0,
     skipNextTurn: false,
     stunnedThisPhase: false,
     controlImmunity: 0,
@@ -150,9 +162,11 @@ export function createHeroCombatant(
         skillId: s.skillId,
         cooldown: skillById(data, s.skillId).cooldown ?? 0,
         remaining: 0,
+        fusion: s.fusionElement ?? null,
       })),
     passives,
     inflicts: [],
+    ...(hero.alchemyLevel !== undefined ? { alchemyLevel: hero.alchemyLevel } : {}),
     damageBonus: upgradeTowerBonus(data.village, tower, 'damage'),
     defenseBonus: upgradeTowerBonus(data.village, tower, 'defense'),
     isBoss: false,
@@ -204,10 +218,15 @@ export function createMonsterCombatant(
       healingBonus: 0,
       statusResistance: s.statusResistance,
       elementalShare: s.elementalShare,
+      dodgeBonus: 0,
     },
     hp,
     shield: 0,
+    shieldRemaining: 0,
     alterations: [],
+    modifiers: [],
+    counters: {},
+    extraSkips: 0,
     skipNextTurn: false,
     stunnedThisPhase: false,
     controlImmunity: 0,

@@ -11,10 +11,13 @@ import type {
   CraftItemBody,
   EquipItemBody,
   ItemIdBody,
+  ItemIdsBody,
   UpgradeBuildingBody,
+  UpgradeTowerBranchBody,
   LoginBody,
   RegisterBody,
   SaveDto,
+  SetDeckBody,
   ShopDto,
   UserDto,
 } from '@la-tour/shared';
@@ -77,6 +80,8 @@ export const api = {
     request<{ shop: ShopDto; save: SaveDto }>('POST', '/api/shop/buy', body),
   sellItem: (body: ItemIdBody) =>
     request<{ gold: number; save: SaveDto }>('POST', '/api/shop/sell', body),
+  sellItems: (body: ItemIdsBody) =>
+    request<{ gold: number; save: SaveDto }>('POST', '/api/shop/sell-many', body),
   debugResetShop: () => request<ShopDto>('POST', '/api/debug/reset-shop', {}),
   debugWinWave: () => request<CombatResponse>('POST', '/api/debug/win-wave', {}),
   equipItem: (body: EquipItemBody) => request<SaveDto>('POST', '/api/items/equip', body),
@@ -89,4 +94,8 @@ export const api = {
     request<SaveDto>('POST', '/api/characters/stats/reset', body),
   upgradeBuilding: (body: UpgradeBuildingBody) =>
     request<SaveDto>('POST', '/api/village/upgrade', body),
+  upgradeTowerBranch: (body: UpgradeTowerBranchBody) =>
+    request<SaveDto>('POST', '/api/village/upgrade-tower', body),
+  setDeck: (body: SetDeckBody) => request<SaveDto>('POST', '/api/characters/deck', body),
+  heritage: () => request<SaveDto>('POST', '/api/save/heritage', {}),
 };

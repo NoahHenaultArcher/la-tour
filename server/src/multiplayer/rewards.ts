@@ -1,0 +1,93 @@
+/**
+ * Récompenses d'un participant à un combat multijoueur, dans sa propre transaction :
+ * XP et or partagés selon le nombre de héros (et sa Tour d'amélioration), un tirage de butin
+ * à lui, et la progression seulement si l'étage joué était SON étage courant.
+ */
+import { randomInt } from 'node:crypto';
+import type { PrismaClient } from '@prisma/client';
+import {
+  addXp,
+  createRng,
+  participantRewards,
+  upgradeTowerBonus,
+  type CombatState,
+  type MultiPlayerReward,
+} from '@la-tour/shared';
+import { gameData } from '@la-tour/shared/data';
+import { applyFloorVictory, grantLoot, towerLevels } from '../combat/service.ts';
+import { lockSave } from '../village/service.ts';
+
+export interface Participant {
+  userId: string;
+  username: string;
+  saveId: string;
+  characterId: string;
+}
+
+export async function rewardParticipant(
+  prisma: PrismaClient,
+  participant: Participant,
+  state: CombatState,
+  killed: CombatState['killed'],
+  withdrawn: boolean,
+): Promise<MultiPlayerReward> {
+  return prisma.$transaction(async (tx) => {
+    const { saveId, characterId } = participant;
+    await lockSave(tx, saveId);
+    const save = await tx.save.findUniqueOrThrow({
+      where: { id: saveId },
+      include: { upgradeTower: true, buildings: true },
+    });
+    const character = await tx.character.findUniqueOrThrow({ where: { id: characterId } });
+    const bonus = upgradeTowerBonus(gameData.village, towerLevels(save.upgradeTower), 'goldXp');
+    const rewards = participantRewards(gameData.monsters, killed, character.level, bonus);
+
+    const next = addXp(gameData.monsters, character, rewards.xp);
+    await tx.character.update({
+      where: { id: characterId },
+      data: {
+        level: next.level,
+        xp: next.xp,
+        bestLevel: Math.max(character.bestLevel, next.level),
+      },
+    });
+    if (rewards.gold > 0) {
+      await tx.save.update({
+        where: { id: saveId },
+        data: { gold: { increment: BigInt(rewards.gold) } },
+      });
+    }
+
+    // Règle validée : on ne monte que si l'étage joué était son propre étage courant.
+    const floorCleared =
+      !withdrawn &&
+      (state.mode ?? 'tower') === 'tower' &&
+      state.phase === 'victory' &&
+      state.floor === save.currentFloor;
+    const unlocked = floorCleared
+      ? await applyFloorVictory(tx, saveId, save, state.floor)
+      : { elements: [], buildings: [], huntingZones: [] };
+
+    // Un tirage par joueur, avec un aléa propre (le serveur tire la graine).
+    const loot = await grantLoot(
+      tx,
+      saveId,
+      createRng(randomInt(0, 2 ** 32 - 1)),
+      killed,
+      state.floor,
+    );
+
+    return {
+      userId: participant.userId,
+      username: participant.username,
+      classId: character.class,
+      xp: rewards.xp,
+      gold: rewards.gold,
+      levelUp: next.levelsGained > 0 ? { from: character.level, to: next.level } : null,
+      loot,
+      floorCleared,
+      withdrawn,
+      unlocked,
+    };
+  });
+}

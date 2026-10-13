@@ -3,9 +3,11 @@ import { gameData } from '@la-tour/shared/data';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { MonsterTooltip } from '../components/combat/CombatantCard.tsx';
+import { ElementBadge } from '../components/ElementBadge.tsx';
 import { PixelImage } from '../components/PixelImage.tsx';
 import { Tooltip } from '../components/Tooltip.tsx';
 import { TopBar } from '../components/TopBar.tsx';
+import { elementStyle } from '../game/elements.ts';
 import { rarityInfo } from '../game/items.ts';
 import { formatNumber, t } from '../i18n/index.ts';
 import { useCombat } from '../stores/combat.ts';
@@ -65,15 +67,17 @@ function ZoneCard({
   const monsters = gameData.monsters.monsters.filter(
     (m) => m.zoneFloor === zone.floor && m.rank !== 'boss' && m.rank !== 'dragon',
   );
-  const element = gameData.elements.elements.find((e) => e.id === zone.element);
   const levels = t('hunt.levels', { min: zone.huntingLevelMin!, max: zone.huntingLevelMax! });
   const estimates = zone.estimates;
   return (
-    <article className={`zone-card panel biome-${zone.element}${unlocked ? '' : ' locked'}`}>
+    <article
+      className={`zone-card panel element-themed${unlocked ? '' : ' locked'}`}
+      style={elementStyle(zone.element)}
+    >
       <header>
         <h2>{zone.name}</h2>
         <span className="muted">
-          {levels} · {t('tower.element')} : {element?.name}
+          {levels} · {t('tower.element')} : <ElementBadge element={zone.element} />
         </span>
       </header>
       {unlocked ? (

@@ -1,6 +1,8 @@
 import type {
   ClassId,
   CraftItemBody,
+  SetDeckBody,
+  UpgradeTowerBranchId,
   IdleReport,
   SaveDto,
   ShopDto,
@@ -42,6 +44,13 @@ interface SessionState {
   buyOffer: (offerId: string) => Promise<ShopDto>;
   /** Revente d'un objet ; renvoie l'or gagné. */
   sellItem: (itemId: string) => Promise<number>;
+  /** Revente groupée (« Tout vendre ») ; renvoie l'or gagné. */
+  sellItems: (itemIds: string[]) => Promise<number>;
+  /** Nouveau deck d'un héros (les fusions nouvelles sont payées par le serveur). */
+  setDeck: (body: SetDeckBody) => Promise<void>;
+  upgradeTowerBranch: (branch: UpgradeTowerBranchId) => Promise<void>;
+  /** Héritage : tout le compte recommence la tour avec +25 % de stats. */
+  inherit: () => Promise<void>;
   setSave: (save: SaveDto) => void;
   dismissAbsenceReport: () => void;
 }
@@ -136,6 +145,21 @@ export const useSession = create<SessionState>((set) => {
       const { gold, save } = await api.sellItem({ itemId });
       set(withSave(save));
       return gold;
+    },
+    sellItems: async (itemIds) => {
+      const { gold, save } = await api.sellItems({ itemIds });
+      set(withSave(save));
+      return gold;
+    },
+
+    setDeck: async (body) => {
+      set(withSave(await api.setDeck(body)));
+    },
+    upgradeTowerBranch: async (branch) => {
+      set(withSave(await api.upgradeTowerBranch({ branch })));
+    },
+    inherit: async () => {
+      set(withSave(await api.heritage()));
     },
 
     setSave: (save) => set(withSave(save)),

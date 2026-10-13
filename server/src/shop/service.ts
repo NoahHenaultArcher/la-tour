@@ -131,17 +131,30 @@ export async function sellItem(
   saveId: string,
   itemId: string,
 ): Promise<number> {
+  return sellItems(prisma, saveId, [itemId]);
+}
+
+/** Revend plusieurs objets d'un coup (« Tout vendre ») : tous ou aucun. Renvoie l'or gagné. */
+export async function sellItems(
+  prisma: PrismaClient,
+  saveId: string,
+  itemIds: readonly string[],
+): Promise<number> {
+  const ids = [...new Set(itemIds)];
   return prisma.$transaction(async (tx) => {
     await lockSave(tx, saveId);
-    const item = await tx.item.findFirst({ where: { id: itemId, saveId } });
-    if (!item) throw new HttpError(404, 'NOT_FOUND');
-    if (item.equippedById) throw new HttpError(409, 'ITEM_EQUIPPED');
-    const info = gameData.equipment.catalog.find((c) => c.id === item.catalogId);
-    if (!info) throw new Error(`Objet inconnu : ${item.catalogId}`);
-    const price = sellPrice(gameData, info, item.upgradeLevel);
-    await tx.item.delete({ where: { id: itemId } });
-    await tx.save.update({ where: { id: saveId }, data: { gold: { increment: BigInt(price) } } });
-    return price;
+    const items = await tx.item.findMany({ where: { id: { in: ids }, saveId } });
+    if (items.length !== ids.length) throw new HttpError(404, 'NOT_FOUND');
+    if (items.some((item) => item.equippedById)) throw new HttpError(409, 'ITEM_EQUIPPED');
+    let total = 0;
+    for (const item of items) {
+      const info = gameData.equipment.catalog.find((c) => c.id === item.catalogId);
+      if (!info) throw new Error(`Objet inconnu : ${item.catalogId}`);
+      total += sellPrice(gameData, info, item.upgradeLevel);
+    }
+    await tx.item.deleteMany({ where: { id: { in: ids }, saveId } });
+    await tx.save.update({ where: { id: saveId }, data: { gold: { increment: BigInt(total) } } });
+    return total;
   });
 }
 

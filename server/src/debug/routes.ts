@@ -98,12 +98,18 @@ export async function debugRoutes(
   action('xp', debugGiveXpSchema, async ({ characterId, amount }, saveId) => {
     const character = await ownCharacter(saveId, characterId);
     const { level, xp } = addXp(gameData.monsters, character, amount);
-    await prisma.character.update({ where: { id: character.id }, data: { level, xp } });
+    await prisma.character.update({
+      where: { id: character.id },
+      data: { level, xp, bestLevel: Math.max(character.bestLevel, level) },
+    });
   });
 
   action('level', debugSetLevelSchema, async ({ characterId, level }, saveId) => {
     const character = await ownCharacter(saveId, characterId);
-    await prisma.character.update({ where: { id: character.id }, data: { level, xp: 0 } });
+    await prisma.character.update({
+      where: { id: character.id },
+      data: { level, xp: 0, bestLevel: Math.max(character.bestLevel, level) },
+    });
   });
 
   // Aller à un étage : tous les étages précédents sont considérés comme terminés.

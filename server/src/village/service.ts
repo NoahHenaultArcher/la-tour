@@ -1,5 +1,6 @@
 /**
- * Village côté serveur : collecte de la production idle et amélioration des bâtiments.
+ * Village côté serveur : collecte de la production idle, amélioration des bâtiments
+ * et de la Tour d'amélioration.
  * Le temps vient toujours de l'horloge du serveur ; chaque opération verrouille la sauvegarde
  * (SELECT … FOR UPDATE) pour qu'une double requête ne puisse ni collecter ni dépenser deux fois.
  */
@@ -8,6 +9,7 @@ import {
   canAfford,
   computeIdleProduction,
   nextBuildingUpgrade,
+  nextUpgradeTowerStep,
   upgradeShortfall,
   villageIdleSettings,
   type IdleReport,
@@ -17,6 +19,7 @@ import { gameData } from '@la-tour/shared/data';
 import { HttpError } from '../http/errors.ts';
 
 const HOUR_MS = 3_600_000;
+const UPGRADE_TOWER = 'tour_amelioration';
 
 /** Verrouille la ligne de la sauvegarde jusqu'à la fin de la transaction. */
 export async function lockSave(tx: Prisma.TransactionClient, saveId: string): Promise<void> {
@@ -78,6 +81,75 @@ export async function collectIdleFor(
   return prisma.$transaction(async (tx) => {
     await lockSave(tx, saveId);
     return collectIdle(tx, saveId, now);
+  });
+}
+
+/**
+ * Débite de l'or et des ressources après avoir tout vérifié (rien n'est débité s'il manque quelque chose).
+ * À appeler dans une transaction où la sauvegarde est verrouillée.
+ */
+export async function spendGoldAndResources(
+  tx: Prisma.TransactionClient,
+  saveId: string,
+  gold: number,
+  resources: Record<string, number>,
+): Promise<void> {
+  const save = await tx.save.findUniqueOrThrow({
+    where: { id: saveId },
+    include: { resources: true },
+  });
+  const owned = Object.fromEntries(save.resources.map((r) => [r.resourceId, r.amount]));
+  const missing = Object.fromEntries(
+    Object.entries(resources)
+      .map(([id, amount]) => [id, amount - (owned[id] ?? 0)] as const)
+      .filter(([, gap]) => gap > 0),
+  );
+  const missingGold = Math.max(0, gold - Number(save.gold));
+  if (missingGold > 0 || Object.keys(missing).length > 0) {
+    throw new HttpError(409, 'NOT_ENOUGH_RESOURCES', { gold: missingGold, resources: missing });
+  }
+  if (gold > 0) {
+    await tx.save.update({ where: { id: saveId }, data: { gold: { decrement: BigInt(gold) } } });
+  }
+  for (const [resourceId, amount] of Object.entries(resources)) {
+    if (amount <= 0) continue;
+    await tx.resourceStock.update({
+      where: { saveId_resourceId: { saveId, resourceId } },
+      data: { amount: { decrement: amount } },
+    });
+  }
+}
+
+/**
+ * Tour d'amélioration : monte une branche d'un niveau (or + éther + ressource de la branche).
+ * Le bâtiment doit être débloqué (étage 100) ; le coût est recalculé par le serveur.
+ */
+export async function upgradeTowerBranch(
+  prisma: PrismaClient,
+  saveId: string,
+  branch: UpgradeTowerBranchId,
+  now = new Date(),
+): Promise<void> {
+  await prisma.$transaction(async (tx) => {
+    await lockSave(tx, saveId);
+    await collectIdle(tx, saveId, now);
+    const building = await tx.building.findUnique({
+      where: { saveId_buildingId: { saveId, buildingId: UPGRADE_TOWER } },
+    });
+    if (!building) throw new HttpError(409, 'BUILDING_LOCKED');
+    const rows = await tx.upgradeTowerLevel.findMany({ where: { saveId } });
+    const levels = Object.fromEntries(rows.map((r) => [r.branch, r.level]));
+    const step = nextUpgradeTowerStep(gameData.village, levels, branch);
+    if (!step) throw new HttpError(409, 'MAX_LEVEL');
+    await spendGoldAndResources(tx, saveId, step.gold, {
+      ether: step.ether,
+      [step.resourceId]: step.branchResource,
+    });
+    await tx.upgradeTowerLevel.upsert({
+      where: { saveId_branch: { saveId, branch } },
+      create: { saveId, branch, level: step.level },
+      update: { level: step.level },
+    });
   });
 }
 

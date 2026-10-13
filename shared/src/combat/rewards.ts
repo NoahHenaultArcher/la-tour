@@ -5,7 +5,7 @@
  */
 import type { MonstersData } from '../data/schemas.ts';
 import { levelGapXpFactor, xpShare } from '../rules/rewards.ts';
-import type { CombatState } from './types.ts';
+import type { CombatState, KilledMonster } from './types.ts';
 
 export interface CombatRewards {
   gold: number;
@@ -29,4 +29,28 @@ export function combatRewards(
     xp[hero.refId] = Math.floor(total * (1 + goldXpBonus));
   }
   return { gold: Math.floor(gold * (1 + goldXpBonus)), xp };
+}
+
+/**
+ * Multijoueur : XP et or d'un participant (décisions du 13/10/2026). L'XP ET l'or sont partagés
+ * selon le nombre de héros présents quand chaque monstre est tombé (100 % / 75 % / 50 %) ;
+ * chacun applique le bonus « Or et XP » de sa propre Tour d'amélioration.
+ */
+export function participantRewards(
+  data: MonstersData,
+  killed: readonly KilledMonster[],
+  heroLevel: number,
+  goldXpBonus = 0,
+): { xp: number; gold: number } {
+  let xp = 0;
+  let gold = 0;
+  for (const k of killed) {
+    const share = xpShare(k.sharedBy ?? 1);
+    xp += k.xp * levelGapXpFactor(data, k.level, heroLevel) * share;
+    gold += k.gold * share;
+  }
+  return {
+    xp: Math.floor(xp * (1 + goldXpBonus)),
+    gold: Math.floor(gold * (1 + goldXpBonus)),
+  };
 }

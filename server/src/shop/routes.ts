@@ -1,11 +1,11 @@
 import type { PrismaClient } from '@prisma/client';
-import { buyOfferBodySchema, itemIdBodySchema } from '@la-tour/shared';
+import { buyOfferBodySchema, itemIdBodySchema, itemIdsBodySchema } from '@la-tour/shared';
 import type { FastifyInstance } from 'fastify';
 import { currentUser, requireUser } from '../auth/guards.ts';
 import { parseInput } from '../http/errors.ts';
 import { perUser, type RateLimits } from '../http/rate-limits.ts';
 import { getSaveId, loadSave } from '../save/service.ts';
-import { buyOffer, getShop, sellItem } from './service.ts';
+import { buyOffer, getShop, sellItem, sellItems } from './service.ts';
 
 export async function shopRoutes(
   app: FastifyInstance,
@@ -34,6 +34,13 @@ export async function shopRoutes(
     const { itemId } = parseInput(itemIdBodySchema, request.body);
     const { userId, saveId } = await saveOf(request);
     const gold = await sellItem(prisma, saveId, itemId);
+    return { gold, save: await loadSave(prisma, userId) };
+  });
+
+  app.post('/api/shop/sell-many', options, async (request) => {
+    const { itemIds } = parseInput(itemIdsBodySchema, request.body);
+    const { userId, saveId } = await saveOf(request);
+    const gold = await sellItems(prisma, saveId, itemIds);
     return { gold, save: await loadSave(prisma, userId) };
   });
 }

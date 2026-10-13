@@ -46,6 +46,8 @@ export interface CombatStats {
   statusResistance: number;
   /** Part élémentaire des dégâts (monstres) ; 0 pour les héros (l'élément vient de la compétence). */
   elementalShare: number;
+  /** Esquive ajoutée par les passifs (Pas léger). */
+  dodgeBonus: number;
 }
 
 export interface ActiveAlteration {
@@ -55,6 +57,10 @@ export interface ActiveAlteration {
   remaining: number;
   /** Dégâts par manche et par pile (altérations de dégâts sur la durée). */
   damagePerStack: number;
+  /** Valeur renforcée par une fusion (sinon celle du bestiaire). */
+  value?: number;
+  /** Piles maximum relevées (Affinité corrosive, fusion Corrosion). */
+  maxStacks?: number;
 }
 
 export interface CombatSkill {
@@ -63,6 +69,54 @@ export interface CombatSkill {
   cooldown: number;
   /** Manches avant de pouvoir relancer. */
   remaining: number;
+  /** Second élément d'une fusion (Tour d'alchimie), sinon null. */
+  fusion?: ElementId | null;
+}
+
+/** Stats qu'un effet temporaire peut augmenter ou réduire (en %). */
+export type ModifierStat = 'strength' | 'magic' | 'resistance' | 'armor' | 'agility' | 'accuracy';
+
+/**
+ * Effet temporaire posé par une compétence, une fusion ou un passif (bonus sur un héros,
+ * malus sur un monstre). Les altérations du bestiaire restent dans `alterations`.
+ */
+export interface CombatModifier {
+  /** Origine, unique par combattant : base de compétence (GUE-S01), fusion (fusion:fire+water)… */
+  key: string;
+  /** Compétence du catalogue qui l'a posé (nom affiché), ou null. */
+  skillId: string | null;
+  kind: 'buff' | 'debuff';
+  /** Manches restantes (baisse en fin de manche). */
+  remaining: number;
+  stacks: number;
+  maxStacks: number;
+  /** Stats multipliées par (1 + valeur × piles). */
+  stats?: Partial<Record<ModifierStat, number>>;
+  /** Chance de critique et esquive ajoutées (× piles). */
+  critChance?: number;
+  dodge?: number;
+  /** Dégâts infligés et subis : multipliés par (1 + valeur × piles). */
+  damageDealt?: number;
+  damageTaken?: number;
+  /** Part des dégâts physiques subis renvoyée à l'attaquant. */
+  reflect?: number;
+  /** Immunité aux contrôles. */
+  controlImmune?: boolean;
+  /** Part des PV max rendue en fin de manche. */
+  regen?: number;
+  /** Les ennemis qui frappent ce héros peuvent subir cette altération. */
+  thorns?: { alterationId: string; chance: number };
+  /** Dégâts subis en fin de manche (valeur fixe, calculée à la pose). */
+  dot?: number;
+  /** Dégâts subis par ce monstre chaque fois qu'il attaque (valeur fixe). */
+  onAttackDamage?: number;
+  /** Joue en dernier dans son camp. */
+  playsLast?: boolean;
+  /** Bonus de dégâts de la prochaine attaque (ou de la prochaine attaque de zone), consommé. */
+  nextAttackBonus?: number;
+  nextAreaBonus?: number;
+  /** Renvoie une part des dégâts du prochain coup reçu, consommé. */
+  reflectNextHit?: number;
 }
 
 export interface Combatant {
@@ -81,7 +135,15 @@ export interface Combatant {
   stats: CombatStats;
   hp: number;
   shield: number;
+  /** Manches avant la disparition du bouclier (0 : pas de bouclier). */
+  shieldRemaining: number;
   alterations: ActiveAlteration[];
+  /** Bonus et malus temporaires (compétences, fusions, passifs). */
+  modifiers: CombatModifier[];
+  /** Compteurs des passifs et fusions (charges de Surcharge, premier tir de la vague…). */
+  counters: Record<string, number>;
+  /** Tours perdus en plus du prochain (Gel prolongé du Grand Gel). */
+  extraSkips: number;
   /** Le prochain tour est perdu (assommé, gelé, étourdi). */
   skipNextTurn: boolean;
   /** Ce combattant ne peut pas agir pendant la phase en cours. */
@@ -96,6 +158,8 @@ export interface Combatant {
   passives: string[];
   /** Altérations que le monstre peut infliger. */
   inflicts: { id: string; chance: number }[];
+  /** Niveau de la Tour d'alchimie du propriétaire (multijoueur : chacun la sienne). */
+  alchemyLevel?: number;
   /** Bonus de la Tour d'amélioration : dégâts infligés (+), dégâts subis (−). */
   damageBonus: number;
   defenseBonus: number;
@@ -116,6 +180,8 @@ export interface KilledMonster {
   level: number;
   xp: number;
   gold: number;
+  /** Héros présents quand le monstre est tombé (partage de l'XP et de l'or en multijoueur). */
+  sharedBy?: number;
 }
 
 /** Tour (étage) ou zone de chasse (vagues sans fin, sans boss). */
@@ -140,6 +206,15 @@ export type CombatEvent =
     }
   | { type: 'miss'; sourceId: string; targetId: string }
   | { type: 'heal'; sourceId: string; targetId: string; amount: number }
+  | { type: 'shield'; targetId: string; amount: number }
+  | {
+      type: 'modifier';
+      targetId: string;
+      key: string;
+      skillId: string | null;
+      kind: 'buff' | 'debuff';
+    }
+  | { type: 'cleanse'; targetId: string; count: number }
   | { type: 'alteration'; targetId: string; alterationId: string; stacks: number }
   | { type: 'alterationEnd'; targetId: string; alterationId: string }
   | { type: 'resisted'; targetId: string; alterationId: string }
@@ -155,8 +230,12 @@ export interface CombatState {
   floor: number;
   floorType: FloorTypeId;
   zoneFloor: number;
-  /** Actions par manche pour toute l'équipe (solo). */
+  /** Actions par manche : pour toute l'équipe en solo, pour chaque héros en multijoueur. */
   actionsPerRound: number;
+  /** Multijoueur : actions restantes de chaque héros pendant le tour des héros (null en solo). */
+  heroActions?: Record<string, number> | null;
+  /** Niveau de la Tour d'alchimie au début du combat (0 : pas construite). */
+  alchemyLevel: number;
   waves: MonsterSpawn[][];
   waveIndex: number;
   round: number;

@@ -13,8 +13,11 @@ import { COMBAT_RULES } from '../balance.ts';
 import { createRng, pick, type Rng } from '../rules/random.ts';
 import { floorType, zoneFloorOf } from '../rules/tower.ts';
 import type { UpgradeTowerLevels } from '../rules/village.ts';
+import { afterHeroHit, beforeMonsterAttack, heroEndOfRound, useHeroSkill } from './actions.ts';
 import { resolveTurnStart, tickAlterations, tryApplyAlteration } from './alterations.ts';
 import { attack, type AttackSpec } from './damage.ts';
+import { SUPPORT_EFFECTS } from './effects.ts';
+import { tickModifiers } from './modifiers.ts';
 import {
   buildFloorWaves,
   buildHuntWave,
@@ -22,7 +25,7 @@ import {
   createMonsterCombatant,
   type HeroSetup,
 } from './setup.ts';
-import { resolveAttack, skillById } from './skills.ts';
+import { attackEffectOf, dealsDamage, skillById } from './skills.ts';
 import type {
   CombatData,
   CombatEvent,
@@ -57,6 +60,10 @@ export interface CombatSetup {
   heroes: HeroSetup[];
   tower: UpgradeTowerLevels;
   seed: number;
+  /** Niveau de la Tour d'alchimie (fusions : altérations prolongées au niveau 3). */
+  alchemyLevel?: number;
+  /** Multijoueur : 3 actions par héros (chaque joueur joue le sien) au lieu de 3 pour l'équipe. */
+  multiplayer?: boolean;
 }
 
 export interface CombatResult {
@@ -90,7 +97,11 @@ export function createCombat(data: CombatData, setup: CombatSetup): CombatResult
     floor: setup.floor,
     floorType: mode === 'hunt' ? 'normal' : floorType(setup.floor),
     zoneFloor: mode === 'hunt' ? setup.floor : zoneFloorOf(setup.floor),
-    actionsPerRound: data.skills.params.soloActionsPerRound,
+    actionsPerRound: setup.multiplayer
+      ? data.skills.params.multiActionsPerRound
+      : data.skills.params.soloActionsPerRound,
+    heroActions: setup.multiplayer ? {} : null,
+    alchemyLevel: setup.alchemyLevel ?? 0,
     waves:
       mode === 'hunt'
         ? [buildHuntWave(data, setup.floor, rng)]
@@ -103,7 +114,9 @@ export function createCombat(data: CombatData, setup: CombatSetup): CombatResult
     firstSide: 'hero',
     heroInitiative: 0,
     monsterInitiative: 0,
-    heroes: setup.heroes.map((hero, i) => createHeroCombatant(data, hero, i, setup.tower)),
+    heroes: setup.heroes.map((hero, i) =>
+      createHeroCombatant(data, hero, i, hero.tower ?? setup.tower),
+    ),
     monsters: [],
     killed: [],
     rng,
@@ -153,6 +166,75 @@ export function playAutoTurn(data: CombatData, current: CombatState): CombatResu
   return { state: ctx.state, events: ctx.events };
 }
 
+/** Multijoueur : un joueur passe les actions restantes de son héros. */
+export function passHeroActions(
+  data: CombatData,
+  current: CombatState,
+  heroId: string,
+): CombatResult {
+  const ctx = begin(data, current);
+  const { state } = ctx;
+  if (!state.heroActions || !state.heroes.some((h) => h.id === heroId))
+    throw new CombatError('INVALID_HERO');
+  state.heroActions[heroId] = 0;
+  syncActions(state);
+  if (state.actionsLeft <= 0) finishHeroPhase(ctx);
+  return { state: ctx.state, events: ctx.events };
+}
+
+/**
+ * Multijoueur : l'IA joue les actions restantes d'un seul héros (joueur déconnecté).
+ * `noCooldownOnly` : seulement les compétences sans recharge (règle des déconnexions).
+ */
+export function playAutoForHero(
+  data: CombatData,
+  current: CombatState,
+  heroId: string,
+  options: { noCooldownOnly?: boolean } = {},
+): CombatResult {
+  const ctx = begin(data, current);
+  const { state } = ctx;
+  const round = state.round;
+  const wave = state.waveIndex;
+  while (
+    state.phase === 'heroes' &&
+    state.round === round &&
+    state.waveIndex === wave &&
+    (state.heroActions?.[heroId] ?? 0) > 0
+  ) {
+    const hero = state.heroes.find((h) => h.id === heroId);
+    const action = hero && canAct(hero) ? chooseHeroAction(data, state, hero, options) : null;
+    if (!action) {
+      state.heroActions![heroId] = 0;
+      syncActions(state);
+      if (state.actionsLeft <= 0) finishHeroPhase(ctx);
+      break;
+    }
+    heroAction(ctx, action);
+  }
+  return { state: ctx.state, events: ctx.events };
+}
+
+/**
+ * Zone de chasse en multijoueur : un joueur retire son héros (il garde ses gains) ;
+ * la chasse continue pour les autres, et s'arrête si plus personne ne reste.
+ */
+export function withdrawHero(data: CombatData, current: CombatState, heroId: string): CombatResult {
+  const ctx = begin(data, current);
+  const { state } = ctx;
+  if (state.mode !== 'hunt') throw new CombatError('NOT_A_HUNT');
+  if (!state.heroes.some((h) => h.id === heroId)) throw new CombatError('INVALID_HERO');
+  state.heroes = state.heroes.filter((h) => h.id !== heroId);
+  if (state.heroActions) delete state.heroActions[heroId];
+  if (state.heroes.length === 0) {
+    end(ctx, 'retreat');
+    return { state, events: ctx.events };
+  }
+  syncActions(state);
+  if (state.actionsLeft <= 0 || !state.heroes.some(canAct)) finishHeroPhase(ctx);
+  return { state, events: ctx.events };
+}
+
 /** Abandon : défaite immédiate (XP et or des monstres déjà vaincus conservés). */
 export function forfeitCombat(data: CombatData, current: CombatState): CombatResult {
   const ctx = begin(data, current);
@@ -182,29 +264,70 @@ export function winCurrentWave(data: CombatData, current: CombatState): CombatRe
 }
 
 /**
- * Choix de l'IA : un héros capable d'agir (à tour de rôle), la compétence prête la plus forte
- * (une attaque de zone compte pour chaque cible), sur le monstre le plus affaibli.
+ * Choix de l'IA, pour un héros capable d'agir (à tour de rôle) :
+ *  1. se soigner sous 45 % de PV, se protéger sous 70 % ;
+ *  2. poser un bonus ou un malus pas encore actif ;
+ *  3. sinon, l'attaque prête la plus forte (une attaque de zone compte pour chaque cible),
+ *     sur le monstre le plus affaibli.
  */
 export function chooseAutoAction(data: CombatData, state: CombatState): HeroActionInput | null {
   if (state.phase !== 'heroes' || state.actionsLeft <= 0) return null;
   const heroes = state.heroes.filter(canAct);
-  const targets = state.monsters.filter(alive);
-  if (heroes.length === 0 || targets.length === 0) return null;
+  if (heroes.length === 0) return null;
   const used = state.actionsPerRound - state.actionsLeft;
-  const hero = heroes[used % heroes.length]!;
+  return chooseHeroAction(data, state, heroes[used % heroes.length]!);
+}
+
+/** Choix de l'IA pour un héros précis (voir chooseAutoAction). */
+export function chooseHeroAction(
+  data: CombatData,
+  state: CombatState,
+  hero: Combatant,
+  options: { noCooldownOnly?: boolean } = {},
+): HeroActionInput | null {
+  const targets = state.monsters.filter(alive);
+  if (targets.length === 0) return null;
+  const weakest = targets.reduce((a, b) => (b.hp < a.hp ? b : a));
+  const power = (c: Combatant) => c.stats.strength + c.stats.magic;
+  const strongest = targets.reduce((a, b) => (power(b) > power(a) ? b : a));
+  const ready = hero.skills
+    .filter((s) => s.remaining === 0 && (!options.noCooldownOnly || s.cooldown === 0))
+    .map((slot) => ({ slot, skill: skillById(data, slot.skillId) }));
+  const hpShare = hero.hp / hero.stats.maxHp;
+
+  const support = (kinds: string[]) =>
+    ready.find(
+      ({ skill }) =>
+        skill.family === 'support' && kinds.includes(skill.kind) && !dealsDamage(skill),
+    );
+  const heal = hpShare < 0.45 ? support(['heal']) : undefined;
+  if (heal) return { heroId: hero.id, skillId: heal.slot.skillId };
+  const shield = hpShare < 0.7 && hero.shield === 0 ? support(['shield']) : undefined;
+  if (shield) return { heroId: hero.id, skillId: shield.slot.skillId };
+  for (const { slot, skill } of ready) {
+    if (skill.family !== 'support' || dealsDamage(skill)) continue;
+    const effect = SUPPORT_EFFECTS[skill.baseId];
+    if (effect?.buff && !hero.modifiers.some((m) => m.key === skill.baseId))
+      return { heroId: hero.id, skillId: slot.skillId };
+    if (effect?.targetModifier && !strongest.modifiers.some((m) => m.key === skill.baseId))
+      return { heroId: hero.id, skillId: slot.skillId, targetId: strongest.id };
+  }
 
   let best: { skillId: string; score: number } | null = null;
-  for (const slot of hero.skills) {
-    if (slot.remaining > 0) continue;
-    const skill = skillById(data, slot.skillId);
-    if (skill.kind !== 'attack') continue;
-    const attackInfo = resolveAttack(data, slot.skillId);
+  for (const { slot, skill } of ready) {
+    if (!dealsDamage(skill)) continue;
+    const effect = attackEffectOf(skill, slot.fusion);
+    const area = skill.target === 'area';
     const score =
-      attackInfo.power * (attackInfo.area ? targets.length : 1) * (1 + attackInfo.bonusCrit);
+      skill.power *
+        (slot.fusion ? data.skills.params.fusionPowerBonus : 1) *
+        (area ? targets.length : 1) *
+        (1 + (effect.bonusCrit ?? 0) + (effect.damageBonus ?? 0)) +
+      // À puissance égale, les compétences à recharge passent avant celles sans recharge.
+      (slot.cooldown > 0 ? 0.01 : 0);
     if (!best || score > best.score) best = { skillId: slot.skillId, score };
   }
   if (!best) return null;
-  const weakest = targets.reduce((a, b) => (b.hp < a.hp ? b : a));
   return { heroId: hero.id, skillId: best.skillId, targetId: weakest.id };
 }
 
@@ -214,7 +337,25 @@ export function chooseAutoAction(data: CombatData, state: CombatState): HeroActi
 
 function begin(data: CombatData, current: CombatState): Ctx {
   if (current.phase !== 'heroes') throw new CombatError('COMBAT_OVER');
-  return { data, state: structuredClone(current), events: [] };
+  return { data, state: normalizeCombatState(structuredClone(current)), events: [] };
+}
+
+/**
+ * Complète un combat enregistré avant la phase 7 (effets temporaires, boucliers à durée,
+ * compteurs) pour qu'il reprenne sans erreur. Modifie et renvoie l'état.
+ */
+export function normalizeCombatState(state: CombatState): CombatState {
+  // Les champs ajoutés en phase 7 peuvent manquer dans un état enregistré avant.
+  const old = state as Partial<CombatState>;
+  old.alchemyLevel ??= 0;
+  for (const c of [...state.heroes, ...state.monsters] as Partial<Combatant>[]) {
+    c.modifiers ??= [];
+    c.counters ??= {};
+    c.shieldRemaining ??= (c.shield ?? 0) > 0 ? 2 : 0;
+    c.extraSkips ??= 0;
+    if (c.stats) c.stats.dodgeBonus ??= 0;
+  }
+  return state;
 }
 
 function spawnWave(ctx: Ctx): void {
@@ -249,14 +390,29 @@ function startRound(ctx: Ctx): void {
 function beginHeroPhase(ctx: Ctx): void {
   const { state, data } = ctx;
   for (const hero of state.heroes) resolveTurnStart(data, state.rng, hero, ctx.events);
-  state.actionsLeft = state.actionsPerRound;
-  if (!state.heroes.some(canAct)) finishHeroPhase(ctx);
+  if (state.heroActions) {
+    // Multijoueur : chaque héros capable d'agir a ses propres actions.
+    for (const hero of state.heroes)
+      state.heroActions[hero.id] = canAct(hero) ? state.actionsPerRound : 0;
+    syncActions(state);
+  } else {
+    state.actionsLeft = state.actionsPerRound;
+  }
+  if (!state.heroes.some(canAct) || state.actionsLeft <= 0) finishHeroPhase(ctx);
+}
+
+/** Multijoueur : actions restantes de l'équipe = somme de celles des héros encore capables d'agir. */
+function syncActions(state: CombatState): void {
+  if (!state.heroActions) return;
+  for (const hero of state.heroes) if (!canAct(hero)) state.heroActions[hero.id] = 0;
+  state.actionsLeft = state.heroes.reduce((sum, h) => sum + (state.heroActions![h.id] ?? 0), 0);
 }
 
 function finishHeroPhase(ctx: Ctx): void {
   const { state } = ctx;
   if (state.phase !== 'heroes') return;
   state.actionsLeft = 0;
+  if (state.heroActions) for (const id of Object.keys(state.heroActions)) state.heroActions[id] = 0;
   for (const hero of state.heroes) hero.stunnedThisPhase = false;
   if (state.monstersPending) {
     monsterPhase(ctx);
@@ -270,42 +426,34 @@ function heroAction(ctx: Ctx, input: HeroActionInput): void {
   if (state.actionsLeft <= 0) throw new CombatError('NOT_YOUR_TURN');
   const hero = state.heroes.find((h) => h.id === input.heroId);
   if (!hero || !canAct(hero)) throw new CombatError('INVALID_HERO');
+  if (state.heroActions && (state.heroActions[hero.id] ?? 0) <= 0)
+    throw new CombatError('NOT_YOUR_TURN');
   const slot = hero.skills.find((s) => s.skillId === input.skillId);
   if (!slot) throw new CombatError('INVALID_SKILL');
   if (slot.remaining > 0) throw new CombatError('SKILL_ON_COOLDOWN');
   const skill = skillById(data, slot.skillId);
-  // Phase 4 : seules les attaques sont jouables (les autres arrivent avec les decks, phase 7).
-  if (skill.kind !== 'attack') throw new CombatError('INVALID_SKILL');
+  if (skill.family === 'passive') throw new CombatError('INVALID_SKILL');
 
-  const attackInfo = resolveAttack(data, slot.skillId);
   const living = state.monsters.filter(alive);
-  let targets: Combatant[];
-  if (attackInfo.area) {
-    targets = living;
-  } else {
-    const target = living.find((m) => m.id === input.targetId);
-    if (!target) throw new CombatError('INVALID_TARGET');
-    targets = [target];
-  }
+  const chosen = living.find((m) => m.id === input.targetId) ?? null;
+  // Mono-cible : une cible vivante est obligatoire ; zone : la cible désignée devient la principale.
+  if (skill.target === 'single' && !chosen) throw new CombatError('INVALID_TARGET');
+  const targetIds =
+    skill.target === 'area'
+      ? living.map((t) => t.id)
+      : skill.target === 'self'
+        ? [hero.id]
+        : [chosen!.id];
 
-  events.push({
-    type: 'action',
-    actorId: hero.id,
-    skillId: slot.skillId,
-    targetIds: targets.map((t) => t.id),
-  });
-  const spec: AttackSpec = {
-    power: attackInfo.power,
-    element: attackInfo.element,
-    elementalShare: attackInfo.element === 'neutral' ? 0 : 1,
-    armorIgnore: attackInfo.armorIgnore,
-    resistanceIgnore: attackInfo.resistanceIgnore,
-    neverMiss: attackInfo.neverMiss,
-    bonusCrit: attackInfo.bonusCrit,
-  };
-  for (const target of targets) attack(data, state.rng, hero, target, spec, events);
+  events.push({ type: 'action', actorId: hero.id, skillId: slot.skillId, targetIds });
   slot.remaining = slot.cooldown;
-  state.actionsLeft -= 1;
+  useHeroSkill(ctx, hero, slot, chosen);
+  if (state.heroActions) {
+    state.heroActions[hero.id] = (state.heroActions[hero.id] ?? 1) - 1;
+    syncActions(state);
+  } else {
+    state.actionsLeft -= 1;
+  }
 
   if (settle(ctx)) return;
   if (state.actionsLeft <= 0 || !state.heroes.some(canAct)) finishHeroPhase(ctx);
@@ -317,7 +465,12 @@ function monsterPhase(ctx: Ctx): void {
   for (const m of state.monsters) resolveTurnStart(data, state.rng, m, ctx.events);
   const order = state.monsters
     .map((m, index) => ({ m, index }))
-    .sort((a, b) => b.m.stats.initiative - a.m.stats.initiative || a.index - b.index)
+    .sort(
+      (a, b) =>
+        Number(playsLast(a.m)) - Number(playsLast(b.m)) ||
+        b.m.stats.initiative - a.m.stats.initiative ||
+        a.index - b.index,
+    )
     .map(({ m }) => m);
   for (const monster of order) {
     if (!canAct(monster) || !state.heroes.some(alive)) continue;
@@ -326,6 +479,9 @@ function monsterPhase(ctx: Ctx): void {
   }
   for (const m of state.monsters) m.stunnedThisPhase = false;
 }
+
+/** Bourbier : ce monstre joue en dernier dans son camp. */
+const playsLast = (c: Combatant) => c.modifiers.some((m) => m.playsLast);
 
 function monsterAct(ctx: Ctx, monster: Combatant): void {
   const { state, data, events } = ctx;
@@ -346,6 +502,10 @@ function monsterAct(ctx: Ctx, monster: Combatant): void {
     }
   }
 
+  // Lave (fusion Magma) : le monstre se brûle en attaquant.
+  beforeMonsterAttack(ctx, monster);
+  if (!alive(monster)) return;
+
   // Dragon : souffle sur toute l'équipe une manche sur trois.
   const breath = monster.role === 'dragon' && state.round % COMBAT_RULES.dragonBreathEvery === 0;
   const targets = breath ? heroes : [chooseMonsterTarget(monster, heroes, rng)];
@@ -365,11 +525,13 @@ function monsterAct(ctx: Ctx, monster: Combatant): void {
     bonusCrit: 0,
   };
   for (const target of targets) {
-    const damage = attack(data, rng, monster, target, spec, events);
-    if (damage > 0) {
+    if (!alive(monster)) break;
+    const { amount } = attack(data, rng, monster, target, spec, events);
+    if (amount > 0) {
       for (const alteration of monster.inflicts) {
         tryApplyAlteration(data, rng, monster, target, alteration.id, alteration.chance, events);
       }
+      afterHeroHit(ctx, monster, target, amount);
     }
   }
 }
@@ -384,7 +546,11 @@ function chooseMonsterTarget(monster: Combatant, heroes: Combatant[], rng: Rng):
 
 function endRound(ctx: Ctx): void {
   const { state } = ctx;
-  for (const c of [...state.heroes, ...state.monsters]) tickAlterations(c, ctx.events);
+  for (const hero of state.heroes) heroEndOfRound(ctx, hero);
+  for (const c of [...state.heroes, ...state.monsters]) {
+    tickAlterations(c, ctx.events);
+    tickModifiers(c, ctx.events);
+  }
   for (const hero of state.heroes) {
     for (const slot of hero.skills) slot.remaining = Math.max(0, slot.remaining - 1);
   }
@@ -403,7 +569,13 @@ function settle(ctx: Ctx, endRoundOnWaveClear = true): boolean {
       m.dead = true;
       if (!events.some((e) => e.type === 'death' && e.targetId === m.id))
         events.push({ type: 'death', targetId: m.id });
-      if (m.reward) state.killed.push({ monsterId: m.refId, level: m.level, ...m.reward });
+      if (m.reward)
+        state.killed.push({
+          monsterId: m.refId,
+          level: m.level,
+          ...m.reward,
+          sharedBy: state.heroes.length,
+        });
     }
   }
   for (const h of state.heroes) {
@@ -428,8 +600,12 @@ function settle(ctx: Ctx, endRoundOnWaveClear = true): boolean {
     state.waves.push(buildHuntWave(ctx.data, state.zoneFloor, state.rng));
   }
   if (endRoundOnWaveClear) {
-    // La manche se termine (altérations, recharges) avant la vague suivante.
-    for (const c of state.heroes) tickAlterations(c, events);
+    // La manche se termine (passifs, altérations, effets, recharges) avant la vague suivante.
+    for (const hero of state.heroes) heroEndOfRound(ctx, hero);
+    for (const c of state.heroes) {
+      tickAlterations(c, events);
+      tickModifiers(c, events);
+    }
     for (const hero of state.heroes) {
       for (const slot of hero.skills) slot.remaining = Math.max(0, slot.remaining - 1);
     }

@@ -12,19 +12,27 @@ import {
 import { gameData } from '@la-tour/shared/data';
 import type { FastifyInstance } from 'fastify';
 import { currentUser, requireUser } from '../auth/guards.ts';
-import { parseInput } from '../http/errors.ts';
+import { HttpError, parseInput } from '../http/errors.ts';
 import { perUser, type RateLimits } from '../http/rate-limits.ts';
+import type { MultiplayerManager } from '../multiplayer/manager.ts';
 import { getSaveId } from '../save/service.ts';
 import { getCombat, playCombat, startCombat } from './service.ts';
 
 export async function combatRoutes(
   app: FastifyInstance,
-  { prisma, rateLimits }: { prisma: PrismaClient; rateLimits: RateLimits },
+  {
+    prisma,
+    rateLimits,
+    multiplayer,
+  }: { prisma: PrismaClient; rateLimits: RateLimits; multiplayer: MultiplayerManager },
 ): Promise<void> {
   const auth = requireUser(prisma);
   const options = { preHandler: auth, config: { rateLimit: perUser(rateLimits.combat) } };
   const ids = async (request: Parameters<typeof currentUser>[0]) => {
     const userId = currentUser(request).id;
+    // Un combat solo ne se lance pas pendant un combat multijoueur.
+    if (multiplayer.isInCombat(userId) && request.method === 'POST')
+      throw new HttpError(409, 'IN_MULTI_COMBAT');
     return { userId, saveId: await getSaveId(prisma, userId) };
   };
 

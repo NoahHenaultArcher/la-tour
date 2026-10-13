@@ -121,6 +121,8 @@ model Character {
   save      Save             @relation(fields: [saveId], references: [id], onDelete: Cascade)
   class     CharacterClass
   level     Int              @default(1)
+  /// Meilleur niveau atteint : les compétences débloquées par niveau le restent après un héritage.
+  bestLevel Int              @default(1)
   /// XP accumulée dans le niveau en cours.
   xp        Int              @default(0)
   /// Points de statistiques répartis par le joueur ({ vitality, strength, … }).

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { normalizeCombatState } from '../combat/engine.ts';
 import type { CombatEvent, CombatState } from '../combat/types.ts';
 import type { ElementId } from '../constants.ts';
 import type { SaveDto } from './save.ts';
@@ -20,7 +21,7 @@ export type CombatActionBody = z.infer<typeof combatActionBodySchema>;
 export type CombatView = Omit<CombatState, 'rng' | 'waves' | 'spawned'> & { waveCount: number };
 
 export function toCombatView(state: CombatState): CombatView {
-  const { rng: _rng, waves, spawned: _spawned, ...visible } = state;
+  const { rng: _rng, waves, spawned: _spawned, ...visible } = normalizeCombatState(state);
   return { ...visible, waveCount: waves.length };
 }
 

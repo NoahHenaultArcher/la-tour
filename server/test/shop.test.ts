@@ -137,6 +137,38 @@ describeWithDb('taverne', () => {
     );
   });
 
+  it('tout vendre : tous les objets d’un coup, ou aucun si l’un est équipé', async () => {
+    const mageItem = gameData.equipment.catalog.find(
+      (c) => c.classId === 'mage' && c.slot === 'hat' && c.rarity === 'common' && c.tier === 1,
+    )!;
+    // Objet d'une classe absente de l'équipe : revendable aussi.
+    const warriorItem = gameData.equipment.catalog.find(
+      (c) => c.classId === 'warrior' && c.slot === 'boots' && c.rarity === 'epic' && c.tier === 3,
+    )!;
+    const a = await ctx.prisma.item.create({ data: { saveId, catalogId: mageItem.id } });
+    const b = await ctx.prisma.item.create({
+      data: { saveId, catalogId: warriorItem.id, upgradeLevel: 2 },
+    });
+    const equipped = await ctx.prisma.item.create({ data: { saveId, catalogId: mageItem.id } });
+    const mage = await ctx.prisma.character.findFirstOrThrow();
+    await post('/api/items/equip', { itemId: equipped.id, characterId: mage.id });
+
+    const refused = await post('/api/shop/sell-many', { itemIds: [a.id, b.id, equipped.id] });
+    expect(refused.json().error.code).toBe('ITEM_EQUIPPED');
+    expect(await ctx.prisma.item.count()).toBe(3);
+
+    const response = await post('/api/shop/sell-many', { itemIds: [a.id, b.id, a.id] });
+    expect(response.statusCode, response.body).toBe(200);
+    const expected = sellPrice(gameData, mageItem, 0) + sellPrice(gameData, warriorItem, 2);
+    expect(response.json()).toMatchObject({ gold: expected, save: { gold: expected } });
+    expect((response.json() as { save: SaveDto }).save.items.map((i) => i.id)).toEqual([
+      equipped.id,
+    ]);
+    expect((await post('/api/shop/sell-many', { itemIds: [] })).json().error.code).toBe(
+      'VALIDATION',
+    );
+  });
+
   it('debug : réinitialiser la boutique', async () => {
     await setGold(1_000_000);
     const shop = await getShop();

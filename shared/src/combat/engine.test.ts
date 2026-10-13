@@ -21,7 +21,13 @@ import {
 } from './engine.ts';
 import { combatRewards } from './rewards.ts';
 import type { HeroSetup } from './setup.ts';
-import { ACTIVE_EFFECTS, PASSIVE_EFFECTS } from './skills.ts';
+import {
+  ATTACK_EFFECTS,
+  FUSION_EFFECTS,
+  PASSIVE_EFFECTS,
+  SUPPORT_EFFECTS,
+  fusionKey,
+} from './effects.ts';
 import type { CombatEvent, CombatState, Combatant } from './types.ts';
 
 const data = gameData;
@@ -296,14 +302,21 @@ describe('altérations', () => {
   });
 });
 
-describe('effets des compétences du kit de départ', () => {
-  it('chaque compétence et chaque passif de départ a un effet défini', () => {
-    for (const classId of ['warrior', 'mage', 'ranger'] as ClassId[]) {
-      for (const { skillId } of starterDeckFor(data, classId)) {
-        const baseId = data.skills.catalog.find((s) => s.id === skillId)!.baseId;
-        expect(ACTIVE_EFFECTS[baseId] ?? PASSIVE_EFFECTS[baseId], skillId).toBeDefined();
-      }
+describe('effets des compétences', () => {
+  it('chaque compétence de base (79) a un effet défini, et chaque fusion (55) aussi', () => {
+    for (const base of data.skills.bases) {
+      const effect =
+        base.family === 'attack'
+          ? ATTACK_EFFECTS[base.id]
+          : base.family === 'support'
+            ? SUPPORT_EFFECTS[base.id]
+            : PASSIVE_EFFECTS[base.id];
+      expect(effect, `${base.id} ${base.name}`).toBeDefined();
     }
+    for (const f of data.skills.fusions) {
+      expect(FUSION_EFFECTS[fusionKey(f.element1, f.element2)], f.name).toBeDefined();
+    }
+    expect(Object.keys(FUSION_EFFECTS)).toHaveLength(data.skills.fusions.length);
   });
 
   it('les passifs modifient les stats (Peau dure : +8 % de Résistance)', () => {

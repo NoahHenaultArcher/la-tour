@@ -1,10 +1,11 @@
-/** Personnages : répartition des points de statistiques (vérifiée par le serveur). */
+/** Personnages : répartition des points de statistiques et deck de compétences (vérifiés par le serveur). */
 import type { Prisma, PrismaClient } from '@prisma/client';
 import {
   addStatPoints,
   allocateStatPointsBodySchema,
   characterIdBodySchema,
   emptyAllocation,
+  setDeckBodySchema,
   toAllocation,
 } from '@la-tour/shared';
 import type { FastifyInstance } from 'fastify';
@@ -13,6 +14,7 @@ import { HttpError, parseInput } from '../http/errors.ts';
 import { perUser, type RateLimits } from '../http/rate-limits.ts';
 import { getSaveId, loadSave } from '../save/service.ts';
 import { lockSave } from '../village/service.ts';
+import { setDeck } from './service.ts';
 
 export async function characterRoutes(
   app: FastifyInstance,
@@ -60,6 +62,14 @@ export async function characterRoutes(
         data: { statPoints: emptyAllocation() },
       });
     });
+    return loadSave(prisma, userId);
+  });
+
+  // Deck : 3 actives (une seule ultime) + 2 passives ; les fusions nouvelles sont payées.
+  app.post('/api/characters/deck', options, async (request) => {
+    const body = parseInput(setDeckBodySchema, request.body);
+    const userId = currentUser(request).id;
+    await setDeck(prisma, await getSaveId(prisma, userId), body);
     return loadSave(prisma, userId);
   });
 }

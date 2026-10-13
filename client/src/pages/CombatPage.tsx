@@ -1,18 +1,46 @@
+import { canPlayFloor } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { CombatantCard } from '../components/combat/CombatantCard.tsx';
+import { MultiOutcomeModal } from '../components/combat/MultiOutcomeModal.tsx';
 import { OutcomeModal } from '../components/combat/OutcomeModal.tsx';
 import { SkillBar } from '../components/combat/SkillBar.tsx';
+import { ElementBadge } from '../components/ElementBadge.tsx';
 import { TopBar } from '../components/TopBar.tsx';
 import { useDebug } from '../debug/console.ts';
 import { combatantName } from '../game/combatText.ts';
+import { elementStyle } from '../game/elements.ts';
 import { t } from '../i18n/index.ts';
 import { useCombat, type Speed } from '../stores/combat.ts';
+import { useRoom } from '../stores/room.ts';
 import { useSession } from '../stores/session.ts';
 
 /** Durée d'affichage d'un événement à la vitesse ×1. */
 const EVENT_DELAY_MS = 420;
+
+const LOG_OPEN_KEY = 'la-tour.combatLogOpen';
+
+/** Journal replié par défaut ; le choix du joueur est retenu (confort, stockage local facultatif). */
+function useLogOpen() {
+  const [open, setOpen] = useState(() => {
+    try {
+      return localStorage.getItem(LOG_OPEN_KEY) === '1';
+    } catch {
+      return false;
+    }
+  });
+  const toggle = () =>
+    setOpen((current) => {
+      try {
+        localStorage.setItem(LOG_OPEN_KEY, current ? '0' : '1');
+      } catch {
+        // Stockage indisponible : le choix vaut pour cette visite seulement.
+      }
+      return !current;
+    });
+  return [open, toggle] as const;
+}
 
 /** Rejoue les événements reçus du serveur au rythme choisi, et enchaîne les tours en mode auto. */
 function usePlayback() {
@@ -44,6 +72,17 @@ function usePlayback() {
   return settled;
 }
 
+/** Secondes restantes avant la fin du tour (multijoueur) ; le serveur reste seul juge. */
+function useCountdown(deadline: string | null): number | null {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (!deadline) return;
+    const timer = setInterval(() => setNow(Date.now()), 500);
+    return () => clearInterval(timer);
+  }, [deadline]);
+  return deadline ? Math.max(0, Math.ceil((Date.parse(deadline) - now) / 1000)) : null;
+}
+
 export function CombatPage() {
   const navigate = useNavigate();
   const view = useCombat((s) => s.view);
@@ -57,11 +96,17 @@ export function CombatPage() {
   const speed = useCombat((s) => s.speed);
   const selectedHeroId = useCombat((s) => s.selectedHeroId);
   const selectedSkillId = useCombat((s) => s.selectedSkillId);
+  const isMulti = useCombat((s) => s.mode === 'multi');
+  const ownHeroId = useCombat((s) => s.ownHeroId);
+  const multiOutcome = useCombat((s) => s.multiOutcome);
+  const seconds = useCountdown(useCombat((s) => s.turnDeadline));
+  const isHost = useRoom((s) => s.room?.hostId === useSession.getState().user?.id);
   const combat = useCombat.getState();
   const setSave = useSession((s) => s.setSave);
   const isDebug = useDebug((s) => s.open);
   const settled = usePlayback();
   const logRef = useRef<HTMLOListElement>(null);
+  const [logOpen, toggleLog] = useLogOpen();
 
   useEffect(() => {
     if (!useCombat.getState().view) void combat.load();
@@ -70,7 +115,12 @@ export function CombatPage() {
   }, []);
   useEffect(() => {
     logRef.current?.scrollTo({ top: logRef.current.scrollHeight });
-  }, [log]);
+  }, [log, logOpen]);
+  // La sauvegarde de fin de combat devient tout de suite la référence : les objets équipés
+  // depuis la fenêtre de fin de combat partent de cet état.
+  useEffect(() => {
+    if (outcome) setSave(outcome.save);
+  }, [outcome, setSave]);
 
   if (!view) {
     return (
@@ -89,11 +139,21 @@ export function CombatPage() {
   }
 
   const heroes = view.heroes;
+  // Multijoueur : chacun ne commande que son héros (absent s'il l'a retiré d'une chasse).
+  const ownHero = isMulti ? (heroes.find((h) => h.id === ownHeroId) ?? null) : null;
   const hero =
+    (isMulti ? ownHero : null) ??
     heroes.find((h) => h.id === selectedHeroId && h.hp > 0 && !h.stunnedThisPhase) ??
     heroes.find((h) => h.hp > 0 && !h.stunnedThisPhase) ??
     heroes[0]!;
-  const yourTurn = view.phase === 'heroes' && settled && !busy && !auto && view.actionsLeft > 0;
+  const ownActions = isMulti && ownHero ? (view.heroActions?.[ownHero.id] ?? 0) : 0;
+  const yourTurn =
+    view.phase === 'heroes' &&
+    settled &&
+    !busy &&
+    !auto &&
+    (isMulti ? ownActions > 0 : view.actionsLeft > 0);
+  const withdrawn = isMulti && !ownHero && !multiOutcome;
   // La sélection reste active pour enchaîner, tant que la compétence est prête.
   const selectedSlot = hero.skills.find((s) => s.skillId === selectedSkillId && s.remaining === 0);
   const selectedSkill = selectedSlot
@@ -103,43 +163,43 @@ export function CombatPage() {
   const hunting = view.mode === 'hunt';
   const zone = hunting ? gameData.zones.zones.find((z) => z.floor === view.floor) : undefined;
 
-  const leave = (to: '/village' | '/tour' | '/chasse') => {
-    if (outcome) setSave(outcome.save);
+  // Le décor prend la couleur de l'élément du biome (Forêt : Neutre, Volcan : Feu…).
+  const element = zone?.element ?? floor.element;
+
+  const leave = (to: '/village' | '/tour' | '/chasse' | '/equipe') => {
     combat.clearOutcome();
     navigate(to);
   };
   // Enchaîner : étage suivant après une victoire, ou nouvelle chasse dans la même zone.
   const next: { label: string; run: () => void } | null =
     outcome?.mode === 'hunt'
-      ? {
-          label: t('outcome.huntAgain'),
-          run: () => {
-            setSave(outcome.save);
-            void combat.startHunt(outcome.floor);
-          },
-        }
+      ? { label: t('outcome.huntAgain'), run: () => void combat.startHunt(outcome.floor) }
       : outcome?.result === 'victory' &&
           outcome.floorCleared &&
           outcome.save.currentFloor > view.floor
         ? {
             label: t('outcome.nextFloor'),
-            run: () => {
-              setSave(outcome.save);
-              void combat.start(outcome.save.currentFloor);
-            },
+            run: () => void combat.start(outcome.save.currentFloor),
           }
         : null;
+  // Rejouer un étage de boss ou de dragon (victoire comme défaite), s'il reste accessible.
+  const replay: { label: string; run: () => void } | null =
+    outcome?.mode === 'tower' &&
+    view.floorType !== 'normal' &&
+    canPlayFloor(outcome.save, outcome.floor)
+      ? { label: t('outcome.replay'), run: () => void combat.start(outcome.floor) }
+      : null;
 
   const chooseSkill = (skillId: string) => {
     if (hero.id !== selectedHeroId) combat.selectHero(hero.id);
     combat.selectSkill(skillId);
     const skill = gameData.skills.catalog.find((s) => s.id === skillId);
-    // Une attaque de zone n'a pas besoin de cible.
-    if (skill?.target === 'area') void useCombat.getState().act();
+    // Une attaque de zone ou une compétence sur soi n'a pas besoin de cible.
+    if (skill?.target === 'area' || skill?.target === 'self') void useCombat.getState().act();
   };
 
   return (
-    <div className="page">
+    <div className="page combat-backdrop" style={elementStyle(element)}>
       <TopBar />
       <main className="combat-page">
         <header className="combat-header">
@@ -164,6 +224,16 @@ export function CombatPage() {
             </>
           )}
           <span>{t('combat.round', { round: view.round })}</span>
+          <ElementBadge element={element} />
+          <button
+            type="button"
+            className="combat-log-toggle"
+            aria-expanded={logOpen}
+            aria-controls="combat-log"
+            onClick={toggleLog}
+          >
+            {t(logOpen ? 'combat.log.hide' : 'combat.log.show')} {logOpen ? '▴' : '▾'}
+          </button>
         </header>
 
         <div className="initiative-bar" aria-label={t('combat.initiative')}>
@@ -181,9 +251,20 @@ export function CombatPage() {
           <span className="turn-status">
             {view.phase !== 'heroes'
               ? ''
-              : settled && !busy
-                ? t('combat.yourTurn', { actions: view.actionsLeft, total: view.actionsPerRound })
-                : t('combat.resolving')}
+              : !settled || busy
+                ? t('combat.resolving')
+                : isMulti
+                  ? ownActions > 0
+                    ? t('combat.multiTurn', {
+                        actions: ownActions,
+                        total: view.actionsPerRound,
+                        seconds: seconds ?? 0,
+                      })
+                    : t('combat.waitingOthers', { seconds: seconds ?? 0 })
+                  : t('combat.yourTurn', {
+                      actions: view.actionsLeft,
+                      total: view.actionsPerRound,
+                    })}
           </span>
         </div>
 
@@ -196,7 +277,7 @@ export function CombatPage() {
                 view={view}
                 active={activeId === h.id}
                 selected={heroes.length > 1 && hero.id === h.id}
-                onClick={heroes.length > 1 ? () => combat.selectHero(h.id) : undefined}
+                onClick={heroes.length > 1 && !isMulti ? () => combat.selectHero(h.id) : undefined}
                 floaters={floaters.filter((f) => f.targetId === h.id)}
               />
             ))}
@@ -220,97 +301,143 @@ export function CombatPage() {
           </div>
         </section>
 
-        <section className="combat-controls panel">
-          <div className="combat-hero-title">
-            <strong>{combatantName(view, hero.id)}</strong>
-            {selectedSkill?.target === 'single' && yourTurn && (
-              <span className="hint">
-                {t('combat.chooseTarget', { skill: selectedSkill.name })}
-              </span>
-            )}
-            {!selectedSkill && yourTurn && <span className="hint">{t('combat.chooseSkill')}</span>}
-          </div>
-          <SkillBar
-            hero={hero}
-            selectedSkillId={selectedSkill?.id ?? null}
-            disabled={!yourTurn || hero.hp <= 0 || hero.stunnedThisPhase}
-            onSelect={chooseSkill}
-          />
-          {error && <p className="error">{error}</p>}
-          <div className="combat-buttons">
-            <button type="button" disabled={!yourTurn} onClick={() => void combat.pass()}>
-              {t('combat.pass')}
-            </button>
-            <button
-              type="button"
-              className={auto ? 'toggled' : ''}
-              aria-pressed={auto}
-              disabled={view.phase !== 'heroes'}
-              onClick={() => combat.setAuto(!auto)}
-            >
-              {t(auto ? 'combat.autoOn' : 'combat.autoOff')}
-            </button>
-            <span className="speed-group" role="group" aria-label={t('combat.speed')}>
-              {([1, 2, 3] as Speed[]).map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  className={speed === s ? 'toggled' : ''}
-                  aria-pressed={speed === s}
-                  onClick={() => combat.setSpeed(s)}
-                >
-                  ×{s}
-                </button>
-              ))}
-            </span>
-            {isDebug && (
-              <button type="button" disabled={!yourTurn} onClick={() => void combat.winWave()}>
-                {t('debug.winWaveNow')}
-              </button>
-            )}
-            {hunting ? (
+        {withdrawn ? (
+          <section className="combat-controls panel">
+            <p>{t('combat.withdrawn')}</p>
+            <div className="combat-buttons">
               <button
                 type="button"
                 className="primary"
-                disabled={view.phase !== 'heroes' || busy}
                 onClick={() => {
-                  combat.setAuto(false);
-                  void combat.retreat();
+                  combat.clearOutcome();
+                  navigate('/salon');
                 }}
               >
-                {t('combat.retreat')}
+                {t('outcome.toRoom')}
               </button>
-            ) : (
-              <button
-                type="button"
-                className="danger"
-                disabled={view.phase !== 'heroes' || busy}
-                onClick={() => {
-                  if (window.confirm(t('combat.forfeitConfirm'))) void combat.forfeit();
-                }}
-              >
-                {t('combat.forfeit')}
+            </div>
+          </section>
+        ) : (
+          <section className="combat-controls panel">
+            <div className="combat-hero-title">
+              <strong>{combatantName(view, hero.id)}</strong>
+              {selectedSkill?.target === 'single' && yourTurn && (
+                <span className="hint">
+                  {t('combat.chooseTarget', { skill: selectedSkill.name })}
+                </span>
+              )}
+              {!selectedSkill && yourTurn && (
+                <span className="hint">{t('combat.chooseSkill')}</span>
+              )}
+            </div>
+            <SkillBar
+              hero={hero}
+              selectedSkillId={selectedSkill?.id ?? null}
+              disabled={!yourTurn || hero.hp <= 0 || hero.stunnedThisPhase}
+              onSelect={chooseSkill}
+            />
+            {error && <p className="error">{error}</p>}
+            <div className="combat-buttons">
+              <button type="button" disabled={!yourTurn} onClick={() => void combat.pass()}>
+                {t('combat.pass')}
               </button>
-            )}
-          </div>
-        </section>
+              {/* Mode auto et vitesse : solo uniquement. */}
+              {!isMulti && (
+                <>
+                  <button
+                    type="button"
+                    className={auto ? 'toggled' : ''}
+                    aria-pressed={auto}
+                    disabled={view.phase !== 'heroes'}
+                    onClick={() => combat.setAuto(!auto)}
+                  >
+                    {t(auto ? 'combat.autoOn' : 'combat.autoOff')}
+                  </button>
+                  <span className="speed-group" role="group" aria-label={t('combat.speed')}>
+                    {([1, 2, 3] as Speed[]).map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        className={speed === s ? 'toggled' : ''}
+                        aria-pressed={speed === s}
+                        onClick={() => combat.setSpeed(s)}
+                      >
+                        ×{s}
+                      </button>
+                    ))}
+                  </span>
+                </>
+              )}
+              {isDebug && (
+                <button type="button" disabled={!yourTurn} onClick={() => void combat.winWave()}>
+                  {t('debug.winWaveNow')}
+                </button>
+              )}
+              {hunting ? (
+                <button
+                  type="button"
+                  className="primary"
+                  disabled={view.phase !== 'heroes' || busy}
+                  onClick={() => {
+                    combat.setAuto(false);
+                    void combat.retreat();
+                  }}
+                >
+                  {t(isMulti ? 'combat.withdraw' : 'combat.retreat')}
+                </button>
+              ) : (
+                (!isMulti || isHost) && (
+                  <button
+                    type="button"
+                    className="danger"
+                    disabled={view.phase !== 'heroes' || busy}
+                    onClick={() => {
+                      const question = isMulti
+                        ? 'combat.hostForfeitConfirm'
+                        : 'combat.forfeitConfirm';
+                      if (window.confirm(t(question))) void combat.forfeit();
+                    }}
+                  >
+                    {t(isMulti ? 'combat.hostForfeit' : 'combat.forfeit')}
+                  </button>
+                )
+              )}
+            </div>
+          </section>
+        )}
 
-        <section className="combat-log panel">
-          <h2>{t('combat.log.title')}</h2>
-          <ol ref={logRef}>
-            {log.map((line, i) => (
-              <li key={i}>{line}</li>
-            ))}
-          </ol>
-        </section>
+        {logOpen && (
+          <section id="combat-log" className="combat-log panel" aria-label={t('combat.log.title')}>
+            <ol ref={logRef}>
+              {log.map((line, i) => (
+                <li key={i}>{line}</li>
+              ))}
+            </ol>
+          </section>
+        )}
       </main>
 
+      {multiOutcome && (
+        <MultiOutcomeModal
+          outcome={multiOutcome}
+          onRoom={() => {
+            combat.clearOutcome();
+            navigate('/salon');
+          }}
+          onVillage={() => {
+            combat.clearOutcome();
+            navigate('/village');
+          }}
+        />
+      )}
       {outcome && (
         <OutcomeModal
           outcome={outcome}
           onVillage={() => leave('/village')}
           onTower={() => leave(outcome.mode === 'hunt' ? '/chasse' : '/tour')}
+          onTeam={() => leave('/equipe')}
           next={next}
+          replay={replay}
         />
       )}
     </div>

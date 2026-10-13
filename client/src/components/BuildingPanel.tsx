@@ -12,19 +12,15 @@ import { gameData } from '@la-tour/shared/data';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { buildingById, resourceById, useVillageView } from '../game/village.ts';
-import { errorMessage, formatNumber, t, type TranslationKey } from '../i18n/index.ts';
+import { errorMessage, formatNumber, t } from '../i18n/index.ts';
 import { useNotifications } from '../stores/notifications.ts';
 import { useSession } from '../stores/session.ts';
+import { AlchemySection, UpgradeTowerSection } from './TowerSections.tsx';
 import { WorkshopSection } from './items/WorkshopSection.tsx';
 import { Modal } from './Modal.tsx';
 import { PixelImage } from './PixelImage.tsx';
 import { TavernSection } from './TavernSection.tsx';
 import { Tooltip } from './Tooltip.tsx';
-
-const PHASE_NOTES: Record<string, TranslationKey> = {
-  tour_alchimie: 'building.note.alchemy',
-  tour_amelioration: 'building.note.upgradeTower',
-};
 
 /** Coût du niveau suivant : chaque ligne passe en rouge s'il manque quelque chose. */
 function UpgradeCost({ next, shortfall }: { next: NextUpgrade; shortfall: UpgradeShortfall }) {
@@ -98,8 +94,6 @@ export function BuildingPanel({
       setPending(false);
     }
   };
-
-  const note = PHASE_NOTES[buildingId];
 
   return (
     <Modal open onClose={onClose} title={building.name} className="building-panel">
@@ -191,7 +185,8 @@ export function BuildingPanel({
         </section>
       )}
 
-      {note && <p className="note">{t(note)}</p>}
+      {buildingId === 'tour_alchimie' && level !== null && <AlchemySection level={level} />}
+      {buildingId === 'tour_amelioration' && level !== null && <UpgradeTowerSection />}
 
       {buildingId === 'atelier_fabrication' && level !== null && <WorkshopSection level={level} />}
 
