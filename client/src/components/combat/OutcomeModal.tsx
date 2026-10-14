@@ -1,4 +1,4 @@
-import { STAT_POINTS, type CombatOutcome } from '@la-tour/shared';
+import { STAT_POINTS, sellPrice, type CombatOutcome } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { useState } from 'react';
 import { catalogItem, equippedIn } from '../../game/items.ts';
@@ -36,9 +36,12 @@ interface Props {
 export function LootRow({ itemId, catalogId }: { itemId: string; catalogId: string }) {
   const save = useSession((s) => s.save);
   const equipItem = useSession((s) => s.equipItem);
+  const sellItem = useSession((s) => s.sellItem);
   const notify = useNotifications((s) => s.notify);
   const view = useVillageView();
   const [pending, setPending] = useState(false);
+  /** Or reçu si l'objet a été vendu depuis cette fenêtre. */
+  const [soldFor, setSoldFor] = useState<number | null>(null);
   const info = catalogItem(catalogId);
   const item = save?.items.find((i) => i.id === itemId);
   const hero = save?.characters.find((c) => c.classId === info.classId);
@@ -49,23 +52,37 @@ export function LootRow({ itemId, catalogId }: { itemId: string; catalogId: stri
       <li>
         <ItemIcon catalogId={catalogId} scale={1.5} />
         <ItemName catalogId={catalogId} />
+        {soldFor !== null && (
+          <strong className="muted outcome-sold">
+            {t('outcome.sold', { gold: formatNumber(soldFor) })}
+          </strong>
+        )}
       </li>
     );
   }
   const equipped = !!hero && item.equippedBy === hero.id;
   const reference = hero && !equipped ? equippedIn(save, hero.id, info.slot) : null;
 
-  const equip = async () => {
-    if (!hero) return;
+  const run = async (action: () => Promise<void>) => {
     setPending(true);
     try {
-      await equipItem(item.id, hero.id);
+      await action();
     } catch (error) {
       notify('error', errorMessage(error));
     } finally {
       setPending(false);
     }
   };
+  const equip = () =>
+    run(async () => {
+      if (hero) await equipItem(item.id, hero.id);
+    });
+  const sell = () =>
+    run(async () => {
+      const gold = await sellItem(item.id);
+      setSoldFor(gold);
+      notify('success', t('team.sold', { name: info.name, gold: formatNumber(gold) }));
+    });
 
   return (
     <li>
@@ -108,6 +125,14 @@ export function LootRow({ itemId, catalogId }: { itemId: string; catalogId: stri
             {t('outcome.equip')}
           </button>
         ))}
+      {/* Vendre tout de suite évite de stocker l'objet puis de passer par la page Équipe. */}
+      {!item.equippedBy && (
+        <button type="button" className="danger" disabled={pending} onClick={() => void sell()}>
+          {t('team.sell', {
+            price: formatNumber(sellPrice(gameData, info, item.upgradeLevel)),
+          })}
+        </button>
+      )}
     </li>
   );
 }

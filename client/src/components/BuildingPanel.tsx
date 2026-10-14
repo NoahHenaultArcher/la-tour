@@ -21,6 +21,9 @@ import { PixelImage } from './PixelImage.tsx';
 import { TavernSection } from './TavernSection.tsx';
 import { Tooltip } from './Tooltip.tsx';
 
+/** Bâtiments au contenu riche : leur fenêtre prend presque toute la largeur de l'écran. */
+const WIDE_PANELS = new Set(['atelier_fabrication', 'tour_alchimie', 'tour_amelioration']);
+
 /** Coût du niveau suivant : chaque ligne passe en rouge s'il manque quelque chose. */
 function UpgradeCost({ next, shortfall }: { next: NextUpgrade; shortfall: UpgradeShortfall }) {
   const { cost } = next;
@@ -98,7 +101,7 @@ export function BuildingPanel({
       open
       onClose={onClose}
       title={building.name}
-      className={`building-panel${buildingId === 'atelier_fabrication' ? ' workshop-panel' : ''}`}
+      className={`building-panel${WIDE_PANELS.has(buildingId) ? ' wide-panel' : ''}`}
     >
       <div className="building-head">
         <PixelImage src={building.image} alt={building.name} size={96} />

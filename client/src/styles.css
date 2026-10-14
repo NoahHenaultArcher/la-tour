@@ -1518,6 +1518,10 @@ button.danger {
   border-radius: 4px;
 }
 
+.outcome-sold {
+  margin-left: auto;
+}
+
 .inventory-row-main {
   display: flex;
   flex-direction: column;
@@ -1586,11 +1590,12 @@ button.danger {
   margin-bottom: 6px;
 }
 
-/* Atelier : grande fenêtre, onglets de classe, puis fabrication | objets | amélioration. */
-.modal.workshop-panel {
+/* Grande fenêtre (Atelier, Tour d'alchimie, Tour d'amélioration). */
+.modal.wide-panel {
   width: min(1280px, calc(100vw - 32px));
 }
 
+/* Atelier : onglets de classe, puis fabrication | objets | amélioration. */
 .workshop {
   display: flex;
   flex-direction: column;
@@ -2019,19 +2024,153 @@ button.danger {
 
 /* --- Tour d'alchimie et Tour d'amélioration --- */
 
-.fusion-recipes {
-  list-style: none;
-  padding: 0;
+/* Tour d'alchimie : tableau des niveaux et explorateur de combinaisons. */
+.alchemy-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.alchemy-section h3 {
+  margin: 8px 0 0;
+}
+
+.alchemy-section p {
   margin: 0;
+}
+
+.alchemy-intro {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.alchemy-intro button {
+  flex-shrink: 0;
+}
+
+.alchemy-levels {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.alchemy-levels th {
+  text-align: left;
+  font-weight: normal;
+  color: var(--muted);
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.alchemy-levels td {
+  padding: 5px 8px;
+  border-bottom: 1px solid rgb(255 255 255 / 6%);
+}
+
+.alchemy-levels tr.current td {
+  background: #2e2416;
+  font-weight: bold;
+}
+
+.alchemy-levels tr.upcoming td {
+  color: var(--muted);
+}
+
+.alchemy-explorer {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.alchemy-elements {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  max-height: 260px;
-  overflow-y: auto;
 }
 
-.fusion-recipes li.locked {
-  opacity: 0.4;
+.alchemy-element {
+  text-align: left;
+  font-weight: bold;
+  color: color-mix(in srgb, var(--el) 75%, white);
+  background: color-mix(in srgb, var(--el) 16%, #120e18);
+  border: 1px solid color-mix(in srgb, var(--el) 50%, transparent);
+}
+
+.alchemy-element.selected {
+  background: color-mix(in srgb, var(--el) 40%, #120e18);
+  border-color: var(--el);
+  box-shadow: 0 0 0 1px var(--el);
+}
+
+.alchemy-element.locked {
+  opacity: 0.45;
+}
+
+.alchemy-recipes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 8px;
+}
+
+.alchemy-recipes li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  background: color-mix(in srgb, var(--fusion) 10%, #1d1826);
+  border: 1px solid color-mix(in srgb, var(--fusion) 45%, var(--panel-border));
+  border-left: 4px solid var(--fusion);
+  border-radius: 4px;
+}
+
+.alchemy-recipes li.locked {
+  opacity: 0.55;
+}
+
+.alchemy-recipe-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.alchemy-recipe-name {
+  color: color-mix(in srgb, var(--fusion) 70%, white);
+  font-size: 1.05rem;
+}
+
+@media (max-width: 800px) {
+  .alchemy-intro {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .alchemy-explorer {
+    grid-template-columns: 1fr;
+  }
+
+  .alchemy-elements {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+/* Tour d'amélioration : une ligne par branche, mêmes colonnes partout pour aligner les boutons. */
+.upgrade-tower-head,
+.upgrade-tower-list > li {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1.5fr) 170px;
+  align-items: center;
+  gap: 16px;
+}
+
+.upgrade-tower-head {
+  padding: 0 10px 4px;
 }
 
 .upgrade-tower-list {
@@ -2040,27 +2179,58 @@ button.danger {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
 .upgrade-tower-list > li {
-  border-top: 1px solid var(--panel-border);
-  padding-top: 8px;
+  padding: 8px 10px;
+  background: #1d1826;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
 }
 
-.upgrade-tower-list p {
-  margin: 2px 0;
-}
-
-.upgrade-tower-next {
+.upgrade-tower-branch,
+.upgrade-tower-progress {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 12px;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
 }
 
-.upgrade-tower-next .cost-list {
+.upgrade-tower-list .cost-list {
   margin: 0;
+}
+
+.upgrade-tower-list > li > button,
+.upgrade-tower-list > li > strong:last-child {
+  justify-self: stretch;
+  text-align: center;
+}
+
+.progress {
+  display: block;
+  height: 6px;
+  background: #120e18;
+  border: 1px solid var(--panel-border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .upgrade-tower-head {
+    display: none;
+  }
+
+  .upgrade-tower-list > li {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
 }
 
 /* --- Héritage --- */
