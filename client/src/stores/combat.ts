@@ -45,7 +45,10 @@ interface CombatStore {
   auto: boolean;
   /** Choix du joueur (bouton auto) : chaque combat solo suivant démarre ainsi (retenu dans le navigateur). */
   autoWanted: boolean;
+  /** Vitesse en cours (toujours ×1 en multi). */
   speed: Speed;
+  /** Choix du joueur (boutons de vitesse) : repris à chaque combat solo (retenu dans le navigateur). */
+  speedWanted: Speed;
   selectedHeroId: string | null;
   selectedSkillId: string | null;
   /** Solo (requêtes HTTP) ou multijoueur (Socket.IO, un héros par joueur). */
@@ -81,6 +84,7 @@ const MAX_LOG = 80;
 let floaterId = 1;
 
 const AUTO_KEY = 'la-tour.auto';
+const SPEED_KEY = 'la-tour.speed';
 
 /** Confort propre au navigateur : sans stockage disponible, l'auto repart désactivé. */
 function readAuto(): boolean {
@@ -88,6 +92,24 @@ function readAuto(): boolean {
     return localStorage.getItem(AUTO_KEY) === '1';
   } catch {
     return false;
+  }
+}
+
+/** Vitesse retenue ; ×1 si rien n'est enregistré ou si le stockage est indisponible. */
+function readSpeed(): Speed {
+  try {
+    const value = Number(localStorage.getItem(SPEED_KEY));
+    return value === 2 || value === 3 ? value : 1;
+  } catch {
+    return 1;
+  }
+}
+
+function remember(key: string, value: string) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // Stockage indisponible : le choix vaut pour cette visite seulement.
   }
 }
 
@@ -135,8 +157,8 @@ export const useCombat = create<CombatStore>((set, get) => {
   };
   const multi = () => get().mode === 'multi';
 
-  /** Un nouveau combat solo reprend le dernier choix du bouton auto. */
-  const initialAuto = () => set({ auto: get().autoWanted });
+  /** Un nouveau combat solo reprend les derniers choix du joueur : auto et vitesse. */
+  const applyPreferences = () => set({ auto: get().autoWanted, speed: get().speedWanted });
 
   const call = async (request: () => Promise<CombatResponse>, reset = false) => {
     if (get().busy) return;
@@ -161,7 +183,8 @@ export const useCombat = create<CombatStore>((set, get) => {
     error: null,
     auto: false,
     autoWanted: readAuto(),
-    speed: 1,
+    speed: readSpeed(),
+    speedWanted: readSpeed(),
     selectedHeroId: null,
     selectedSkillId: null,
     mode: 'solo',
@@ -175,8 +198,8 @@ export const useCombat = create<CombatStore>((set, get) => {
       if (useRoom.getState().room?.inCombat) return Promise.resolve();
       // Combat multijoueur terminé (bilan déjà versé) : on revient au combat solo éventuel.
       if (multi()) get().clearOutcome();
-      // Reprise d'un combat solo après un rechargement : le choix auto s'applique aussi.
-      if (!get().view) initialAuto();
+      // Reprise d’un combat solo après un rechargement : auto et vitesse retenus s’appliquent aussi.
+      if (!get().view) applyPreferences();
       return call(api.getCombat, true);
     },
 
@@ -204,7 +227,7 @@ export const useCombat = create<CombatStore>((set, get) => {
     },
     start: (floor) => {
       if (multi()) get().clearOutcome();
-      initialAuto();
+      applyPreferences();
       return call(() => api.startCombat(floor), true);
     },
 
@@ -221,7 +244,7 @@ export const useCombat = create<CombatStore>((set, get) => {
     forfeit: () => (multi() ? multiCall(useRoom.getState().forfeit) : call(api.combatForfeit)),
     startHunt: (zoneFloor) => {
       if (multi()) get().clearOutcome();
-      initialAuto();
+      applyPreferences();
       return call(() => api.startHunt(zoneFloor), true);
     },
     retreat: () => {
@@ -233,14 +256,13 @@ export const useCombat = create<CombatStore>((set, get) => {
     winWave: () => (multi() ? multiCall(useRoom.getState().debugWinWave) : call(api.debugWinWave)),
 
     setAuto: (auto) => {
-      try {
-        localStorage.setItem(AUTO_KEY, auto ? '1' : '0');
-      } catch {
-        // Stockage indisponible : le choix vaut pour cette visite seulement.
-      }
+      remember(AUTO_KEY, auto ? '1' : '0');
       set({ auto, autoWanted: auto });
     },
-    setSpeed: (speed) => set({ speed }),
+    setSpeed: (speed) => {
+      remember(SPEED_KEY, String(speed));
+      set({ speed, speedWanted: speed });
+    },
     selectHero: (heroId) => set({ selectedHeroId: heroId, selectedSkillId: null }),
     selectSkill: (skillId) => set({ selectedSkillId: skillId }),
 

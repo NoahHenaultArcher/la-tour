@@ -227,6 +227,9 @@ button.primary {
 }
 
 .logo-small {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   letter-spacing: 0.08em;
 }
 
@@ -352,8 +355,9 @@ button.primary {
 .village-page {
   display: grid;
   grid-template-columns: 1fr 260px;
+  align-items: start;
   gap: 16px;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 16px;
 }
@@ -377,58 +381,134 @@ button.primary {
   text-shadow: 0 2px 0 #000;
 }
 
-.village-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 12px;
+/* Deuxième barre, propre au village : les ressources. */
+.village-resources {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 6px 16px;
+  background: #1a1522;
+  border-bottom: 1px solid var(--panel-border);
 }
 
-.building-tile {
-  position: relative;
+.village-capacity {
+  margin-left: auto;
+}
+
+/* Bâtiments : une ligne chacun — image, état (niveau, production), rôle et contenu. */
+.building-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
+  gap: 8px;
+}
+
+.building-row {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) minmax(0, 1.2fr);
   align-items: center;
-  gap: 4px;
-  padding: 8px 4px;
-  background: rgb(0 0 0 / 25%);
+  gap: 16px;
+  padding: 8px 12px;
+  background: rgb(0 0 0 / 30%);
   border: 2px solid transparent;
   border-radius: 6px;
   color: var(--text);
+  cursor: pointer;
 }
 
-.building-tile:hover,
-.building-tile:focus-visible {
+.building-row:hover,
+.building-row:focus-visible {
   border-color: var(--accent);
-  background: rgb(0 0 0 / 40%);
+  background: rgb(0 0 0 / 45%);
+  outline: none;
 }
 
-.building-tile.locked img {
+.building-art {
+  display: flex;
+  justify-content: center;
+}
+
+.building-row.locked .building-art img {
   filter: grayscale(1) brightness(0.55);
 }
 
-.building-tile.locked .building-name {
-  color: var(--muted);
-}
-
-.building-name {
-  font-weight: bold;
+.building-status,
+.building-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
   text-shadow: 0 1px 0 #000;
-  text-align: center;
 }
 
-.building-badge {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  font-size: 0.75rem;
-  padding: 1px 6px;
-  border-radius: 3px;
-  background: #15111c;
+.building-info {
+  padding-left: 16px;
+  border-left: 1px solid rgb(255 255 255 / 15%);
+  font-size: 0.85rem;
+}
+
+.building-info p {
+  margin: 0;
+}
+
+.building-type {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.building-rates,
+.building-contents,
+.building-resources {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.building-rates li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.building-contents li::before {
+  content: '› ';
+  color: var(--accent);
+}
+
+.building-resources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.building-resources li {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 6px 1px 2px;
+  background: rgb(0 0 0 / 35%);
   border: 1px solid var(--panel-border);
+  border-radius: 4px;
 }
 
-.building-tile.locked .building-badge {
-  color: var(--error);
+.building-resources li.locked {
+  opacity: 0.45;
+}
+
+@media (max-width: 800px) {
+  .building-row {
+    grid-template-columns: 112px minmax(0, 1fr);
+  }
+
+  .building-info {
+    grid-column: 1 / -1;
+    padding-left: 0;
+    border-left: none;
+  }
 }
 
 .team-panel h2 {
@@ -1499,16 +1579,117 @@ button.danger {
   flex: 1;
 }
 
-.workshop-list li > span:nth-child(2) {
-  margin-left: auto;
-  font-size: 0.85rem;
-}
-
 .craft-form {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   margin-bottom: 6px;
+}
+
+/* Atelier : grande fenêtre, onglets de classe, puis fabrication | objets | amélioration. */
+.modal.workshop-panel {
+  width: min(1280px, calc(100vw - 32px));
+}
+
+.workshop {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.workshop-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.workshop-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .workshop-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.workshop-column {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  background: #1d1826;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  min-width: 0;
+}
+
+.workshop-column h4 {
+  margin: 6px 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* Liste du milieu : défile seule pour garder fabrication et amélioration visibles. */
+.workshop-column:nth-child(2) {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.workshop-list {
+  gap: 3px;
+}
+
+.workshop-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 3px 6px;
+  text-align: left;
+  background: #15111c;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  color: var(--text);
+}
+
+.workshop-item.selected {
+  border-color: var(--accent);
+  background: #2e2416;
+}
+
+.workshop-item-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.workshop-item-text .item-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.workshop-empty {
+  padding: 3px 6px;
+}
+
+.workshop-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.workshop-cost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
 }
 
 .deck {

@@ -1,9 +1,13 @@
 import { MAX_HERO_LEVEL, canInherit } from '@la-tour/shared';
-import { NavLink, useLocation } from 'react-router';
+import { NavLink } from 'react-router';
 import { t } from '../i18n/index.ts';
 import { useRoom } from '../stores/room.ts';
 import { useSession } from '../stores/session.ts';
+import { PixelImage } from './PixelImage.tsx';
 import { ResourceBar } from './ResourceBar.tsx';
+
+/** Image du bâtiment « Tour » du village, reprise comme logo du jeu. */
+const TOWER_IMAGE = 'village/tour.png';
 
 /** Bandeau fixe : nom du jeu, navigation, or (et ressources au village), déconnexion. */
 export function TopBar() {
@@ -20,13 +24,15 @@ export function TopBar() {
     s.save ? canInherit(s.save.characters, MAX_HERO_LEVEL) : false,
   );
   const inRoom = useRoom((s) => s.room !== null);
-  const { pathname } = useLocation();
   return (
     <header className="topbar">
-      <strong className="logo-small">{t('app.title')}</strong>
+      <strong className="logo-small">
+        <PixelImage src={TOWER_IMAGE} alt="" size={28} />
+        {t('app.title')}
+      </strong>
       <nav className="main-nav">
-        <NavLink to="/village">{t('nav.village')}</NavLink>
         <NavLink to="/tour">{t('nav.tower')}</NavLink>
+        <NavLink to="/village">{t('nav.village')}</NavLink>
         <NavLink to="/chasse">{t('nav.hunt')}</NavLink>
         <NavLink to="/equipe">
           {t('nav.team')}
@@ -45,8 +51,8 @@ export function TopBar() {
           </NavLink>
         )}
       </nav>
-      {/* Les ressources ne s'affichent qu'au village ; l'or reste visible partout. */}
-      <ResourceBar withResources={pathname === '/village'} />
+      {/* L'or reste visible partout ; les ressources ont leur propre barre sur la page du village. */}
+      <ResourceBar withResources={false} />
       <span className="topbar-user">{user.username}</span>
       <button type="button" onClick={() => void logout().catch(() => undefined)}>
         {t('auth.logout')}

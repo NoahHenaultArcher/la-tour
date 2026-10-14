@@ -10,7 +10,6 @@ import {
 } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
 import { buildingById, resourceById, useVillageView } from '../game/village.ts';
 import { errorMessage, formatNumber, t } from '../i18n/index.ts';
 import { useNotifications } from '../stores/notifications.ts';
@@ -66,7 +65,6 @@ export function BuildingPanel({
   const upgradeBuilding = useSession((s) => s.upgradeBuilding);
   const notify = useNotifications((s) => s.notify);
   const view = useVillageView();
-  const navigate = useNavigate();
   const [pending, setPending] = useState(false);
 
   const building = buildingById(buildingId)!;
@@ -96,7 +94,12 @@ export function BuildingPanel({
   };
 
   return (
-    <Modal open onClose={onClose} title={building.name} className="building-panel">
+    <Modal
+      open
+      onClose={onClose}
+      title={building.name}
+      className={`building-panel${buildingId === 'atelier_fabrication' ? ' workshop-panel' : ''}`}
+    >
       <div className="building-head">
         <PixelImage src={building.image} alt={building.name} size={96} />
         <div>
@@ -189,17 +192,6 @@ export function BuildingPanel({
       {buildingId === 'tour_amelioration' && level !== null && <UpgradeTowerSection />}
 
       {buildingId === 'atelier_fabrication' && level !== null && <WorkshopSection level={level} />}
-
-      {buildingId === 'tour' && (
-        <div className="modal-actions">
-          <button type="button" className="primary" onClick={() => navigate('/tour')}>
-            {t('building.enterTower', { floor: save.currentFloor })}
-          </button>
-          <button type="button" onClick={() => navigate('/chasse')}>
-            {t('building.enterHunt')}
-          </button>
-        </div>
-      )}
 
       {level !== null && (
         <section className="next-level">

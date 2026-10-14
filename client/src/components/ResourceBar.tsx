@@ -56,10 +56,16 @@ export function ResourceChip({ resourceId, view }: { resourceId: string; view: V
 }
 
 /**
- * Barre de ressources en haut de l'écran : l'or, puis les ressources produites ou possédées
+ * Barre de ressources : l'or, puis les ressources produites ou possédées
  * (dans l'ordre des classeurs), avec la production par heure au survol.
  */
-export function ResourceBar({ withResources = true }: { withResources?: boolean }) {
+export function ResourceBar({
+  withGold = true,
+  withResources = true,
+}: {
+  withGold?: boolean;
+  withResources?: boolean;
+}) {
   const save = useSession((s) => s.save)!;
   const view = useVillageView();
   const shown = withResources
@@ -70,12 +76,14 @@ export function ResourceBar({ withResources = true }: { withResources?: boolean 
 
   return (
     <div className="resource-bar">
-      <Tooltip content={<span>{t('resource.gold')}</span>}>
-        <span className="resource-chip gold" tabIndex={0}>
-          <span className="gold-icon" aria-hidden="true" />
-          {formatNumber(save.gold)}
-        </span>
-      </Tooltip>
+      {withGold && (
+        <Tooltip content={<span>{t('resource.gold')}</span>}>
+          <span className="resource-chip gold" tabIndex={0}>
+            <span className="gold-icon" aria-hidden="true" />
+            {formatNumber(save.gold)}
+          </span>
+        </Tooltip>
+      )}
       {shown.map((id) => (
         <ResourceChip key={id} resourceId={id} view={view} />
       ))}
