@@ -13,6 +13,7 @@ export function Notifications() {
           onClick={() => dismiss(n.id)}
         >
           {n.text}
+          {n.count > 1 && <strong className="notification-count"> ×{n.count}</strong>}
         </button>
       ))}
     </div>

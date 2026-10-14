@@ -62,6 +62,89 @@ export function earlyGameFactor(level: number, atLevel1: number): number {
 }
 
 /**
+ * Difficulté « exigeante » (phase 9, décision de l'utilisateur du 14/10/2026). Le bestiaire calibre
+ * ses monstres sur un joueur de référence équipé ; nos héros le dépassent nettement (stats de base,
+ * points par niveau, puis équipement qui grandit plus vite que les monstres). Sans correction, tout
+ * était gagné à 100 % après l'étage 50, même sans équipement.
+ * PV et attaque des monstres sont multipliés par un facteur qui monte avec leur niveau (même facteur
+ * pour tous les biomes : les écarts entre zones voulus par le bestiaire sont conservés).
+ * Simulation (scripts/balance-experiment.ts, mode auto, héros seul au niveau de l'étage) :
+ * boss ~87 % avec l'équipement attendu, ~60 % avec 5 niveaux de retard, ~25 % sans équipement.
+ */
+export const MONSTER_SCALING = {
+  hpAtLevel1: 1.15,
+  hpAtLevel100: 2.4,
+  attackAtLevel1: 1.1,
+  attackAtLevel100: 2.1,
+  /** Début de partie inchangé (étages 1 à 10, demande de l'utilisateur) : aucun renfort jusqu'ici… */
+  untilLevel: 10,
+  /** …puis le renfort s'installe progressivement et s'applique en entier à partir de ce niveau. */
+  fullFromLevel: 20,
+} as const;
+
+/** Valeur interpolée linéairement entre le niveau 1 et le niveau 100. */
+export function lerpByLevel(level: number, atLevel1: number, atLevel100: number): number {
+  const progress = (Math.min(Math.max(level, 1), 100) - 1) / 99;
+  return atLevel1 + (atLevel100 - atLevel1) * progress;
+}
+
+/** Facteur de difficulté d'un monstre de ce niveau (1 en début de partie, voir MONSTER_SCALING). */
+export function monsterDifficulty(level: number, atLevel1: number, atLevel100: number): number {
+  const { untilLevel, fullFromLevel } = MONSTER_SCALING;
+  if (level <= untilLevel) return 1;
+  const full = lerpByLevel(level, atLevel1, atLevel100);
+  if (level >= fullFromLevel) return full;
+  return 1 + ((full - 1) * (level - untilLevel)) / (fullFromLevel - untilLevel);
+}
+
+/**
+ * Résistance aux altérations de base d'un héros nu, comme le monstre étalon du bestiaire
+ * (5 % au niveau 1 → 30 % au niveau 100) ; l'équipement s'y ajoute.
+ */
+export const HERO_STATUS_RESISTANCE = { atLevel1: 0.05, atLevel100: 0.3 } as const;
+
+/**
+ * Gain d'XP (demande de l'utilisateur, 14/10/2026) : avec la difficulté exigeante, on passait trop
+ * de temps à chasser pour monter de niveau. L'XP gagnée en combat (tour et chasse, solo et multi)
+ * est multipliée par ce facteur ; la courbe d'XP et l'XP des monstres du bestiaire ne changent pas.
+ */
+export const XP_GAIN = { multiplier: 1.5 } as const;
+
+/**
+ * Dragons (décision de l'utilisateur, 14/10/2026) : plus seulement des « sacs à PV ».
+ * - 2 actions par manche (sur une manche de souffle, la 1re action est le souffle) ;
+ * - furie sous la moitié de ses PV : dégâts augmentés et souffle plus fréquent ;
+ * - souffle élémentaire : il inflige à coup sûr l'altération de l'élément du dragon (la résistance
+ *   aux altérations s'applique toujours, aucune immunité totale) ;
+ * - invocations : en passant sous certains seuils de PV, il appelle des monstres de sa zone.
+ */
+export const DRAGON_RULES = {
+  actionsPerRound: 2,
+  furyThreshold: 0.5,
+  furyDamageBonus: 0.3,
+  furyBreathEvery: 2,
+  /** Seuils de PV (part des PV max) qui déclenchent chacun une invocation. */
+  summonThresholds: [0.66, 0.33],
+  /** Monstres appelés à chaque seuil (simulation : 2 par seuil rendait les tanières trop dures). */
+  summonCount: 1,
+} as const;
+
+/**
+ * Taille de l'équipe (décision de l'utilisateur, 14/10/2026) : sans compensation, 3 héros gagnaient
+ * tout. Les PV des monstres sont multipliés selon le nombre de héros du combat, en solo comme en
+ * multijoueur (index = nombre de héros) : chaque héros en plus « apporte » un monstre de PV.
+ * Simulation : un trio sans équipement échoue sur la plupart des boss ; équipé, il en gagne 75 à 100 %.
+ */
+export const TEAM_SCALING = {
+  monsterHpByHeroes: [1, 1, 2, 3],
+} as const;
+
+export function monsterHpForTeam(heroCount: number): number {
+  const table = TEAM_SCALING.monsterHpByHeroes;
+  return table[Math.min(Math.max(1, heroCount), table.length - 1)] ?? 1;
+}
+
+/**
  * Fabrication à l'Atelier (PROPOSITION à valider, absente des classeurs) : un objet Commun +0 coûte
  * en matériau l'équivalent de son prix en boutique (prix Commun du palier ÷ prix unitaire du matériau :
  * 14 bois pour une Épée en bois, plus d'unités quand le matériau est bon marché), × ce facteur.
@@ -83,6 +166,12 @@ export const COMBAT_RULES = {
   /** Rôle Soutien : soigne l'allié le plus blessé sous ce seuil de PV, de ce pourcentage de ses PV max. */
   supportHealThreshold: 0.6,
   supportHealShare: 0.15,
+  /**
+   * Chaque soin suivant du même soigneur vaut ce facteur du précédent (15 %, 12 %, 9,6 %…) : un
+   * soigneur rend au plus 75 % de PV max en tout. Sans cela, un boss qui se soigne (étage 85) pouvait
+   * rendre un combat interminable quand le héros frappait moins fort que le soin.
+   */
+  supportHealDecay: 0.8,
   /** Dragon : souffle de zone toutes les N manches (« souffle de zone toutes les 3 tours »). */
   dragonBreathEvery: 3,
   /** Immunité aux contrôles après en avoir subi un (« Immunité 2 tours ensuite »). */

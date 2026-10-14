@@ -30,6 +30,38 @@ const STAT_KEYS: Record<
   agility: 'agility',
 };
 
+/** Petite icône devant chaque statistique (la taille des lignes ne change pas). */
+const STAT_ICONS = {
+  hp: '❤️',
+  strength: '✊',
+  magic: '🔮',
+  resistance: '🛡️',
+  agility: '💨',
+  armor: '🪖',
+  dodge: '🌀',
+  initiative: '⚡',
+  accuracy: '🎯',
+  critChance: '💥',
+  critDamage: '💢',
+  penetration: '🗡️',
+  elementalResistance: '🌈',
+  healingBonus: '💚',
+  statusResistance: '🧪',
+} as const;
+type StatIcon = keyof typeof STAT_ICONS;
+
+/** Libellé d'une stat avec son icône. */
+function StatLabel({ icon, label }: { icon: StatIcon; label: string }) {
+  return (
+    <>
+      <span className="stat-icon" aria-hidden="true">
+        {STAT_ICONS[icon]}
+      </span>
+      {label}
+    </>
+  );
+}
+
 /** Fiche de stats d'un héros, avec la répartition des points gagnés en montant de niveau. */
 export function StatSheet({ save, character }: { save: SaveDto; character: CharacterDto }) {
   const allocate = useSession((s) => s.allocateStatPoints);
@@ -67,9 +99,12 @@ export function StatSheet({ save, character }: { save: SaveDto; character: Chara
   /** Ligne d'une stat qui reçoit des points : valeur, aperçu et boutons − / +. */
   const allocRow = (stat: AllocatableStat, label: string) => {
     const key = STAT_KEYS[stat];
+    const icon: StatIcon = stat === 'vitality' ? 'hp' : stat;
     return (
       <tr key={stat}>
-        <th>{label}</th>
+        <th>
+          <StatLabel icon={icon} label={label} />
+        </th>
         <td>
           {formatNumber(stats[key])}
           <span className="ok">{delta(key)}</span>
@@ -137,23 +172,34 @@ export function StatSheet({ save, character }: { save: SaveDto; character: Chara
           {allocRow('agility', t('team.stat.agility'))}
           {(
             [
-              [t('team.stat.armor'), formatNumber(stats.armor)],
+              ['armor', t('team.stat.armor'), formatNumber(stats.armor)],
               [
+                'dodge',
                 t('team.stat.dodge'),
                 percent(dodgeFromAgility(gameData, stats.agility, character.level)),
               ],
-              [t('team.stat.initiative'), formatNumber(stats.initiative)],
-              [t('team.stat.accuracy'), percent(stats.accuracy)],
-              [t('team.stat.critChance'), percent(stats.critChance)],
-              [t('team.stat.critDamage'), `+${percent(stats.critDamage)}`],
-              [t('team.stat.penetration'), percent(stats.penetration)],
-              [t('team.stat.elementalResistance'), percent(stats.elementalResistance)],
-              [t('team.stat.healingBonus'), percent(stats.healingBonus)],
-              [t('team.stat.statusResistance'), percent(stats.statusResistance)],
+              ['initiative', t('team.stat.initiative'), formatNumber(stats.initiative)],
+              ['accuracy', t('team.stat.accuracy'), percent(stats.accuracy)],
+              ['critChance', t('team.stat.critChance'), percent(stats.critChance)],
+              ['critDamage', t('team.stat.critDamage'), `+${percent(stats.critDamage)}`],
+              ['penetration', t('team.stat.penetration'), percent(stats.penetration)],
+              [
+                'elementalResistance',
+                t('team.stat.elementalResistance'),
+                percent(stats.elementalResistance),
+              ],
+              ['healingBonus', t('team.stat.healingBonus'), percent(stats.healingBonus)],
+              [
+                'statusResistance',
+                t('team.stat.statusResistance'),
+                percent(stats.statusResistance),
+              ],
             ] as const
-          ).map(([label, value]) => (
+          ).map(([icon, label, value]) => (
             <tr key={label}>
-              <th>{label}</th>
+              <th>
+                <StatLabel icon={icon} label={label} />
+              </th>
               <td>{value}</td>
               <td />
             </tr>

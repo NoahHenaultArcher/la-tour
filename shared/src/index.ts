@@ -5,6 +5,7 @@
  */
 export * from './constants.ts';
 export type * from './data/schemas.ts';
+export * from './rules/lookup.ts';
 export * from './rules/math.ts';
 export * from './rules/character.ts';
 export * from './rules/elements.ts';

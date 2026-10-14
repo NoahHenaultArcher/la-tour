@@ -233,8 +233,24 @@ button.primary {
   letter-spacing: 0.08em;
 }
 
-.topbar-user {
+.sound-control {
   margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sound-toggle {
+  padding: 0 6px;
+  line-height: 1.6;
+}
+
+.sound-control input[type='range'] {
+  width: 72px;
+  accent-color: var(--accent);
+}
+
+.topbar-user {
   color: var(--muted);
 }
 
@@ -628,6 +644,10 @@ button.primary {
   border-color: var(--ok);
 }
 
+.notification-count {
+  color: var(--accent);
+}
+
 .notification.error {
   border-color: var(--error);
 }
@@ -743,14 +763,17 @@ button.primary {
 
 .alloc-buttons {
   display: flex;
-  gap: 4px;
+  gap: 3px;
   align-items: center;
   justify-content: flex-end;
-  padding-left: 8px;
+  padding-left: 6px;
 }
 
+/* Boutons compacts : − + Max tiennent dans la colonne du personnage. */
 .alloc-buttons button {
-  padding: 0 7px;
+  padding: 0 6px;
+  font-size: 0.85rem;
+  line-height: 1.5;
 }
 
 .points-actions {
@@ -952,7 +975,7 @@ button.danger {
 }
 
 .combat-page {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 12px 16px 24px;
   display: flex;
@@ -1037,7 +1060,7 @@ button.danger {
 }
 
 .combatant {
-  width: 140px;
+  width: 160px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1050,12 +1073,21 @@ button.danger {
   cursor: default;
 }
 
-.combatant.boss {
-  width: 170px;
+/* Taille fixe : ni le nom, ni les effets, ni la sélection ne changent la taille de la carte. */
+.combatant {
+  height: 196px;
+  box-sizing: border-box;
 }
 
+.combatant.boss {
+  width: 190px;
+  height: 228px;
+}
+
+/* Celui qui agit : encadré léger (la bordure existe déjà, transparente : rien ne bouge). */
 .combatant.active {
-  border-color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  box-shadow: 0 0 10px rgb(255 207 58 / 25%);
 }
 
 .combatant.selected {
@@ -1072,9 +1104,18 @@ button.danger {
   animation: pulse 1s ease-in-out infinite;
 }
 
+.combatant {
+  transition:
+    opacity calc(0.6s / var(--speed, 1)) ease-out,
+    filter calc(0.6s / var(--speed, 1)) ease-out,
+    transform calc(0.6s / var(--speed, 1)) ease-out;
+}
+
+/* Mort : le combattant pâlit et s'affaisse. */
 .combatant.dead {
   opacity: 0.35;
   filter: grayscale(1);
+  transform: translateY(6px);
 }
 
 .monster .combatant-image img {
@@ -1092,8 +1133,12 @@ button.danger {
 }
 
 .combatant-name {
+  max-width: 100%;
   font-size: 0.85rem;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .hp-bar {
@@ -1125,11 +1170,29 @@ button.danger {
   text-shadow: 0 1px 0 #000;
 }
 
+/* Bande d'effets de hauteur fixe (3 lignes) : au plus 3 effets, ou 2 et « +N ». */
 .alteration-list {
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
   gap: 3px;
   justify-content: center;
+  width: 100%;
+  height: 52px;
+  overflow: hidden;
+}
+
+.alteration-list .alteration,
+.alteration-list .modifier {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.alteration.more {
+  background: #2a2433;
+  border-color: var(--panel-border);
 }
 
 .alteration {
@@ -1153,7 +1216,7 @@ button.danger {
   font-weight: bold;
   text-shadow: 0 2px 0 #000;
   pointer-events: none;
-  animation: float-up 0.9s ease-out forwards;
+  animation: float-up calc(0.9s / var(--speed, 1)) ease-out forwards;
   opacity: 0;
 }
 
@@ -1182,6 +1245,287 @@ button.danger {
   100% {
     opacity: 0;
     transform: translate(-50%, -40px);
+  }
+}
+
+/* --- Animations du combat (durées divisées par --speed : ×1, ×2, ×3) --- */
+
+/* Élan : l'attaquant s'avance vers le camp adverse. */
+.lunge,
+.hit-shake {
+  display: inline-block;
+}
+
+.hero .lunge.acting {
+  animation: lunge-right calc(0.35s / var(--speed, 1)) ease-out;
+}
+
+.monster .lunge.acting {
+  animation: lunge-left calc(0.35s / var(--speed, 1)) ease-out;
+}
+
+@keyframes lunge-right {
+  40% {
+    transform: translateX(18px);
+  }
+}
+
+@keyframes lunge-left {
+  40% {
+    transform: translateX(-18px);
+  }
+}
+
+/* Impact : secousse et flash blanc ; plus fort sur un coup critique. */
+.hit-shake[data-hit='hit'] {
+  animation: hit-shake calc(0.3s / var(--speed, 1)) ease-out;
+}
+
+.hit-shake[data-hit='critical'] {
+  animation: hit-shake-strong calc(0.4s / var(--speed, 1)) ease-out;
+}
+
+@keyframes hit-shake {
+  0% {
+    filter: brightness(2.2);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(4px);
+    filter: brightness(1.3);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+}
+
+@keyframes hit-shake-strong {
+  0% {
+    filter: brightness(3) saturate(0.5);
+  }
+  20% {
+    transform: translate(-7px, 2px) rotate(-3deg);
+  }
+  40% {
+    transform: translate(7px, -2px) rotate(3deg);
+  }
+  60% {
+    transform: translate(-4px, 1px);
+    filter: brightness(1.4);
+  }
+  80% {
+    transform: translate(3px, 0);
+  }
+}
+
+/* Éclat de la couleur de l'élément de l'attaque (vert doux pour un soin). */
+.burst {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  width: 70px;
+  height: 70px;
+  margin: -35px 0 0 -35px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--el) 85%, white) 0%,
+    color-mix(in srgb, var(--el) 60%, transparent) 40%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation: burst calc(0.45s / var(--speed, 1)) ease-out forwards;
+}
+
+.burst.critical {
+  width: 110px;
+  height: 110px;
+  margin: -55px 0 0 -55px;
+}
+
+.burst.heal {
+  background: radial-gradient(circle, #b8ffbf 0%, rgb(125 255 138 / 45%) 40%, transparent 70%);
+}
+
+@keyframes burst {
+  0% {
+    opacity: 0.95;
+    transform: scale(0.3);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+/* Nouvelle vague : bandeau qui traverse la scène. */
+.combat-scene {
+  position: relative;
+  /* Coupe le bandeau qui traverse, sans couper les nombres qui montent au-dessus des cartes. */
+  overflow-x: clip;
+}
+
+.wave-banner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  padding: 6px 28px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-shadow: 0 2px 0 #000;
+  background: rgb(0 0 0 / 70%);
+  border-top: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  pointer-events: none;
+  white-space: nowrap;
+  opacity: 0;
+  animation: wave-banner calc(1.3s / var(--speed, 1)) ease-in-out forwards;
+}
+
+@keyframes wave-banner {
+  0% {
+    opacity: 0;
+    transform: translate(-120%, -50%);
+  }
+  25%,
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(30%, -50%);
+  }
+}
+
+/* Nouvelle manche : le compteur rebondit. */
+.round-chip {
+  display: inline-block;
+  animation: pop calc(0.35s / var(--speed, 1)) ease-out;
+}
+
+@keyframes pop {
+  40% {
+    transform: scale(1.25);
+    color: var(--accent);
+  }
+}
+
+/* --- Moments clés : fin de combat, montée de niveau, butin --- */
+
+.outcome-title {
+  display: inline-block;
+}
+
+.outcome-title.victory {
+  color: var(--accent);
+  animation: victory-pop 0.7s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+  text-shadow: 0 0 12px rgb(255 207 58 / 55%);
+}
+
+.outcome-title.defeat {
+  color: var(--error);
+  animation: defeat-shake 0.6s ease-out both;
+}
+
+@keyframes victory-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes defeat-shake {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  40% {
+    opacity: 1;
+    transform: translate(-5px, 0);
+  }
+  60% {
+    transform: translate(5px, 0);
+  }
+  80% {
+    transform: translate(-2px, 0);
+  }
+}
+
+.level-up {
+  display: inline-block;
+  animation: level-up 1.2s ease-out 0.3s both;
+}
+
+@keyframes level-up {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.12);
+    text-shadow: 0 0 14px rgb(125 255 138 / 90%);
+  }
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 0 transparent;
+  }
+}
+
+/* Butin : chaque objet apparaît après le précédent, avec la lueur de sa rareté. */
+.outcome-loot li.loot-reveal {
+  animation: loot-reveal 0.5s ease-out both;
+  animation-delay: calc(0.35s + var(--i, 0) * 0.18s);
+}
+
+@keyframes loot-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  60% {
+    opacity: 1;
+    transform: none;
+    box-shadow: 0 0 14px 2px color-mix(in srgb, var(--rarity, #fff) 60%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/* Respect du réglage système « réduire les animations ». */
+@media (prefers-reduced-motion: reduce) {
+  .lunge.acting,
+  .hit-shake[data-hit],
+  .burst,
+  .round-chip,
+  .outcome-title,
+  .level-up,
+  .outcome-loot li.loot-reveal {
+    animation: none;
+  }
+
+  .wave-banner {
+    animation: none;
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  .combatant {
+    transition: none;
   }
 }
 
@@ -1214,9 +1558,46 @@ button.danger {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 2px;
-  min-width: 110px;
+  width: 168px;
+  height: 120px;
+  box-sizing: border-box;
   padding: 6px 8px;
+}
+
+/* Nom sur 2 lignes réservées : jamais coupé, et la carte garde sa taille. */
+.skill-name {
+  max-width: 100%;
+  min-height: 2.3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  line-height: 1.15;
+  text-align: center;
+}
+
+/* Ligne de la fusion toujours réservée, vide ou non. */
+.skill-button .skill-fusion {
+  min-height: 1em;
+  line-height: 1;
+}
+
+/* Passif : même carte, sans action possible. */
+.skill-button.passive {
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 4px;
+  background: var(--panel-border);
+  cursor: help;
+}
+
+/* Compétence qui vient d'être lancée : encadré léger. */
+.skill-button.just-used {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 60%, transparent),
+    0 0 10px rgb(255 207 58 / 25%);
 }
 
 .skill-button.selected {
@@ -1231,17 +1612,6 @@ button.danger {
 .skill-cooldown {
   font-size: 0.75rem;
   color: var(--muted);
-}
-
-.skill-passive {
-  display: inline-flex;
-  gap: 4px;
-  align-items: center;
-  font-size: 0.8rem;
-  color: var(--muted);
-  padding: 2px 6px;
-  border: 1px dashed var(--panel-border);
-  border-radius: 4px;
 }
 
 .combat-buttons {
@@ -1356,11 +1726,12 @@ button.danger {
 /* --- Page Équipe --- */
 
 .team-page {
-  max-width: 1300px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 16px;
   display: grid;
-  grid-template-columns: 300px minmax(0, 1fr) minmax(0, 1.2fr);
+  /* Colonne du personnage assez large pour une stat par ligne. */
+  grid-template-columns: 430px minmax(0, 1fr) minmax(0, 1.2fr);
   grid-template-areas:
     'header header header'
     'sheet equipment inventory';
@@ -1426,6 +1797,19 @@ button.danger {
   font-weight: normal;
   color: var(--muted);
   padding: 2px 0;
+  white-space: nowrap;
+}
+
+.stat-table td {
+  white-space: nowrap;
+}
+
+.stat-icon {
+  display: inline-block;
+  width: 1.4em;
+  font-size: 0.85em;
+  text-align: center;
+  margin-right: 4px;
 }
 
 .stat-table td {

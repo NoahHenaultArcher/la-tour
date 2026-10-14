@@ -1,3 +1,4 @@
+import { byId } from '@la-tour/shared';
 /**
  * État du combat côté client. Le serveur renvoie l'état final et la liste des événements ;
  * le client rejoue les événements un par un (animations, journal) avant d'afficher l'état final.
@@ -6,6 +7,7 @@
  */
 import type {
   CombatEvent,
+  ElementId,
   CombatOutcome,
   CombatResponse,
   CombatView,
@@ -13,9 +15,11 @@ import type {
   MultiOutcome,
 } from '@la-tour/shared';
 import { create } from 'zustand';
+import { gameData } from '@la-tour/shared/data';
 import { api } from '../api/client.ts';
 import { describeEvent } from '../game/combatText.ts';
-import { errorMessage } from '../i18n/index.ts';
+import { playSound } from '../game/sound.ts';
+import { errorMessage, t } from '../i18n/index.ts';
 import { useRoom } from './room.ts';
 
 export type Speed = 1 | 2 | 3;
@@ -27,6 +31,21 @@ export interface Floater {
   kind: 'damage' | 'critical' | 'heal' | 'miss' | 'status' | 'shield';
 }
 
+/** Impact visuel sur un combattant : éclat de la couleur de l'élément de l'attaque, ou soin. */
+export interface Impact {
+  id: number;
+  targetId: string;
+  kind: 'hit' | 'critical' | 'heal';
+  element: ElementId;
+}
+
+/** Bandeau annonçant une nouvelle vague. */
+export interface WaveBanner {
+  id: number;
+  wave: number;
+  total: number;
+}
+
 interface CombatStore {
   /** État affiché (avance au rythme de la relecture des événements). */
   view: CombatView | null;
@@ -35,8 +54,14 @@ interface CombatStore {
   queue: CombatEvent[];
   log: string[];
   floaters: Floater[];
+  impacts: Impact[];
   /** Combattant qui agit (surbrillance). */
   activeId: string | null;
+  /** Compétence de l'action en cours (null : attaque d'un monstre). */
+  activeSkillId: string | null;
+  /** Numéro de l'action en cours : relance l'élan de l'attaquant à chaque action. */
+  actionSeq: number;
+  banner: WaveBanner | null;
   outcome: CombatOutcome | null;
   pendingOutcome: CombatOutcome | null;
   busy: boolean;
@@ -82,6 +107,8 @@ interface CombatStore {
 
 const MAX_LOG = 80;
 let floaterId = 1;
+/** Élément de l'action en cours (couleur des impacts). */
+let actionElement: ElementId = 'neutral';
 
 const AUTO_KEY = 'la-tour.auto';
 const SPEED_KEY = 'la-tour.speed';
@@ -126,11 +153,14 @@ export const useCombat = create<CombatStore>((set, get) => {
           .map((e) => describeEvent(e, response.combat))
           .filter((text): text is string => text !== null),
         floaters: [],
+        impacts: [],
+        banner: null,
         outcome: null,
         pendingOutcome: response.outcome,
         busy: false,
         error: null,
         activeId: null,
+        activeSkillId: null,
       });
       return;
     }
@@ -176,7 +206,11 @@ export const useCombat = create<CombatStore>((set, get) => {
     queue: [],
     log: [],
     floaters: [],
+    impacts: [],
     activeId: null,
+    activeSkillId: null,
+    actionSeq: 0,
+    banner: null,
     outcome: null,
     pendingOutcome: null,
     busy: false,
@@ -269,7 +303,7 @@ export const useCombat = create<CombatStore>((set, get) => {
     step: () => {
       const { queue, view, target, pendingOutcome, pendingMulti } = get();
       if (queue.length === 0) {
-        if (target && view !== target) set({ view: target, activeId: null });
+        if (target && view !== target) set({ view: target, activeId: null, activeSkillId: null });
         if (pendingOutcome) set({ outcome: pendingOutcome, pendingOutcome: null, auto: false });
         if (pendingMulti)
           set({ multiOutcome: pendingMulti, pendingMulti: null, turnDeadline: null });
@@ -278,13 +312,23 @@ export const useCombat = create<CombatStore>((set, get) => {
       const [event, ...rest] = queue;
       const next = view ? structuredClone(view) : null;
       const floaters: Floater[] = [];
+      const impacts: Impact[] = [];
       let activeId = get().activeId;
+      let activeSkillId = get().activeSkillId;
+      let actionSeq = get().actionSeq;
+      let banner = get().banner;
       if (next && event) {
         const find = (id: string) => [...next.heroes, ...next.monsters].find((c) => c.id === id);
         switch (event.type) {
-          case 'action':
+          case 'action': {
             activeId = event.actorId;
+            activeSkillId = event.skillId;
+            actionSeq += 1;
+            // Couleur des impacts : élément de la compétence, sinon celui du combattant.
+            const skill = event.skillId ? byId(gameData.skills.catalog, event.skillId) : null;
+            actionElement = skill?.element ?? find(event.actorId)?.element ?? 'neutral';
             break;
+          }
           case 'damage': {
             const c = find(event.targetId);
             if (c) {
@@ -299,6 +343,13 @@ export const useCombat = create<CombatStore>((set, get) => {
               text: `-${event.amount}`,
               kind: event.critical ? 'critical' : 'damage',
             });
+            impacts.push({
+              id: floaterId++,
+              targetId: event.targetId,
+              kind: event.critical ? 'critical' : 'hit',
+              element: actionElement,
+            });
+            playSound(event.critical ? 'critical' : 'hit');
             break;
           }
           case 'heal': {
@@ -310,6 +361,13 @@ export const useCombat = create<CombatStore>((set, get) => {
               text: `+${event.amount}`,
               kind: 'heal',
             });
+            impacts.push({
+              id: floaterId++,
+              targetId: event.targetId,
+              kind: 'heal',
+              element: 'light',
+            });
+            playSound('heal');
             break;
           }
           case 'shield': {
@@ -325,12 +383,44 @@ export const useCombat = create<CombatStore>((set, get) => {
           }
           case 'miss':
             floaters.push({ id: floaterId++, targetId: event.targetId, text: '—', kind: 'miss' });
+            playSound('miss');
+            break;
+          case 'death':
+            playSound('death');
+            break;
+          case 'enrage':
+            floaters.push({
+              id: floaterId++,
+              targetId: event.targetId,
+              text: t('combat.fury'),
+              kind: 'critical',
+            });
+            playSound('roar');
+            break;
+          case 'summon':
+            // Renforts du dragon : ils apparaissent avec tous leurs PV (l'état final suit).
+            for (const id of event.monsterIds) {
+              const summoned = target?.monsters.find((m) => m.id === id);
+              if (!summoned || next.monsters.some((m) => m.id === id)) continue;
+              next.monsters.push({
+                ...structuredClone(summoned),
+                hp: summoned.stats.maxHp,
+                shield: 0,
+                alterations: [],
+                modifiers: [],
+              });
+            }
+            playSound('roar');
             break;
           case 'wave':
             // Nouvelle vague : les monstres affichés sont ceux de l'état final.
             if (target && event.wave === target.waveIndex + 1) {
               next.monsters = structuredClone(target.monsters);
               next.waveIndex = target.waveIndex;
+            }
+            if (event.wave > 1) {
+              banner = { id: floaterId++, wave: event.wave, total: event.total };
+              playSound('wave');
             }
             break;
           case 'round':
@@ -348,8 +438,12 @@ export const useCombat = create<CombatStore>((set, get) => {
         queue: rest,
         view: next,
         activeId,
+        activeSkillId,
+        actionSeq,
+        banner,
         log: text ? [...s.log, text].slice(-MAX_LOG) : s.log,
         floaters: [...s.floaters, ...floaters].slice(-12),
+        impacts: [...s.impacts, ...impacts].slice(-12),
       }));
       return true;
     },
@@ -363,6 +457,8 @@ export const useCombat = create<CombatStore>((set, get) => {
         target: null,
         log: [],
         floaters: [],
+        impacts: [],
+        banner: null,
         mode: 'solo',
         ownHeroId: null,
         turnDeadline: null,

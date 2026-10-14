@@ -1,6 +1,6 @@
-import { canPlayFloor } from '@la-tour/shared';
+import { byId, canPlayFloor } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useNavigate } from 'react-router';
 import { CombatantCard } from '../components/combat/CombatantCard.tsx';
 import { MultiOutcomeModal } from '../components/combat/MultiOutcomeModal.tsx';
@@ -90,7 +90,11 @@ export function CombatPage() {
   const error = useCombat((s) => s.error);
   const log = useCombat((s) => s.log);
   const floaters = useCombat((s) => s.floaters);
+  const impacts = useCombat((s) => s.impacts);
+  const actionSeq = useCombat((s) => s.actionSeq);
+  const banner = useCombat((s) => s.banner);
   const activeId = useCombat((s) => s.activeId);
+  const activeSkillId = useCombat((s) => s.activeSkillId);
   const outcome = useCombat((s) => s.outcome);
   const auto = useCombat((s) => s.auto);
   const speed = useCombat((s) => s.speed);
@@ -156,9 +160,7 @@ export function CombatPage() {
   const withdrawn = isMulti && !ownHero && !multiOutcome;
   // La sélection reste active pour enchaîner, tant que la compétence est prête.
   const selectedSlot = hero.skills.find((s) => s.skillId === selectedSkillId && s.remaining === 0);
-  const selectedSkill = selectedSlot
-    ? gameData.skills.catalog.find((s) => s.id === selectedSlot.skillId)
-    : null;
+  const selectedSkill = selectedSlot ? byId(gameData.skills.catalog, selectedSlot.skillId) : null;
   const floor = gameData.floors.floors.find((f) => f.floor === view.floor)!;
   const hunting = view.mode === 'hunt';
   const zone = hunting ? gameData.zones.zones.find((z) => z.floor === view.floor) : undefined;
@@ -193,13 +195,17 @@ export function CombatPage() {
   const chooseSkill = (skillId: string) => {
     if (hero.id !== selectedHeroId) combat.selectHero(hero.id);
     combat.selectSkill(skillId);
-    const skill = gameData.skills.catalog.find((s) => s.id === skillId);
+    const skill = byId(gameData.skills.catalog, skillId);
     // Une attaque de zone ou une compétence sur soi n'a pas besoin de cible.
     if (skill?.target === 'area' || skill?.target === 'self') void useCombat.getState().act();
   };
 
   return (
-    <div className="page combat-backdrop" style={elementStyle(element)}>
+    // --speed accélère les animations avec la vitesse du combat (toujours ×1 en multijoueur).
+    <div
+      className="page combat-backdrop"
+      style={{ ...elementStyle(element), '--speed': isMulti ? 1 : speed } as CSSProperties}
+    >
       <TopBar />
       <main className="combat-page">
         <header className="combat-header">
@@ -223,7 +229,9 @@ export function CombatPage() {
               <span>{t('combat.wave', { wave: view.waveIndex + 1, total: view.waveCount })}</span>
             </>
           )}
-          <span>{t('combat.round', { round: view.round })}</span>
+          <span className="round-chip" key={view.round}>
+            {t('combat.round', { round: view.round })}
+          </span>
           <ElementBadge element={element} />
           <button
             type="button"
@@ -269,6 +277,13 @@ export function CombatPage() {
         </div>
 
         <section className="combat-scene">
+          {banner && (
+            <div className="wave-banner" key={banner.id} aria-live="polite">
+              {hunting
+                ? t('combat.waveHunt', { wave: banner.wave })
+                : t('combat.wave', { wave: banner.wave, total: banner.total })}
+            </div>
+          )}
           <div className="combat-side heroes">
             {heroes.map((h) => (
               <CombatantCard
@@ -279,6 +294,8 @@ export function CombatPage() {
                 selected={heroes.length > 1 && hero.id === h.id}
                 onClick={heroes.length > 1 && !isMulti ? () => combat.selectHero(h.id) : undefined}
                 floaters={floaters.filter((f) => f.targetId === h.id)}
+                impacts={impacts.filter((i) => i.targetId === h.id)}
+                actionSeq={actionSeq}
               />
             ))}
           </div>
@@ -296,6 +313,8 @@ export function CombatPage() {
                     : undefined
                 }
                 floaters={floaters.filter((f) => f.targetId === m.id)}
+                impacts={impacts.filter((i) => i.targetId === m.id)}
+                actionSeq={actionSeq}
               />
             ))}
           </div>
@@ -335,6 +354,7 @@ export function CombatPage() {
               selectedSkillId={selectedSkill?.id ?? null}
               disabled={!yourTurn || hero.hp <= 0 || hero.stunnedThisPhase}
               onSelect={chooseSkill}
+              justUsedSkillId={activeId === hero.id ? activeSkillId : null}
             />
             {error && <p className="error">{error}</p>}
             <div className="combat-buttons">

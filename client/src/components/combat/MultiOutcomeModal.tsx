@@ -1,5 +1,7 @@
 import type { MultiOutcome } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
+import { useEffect } from 'react';
+import { playOutcomeSounds } from '../../game/sound.ts';
 import { formatNumber, t } from '../../i18n/index.ts';
 import { useSession } from '../../stores/session.ts';
 import { ItemIcon } from '../items/ItemIcon.tsx';
@@ -24,8 +26,21 @@ export function MultiOutcomeModal({ outcome, onRoom, onVillage }: Props) {
   const zoneName = gameData.zones.zones.find((z) => z.floor === outcome.floor)?.name ?? '';
   const unlocked = mine?.unlocked;
 
+  useEffect(() => {
+    playOutcomeSounds(outcome.result, !!mine?.levelUp, mine?.loot.length ?? 0);
+    // Une seule fois, à l'ouverture du bilan.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [outcome]);
+
   return (
-    <Modal open onClose={onRoom} title={t(`outcome.${outcome.result}`)} className="outcome">
+    <Modal
+      open
+      onClose={onRoom}
+      title={
+        <span className={`outcome-title ${outcome.result}`}>{t(`outcome.${outcome.result}`)}</span>
+      }
+      className="outcome"
+    >
       {outcome.result === 'victory' && <p>{t('outcome.multiVictory', { floor: outcome.floor })}</p>}
       {outcome.result === 'retreat' && <p>{t('outcome.huntEnded', { zone: zoneName })}</p>}
       {outcome.result === 'defeat' && (
@@ -47,7 +62,10 @@ export function MultiOutcomeModal({ outcome, onRoom, onVillage }: Props) {
                   · {t('outcome.multiLine', { xp: formatNumber(p.xp), gold: formatNumber(p.gold) })}
                 </span>
                 {p.levelUp && (
-                  <strong className="ok"> · {t('outcome.levelUp', { level: p.levelUp.to })}</strong>
+                  <strong className="ok level-up">
+                    {' '}
+                    · {t('outcome.levelUp', { level: p.levelUp.to })}
+                  </strong>
                 )}
                 {p.floorCleared && <span className="accent"> · {t('outcome.floorUp')}</span>}
                 {p.withdrawn && <span className="muted"> · {t('outcome.withdrawnTag')}</span>}
@@ -75,8 +93,13 @@ export function MultiOutcomeModal({ outcome, onRoom, onVillage }: Props) {
           <h3>{t('outcome.yourLoot')}</h3>
           <p className="muted small">{t('outcome.lootHint')}</p>
           <ul className="outcome-loot">
-            {mine.loot.map((drop) => (
-              <LootRow key={drop.itemId} itemId={drop.itemId} catalogId={drop.catalogId} />
+            {mine.loot.map((drop, index) => (
+              <LootRow
+                key={drop.itemId}
+                itemId={drop.itemId}
+                catalogId={drop.catalogId}
+                index={index}
+              />
             ))}
           </ul>
         </section>

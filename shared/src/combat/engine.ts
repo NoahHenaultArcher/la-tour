@@ -9,15 +9,20 @@
  * Les PV des héros sont conservés entre les vagues. Le serveur appelle ces fonctions ;
  * le client n'envoie que des intentions.
  */
-import { COMBAT_RULES } from '../balance.ts';
+import { COMBAT_RULES, DRAGON_RULES } from '../balance.ts';
 import { createRng, pick, type Rng } from '../rules/random.ts';
 import { floorType, zoneFloorOf } from '../rules/tower.ts';
 import type { UpgradeTowerLevels } from '../rules/village.ts';
 import { afterHeroHit, beforeMonsterAttack, heroEndOfRound, useHeroSkill } from './actions.ts';
-import { resolveTurnStart, tickAlterations, tryApplyAlteration } from './alterations.ts';
+import {
+  ALTERATION_RULES,
+  resolveTurnStart,
+  tickAlterations,
+  tryApplyAlteration,
+} from './alterations.ts';
 import { attack, type AttackSpec } from './damage.ts';
 import { SUPPORT_EFFECTS } from './effects.ts';
-import { tickModifiers } from './modifiers.ts';
+import { addModifier, tickModifiers } from './modifiers.ts';
 import {
   buildFloorWaves,
   buildHuntWave,
@@ -361,7 +366,10 @@ export function normalizeCombatState(state: CombatState): CombatState {
 function spawnWave(ctx: Ctx): void {
   const { state, data } = ctx;
   const wave = state.waves[state.waveIndex]!;
-  state.monsters = wave.map((spawn) => createMonsterCombatant(data, spawn, `m${state.spawned++}`));
+  // Les PV des monstres dépendent du nombre de héros présents à l'apparition de la vague.
+  state.monsters = wave.map((spawn) =>
+    createMonsterCombatant(data, spawn, `m${state.spawned++}`, state.heroes.length),
+  );
   ctx.events.push({ type: 'wave', wave: state.waveIndex + 1, total: state.waves.length });
 }
 
@@ -474,16 +482,87 @@ function monsterPhase(ctx: Ctx): void {
     .map(({ m }) => m);
   for (const monster of order) {
     if (!canAct(monster) || !state.heroes.some(alive)) continue;
-    monsterAct(ctx, monster);
-    if (settle(ctx)) return;
+    if (monster.role === 'dragon') dragonTurnStart(ctx, monster);
+    const actions = monster.role === 'dragon' ? DRAGON_RULES.actionsPerRound : 1;
+    for (let action = 0; action < actions; action++) {
+      if (!canAct(monster) || !state.heroes.some(alive)) break;
+      monsterAct(ctx, monster, action);
+      if (settle(ctx)) return;
+    }
   }
   for (const m of state.monsters) m.stunnedThisPhase = false;
+}
+
+/**
+ * Dragon, avant d'agir : furie sous la moitié de ses PV, puis une invocation par seuil de PV franchi.
+ * Les monstres invoqués agissent à partir de la manche suivante.
+ */
+function dragonTurnStart(ctx: Ctx, dragon: Combatant): void {
+  const { state, data, events } = ctx;
+  const share = dragon.hp / dragon.stats.maxHp;
+  if (!dragon.counters.fury && share <= DRAGON_RULES.furyThreshold) {
+    dragon.counters.fury = 1;
+    events.push({ type: 'enrage', targetId: dragon.id });
+    addModifier(
+      dragon,
+      dragon,
+      'dragon:fury',
+      null,
+      'buff',
+      { duration: 999, damageDealt: DRAGON_RULES.furyDamageBonus },
+      events,
+    );
+  }
+  // Renforts : monstres de la zone qui entoure la tanière (étage 29 → zone de l'étage 30).
+  const zoneFloor = 5 * Math.ceil(state.floor / 5);
+  const regulars = data.monsters.monsters.filter(
+    (m) => m.zoneFloor === zoneFloor && m.rank !== 'boss' && m.rank !== 'dragon',
+  );
+  const thresholds = DRAGON_RULES.summonThresholds;
+  while (
+    regulars.length > 0 &&
+    (dragon.counters.summons ?? 0) < thresholds.length &&
+    share <= thresholds[dragon.counters.summons ?? 0]!
+  ) {
+    dragon.counters.summons = (dragon.counters.summons ?? 0) + 1;
+    const summoned = Array.from({ length: DRAGON_RULES.summonCount }, () =>
+      createMonsterCombatant(
+        data,
+        { monsterId: pick(state.rng, regulars).id, level: dragon.level },
+        `m${state.spawned++}`,
+        state.heroes.length,
+      ),
+    );
+    state.monsters.push(...summoned);
+    events.push({ type: 'summon', sourceId: dragon.id, monsterIds: summoned.map((m) => m.id) });
+  }
+}
+
+/**
+ * Altération du souffle d'un dragon : celle de son élément, de préférence des dégâts sur la durée,
+ * sinon un affaiblissement, sinon la première qu'il inflige.
+ */
+function breathAlteration(data: CombatData, dragon: Combatant): string | null {
+  const infos = dragon.inflicts
+    .map((a) => data.monsters.alterations.find((x) => x.id === a.id))
+    .filter((a) => a !== undefined);
+  const control = (id: string) => ALTERATION_RULES[id]?.kind === 'control';
+  const ofElement = infos.filter((a) => a.element === dragon.element);
+  return (
+    ofElement.find((a) => a.category === 'Dégâts sur la durée')?.id ??
+    ofElement.find((a) => !control(a.id))?.id ??
+    infos.find((a) => !control(a.id))?.id ??
+    ofElement[0]?.id ??
+    infos[0]?.id ??
+    null
+  );
 }
 
 /** Bourbier : ce monstre joue en dernier dans son camp. */
 const playsLast = (c: Combatant) => c.modifiers.some((m) => m.playsLast);
 
-function monsterAct(ctx: Ctx, monster: Combatant): void {
+/** `action` : rang de l'action dans la manche (un dragon en a plusieurs). */
+function monsterAct(ctx: Ctx, monster: Combatant, action = 0): void {
   const { state, data, events } = ctx;
   const rng = state.rng;
   const heroes = state.heroes.filter(alive);
@@ -494,7 +573,11 @@ function monsterAct(ctx: Ctx, monster: Combatant): void {
       .filter((m) => alive(m) && m.hp / m.stats.maxHp < COMBAT_RULES.supportHealThreshold)
       .sort((a, b) => a.hp / a.stats.maxHp - b.hp / b.stats.maxHp)[0];
     if (wounded) {
-      const amount = Math.max(1, Math.round(wounded.stats.maxHp * COMBAT_RULES.supportHealShare));
+      // Chaque soin de ce soigneur est moins fort que le précédent : le combat finit toujours.
+      const given = monster.counters.healsGiven ?? 0;
+      monster.counters.healsGiven = given + 1;
+      const share = COMBAT_RULES.supportHealShare * COMBAT_RULES.supportHealDecay ** given;
+      const amount = Math.max(1, Math.round(wounded.stats.maxHp * share));
       wounded.hp = Math.min(wounded.stats.maxHp, wounded.hp + amount);
       events.push({ type: 'action', actorId: monster.id, skillId: null, targetIds: [wounded.id] });
       events.push({ type: 'heal', sourceId: monster.id, targetId: wounded.id, amount });
@@ -506,8 +589,12 @@ function monsterAct(ctx: Ctx, monster: Combatant): void {
   beforeMonsterAttack(ctx, monster);
   if (!alive(monster)) return;
 
-  // Dragon : souffle sur toute l'équipe une manche sur trois.
-  const breath = monster.role === 'dragon' && state.round % COMBAT_RULES.dragonBreathEvery === 0;
+  // Dragon : souffle sur toute l'équipe une manche sur trois (une sur deux en furie), en 1re action.
+  const breathEvery = monster.counters.fury
+    ? DRAGON_RULES.furyBreathEvery
+    : COMBAT_RULES.dragonBreathEvery;
+  const breath = monster.role === 'dragon' && action === 0 && state.round % breathEvery === 0;
+  const breathAlterationId = breath ? breathAlteration(data, monster) : null;
   const targets = breath ? heroes : [chooseMonsterTarget(monster, heroes, rng)];
   events.push({
     type: 'action',
@@ -529,7 +616,9 @@ function monsterAct(ctx: Ctx, monster: Combatant): void {
     const { amount } = attack(data, rng, monster, target, spec, events);
     if (amount > 0) {
       for (const alteration of monster.inflicts) {
-        tryApplyAlteration(data, rng, monster, target, alteration.id, alteration.chance, events);
+        // Souffle élémentaire : l'altération de l'élément est infligée à coup sûr (résistance comprise).
+        const chance = alteration.id === breathAlterationId ? 1 : alteration.chance;
+        tryApplyAlteration(data, rng, monster, target, alteration.id, chance, events);
       }
       afterHeroHit(ctx, monster, target, amount);
     }

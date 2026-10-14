@@ -1,6 +1,7 @@
 /** Aide à l'affichage des objets : catalogue, stats, comparaison (aucune règle du jeu ici). */
 import {
   STAT_IDS,
+  byId,
   heroCombatStats,
   itemStats,
   type CharacterDto,
@@ -16,7 +17,7 @@ import { gameData } from '@la-tour/shared/data';
 export type CatalogItem = (typeof gameData.equipment.catalog)[number];
 
 export function catalogItem(catalogId: string): CatalogItem {
-  const item = gameData.equipment.catalog.find((c) => c.id === catalogId);
+  const item = byId(gameData.equipment.catalog, catalogId);
   if (!item) throw new Error(`Objet inconnu : ${catalogId}`);
   return item;
 }

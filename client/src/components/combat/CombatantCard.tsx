@@ -1,16 +1,27 @@
-import { fusionOf, type CombatView, type ElementId } from '@la-tour/shared';
+import {
+  COMBAT_RULES,
+  DRAGON_RULES,
+  byId,
+  fusionOf,
+  type CombatView,
+  type ElementId,
+} from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
+import type { ReactNode } from 'react';
 import { CLASS_IMAGES } from '../../game/assets.ts';
 import { alterationName, combatantName } from '../../game/combatText.ts';
 import { elementStyle } from '../../game/elements.ts';
 import { formatNumber, t } from '../../i18n/index.ts';
-import type { Floater } from '../../stores/combat.ts';
+import type { Floater, Impact } from '../../stores/combat.ts';
 import { ElementBadge } from '../ElementBadge.tsx';
 import { PixelImage } from '../PixelImage.tsx';
 import { Tooltip } from '../Tooltip.tsx';
 
 type CombatantView = CombatView['heroes'][number];
 type AlterationView = CombatantView['alterations'][number];
+
+/** Effets affichés sur la carte (s'il y en a plus, les suivants sont regroupés dans « +N »). */
+const MAX_EFFECTS = 3;
 
 const percent = (value: number) => `${Math.round(value * 100)} %`;
 
@@ -33,9 +44,21 @@ interface MonsterTooltipProps {
   levelText: string;
 }
 
+/** Comportement des dragons, d'après leurs réglages (balance.ts). */
+function dragonBehavior(): string {
+  return t('combat.dragonBehavior', {
+    actions: DRAGON_RULES.actionsPerRound,
+    every: COMBAT_RULES.dragonBreathEvery,
+    thresholds: DRAGON_RULES.summonThresholds.map((s) => percent(s)).join(' et '),
+    fury: percent(DRAGON_RULES.furyThreshold),
+    bonus: percent(DRAGON_RULES.furyDamageBonus),
+    furyEvery: DRAGON_RULES.furyBreathEvery,
+  });
+}
+
 /** Infobulle d'un monstre : niveau, élément, faiblesses et résistances, altérations. */
 export function MonsterTooltip({ monsterId, element: elementId, levelText }: MonsterTooltipProps) {
-  const monster = gameData.monsters.monsters.find((m) => m.id === monsterId);
+  const monster = byId(gameData.monsters.monsters, monsterId);
   const element = gameData.elements.elements.find((e) => e.id === elementId);
   const rank = gameData.monsters.ranks.find((r) => r.id === monster?.rank);
   const role = gameData.monsters.roles.find((r) => r.id === monster?.role);
@@ -62,7 +85,10 @@ export function MonsterTooltip({ monsterId, element: elementId, levelText }: Mon
             .join(', ')}
         </span>
       )}
-      {role && <span className="muted">{role.behavior}</span>}
+      {/* Les dragons ne sont plus de simples « sacs à PV » (phase 9) : description du jeu. */}
+      {role && (
+        <span className="muted">{role.id === 'dragon' ? dragonBehavior() : role.behavior}</span>
+      )}
     </div>
   );
 }
@@ -109,8 +135,9 @@ const STAT_LABELS = {
 
 /** Nom d'un effet temporaire : la compétence qui l'a posé (ou le passif). */
 function modifierName(m: ModifierView): string {
+  if (m.key === 'dragon:fury') return t('modifier.fury');
   if (m.key.startsWith('sunder:')) return t('modifier.sunder');
-  const skill = m.skillId ? gameData.skills.catalog.find((s) => s.id === m.skillId) : null;
+  const skill = m.skillId ? byId(gameData.skills.catalog, m.skillId) : null;
   if (!skill) return t(m.kind === 'buff' ? 'modifier.buff' : 'modifier.debuff');
   if (m.key.startsWith('fusion:')) {
     const [a, b] = m.key.slice('fusion:'.length).split('+') as [ElementId, ElementId];
@@ -198,16 +225,77 @@ interface Props {
   targetable?: boolean;
   onClick?: () => void;
   floaters: Floater[];
+  /** Impacts reçus (éclat coloré, secousse). */
+  impacts?: Impact[];
+  /** Numéro de l'action en cours : relance l'élan quand ce combattant agit de nouveau. */
+  actionSeq?: number;
 }
 
-export function CombatantCard({ c, view, active, selected, targetable, onClick, floaters }: Props) {
+export function CombatantCard({
+  c,
+  view,
+  active,
+  selected,
+  targetable,
+  onClick,
+  floaters,
+  impacts = [],
+  actionSeq = 0,
+}: Props) {
   const image =
     c.side === 'hero'
       ? CLASS_IMAGES[c.classId!]
-      : (gameData.monsters.monsters.find((m) => m.id === c.refId)?.image ?? null);
+      : (byId(gameData.monsters.monsters, c.refId)?.image ?? null);
   const ratio = Math.max(0, c.hp / c.stats.maxHp);
   const dead = c.hp <= 0;
   const clickable = !!onClick && !dead;
+  const lastHit = impacts.filter((i) => i.kind !== 'heal').at(-1);
+  // Bonus, malus et altérations : les premiers sont affichés, le reste dans « +N ».
+  const effects: { key: string; label: string; node: ReactNode }[] = [
+    ...c.modifiers.map((m) => {
+      const label = `${modifierName(m)}${m.stacks > 1 ? ` ×${m.stacks}` : ''}`;
+      return {
+        key: `mod:${m.key}`,
+        label,
+        node: (
+          <Tooltip key={m.key} content={<ModifierTooltip modifier={m} />}>
+            <span className={`modifier ${m.kind}`}>{label}</span>
+          </Tooltip>
+        ),
+      };
+    }),
+    ...(c.stunnedThisPhase
+      ? [
+          {
+            key: 'stunned',
+            label: t('combat.stunned'),
+            node: (
+              <Tooltip key="stunned" content={<span>{t('combat.stunnedHelp')}</span>}>
+                <span className="alteration stunned">{t('combat.stunned')}</span>
+              </Tooltip>
+            ),
+          },
+        ]
+      : []),
+    ...c.alterations.map((a) => {
+      const element = gameData.monsters.alterations.find((x) => x.id === a.id)?.element;
+      const label = `${alterationName(a.id)}${a.stacks > 1 ? ` ×${a.stacks}` : ''}`;
+      return {
+        key: `alt:${a.id}`,
+        label,
+        node: (
+          <Tooltip key={a.id} content={<AlterationTooltip alteration={a} />}>
+            <span className="alteration" style={element ? elementStyle(element) : undefined}>
+              {label}
+            </span>
+          </Tooltip>
+        ),
+      };
+    }),
+  ];
+  // Au-delà de 3 effets : les 2 premiers et « +N » (3 éléments, donc 3 lignes au plus : rien n'est coupé).
+  const shown = effects.length > MAX_EFFECTS ? MAX_EFFECTS - 1 : effects.length;
+  const hidden = effects.slice(shown);
   return (
     // Une div plutôt qu'un bouton : les altérations ont leur propre infobulle à l'intérieur.
     <div
@@ -244,7 +332,18 @@ export function CombatantCard({ c, view, active, selected, targetable, onClick, 
         }
       >
         <div className="combatant-image">
-          <PixelImage src={image} alt={combatantName(view, c.id)} size={c.isBoss ? 112 : 80} />
+          {/* Les clés relancent les animations : élan à chaque action, secousse à chaque coup reçu. */}
+          <span
+            className={`lunge${active ? ' acting' : ''}`}
+            key={active ? `a${actionSeq}` : 'idle'}
+          >
+            <span className="hit-shake" key={lastHit?.id ?? 'none'} data-hit={lastHit?.kind}>
+              <PixelImage src={image} alt={combatantName(view, c.id)} size={c.isBoss ? 112 : 80} />
+            </span>
+          </span>
+          {impacts.map((i) => (
+            <span key={i.id} className={`burst ${i.kind}`} style={elementStyle(i.element)} />
+          ))}
           {floaters.map((f) => (
             <span key={f.id} className={`floater ${f.kind}`}>
               {f.text}
@@ -272,34 +371,23 @@ export function CombatantCard({ c, view, active, selected, targetable, onClick, 
           />
         )}
       </span>
-      {(c.alterations.length > 0 || c.stunnedThisPhase || c.modifiers.length > 0) && (
-        <span className="alteration-list">
-          {c.modifiers.map((m) => (
-            <Tooltip key={m.key} content={<ModifierTooltip modifier={m} />}>
-              <span className={`modifier ${m.kind}`}>
-                {modifierName(m)}
-                {m.stacks > 1 ? ` ×${m.stacks}` : ''}
-              </span>
-            </Tooltip>
-          ))}
-          {c.stunnedThisPhase && (
-            <Tooltip content={<span>{t('combat.stunnedHelp')}</span>}>
-              <span className="alteration stunned">{t('combat.stunned')}</span>
-            </Tooltip>
-          )}
-          {c.alterations.map((a) => {
-            const element = gameData.monsters.alterations.find((x) => x.id === a.id)?.element;
-            return (
-              <Tooltip key={a.id} content={<AlterationTooltip alteration={a} />}>
-                <span className="alteration" style={element ? elementStyle(element) : undefined}>
-                  {alterationName(a.id)}
-                  {a.stacks > 1 ? ` ×${a.stacks}` : ''}
-                </span>
-              </Tooltip>
-            );
-          })}
-        </span>
-      )}
+      {/* Bande d'effets de hauteur fixe : la carte garde toujours la même taille. */}
+      <span className="alteration-list">
+        {effects.slice(0, shown).map((e) => e.node)}
+        {hidden.length > 0 && (
+          <Tooltip
+            content={
+              <div className="tooltip-body">
+                {hidden.map((e) => (
+                  <span key={e.key}>{e.label}</span>
+                ))}
+              </div>
+            }
+          >
+            <span className="alteration more">+{hidden.length}</span>
+          </Tooltip>
+        )}
+      </span>
     </div>
   );
 }

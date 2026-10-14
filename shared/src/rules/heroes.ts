@@ -3,7 +3,12 @@
  * Les valeurs de base sont des choix d'équilibrage (shared/src/balance.ts) ; l'Initiative de base
  * vient du bestiaire (Paramètres §9).
  */
-import { HERO_BASE_EQUIPMENT_STATS, HERO_BASE_STATS_AT_MAX_LEVEL } from '../balance.ts';
+import {
+  HERO_BASE_EQUIPMENT_STATS,
+  HERO_BASE_STATS_AT_MAX_LEVEL,
+  HERO_STATUS_RESISTANCE,
+  lerpByLevel,
+} from '../balance.ts';
 import { STAT_IDS, type ClassId, type StatBlock, type StatId } from '../constants.ts';
 import type { StatsData } from '../data/schemas.ts';
 import { baseInitiative, heritageMultiplier } from './character.ts';
@@ -37,6 +42,11 @@ export function heroBaseStats(data: StatsData, classId: ClassId, level: number):
     agility: excelRound(base.agility * factor),
     initiative: baseInitiative(data, classId, level),
     ...HERO_BASE_EQUIPMENT_STATS,
+    statusResistance: lerpByLevel(
+      level,
+      HERO_STATUS_RESISTANCE.atLevel1,
+      HERO_STATUS_RESISTANCE.atLevel100,
+    ),
   };
 }
 

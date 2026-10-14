@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { DRAGON_RULES } from '../balance.ts';
 import type { ClassId } from '../constants.ts';
 import { gameData } from '../data/index.ts';
 import { createRng } from '../rules/random.ts';
@@ -73,6 +74,71 @@ describe('composition des étages', () => {
   it('étage du dragon : le dragon seul', () => {
     const { state } = start(9);
     expect(state.waves).toEqual([[{ monsterId: 'MON-005', level: 9 }]]);
+  });
+});
+
+describe('dragons (phase 9)', () => {
+  /** Tanière du Feu, héros plus rapide : la manche 1 commence par le tour des héros. */
+  const lair = (seed = 42) => {
+    const { state } = start(29, [hero('ranger', 60)], seed);
+    const dragon = state.monsters[0]!;
+    return { state, dragon };
+  };
+  /** Événements de la manche jouée (avant l'annonce de la manche suivante). */
+  const thisRound = (events: CombatEvent[]) => {
+    const next = events.findIndex((e) => e.type === 'round');
+    return next === -1 ? events : events.slice(0, next);
+  };
+
+  it('agit deux fois par manche', () => {
+    const { state, dragon } = lair();
+    expect(state.phase).toBe('heroes');
+    const { events } = endHeroTurn(data, state);
+    const actions = thisRound(events).filter((e) => e.type === 'action' && e.actorId === dragon.id);
+    expect(actions).toHaveLength(DRAGON_RULES.actionsPerRound);
+  });
+
+  it('sous 66 % de ses PV il appelle des renforts, sous 50 % il entre en furie', () => {
+    const { state, dragon } = lair();
+    dragon.hp = Math.round(dragon.stats.maxHp * 0.6);
+    const first = endHeroTurn(data, state);
+    const summons = first.events.filter((e) => e.type === 'summon');
+    expect(summons).toHaveLength(1);
+    expect(first.state.monsters).toHaveLength(1 + DRAGON_RULES.summonCount);
+    expect(first.events.some((e) => e.type === 'enrage')).toBe(false);
+
+    // Sous 33 % : la 2e invocation et la furie arrivent ensemble.
+    const fury = first.state.monsters[0]!;
+    fury.hp = Math.round(fury.stats.maxHp * 0.3);
+    const second = endHeroTurn(data, first.state);
+    expect(second.events.some((e) => e.type === 'enrage' && e.targetId === fury.id)).toBe(true);
+    expect(second.events.filter((e) => e.type === 'summon')).toHaveLength(1);
+    expect(second.state.monsters[0]!.modifiers.some((m) => m.key === 'dragon:fury')).toBe(true);
+  });
+
+  it("son souffle inflige à coup sûr l'altération de son élément (Brûlure pour le Feu)", () => {
+    let breaths = 0;
+    for (let seed = 1; seed <= 20; seed++) {
+      const { state, dragon } = lair(seed);
+      state.round = 3; // manche de souffle
+      state.heroes[0]!.stats.statusResistance = 0;
+      // Le souffle est la 1re action du dragon : on regarde ce qui suit, jusqu'à sa 2e action.
+      const round = thisRound(endHeroTurn(data, state).events);
+      const actions = round
+        .map((e, i) => (e.type === 'action' && e.actorId === dragon.id ? i : -1))
+        .filter((i) => i >= 0);
+      const breath = round.slice(actions[0], actions[1]);
+      const hit = breath.find(
+        (e) => e.type === 'damage' && e.sourceId === dragon.id && e.amount > 0,
+      );
+      if (!hit) continue;
+      breaths++;
+      expect(
+        breath.some((e) => e.type === 'alteration' && e.alterationId === 'brulure'),
+        `graine ${seed}`,
+      ).toBe(true);
+    }
+    expect(breaths).toBeGreaterThan(0);
   });
 });
 

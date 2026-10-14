@@ -130,9 +130,13 @@ describeWithDb('combat et tour', () => {
     await start(5);
     expect((await winFloor()).outcome!.unlocked.huntingZones).toEqual(['Forêt de chasse']);
 
+    // Un héros de niveau 1 peut tomber entre deux vagues de l'étage 15 : on le met au niveau de l'étage.
+    const character = await ctx.prisma.character.findFirstOrThrow();
+    await ctx.prisma.character.update({ where: { id: character.id }, data: { level: 15 } });
     await setProgress(15, 14);
     await start(15);
     const { outcome } = await winFloor();
+    expect(outcome!.result).toBe('victory');
     expect(outcome!.unlocked.buildings.sort()).toEqual(['atelier_fabrication', 'mine']);
     expect(outcome!.save.buildings.mine).toBe(1);
   });

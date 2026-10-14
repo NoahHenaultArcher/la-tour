@@ -6,6 +6,7 @@ import { ALCHEMY } from '../balance.ts';
 import type { ClassId, ElementId } from '../constants.ts';
 import type { SkillsData } from '../data/schemas.ts';
 import { isSkillUnlocked, type Skill } from './skills.ts';
+import { byId } from './lookup.ts';
 
 /** Positions du deck : 0 à 2 actives, 3 et 4 passives. */
 export const ACTIVE_POSITIONS = [0, 1, 2] as const;
@@ -110,7 +111,7 @@ export function validateDeck(data: { skills: SkillsData }, input: DeckCheck): De
   let fusions = 0;
   let damaging = 0;
   for (const slot of deck) {
-    const skill = data.skills.catalog.find((s) => s.id === slot.skillId);
+    const skill = byId(data.skills.catalog, slot.skillId);
     if (!skill || !Number.isInteger(slot.position) || slot.position < 0) return 'INVALID_DECK';
     if (slot.position >= DECK_SIZE) return 'INVALID_DECK';
     const passiveSlot = slot.position >= ACTIVE_POSITIONS.length;

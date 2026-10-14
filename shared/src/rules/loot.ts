@@ -10,6 +10,7 @@ import { RARITY_IDS, SLOT_IDS, type ClassId, type RarityId } from '../constants.
 import type { ElementsData, EquipmentData, LootData, MonstersData } from '../data/schemas.ts';
 import { tierForFloor } from './equipment.ts';
 import { chance, nextFloat, pick, type Rng } from './random.ts';
+import { byId } from './lookup.ts';
 
 export interface LootRulesData {
   loot: LootData;
@@ -82,7 +83,7 @@ export function rollLoot(
   const biome = biomeOfFloor(data, floor);
   const drops: LootDrop[] = [];
   for (const { monsterId } of killed) {
-    const monster = data.monsters.monsters.find((m) => m.id === monsterId);
+    const monster = byId(data.monsters.monsters, monsterId);
     const rule = monster && data.loot.dropByRank.find((r) => r.rank === monster.rank);
     if (!rule || !chance(rng, rule.dropChance)) continue;
     const count = rule.itemsPerDrop + (chance(rng, rule.bonusItemChance) ? 1 : 0);

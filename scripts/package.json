@@ -6,7 +6,8 @@
   "scripts": {
     "import-data": "tsx import-data.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "balance-report": "tsx balance-report.ts"
   },
   "dependencies": {
     "@la-tour/shared": "workspace:*",

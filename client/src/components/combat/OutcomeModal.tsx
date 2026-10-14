@@ -1,7 +1,8 @@
 import { STAT_POINTS, sellPrice, type CombatOutcome } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
-import { useState } from 'react';
-import { catalogItem, equippedIn } from '../../game/items.ts';
+import { useEffect, useState, type CSSProperties } from 'react';
+import { catalogItem, equippedIn, rarityInfo } from '../../game/items.ts';
+import { playOutcomeSounds } from '../../game/sound.ts';
 import { useVillageView } from '../../game/village.ts';
 import { errorMessage, formatNumber, t } from '../../i18n/index.ts';
 import { useNotifications } from '../../stores/notifications.ts';
@@ -33,7 +34,16 @@ interface Props {
  * Objet tombé : comparaison avec l'objet porté par le héros de sa classe et bouton Équiper.
  * Lit la sauvegarde à jour (pas celle de la fin de combat) pour suivre les objets équipés ici.
  */
-export function LootRow({ itemId, catalogId }: { itemId: string; catalogId: string }) {
+export function LootRow({
+  itemId,
+  catalogId,
+  index = 0,
+}: {
+  itemId: string;
+  catalogId: string;
+  /** Rang dans la liste : les objets apparaissent l'un après l'autre. */
+  index?: number;
+}) {
   const save = useSession((s) => s.save);
   const equipItem = useSession((s) => s.equipItem);
   const sellItem = useSession((s) => s.sellItem);
@@ -46,10 +56,15 @@ export function LootRow({ itemId, catalogId }: { itemId: string; catalogId: stri
   const item = save?.items.find((i) => i.id === itemId);
   const hero = save?.characters.find((c) => c.classId === info.classId);
   const className = t(`class.name.${info.classId}`);
+  // Apparition du butin : décalée selon le rang, lueur de la couleur de la rareté.
+  const reveal = {
+    '--i': index,
+    '--rarity': rarityInfo(info.rarity).color,
+  } as CSSProperties;
 
   if (!save || !item) {
     return (
-      <li>
+      <li className="loot-reveal" style={reveal}>
         <ItemIcon catalogId={catalogId} scale={1.5} />
         <ItemName catalogId={catalogId} />
         {soldFor !== null && (
@@ -85,7 +100,7 @@ export function LootRow({ itemId, catalogId }: { itemId: string; catalogId: stri
     });
 
   return (
-    <li>
+    <li className="loot-reveal" style={reveal}>
       <Tooltip
         content={
           <ItemTooltip item={item} save={save} resources={view.resources} compareWith={hero?.id} />
@@ -144,8 +159,19 @@ export function OutcomeModal({ outcome, onVillage, onTower, onTeam, next, replay
   const { elements, buildings, huntingZones } = outcome.unlocked;
   const zoneName = gameData.zones.zones.find((z) => z.floor === outcome.floor)?.name ?? '';
 
+  useEffect(() => {
+    playOutcomeSounds(outcome.result, outcome.levelUps.length > 0, outcome.loot.length);
+  }, [outcome]);
+
   return (
-    <Modal open onClose={onTower} title={t(`outcome.${outcome.result}`)} className="outcome">
+    <Modal
+      open
+      onClose={onTower}
+      title={
+        <span className={`outcome-title ${outcome.result}`}>{t(`outcome.${outcome.result}`)}</span>
+      }
+      className="outcome"
+    >
       {outcome.result === 'victory' && (
         <p>
           {outcome.floorCleared
@@ -172,7 +198,7 @@ export function OutcomeModal({ outcome, onVillage, onTower, onTeam, next, replay
               {classId ? t(`class.name.${classId}`) : ''} :{' '}
               {t('outcome.xp', { xp: formatNumber(xp) })}
               {levelUp && (
-                <strong className="ok">
+                <strong className="ok level-up">
                   {' '}
                   {t('outcome.levelUp', { level: levelUp.to })}{' '}
                   {t('outcome.points', {
@@ -189,8 +215,13 @@ export function OutcomeModal({ outcome, onVillage, onTower, onTeam, next, replay
           <h3>{t('outcome.loot')}</h3>
           <p className="muted small">{t('outcome.lootHint')}</p>
           <ul className="outcome-loot">
-            {outcome.loot.map((drop) => (
-              <LootRow key={drop.itemId} itemId={drop.itemId} catalogId={drop.catalogId} />
+            {outcome.loot.map((drop, index) => (
+              <LootRow
+                key={drop.itemId}
+                itemId={drop.itemId}
+                catalogId={drop.catalogId}
+                index={index}
+              />
             ))}
           </ul>
         </section>

@@ -1,7 +1,13 @@
 /**
  * Préparation d'un combat : composition des vagues d'un étage et création des combattants.
  */
-import { EARLY_GAME, earlyGameFactor } from '../balance.ts';
+import {
+  EARLY_GAME,
+  MONSTER_SCALING,
+  earlyGameFactor,
+  monsterHpForTeam,
+  monsterDifficulty,
+} from '../balance.ts';
 import type { ClassId, ElementId, StatBlock } from '../constants.ts';
 import { classAttackStat, heroStats } from '../rules/heroes.ts';
 import { monsterStats } from '../rules/monsters.ts';
@@ -11,6 +17,7 @@ import { floorType, zoneFloorOf } from '../rules/tower.ts';
 import { upgradeTowerBonus, type UpgradeTowerLevels } from '../rules/village.ts';
 import { passiveEffectsOf, skillById } from './skills.ts';
 import type { CombatData, CombatStats, Combatant, MonsterSpawn } from './types.ts';
+import { byId } from '../rules/lookup.ts';
 
 /** Positions du deck : 0 à 2 actives, 3 et 4 passives. */
 const ACTIVE_POSITIONS = [0, 1, 2];
@@ -179,18 +186,32 @@ export function createMonsterCombatant(
   data: CombatData,
   spawn: MonsterSpawn,
   id: string,
+  /** Nombre de héros du combat : plus l'équipe est grande, plus les monstres ont de PV. */
+  heroCount = 1,
 ): Combatant {
-  const monster = data.monsters.monsters.find((m) => m.id === spawn.monsterId);
+  const monster = byId(data.monsters.monsters, spawn.monsterId);
   if (!monster) throw new Error(`Monstre inconnu : ${spawn.monsterId}`);
   const zone = data.zones.zones.find((z) => z.floor === monster.zoneFloor);
   const element = zone?.element ?? 'neutral';
   const s = monsterStats(data.monsters, monster, spawn.level, element);
   // Début de partie adouci (balance.ts, EARLY_GAME) : PV et attaque réduits sur les premiers niveaux.
+  // Difficulté exigeante (MONSTER_SCALING) : PV et attaque montent avec le niveau du monstre.
   const hp = Math.max(
     1,
-    Math.round(s.hp * earlyGameFactor(spawn.level, EARLY_GAME.hpFactorAtLevel1)),
+    Math.round(
+      s.hp *
+        earlyGameFactor(spawn.level, EARLY_GAME.hpFactorAtLevel1) *
+        monsterDifficulty(spawn.level, MONSTER_SCALING.hpAtLevel1, MONSTER_SCALING.hpAtLevel100) *
+        monsterHpForTeam(heroCount),
+    ),
   );
-  const attack = earlyGameFactor(spawn.level, EARLY_GAME.attackFactorAtLevel1);
+  const attack =
+    earlyGameFactor(spawn.level, EARLY_GAME.attackFactorAtLevel1) *
+    monsterDifficulty(
+      spawn.level,
+      MONSTER_SCALING.attackAtLevel1,
+      MONSTER_SCALING.attackAtLevel100,
+    );
   return {
     id,
     side: 'monster',

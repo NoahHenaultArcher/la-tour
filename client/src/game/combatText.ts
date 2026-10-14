@@ -1,3 +1,4 @@
+import { byId } from '@la-tour/shared';
 /** Textes du journal de combat (gabarits dans fr.json). */
 import type { CombatEvent, CombatView } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
@@ -22,7 +23,7 @@ export function combatantName(view: CombatView | null, id: string | null): strin
 }
 
 export function skillName(skillId: string): string {
-  return gameData.skills.catalog.find((s) => s.id === skillId)?.name ?? skillId;
+  return byId(gameData.skills.catalog, skillId)?.name ?? skillId;
 }
 
 export function alterationName(id: string): string {
@@ -100,6 +101,13 @@ export function describeEvent(event: CombatEvent, view: CombatView | null): stri
       });
     case 'death':
       return t('combat.log.death', { target: name(event.targetId) });
+    case 'enrage':
+      return t('combat.log.enrage', { target: name(event.targetId) });
+    case 'summon':
+      return t('combat.log.summon', {
+        source: name(event.sourceId),
+        monsters: event.monsterIds.map((id) => name(id)).join(', '),
+      });
     case 'end':
       return t(`combat.log.${event.outcome}`);
   }

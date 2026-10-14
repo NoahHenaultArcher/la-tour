@@ -1,8 +1,10 @@
 /**
  * Récompenses d'un combat : or et XP des monstres vaincus (y compris en cas de défaite :
  * « l'XP et le butin déjà gagnés pendant l'étage sont conservés »).
- * XP de chaque héros = XP du monstre × écart de niveau × part selon le nombre de héros × bonus.
+ * XP de chaque héros = XP du monstre × écart de niveau × part selon le nombre de héros × bonus
+ * × gain d'XP global (balance.ts, XP_GAIN).
  */
+import { XP_GAIN } from '../balance.ts';
 import type { MonstersData } from '../data/schemas.ts';
 import { levelGapXpFactor, xpShare } from '../rules/rewards.ts';
 import type { CombatState, KilledMonster } from './types.ts';
@@ -26,7 +28,7 @@ export function combatRewards(
     let total = 0;
     for (const k of state.killed)
       total += k.xp * levelGapXpFactor(data, k.level, hero.level) * share;
-    xp[hero.refId] = Math.floor(total * (1 + goldXpBonus));
+    xp[hero.refId] = Math.floor(total * XP_GAIN.multiplier * (1 + goldXpBonus));
   }
   return { gold: Math.floor(gold * (1 + goldXpBonus)), xp };
 }
@@ -50,7 +52,7 @@ export function participantRewards(
     gold += k.gold * share;
   }
   return {
-    xp: Math.floor(xp * (1 + goldXpBonus)),
+    xp: Math.floor(xp * XP_GAIN.multiplier * (1 + goldXpBonus)),
     gold: Math.floor(gold * (1 + goldXpBonus)),
   };
 }

@@ -1,6 +1,7 @@
 import {
   ELEMENT_IDS,
   PASSIVE_POSITIONS,
+  byId,
   canBeFused,
   fusionCost,
   fusionOf,
@@ -31,7 +32,7 @@ type Skill = (typeof gameData.skills.catalog)[number];
 type Draft = (Omit<DeckSlot, 'position'> | null)[];
 
 const ALCHEMY_TOWER = 'tour_alchimie';
-const skillOf = (id: string) => gameData.skills.catalog.find((s) => s.id === id)!;
+const skillOf = (id: string) => byId(gameData.skills.catalog, id)!;
 const isPassiveSlot = (position: number) =>
   (PASSIVE_POSITIONS as readonly number[]).includes(position);
 

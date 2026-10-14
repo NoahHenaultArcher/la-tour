@@ -14,11 +14,12 @@ import {
   type PassiveEffect,
 } from './effects.ts';
 import type { CombatData } from './types.ts';
+import { byId } from '../rules/lookup.ts';
 
 export type CatalogSkill = CombatData['skills']['catalog'][number];
 
 export function skillById(data: CombatData, skillId: string): CatalogSkill {
-  const skill = data.skills.catalog.find((s) => s.id === skillId);
+  const skill = byId(data.skills.catalog, skillId);
   if (!skill) throw new Error(`Compétence inconnue : ${skillId}`);
   return skill;
 }

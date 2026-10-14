@@ -1,4 +1,4 @@
-import { fusionOf, type CombatView, type ElementId } from '@la-tour/shared';
+import { byId, fusionOf, type CombatView, type ElementId } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { elementStyle } from '../../game/elements.ts';
 import { t } from '../../i18n/index.ts';
@@ -79,11 +79,22 @@ interface Props {
   selectedSkillId: string | null;
   disabled: boolean;
   onSelect: (skillId: string) => void;
+  /** Compétence que ce héros vient de lancer (léger encadré pendant la relecture). */
+  justUsedSkillId?: string | null;
 }
 
-/** Compétences du héros sélectionné, avec leur recharge. Les passifs sont rappelés à côté. */
-export function SkillBar({ hero, selectedSkillId, disabled, onSelect }: Props) {
-  const skillOf = (id: string) => gameData.skills.catalog.find((s) => s.id === id)!;
+/**
+ * Compétences du héros sélectionné, avec leur recharge ; les passifs suivent, au même format.
+ * Toutes les cartes ont la même taille, quel que soit leur contenu.
+ */
+export function SkillBar({
+  hero,
+  selectedSkillId,
+  disabled,
+  onSelect,
+  justUsedSkillId = null,
+}: Props) {
+  const skillOf = (id: string) => byId(gameData.skills.catalog, id)!;
   return (
     <div className="skill-bar">
       {hero.skills.map((slot) => {
@@ -97,14 +108,15 @@ export function SkillBar({ hero, selectedSkillId, disabled, onSelect }: Props) {
           >
             <button
               type="button"
-              className={`skill-button${selectedSkillId === slot.skillId ? ' selected' : ''}`}
+              className={`skill-button${selectedSkillId === slot.skillId ? ' selected' : ''}${justUsedSkillId === slot.skillId ? ' just-used' : ''}`}
               style={elementStyle(skill.element)}
               aria-disabled={disabled || !ready}
               onClick={() => !disabled && ready && onSelect(slot.skillId)}
             >
               <PixelImage src={skill.image} alt="" size={32} />
-              <span>{skill.name}</span>
-              {fused && <span className="skill-fusion">{fused.name}</span>}
+              <span className="skill-name">{skill.name}</span>
+              {/* Ligne réservée même sans fusion : la carte garde sa hauteur. */}
+              <span className="skill-fusion">{fused?.name ?? ''}</span>
               <span className="skill-cooldown">
                 {ready
                   ? slot.cooldown === 0
@@ -120,9 +132,11 @@ export function SkillBar({ hero, selectedSkillId, disabled, onSelect }: Props) {
         const skill = skillOf(id);
         return (
           <Tooltip key={id} content={<SkillTooltip skill={skill} />}>
-            <span className="skill-passive" tabIndex={0}>
-              <PixelImage src={skill.image} alt="" size={24} />
-              {skill.name}
+            <span className="skill-button passive" style={elementStyle(skill.element)} tabIndex={0}>
+              <PixelImage src={skill.image} alt="" size={32} />
+              <span className="skill-name">{skill.name}</span>
+              <span className="skill-fusion" />
+              <span className="skill-cooldown">{t('team.passiveSlot')}</span>
             </span>
           </Tooltip>
         );

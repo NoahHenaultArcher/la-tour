@@ -5,6 +5,7 @@ import { useRoom } from '../stores/room.ts';
 import { useSession } from '../stores/session.ts';
 import { PixelImage } from './PixelImage.tsx';
 import { ResourceBar } from './ResourceBar.tsx';
+import { SoundControl } from './SoundControl.tsx';
 
 /** Image du bâtiment « Tour » du village, reprise comme logo du jeu. */
 const TOWER_IMAGE = 'village/tour.png';
@@ -53,6 +54,7 @@ export function TopBar() {
       </nav>
       {/* L'or reste visible partout ; les ressources ont leur propre barre sur la page du village. */}
       <ResourceBar withResources={false} />
+      <SoundControl />
       <span className="topbar-user">{user.username}</span>
       <button type="button" onClick={() => void logout().catch(() => undefined)}>
         {t('auth.logout')}

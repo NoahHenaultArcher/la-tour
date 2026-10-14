@@ -220,6 +220,10 @@ export type CombatEvent =
   | { type: 'resisted'; targetId: string; alterationId: string }
   | { type: 'stunned'; targetId: string; alterationId: string }
   | { type: 'death'; targetId: string }
+  /** Dragon : entre en furie sous la moitié de ses PV. */
+  | { type: 'enrage'; targetId: string }
+  /** Dragon : appelle des monstres de sa zone en renfort. */
+  | { type: 'summon'; sourceId: string; monsterIds: string[] }
   | { type: 'end'; outcome: 'victory' | 'defeat' | 'retreat' };
 
 export interface CombatState {

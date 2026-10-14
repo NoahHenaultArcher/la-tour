@@ -30,7 +30,18 @@ import {
   zonesDataSchema,
 } from './schemas.ts';
 
+/**
+ * Défini à `true` par Vite dans le build de production du client (client/vite.config.ts) : les données
+ * y sont déjà validées par le script d'import et par le serveur au démarrage, on évite donc de
+ * revalider ~1,5 Mo de JSON à chaque ouverture du jeu. Les schémas n'ont aucune transformation :
+ * les données validées sont identiques au JSON. Partout ailleurs (serveur, tests, développement),
+ * la validation reste faite.
+ */
+declare const __TRUSTED_GAME_DATA__: boolean | undefined;
+const trusted = typeof __TRUSTED_GAME_DATA__ !== 'undefined' && __TRUSTED_GAME_DATA__;
+
 function load<T extends z.ZodType>(name: string, schema: T, json: unknown): z.infer<T> {
+  if (trusted) return json as z.infer<T>;
   const result = schema.safeParse(json);
   if (!result.success) {
     throw new Error(
