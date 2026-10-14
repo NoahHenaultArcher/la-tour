@@ -4,6 +4,7 @@
  * Tout échec (navigateur sans Web Audio, lecture bloquée) est silencieux : le jeu continue.
  */
 import { create } from 'zustand';
+import { isPageHidden } from './background.ts';
 
 export type SoundId =
   | 'hit'
@@ -177,7 +178,8 @@ export function playSound(id: SoundId, delayMs = 0): void {
     return;
   }
   const { muted, volume } = useSoundSettings.getState();
-  if (muted || volume <= 0) return;
+  // Onglet caché (combat qui continue en arrière-plan) : pas de son.
+  if (muted || volume <= 0 || isPageHidden()) return;
   const now = performance.now();
   if (now - (lastPlayed.get(id) ?? -Infinity) < MIN_GAP_MS) return;
   lastPlayed.set(id, now);

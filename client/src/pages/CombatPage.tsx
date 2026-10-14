@@ -9,6 +9,7 @@ import { SkillBar } from '../components/combat/SkillBar.tsx';
 import { ElementBadge } from '../components/ElementBadge.tsx';
 import { TopBar } from '../components/TopBar.tsx';
 import { useDebug } from '../debug/console.ts';
+import { backgroundSleep, usePageHidden } from '../game/background.ts';
 import { combatantName } from '../game/combatText.ts';
 import { elementStyle } from '../game/elements.ts';
 import { t } from '../i18n/index.ts';
@@ -42,7 +43,10 @@ function useLogOpen() {
   return [open, toggle] as const;
 }
 
-/** Rejoue les événements reçus du serveur au rythme choisi, et enchaîne les tours en mode auto. */
+/**
+ * Rejoue les événements reçus du serveur au rythme choisi, et enchaîne les tours en mode auto.
+ * Onglet caché : le combat continue en arrière-plan (voir useBackgroundPlayback).
+ */
 function usePlayback() {
   const queueLength = useCombat((s) => s.queue.length);
   const view = useCombat((s) => s.view);
@@ -54,22 +58,53 @@ function usePlayback() {
   const busy = useCombat((s) => s.busy);
   const outcome = useCombat((s) => s.outcome);
   const playAuto = useCombat((s) => s.playAuto);
+  const hidden = usePageHidden();
+  useBackgroundPlayback(hidden);
 
   useEffect(() => {
-    if (queueLength === 0 && view === target && !pendingOutcome) return;
+    if (hidden || (queueLength === 0 && view === target && !pendingOutcome)) return;
     const timer = setTimeout(() => step(), queueLength > 0 ? EVENT_DELAY_MS / speed : 0);
     return () => clearTimeout(timer);
-  }, [queueLength, view, target, pendingOutcome, speed, step]);
+  }, [hidden, queueLength, view, target, pendingOutcome, speed, step]);
 
   const settled = queueLength === 0 && view === target && !pendingOutcome;
   useEffect(() => {
-    if (auto && settled && !busy && !outcome && view?.phase === 'heroes') {
+    if (!hidden && auto && settled && !busy && !outcome && view?.phase === 'heroes') {
       const timer = setTimeout(() => void playAuto(), 250 / speed);
       return () => clearTimeout(timer);
     }
-  }, [auto, settled, busy, outcome, view, speed, playAuto]);
+  }, [hidden, auto, settled, busy, outcome, view, speed, playAuto]);
 
   return settled;
+}
+
+/**
+ * Onglet caché : le navigateur ralentit les minuteries de la page (jusqu'à 1 par minute), ce qui
+ * mettait le combat en pause. On applique alors les événements sans animation et on enchaîne les
+ * tours auto avec une minuterie de Worker, au même rythme qu'à l'écran (cacher l'onglet ne fait pas
+ * jouer plus vite). Au retour sur l'onglet, la relecture animée reprend.
+ */
+function useBackgroundPlayback(hidden: boolean) {
+  useEffect(() => {
+    if (!hidden) return;
+    let active = true;
+    void (async () => {
+      while (active) {
+        let played = 0;
+        while (active && useCombat.getState().step()) played++;
+        const { mode, auto, outcome, busy, view, speed, playAuto } = useCombat.getState();
+        // Temps qu'aurait pris la relecture à l'écran (et le petit délai avant le tour auto suivant).
+        await backgroundSleep(Math.max(250, (played * EVENT_DELAY_MS + 250) / speed));
+        if (!active) break;
+        if (mode !== 'multi' && auto && !outcome && !busy && view?.phase === 'heroes') {
+          await playAuto();
+        }
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [hidden]);
 }
 
 /** Secondes restantes avant la fin du tour (multijoueur) ; le serveur reste seul juge. */
