@@ -194,26 +194,28 @@ export function OutcomeModal({ outcome, onVillage, onTower, onTeam, next, replay
           </ul>
         </section>
       )}
-      <div className="modal-actions">
-        {next && (
-          <button type="button" className="primary" onClick={next.run}>
-            {next.label}
-          </button>
-        )}
+      {/* Navigation à gauche ; enchaîner (rejouer, étage suivant) à droite. */}
+      <div className="modal-actions outcome-actions">
+        <button type="button" onClick={onVillage}>
+          {t('outcome.toVillage')}
+        </button>
+        <button type="button" onClick={onTower}>
+          {t(outcome.mode === 'hunt' ? 'outcome.toHunt' : 'outcome.toTower')}
+        </button>
+        <button type="button" onClick={onTeam}>
+          {t('outcome.toTeam')}
+        </button>
+        <span className="outcome-actions-spacer" />
         {replay && (
           <button type="button" className={next ? '' : 'primary'} onClick={replay.run}>
             {replay.label}
           </button>
         )}
-        <button type="button" onClick={onTeam}>
-          {t('outcome.toTeam')}
-        </button>
-        <button type="button" onClick={onTower}>
-          {t(outcome.mode === 'hunt' ? 'outcome.toHunt' : 'outcome.toTower')}
-        </button>
-        <button type="button" onClick={onVillage}>
-          {t('outcome.toVillage')}
-        </button>
+        {next && (
+          <button type="button" className="primary" onClick={next.run}>
+            {next.label}
+          </button>
+        )}
       </div>
     </Modal>
   );

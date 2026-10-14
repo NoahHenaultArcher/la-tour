@@ -53,6 +53,7 @@ function toSlots(draft: Draft): DeckSlot[] {
 export function SkillsPage() {
   const save = useSession((s) => s.save)!;
   const [characterId, setCharacterId] = useState(save.characters[0]!.id);
+  const [tab, setTab] = useState<'deck' | 'synergies'>('deck');
   const character = save.characters.find((c) => c.id === characterId) ?? save.characters[0]!;
   return (
     <div className="page">
@@ -76,9 +77,27 @@ export function SkillsPage() {
               ))}
             </div>
           )}
+          <div className="tabs skills-tabs" role="tablist">
+            {(['deck', 'synergies'] as const).map((id) => (
+              <button
+                key={id}
+                type="button"
+                role="tab"
+                aria-selected={tab === id}
+                className={tab === id ? 'toggled' : ''}
+                onClick={() => setTab(id)}
+              >
+                {t(`skills.tab.${id}`)}
+              </button>
+            ))}
+          </div>
         </header>
-        {/* La clé remet le brouillon à zéro quand on change de héros. */}
-        <DeckEditor key={character.id} save={save} character={character} />
+        {/* Le deck reste monté (masqué) pour garder le brouillon en changeant d'onglet ;
+            la clé le remet à zéro quand on change de héros. */}
+        <div className="skills-tab" hidden={tab !== 'deck'}>
+          <DeckEditor key={character.id} save={save} character={character} />
+        </div>
+        {tab === 'synergies' && <Synergies save={save} character={character} />}
       </main>
     </div>
   );
@@ -202,9 +221,10 @@ function DeckEditor({ save, character }: { save: SaveDto; character: CharacterDt
                     <Tooltip
                       content={<SkillTooltip skill={skill} fusion={slot?.fusionElement ?? null} />}
                     >
+                      {/* Le nom de la fusion est déjà sur la pastille en dessous. */}
                       <span className="deck-skill" tabIndex={0}>
                         <PixelImage src={skill.image} alt="" size={32} />
-                        {fusion ? `${skill.name} · ${fusion.name}` : skill.name}
+                        <span className="deck-skill-name">{skill.name}</span>
                       </span>
                     </Tooltip>
                     {fusion && slot?.fusionElement ? (
@@ -355,5 +375,81 @@ function DeckEditor({ save, character }: { save: SaveDto; character: CharacterDt
         <p className="muted small">{t('skills.elementsNote')}</p>
       </section>
     </>
+  );
+}
+
+/** Onglet Synergies : les 55 fusions d'éléments, leur rôle et leur effet en combat. */
+function Synergies({ save, character }: { save: SaveDto; character: CharacterDto }) {
+  const [element, setElement] = useState<ElementId | ''>('');
+  const [onlyAvailable, setOnlyAvailable] = useState(false);
+  const unlocked = save.unlockedElements;
+  const alchemyBuilt = (save.buildings[ALCHEMY_TOWER] ?? 0) > 0;
+
+  const fusions = gameData.skills.fusions
+    .map((fusion) => {
+      const missing = [fusion.element1, fusion.element2].filter(
+        (id, i, pair) => !unlocked.includes(id) && pair.indexOf(id) === i,
+      );
+      return { fusion, missing, available: alchemyBuilt && missing.length === 0 };
+    })
+    .filter(
+      ({ fusion, available }) =>
+        (!element || fusion.element1 === element || fusion.element2 === element) &&
+        (!onlyAvailable || available),
+    );
+
+  return (
+    <section className="panel">
+      <h2>{t('skills.synergies.title')}</h2>
+      <p className="muted small">{t('skills.synergies.note')}</p>
+      <div className="synergy-filters">
+        <label>
+          {t('skills.synergies.filter')}{' '}
+          <select value={element} onChange={(e) => setElement(e.target.value as ElementId | '')}>
+            <option value="">{t('skills.synergies.all')}</option>
+            {ELEMENT_IDS.map((id) => (
+              <option key={id} value={id}>
+                {elementName(id)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={onlyAvailable}
+            onChange={(e) => setOnlyAvailable(e.target.checked)}
+          />{' '}
+          {t('skills.synergies.onlyAvailable')}
+        </label>
+        <span className="muted small">
+          {t('skills.synergies.count', { count: fusions.length })}
+        </span>
+      </div>
+      <ul className="synergy-list">
+        {fusions.map(({ fusion, missing, available }) => (
+          <li
+            key={`${fusion.element1}-${fusion.element2}`}
+            className={available ? 'available' : 'locked'}
+          >
+            <FusionBadge a={fusion.element1} b={fusion.element2} name={fusion.name} />
+            <span className="muted small">{fusion.role}</span>
+            <span>{fusion.combatEffect}</span>
+            <span className="muted small">
+              {t('skills.synergies.example', { name: fusion.examples[character.classId] })}
+            </span>
+            <span className={`small ${available ? 'ok' : 'missing'}`}>
+              {available
+                ? t('skills.synergies.available')
+                : missing.length > 0
+                  ? t('skills.synergies.missing', {
+                      elements: missing.map((id) => elementName(id)).join(', '),
+                    })
+                  : t('skills.synergies.alchemy')}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

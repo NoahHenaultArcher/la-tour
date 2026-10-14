@@ -378,10 +378,7 @@ export function CombatPage() {
                   type="button"
                   className="primary"
                   disabled={view.phase !== 'heroes' || busy}
-                  onClick={() => {
-                    combat.setAuto(false);
-                    void combat.retreat();
-                  }}
+                  onClick={() => void combat.retreat()}
                 >
                   {t(isMulti ? 'combat.withdraw' : 'combat.retreat')}
                 </button>

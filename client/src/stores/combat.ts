@@ -41,7 +41,10 @@ interface CombatStore {
   pendingOutcome: CombatOutcome | null;
   busy: boolean;
   error: string | null;
+  /** Mode auto en cours (s'arrête à la fin du combat, en cas d'erreur ou de retraite ; jamais en multi). */
   auto: boolean;
+  /** Choix du joueur (bouton auto) : chaque combat solo suivant démarre ainsi (retenu dans le navigateur). */
+  autoWanted: boolean;
   speed: Speed;
   selectedHeroId: string | null;
   selectedSkillId: string | null;
@@ -76,6 +79,17 @@ interface CombatStore {
 
 const MAX_LOG = 80;
 let floaterId = 1;
+
+const AUTO_KEY = 'la-tour.auto';
+
+/** Confort propre au navigateur : sans stockage disponible, l'auto repart désactivé. */
+function readAuto(): boolean {
+  try {
+    return localStorage.getItem(AUTO_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
 
 export const useCombat = create<CombatStore>((set, get) => {
   /** Reçoit une réponse du serveur : les événements sont mis en file pour être rejoués. */
@@ -121,6 +135,9 @@ export const useCombat = create<CombatStore>((set, get) => {
   };
   const multi = () => get().mode === 'multi';
 
+  /** Un nouveau combat solo reprend le dernier choix du bouton auto. */
+  const initialAuto = () => set({ auto: get().autoWanted });
+
   const call = async (request: () => Promise<CombatResponse>, reset = false) => {
     if (get().busy) return;
     set({ busy: true, error: null });
@@ -143,6 +160,7 @@ export const useCombat = create<CombatStore>((set, get) => {
     busy: false,
     error: null,
     auto: false,
+    autoWanted: readAuto(),
     speed: 1,
     selectedHeroId: null,
     selectedSkillId: null,
@@ -157,6 +175,8 @@ export const useCombat = create<CombatStore>((set, get) => {
       if (useRoom.getState().room?.inCombat) return Promise.resolve();
       // Combat multijoueur terminé (bilan déjà versé) : on revient au combat solo éventuel.
       if (multi()) get().clearOutcome();
+      // Reprise d'un combat solo après un rechargement : le choix auto s'applique aussi.
+      if (!get().view) initialAuto();
       return call(api.getCombat, true);
     },
 
@@ -184,6 +204,7 @@ export const useCombat = create<CombatStore>((set, get) => {
     },
     start: (floor) => {
       if (multi()) get().clearOutcome();
+      initialAuto();
       return call(() => api.startCombat(floor), true);
     },
 
@@ -200,12 +221,25 @@ export const useCombat = create<CombatStore>((set, get) => {
     forfeit: () => (multi() ? multiCall(useRoom.getState().forfeit) : call(api.combatForfeit)),
     startHunt: (zoneFloor) => {
       if (multi()) get().clearOutcome();
+      initialAuto();
       return call(() => api.startHunt(zoneFloor), true);
     },
-    retreat: () => (multi() ? multiCall(useRoom.getState().withdraw) : call(api.combatRetreat)),
+    retreat: () => {
+      if (multi()) return multiCall(useRoom.getState().withdraw);
+      // L'auto s'arrête pendant la retraite ; le choix du joueur reste retenu pour la prochaine chasse.
+      set({ auto: false });
+      return call(api.combatRetreat);
+    },
     winWave: () => (multi() ? multiCall(useRoom.getState().debugWinWave) : call(api.debugWinWave)),
 
-    setAuto: (auto) => set({ auto }),
+    setAuto: (auto) => {
+      try {
+        localStorage.setItem(AUTO_KEY, auto ? '1' : '0');
+      } catch {
+        // Stockage indisponible : le choix vaut pour cette visite seulement.
+      }
+      set({ auto, autoWanted: auto });
+    },
     setSpeed: (speed) => set({ speed }),
     selectHero: (heroId) => set({ selectedHeroId: heroId, selectedSkillId: null }),
     selectSkill: (skillId) => set({ selectedSkillId: skillId }),

@@ -94,6 +94,15 @@ export function StatSheet({ save, character }: { save: SaveDto; character: Chara
           >
             +
           </button>
+          <button
+            type="button"
+            aria-label={t('team.points.max', { stat: label })}
+            title={t('team.points.max', { stat: label })}
+            disabled={busy || remaining <= 0}
+            onClick={() => change(stat, remaining)}
+          >
+            {t('team.points.maxShort')}
+          </button>
         </td>
       </tr>
     );

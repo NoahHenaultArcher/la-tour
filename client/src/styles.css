@@ -707,6 +707,23 @@ button.danger {
   justify-content: flex-end;
 }
 
+/* Fin de combat : fenêtre plus large, navigation à gauche et enchaînement à droite. */
+.modal.outcome {
+  width: min(880px, calc(100vw - 32px));
+}
+
+.outcome-actions {
+  align-items: center;
+}
+
+.outcome-actions button {
+  white-space: nowrap;
+}
+
+.outcome-actions-spacer {
+  flex: 1;
+}
+
 /* --- Tour --- */
 
 .tower-page {
@@ -1158,7 +1175,6 @@ button.danger {
   display: inline-flex;
   gap: 2px;
 }
-
 .combat-log {
   display: flex;
   flex-direction: column;
@@ -1501,6 +1517,32 @@ button.danger {
   gap: 8px;
 }
 
+/* Éditeur de deck : les 5 emplacements sur une seule ligne quand la place le permet. */
+.skills-page .deck {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+@media (max-width: 1000px) {
+  .skills-page .deck {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+.skills-page .deck-slot,
+.skills-page .deck-skill,
+.skills-page .deck-slot select {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.deck-skill-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .deck-slot {
   display: flex;
   flex-direction: column;
@@ -1523,7 +1565,7 @@ button.danger {
 
 /* Page Compétences */
 .skills-page {
-  max-width: 1100px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 16px;
   display: flex;
@@ -1531,13 +1573,58 @@ button.danger {
   gap: 12px;
 }
 
+.skills-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skills-tab[hidden] {
+  display: none;
+}
+
+.skills-tabs {
+  margin-left: auto;
+}
+
 .skill-catalog {
   list-style: none;
   padding: 0;
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 6px;
+}
+
+/* Onglet Synergies élémentaires */
+.synergy-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin: 8px 0;
+}
+
+.synergy-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 8px;
+}
+
+.synergy-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+}
+
+.synergy-list li.locked {
+  opacity: 0.6;
 }
 
 .skill-catalog li {
