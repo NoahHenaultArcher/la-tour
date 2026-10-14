@@ -83,6 +83,13 @@ describe('production par heure (onglet Production)', () => {
 });
 
 describe('améliorations des bâtiments (onglet Améliorations)', () => {
+  // Écarts voulus avec le classeur : le niveau qui débloque un métal se paie avec le métal précédent.
+  const MATERIAL_OVERRIDES: Record<string, string> = {
+    'mine niv. 6': 'fer',
+    'mine niv. 11': 'acier',
+    'mine niv. 16': 'mithril',
+  };
+
   it('reproduit étage requis, or, matériau, quantité et charbon des 117 améliorations', () => {
     for (const row of village.upgrades) {
       const where = `${row.buildingId} niv. ${row.targetLevel}`;
@@ -90,13 +97,54 @@ describe('améliorations des bâtiments (onglet Améliorations)', () => {
         targetLevel: row.targetLevel,
         requiredFloor: row.requiredFloor,
         gold: row.gold,
-        material: row.material,
+        material: MATERIAL_OVERRIDES[where] ?? row.material,
         quantity: row.quantity,
         coal: row.coal,
       });
       expect(huntingMinutesForGold(village, row.gold, row.requiredFloor), where).toBe(
         row.huntingMinutes,
       );
+    }
+  });
+
+  it('ne demande jamais une ressource que le village ne produit pas encore', () => {
+    const tavernOnly = new Set(
+      gameData.resources.resources.filter((r) => r.source === 'taverne').map((r) => r.id),
+    );
+    for (const row of village.upgrades) {
+      const where = `${row.buildingId} niv. ${row.targetLevel}`;
+      const cost = buildingUpgradeCost(village, row.buildingId, row.targetLevel);
+      const needs = [cost.material, ...(cost.coal > 0 ? ['charbon'] : [])];
+      for (const resourceId of needs) {
+        // Produite à un étage déjà atteint, par un autre bâtiment ou par un niveau inférieur de celui-ci.
+        const produced = village.production.some(
+          (p) =>
+            p.resourceId === resourceId &&
+            p.requiredFloor <= cost.requiredFloor &&
+            !(p.buildingId === row.buildingId && p.requiredBuildingLevel >= row.targetLevel),
+        );
+        expect(produced || tavernOnly.has(resourceId), `${where} : ${resourceId}`).toBe(true);
+      }
+    }
+  });
+
+  it('tient dans l’entrepôt atteignable à l’étage requis', () => {
+    const warehouse = village.upgrades.filter((u) => u.buildingId === 'entrepot');
+    for (const row of village.upgrades) {
+      const cost = buildingUpgradeCost(village, row.buildingId, row.targetLevel);
+      const level =
+        row.buildingId === 'entrepot'
+          ? row.targetLevel - 1
+          : Math.max(
+              1,
+              ...warehouse
+                .filter((u) => u.requiredFloor <= cost.requiredFloor)
+                .map((u) => u.targetLevel),
+            );
+      const capacity = warehouseCapacity(village, level);
+      const where = `${row.buildingId} niv. ${row.targetLevel}`;
+      expect(cost.quantity, where).toBeLessThanOrEqual(capacity);
+      expect(cost.coal, where).toBeLessThanOrEqual(capacity);
     }
   });
 

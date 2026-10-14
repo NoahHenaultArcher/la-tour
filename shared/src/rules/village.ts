@@ -85,11 +85,31 @@ function bracketForLevel(data: VillageData, level: number) {
   return bracket;
 }
 
-/** Matériau de construction selon l'étage requis : bois avant 15, puis fer, acier, mithril, adamantite. */
-function bracketForFloor(data: VillageData, floor: number) {
-  let bracket = data.params.levelBrackets[0]!;
-  for (const b of data.params.levelBrackets) if (b.requiredFloor <= floor) bracket = b;
-  return bracket;
+/**
+ * Matériau de construction selon l'étage requis : bois avant 15, puis fer, acier, mithril, adamantite.
+ * Exception : le niveau qui débloque la production de ce matériau (Mine 6 : acier, 11 : mithril,
+ * 16 : adamantite) se paie avec le matériau de la tranche précédente, sinon il serait impayable.
+ */
+function constructionMaterial(
+  data: VillageData,
+  buildingId: string,
+  targetLevel: number,
+  floor: number,
+): string {
+  const brackets = data.params.levelBrackets;
+  let index = 0;
+  brackets.forEach((b, i) => {
+    if (b.requiredFloor <= floor) index = i;
+  });
+  const producedFromThisLevel = (material: string) =>
+    data.production.some(
+      (row) =>
+        row.buildingId === buildingId &&
+        row.resourceId === material &&
+        row.requiredBuildingLevel >= targetLevel,
+    );
+  while (index > 0 && producedFromThisLevel(brackets[index]!.material)) index--;
+  return brackets[index]!.material;
 }
 
 /**
@@ -137,7 +157,7 @@ export function buildingUpgradeCost(
     targetLevel,
     requiredFloor,
     gold: excelRound(building.goldCostCoefficient * (targetLevel - 1) ** p.goldCostExponent, -1),
-    material: bracketForFloor(data, requiredFloor).material,
+    material: constructionMaterial(data, buildingId, targetLevel, requiredFloor),
     quantity,
     coal: requiredFloor >= coalFloor ? excelRound(quantity * p.coalShare) : 0,
   };
