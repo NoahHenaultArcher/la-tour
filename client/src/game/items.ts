@@ -40,8 +40,25 @@ export function formatStat(stat: StatId, value: number, signed = false): string 
   return signed && value > 0 ? `+${text}` : text;
 }
 
-export function statsOf(item: ItemDto): StatBlock {
-  return itemStats(gameData.equipment, catalogItem(item.catalogId), item.upgradeLevel);
+/** Niveau d'un personnage (porteur d'un objet), s'il est connu. */
+export function wearerLevel(
+  save: SaveDto | null | undefined,
+  characterId: string | null | undefined,
+): number | undefined {
+  return characterId ? save?.characters.find((c) => c.id === characterId)?.level : undefined;
+}
+
+/**
+ * Stats d'un objet. Un Unique grandit avec son porteur : `wearerId` (sinon le héros qui le porte)
+ * donne son niveau minimum. Sans sauvegarde ni porteur, stats de l'objet seul.
+ */
+export function statsOf(item: ItemDto, save?: SaveDto | null, wearerId?: string | null): StatBlock {
+  return itemStats(
+    gameData.equipment,
+    catalogItem(item.catalogId),
+    item.upgradeLevel,
+    wearerLevel(save, wearerId ?? item.equippedBy),
+  );
 }
 
 /** Différence de stats entre un objet et celui qu'il remplacerait (null : rien d'équipé). */
@@ -65,7 +82,9 @@ export function characterStats(
   character: CharacterDto,
   allocation: StatAllocation = character.statPoints.allocated,
 ) {
-  const equipment = save.items.filter((i) => i.equippedBy === character.id).map(statsOf);
+  const equipment = save.items
+    .filter((i) => i.equippedBy === character.id)
+    .map((i) => statsOf(i, save));
   return heroCombatStats(
     gameData,
     {

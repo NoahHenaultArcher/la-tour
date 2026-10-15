@@ -261,6 +261,8 @@
   "team.points.resetDone": "Points réinitialisés.",
 
   "item.upgrade": "Amélioration : +{level} (max +{max})",
+  "item.uniqueScaled": "Grandit avec son porteur : stats du niveau {level} (niveau propre : {own})",
+  "item.uniqueScales": "Niveau {level} : un Unique grandit avec le héros qui le porte",
   "item.nextCost": "Niveau suivant : {quantity} {resource} (vous en avez {have})",
   "item.workshopLocked": "Atelier pas encore construit",
   "item.tierLocked": "Palier {tier} pas encore ouvert à l'Atelier",

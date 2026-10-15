@@ -351,8 +351,9 @@ function HuntCard({ save }: { save: SaveDto }) {
 
 /** Nombre d'objets de l'inventaire plus puissants que celui porté au même emplacement. */
 function betterItemsCount(save: SaveDto, character: CharacterDto): number {
+  // Un Unique grandit avec son porteur : on le compare au niveau de ce héros.
   const power = (item: Parameters<typeof statsOf>[0]) =>
-    itemPower(gameData.equipment, statsOf(item));
+    itemPower(gameData.equipment, statsOf(item, save, character.id));
   return save.items.filter((item) => {
     if (item.equippedBy) return false;
     const info = catalogItem(item.catalogId);

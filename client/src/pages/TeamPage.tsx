@@ -42,8 +42,8 @@ function compareItems(a: ItemDto, b: ItemDto): number {
 }
 
 /** Deux stats principales d'un objet porté, pour le résumé de l'emplacement. */
-function statSummary(item: ItemDto): string {
-  const stats = statsOf(item);
+function statSummary(item: ItemDto, save: SaveDto): string {
+  const stats = statsOf(item, save);
   return STAT_IDS.filter((id) => stats[id] !== 0)
     .slice(0, 2)
     .map((id) => `${statInfo(id).name} ${formatStat(id, stats[id], true)}`)
@@ -219,7 +219,7 @@ export function TeamPage() {
                         {item ? (
                           <>
                             <ItemName catalogId={item.catalogId} upgradeLevel={item.upgradeLevel} />
-                            <span className="slot-summary">{statSummary(item)}</span>
+                            <span className="slot-summary">{statSummary(item, save)}</span>
                           </>
                         ) : (
                           <span className="slot-empty-text">{t('team.slotEmpty')}</span>
@@ -380,7 +380,7 @@ function InventoryRow({
           <ItemName catalogId={item.catalogId} upgradeLevel={item.upgradeLevel} />{' '}
           <span className="muted small">{t(`slot.${info.slot}`)}</span>
         </span>
-        {ownerId && <StatDeltas candidate={item} reference={reference} />}
+        {ownerId && <StatDeltas candidate={item} reference={reference} wearerId={ownerId} />}
       </span>
       {ownerId && (
         <button type="button" disabled={pending} onClick={onEquip}>

@@ -33,7 +33,7 @@ export async function computeRanking(prisma: PrismaClient): Promise<RankedPlayer
       characters: { select: { class: true, level: true }, orderBy: { createdAt: 'asc' } },
       items: {
         where: { equippedById: { not: null } },
-        select: { catalogId: true, upgradeLevel: true },
+        select: { catalogId: true, upgradeLevel: true, equippedBy: { select: { level: true } } },
       },
       buildings: { select: { level: true } },
     },
@@ -45,7 +45,9 @@ export async function computeRanking(prisma: PrismaClient): Promise<RankedPlayer
       heroLevels: save.characters.map((c) => c.level),
       equipped: save.items.flatMap((i) => {
         const item = byId(gameData.equipment.catalog, i.catalogId);
-        return item ? [{ item, upgradeLevel: i.upgradeLevel }] : [];
+        return item
+          ? [{ item, upgradeLevel: i.upgradeLevel, wearerLevel: i.equippedBy?.level }]
+          : [];
       }),
       buildingLevels: save.buildings.map((b) => b.level),
       bestAbyssFloor: save.bestAbyssFloor,

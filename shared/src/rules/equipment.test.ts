@@ -26,10 +26,45 @@ const itemById = (id: string) => {
 };
 
 describe('stats des objets', () => {
-  it('reproduisent les 930 objets du Catalogue à +0', () => {
-    for (const item of data.catalog) {
+  it('reproduisent les 900 objets du Catalogue à +0 (hors Uniques, renforcés : voir plus bas)', () => {
+    for (const item of data.catalog.filter((c) => c.rarity !== 'unique')) {
       expect(itemStats(data, item, 0), item.id).toEqual(item.statsAtZero);
     }
+  });
+
+  describe('Uniques renforcés (balance.ts, UNIQUE_ITEMS)', () => {
+    const uniques = data.catalog.filter((c) => c.rarity === 'unique');
+    const power = (item: (typeof uniques)[number], upgrade: number, wearer?: number) =>
+      itemPower(data, itemStats(data, item, upgrade, wearer));
+
+    it('légèrement supérieurs à un Légendaire du même emplacement et du même niveau', () => {
+      for (const u of uniques) {
+        const legendary = data.catalog.find(
+          (c) =>
+            c.classId === u.classId &&
+            c.slot === u.slot &&
+            c.rarity === 'legendary' &&
+            c.tier === 5,
+        )!;
+        const ratio = power(u, u.maxUpgrade) / itemPower(data, itemStats(data, legendary, 30));
+        expect(ratio, u.id).toBeGreaterThan(1.04);
+        expect(ratio, u.id).toBeLessThan(1.12);
+      }
+    });
+
+    it('grandissent avec leur porteur, sans dépasser leur niveau maximum', () => {
+      const forest = uniques.find((u) => u.baseLevel === 1)!;
+      expect(power(forest, 0, 85)).toBeGreaterThan(power(forest, 0) * 5);
+      expect(itemStats(data, forest, 0, 85)).toEqual(itemStats(data, forest, 84));
+      // L'amélioration sert à dépasser le niveau du héros.
+      expect(itemStats(data, forest, 95, 50)).toEqual(itemStats(data, forest, 95));
+      expect(itemStats(data, forest, 0, 150)).toEqual(itemStats(data, forest, forest.maxUpgrade));
+    });
+
+    it('les autres raretés ignorent le niveau du porteur', () => {
+      const epic = data.catalog.find((c) => c.rarity === 'epic')!;
+      expect(itemStats(data, epic, 0, 99)).toEqual(itemStats(data, epic, 0));
+    });
   });
 
   it('reproduisent la puissance (pts) du Catalogue', () => {

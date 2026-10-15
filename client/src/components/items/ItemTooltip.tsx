@@ -1,6 +1,8 @@
 import {
   STAT_IDS,
+  effectiveLevel,
   itemWorkTier,
+  statLevel,
   workshopMaxTier,
   workshopUpgradeCost,
   type ItemDto,
@@ -15,6 +17,7 @@ import {
   rarityInfo,
   statInfo,
   statsOf,
+  wearerLevel,
 } from '../../game/items.ts';
 import { resourceById } from '../../game/village.ts';
 import { formatNumber, t } from '../../i18n/index.ts';
@@ -52,8 +55,12 @@ export function ItemName({
 export function ItemTooltip({ item, save, resources, compareWith }: Props) {
   const info = catalogItem(item.catalogId);
   const rarity = rarityInfo(info.rarity);
-  const stats = statsOf(item);
+  const owner = compareWith ?? item.equippedBy;
+  // Un Unique grandit avec le héros qui le porte (ou le porterait).
+  const stats = statsOf(item, save, owner);
   const unique = gameData.equipment.uniques.find((u) => u.id === info.id);
+  const ownLevel = effectiveLevel(info, item.upgradeLevel);
+  const usedLevel = statLevel(info, item.upgradeLevel, wearerLevel(save, owner));
 
   const workshopLevel = save.buildings.atelier_fabrication;
   const cost = workshopUpgradeCost(gameData.equipment, info, item.upgradeLevel, workshopLevel ?? 0);
@@ -61,11 +68,10 @@ export function ItemTooltip({ item, save, resources, compareWith }: Props) {
   const tierLocked = tier > workshopMaxTier(workshopLevel);
   const missing = cost ? (resources[cost.resourceId] ?? 0) < cost.quantity : false;
 
-  const owner = compareWith ?? item.equippedBy;
   const reference = owner && item.equippedBy !== owner ? equippedIn(save, owner, info.slot) : null;
   const deltas =
     owner && item.equippedBy !== owner
-      ? compareStats(stats, reference ? statsOf(reference) : null)
+      ? compareStats(stats, reference ? statsOf(reference, save) : null)
       : [];
 
   return (
@@ -75,6 +81,13 @@ export function ItemTooltip({ item, save, resources, compareWith }: Props) {
         {rarity.name} · {t(`class.name.${info.classId}`)} · {t(`slot.${info.slot}`)}
       </span>
       <span>{t('item.upgrade', { level: item.upgradeLevel, max: info.maxUpgrade })}</span>
+      {unique && (
+        <span className="muted small">
+          {usedLevel > ownLevel
+            ? t('item.uniqueScaled', { level: usedLevel, own: ownLevel })
+            : t('item.uniqueScales', { level: ownLevel })}
+        </span>
+      )}
       <ul className="stat-lines">
         {STAT_IDS.filter((id) => stats[id] !== 0).map((id) => (
           <li key={id}>

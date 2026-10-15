@@ -29,7 +29,7 @@ export interface LeaderboardInput {
   heritageCount: number;
   heroLevels: readonly number[];
   /** Objets portés par les héros. */
-  equipped: readonly { item: CatalogItem; upgradeLevel: number }[];
+  equipped: readonly { item: CatalogItem; upgradeLevel: number; wearerLevel?: number }[];
   buildingLevels: readonly number[];
   /** Record de l'Abysse (0 si jamais entré). */
   bestAbyssFloor?: number;
@@ -50,8 +50,8 @@ const sum = (values: readonly number[]) => values.reduce((a, b) => a + b, 0);
 export function leaderboardScore(data: EquipmentData, input: LeaderboardInput): LeaderboardScore {
   const w = LEADERBOARD_SCORE;
   const power = sum(
-    input.equipped.map(({ item, upgradeLevel }) =>
-      itemPower(data, itemStats(data, item, upgradeLevel)),
+    input.equipped.map(({ item, upgradeLevel, wearerLevel }) =>
+      itemPower(data, itemStats(data, item, upgradeLevel, wearerLevel)),
     ),
   );
   const parts = {

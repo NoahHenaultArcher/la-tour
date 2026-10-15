@@ -9,6 +9,7 @@ import {
   type SlotId,
   type StatBlock,
 } from '../constants.ts';
+import { UNIQUE_ITEMS } from '../balance.ts';
 import type { EquipmentData } from '../data/schemas.ts';
 import { excelRound, levelFactor } from './math.ts';
 
@@ -67,12 +68,33 @@ export function statsAtLevel(
   return stats;
 }
 
-export function itemStats(data: EquipmentData, item: CatalogItem, upgrade: number): StatBlock {
+/**
+ * Niveau utilisé pour les stats : le niveau effectif de l'objet ; un Unique porté vaut au moins le
+ * niveau de son porteur, sans dépasser son niveau maximum (balance.ts, UNIQUE_ITEMS).
+ */
+export function statLevel(item: CatalogItem, upgrade: number, wearerLevel?: number): number {
+  const own = effectiveLevel(item, upgrade);
+  if (item.rarity !== 'unique' || !wearerLevel) return own;
+  return Math.max(own, Math.min(wearerLevel, item.baseLevel + item.maxUpgrade));
+}
+
+/**
+ * Stats d'un objet à un niveau d'amélioration. `wearerLevel` : niveau du héros qui le porte
+ * (ou le porterait) ; seuls les Uniques en tiennent compte. Les Uniques ont leur propre
+ * multiplicateur (balance.ts) ; les autres raretés suivent le classeur.
+ */
+export function itemStats(
+  data: EquipmentData,
+  item: CatalogItem,
+  upgrade: number,
+  wearerLevel?: number,
+): StatBlock {
+  const rarity = findRarity(data, item.rarity);
   return statsAtLevel(
     data,
     findProfile(data, item.classId, item.slot),
-    findRarity(data, item.rarity),
-    effectiveLevel(item, upgrade),
+    item.rarity === 'unique' ? { ...rarity, statMultiplier: UNIQUE_ITEMS.statMultiplier } : rarity,
+    statLevel(item, upgrade, wearerLevel),
   );
 }
 

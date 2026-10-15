@@ -227,6 +227,19 @@ export const ALPHA_TRAIT_IDS = [
 export type AlphaTraitId = (typeof ALPHA_TRAIT_IDS)[number];
 
 /**
+ * Objets Uniques (décision de l'utilisateur, 15/10/2026) : ils doivent être « légèrement supérieurs »
+ * aux Légendaires. Le classeur leur donne ×2,5 (Légendaire ×2,4), mais un Unique reste au niveau du
+ * début de son biome (1 en Forêt, 91 au Palais démoniaque) : à +0, il était bien plus faible qu'un
+ * Mythique adamantite amélioré. Désormais :
+ * - multiplicateur ×2,6 (+8 % sur un Légendaire du même niveau) ;
+ * - un Unique porté compte au moins au niveau de son porteur (plafonné à son niveau maximum, 100) :
+ *   il grandit avec le héros ; l'améliorer sert à dépasser le niveau du héros.
+ */
+export const UNIQUE_ITEMS = {
+  statMultiplier: 2.6,
+} as const;
+
+/**
  * Fabrication à l'Atelier (PROPOSITION à valider, absente des classeurs) : un objet Commun +0 coûte
  * en matériau l'équivalent de son prix en boutique (prix Commun du palier ÷ prix unitaire du matériau :
  * 14 bois pour une Épée en bois, plus d'unités quand le matériau est bon marché), × ce facteur.

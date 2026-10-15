@@ -59,7 +59,8 @@ function heroSetupOf(heritageCount: number, c: CharacterWithGear): HeroSetup {
     equipment: c.equipment.map((item) => {
       const catalogItem = gameData.equipment.catalog.find((i) => i.id === item.catalogId);
       if (!catalogItem) throw new Error(`Objet inconnu : ${item.catalogId}`);
-      return itemStats(gameData.equipment, catalogItem, item.upgradeLevel);
+      // Un Unique grandit avec son porteur (balance.ts, UNIQUE_ITEMS).
+      return itemStats(gameData.equipment, catalogItem, item.upgradeLevel, c.level);
     }),
     deck: c.skills.map((s) => ({
       position: s.position,

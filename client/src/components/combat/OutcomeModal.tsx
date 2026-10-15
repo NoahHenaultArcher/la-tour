@@ -132,7 +132,7 @@ export function LootRow({
                   ? t('item.compareWith', { name: catalogItem(reference.catalogId).name })
                   : t('outcome.slotEmpty')}
               </span>
-              <StatDeltas candidate={item} reference={reference} />
+              <StatDeltas candidate={item} reference={reference} wearerId={hero?.id} />
             </>
           )
         ) : (
