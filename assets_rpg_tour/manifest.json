@@ -1,20 +1,37 @@
 {
- "taille_px": {},
+ "taille_px": {
+  "personnages": 96,
+  "monstres": {
+   "Faible": 96,
+   "Normal": 96,
+   "Fort": 108,
+   "Boss": 144,
+   "Dragon": 192
+  },
+  "equipements": 48,
+  "ressources": 48,
+  "elements": 48,
+  "cadres_rarete": 56,
+  "competences": 72,
+  "fusions": 48,
+  "village": 128,
+  "note": "Pixel art : afficher avec image-rendering: pixelated et des agrandissements entiers (x2, x3). Héros tournés vers la droite, monstres vers la gauche."
+ },
  "personnages": [
   {
    "classe": "Guerrier",
    "fichier": "personnages/guerrier.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "classe": "Tireur",
    "fichier": "personnages/tireur.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "classe": "Mage",
    "fichier": "personnages/mage.png",
-   "taille": 32
+   "taille": 96
   }
  ],
  "monstres": [
@@ -26,7 +43,7 @@
    "element": "Neutre",
    "rang": "Normal",
    "fichier": "monstres/MON-001_sanglier.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-002",
@@ -36,7 +53,7 @@
    "element": "Neutre",
    "rang": "Normal",
    "fichier": "monstres/MON-002_loup.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-003",
@@ -46,7 +63,7 @@
    "element": "Neutre",
    "rang": "Fort",
    "fichier": "monstres/MON-003_ours.png",
-   "taille": 32
+   "taille": 108
   },
   {
    "id": "MON-004",
@@ -56,7 +73,7 @@
    "element": "Neutre",
    "rang": "Boss",
    "fichier": "monstres/MON-004_ours_enrage.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-005",
@@ -66,7 +83,7 @@
    "element": "Neutre",
    "rang": "Dragon",
    "fichier": "monstres/MON-005_dragon_neutre.png",
-   "taille": 64
+   "taille": 192
   },
   {
    "id": "MON-006",
@@ -76,7 +93,7 @@
    "element": "Neutre",
    "rang": "Boss",
    "fichier": "monstres/MON-006_chef_gobelin.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-007",
@@ -86,7 +103,7 @@
    "element": "Neutre",
    "rang": "Faible",
    "fichier": "monstres/MON-007_gobelin.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-008",
@@ -96,7 +113,7 @@
    "element": "Neutre",
    "rang": "Normal",
    "fichier": "monstres/MON-008_guerrier_gobelin.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-009",
@@ -106,7 +123,7 @@
    "element": "Neutre",
    "rang": "Normal",
    "fichier": "monstres/MON-009_chaman_gobelin.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-010",
@@ -116,7 +133,7 @@
    "element": "Neutre",
    "rang": "Normal",
    "fichier": "monstres/MON-010_archer_gobelin.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-011",
@@ -126,7 +143,7 @@
    "element": "Terre",
    "rang": "Boss",
    "fichier": "monstres/MON-011_haut_chaman_gobelin.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-012",
@@ -136,7 +153,7 @@
    "element": "Terre",
    "rang": "Normal",
    "fichier": "monstres/MON-012_haut_gobelin.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-013",
@@ -146,7 +163,7 @@
    "element": "Terre",
    "rang": "Normal",
    "fichier": "monstres/MON-013_haut_archer_gobelin.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-014",
@@ -156,7 +173,7 @@
    "element": "Terre",
    "rang": "Fort",
    "fichier": "monstres/MON-014_haut_guerrier_gobelin.png",
-   "taille": 36
+   "taille": 108
   },
   {
    "id": "MON-015",
@@ -166,7 +183,7 @@
    "element": "Terre",
    "rang": "Normal",
    "fichier": "monstres/MON-015_haut_shaman_gobelin.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-016",
@@ -176,7 +193,7 @@
    "element": "Terre",
    "rang": "Dragon",
    "fichier": "monstres/MON-016_dragon_terre.png",
-   "taille": 64
+   "taille": 192
   },
   {
    "id": "MON-017",
@@ -186,7 +203,7 @@
    "element": "Terre",
    "rang": "Boss",
    "fichier": "monstres/MON-017_chef_orc.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-018",
@@ -196,7 +213,7 @@
    "element": "Terre",
    "rang": "Normal",
    "fichier": "monstres/MON-018_orc.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-019",
@@ -206,7 +223,7 @@
    "element": "Terre",
    "rang": "Fort",
    "fichier": "monstres/MON-019_guerrier_orc.png",
-   "taille": 36
+   "taille": 108
   },
   {
    "id": "MON-020",
@@ -216,7 +233,7 @@
    "element": "Terre",
    "rang": "Normal",
    "fichier": "monstres/MON-020_chaman_orc.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-021",
@@ -226,7 +243,7 @@
    "element": "Feu",
    "rang": "Normal",
    "fichier": "monstres/MON-021_salamandre.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-022",
@@ -236,7 +253,7 @@
    "element": "Feu",
    "rang": "Boss",
    "fichier": "monstres/MON-022_malphite.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-023",
@@ -246,7 +263,7 @@
    "element": "Feu",
    "rang": "Fort",
    "fichier": "monstres/MON-023_golem_de_feu.png",
-   "taille": 32
+   "taille": 108
   },
   {
    "id": "MON-024",
@@ -256,7 +273,7 @@
    "element": "Feu",
    "rang": "Dragon",
    "fichier": "monstres/MON-024_dragon_feu.png",
-   "taille": 64
+   "taille": 192
   },
   {
    "id": "MON-025",
@@ -266,7 +283,7 @@
    "element": "Feu",
    "rang": "Boss",
    "fichier": "monstres/MON-025_ifrit.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-026",
@@ -276,7 +293,7 @@
    "element": "Feu",
    "rang": "Faible",
    "fichier": "monstres/MON-026_diablotin.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-027",
@@ -286,7 +303,7 @@
    "element": "Feu",
    "rang": "Normal",
    "fichier": "monstres/MON-027_chien_des_enfers.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-028",
@@ -296,7 +313,7 @@
    "element": "Feu",
    "rang": "Normal",
    "fichier": "monstres/MON-028_elementaire_de_feu.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-029",
@@ -306,7 +323,7 @@
    "element": "Vent",
    "rang": "Boss",
    "fichier": "monstres/MON-029_ver_des_sables.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-030",
@@ -316,7 +333,7 @@
    "element": "Vent",
    "rang": "Normal",
    "fichier": "monstres/MON-030_djin.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-031",
@@ -326,7 +343,7 @@
    "element": "Vent",
    "rang": "Normal",
    "fichier": "monstres/MON-031_souffleur.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-032",
@@ -336,7 +353,7 @@
    "element": "Vent",
    "rang": "Normal",
    "fichier": "monstres/MON-032_harpie.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-033",
@@ -346,7 +363,7 @@
    "element": "Vent",
    "rang": "Dragon",
    "fichier": "monstres/MON-033_dragon_vent.png",
-   "taille": 64
+   "taille": 192
   },
   {
    "id": "MON-034",
@@ -356,7 +373,7 @@
    "element": "Vent",
    "rang": "Boss",
    "fichier": "monstres/MON-034_anubis.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-035",
@@ -366,7 +383,7 @@
    "element": "Vent",
    "rang": "Normal",
    "fichier": "monstres/MON-035_lion_humanoide.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-036",
@@ -376,7 +393,7 @@
    "element": "Vent",
    "rang": "Normal",
    "fichier": "monstres/MON-036_chien_humanoide.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-037",
@@ -386,7 +403,7 @@
    "element": "Vent",
    "rang": "Fort",
    "fichier": "monstres/MON-037_ours_humanoide.png",
-   "taille": 36
+   "taille": 108
   },
   {
    "id": "MON-038",
@@ -396,7 +413,7 @@
    "element": "Acide",
    "rang": "Boss",
    "fichier": "monstres/MON-038_roi_slime.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-039",
@@ -406,7 +423,7 @@
    "element": "Acide",
    "rang": "Fort",
    "fichier": "monstres/MON-039_serpent_geant.png",
-   "taille": 32
+   "taille": 108
   },
   {
    "id": "MON-040",
@@ -416,7 +433,7 @@
    "element": "Acide",
    "rang": "Normal",
    "fichier": "monstres/MON-040_cracheur_toxique.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-041",
@@ -426,7 +443,7 @@
    "element": "Acide",
    "rang": "Faible",
    "fichier": "monstres/MON-041_slime.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-042",
@@ -436,7 +453,7 @@
    "element": "Acide",
    "rang": "Dragon",
    "fichier": "monstres/MON-042_dragon_acide.png",
-   "taille": 64
+   "taille": 192
   },
   {
    "id": "MON-043",
@@ -446,7 +463,7 @@
    "element": "Acide",
    "rang": "Boss",
    "fichier": "monstres/MON-043_nurgol_le_zombie.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-044",
@@ -456,7 +473,7 @@
    "element": "Acide",
    "rang": "Normal",
    "fichier": "monstres/MON-044_zombie.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-045",
@@ -466,7 +483,7 @@
    "element": "Acide",
    "rang": "Normal",
    "fichier": "monstres/MON-045_claqueur.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-046",
@@ -476,7 +493,7 @@
    "element": "Acide",
    "rang": "Fort",
    "fichier": "monstres/MON-046_zombie_renforce.png",
-   "taille": 36
+   "taille": 108
   },
   {
    "id": "MON-047",
@@ -486,7 +503,7 @@
    "element": "Eau",
    "rang": "Boss",
    "fichier": "monstres/MON-047_kraken.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-048",
@@ -496,7 +513,7 @@
    "element": "Eau",
    "rang": "Normal",
    "fichier": "monstres/MON-048_sirene.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-049",
@@ -506,7 +523,7 @@
    "element": "Eau",
    "rang": "Fort",
    "fichier": "monstres/MON-049_crabe_geant.png",
-   "taille": 32
+   "taille": 108
   },
   {
    "id": "MON-050",
@@ -516,7 +533,7 @@
    "element": "Eau",
    "rang": "Normal",
    "fichier": "monstres/MON-050_requin.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-051",
@@ -526,7 +543,7 @@
    "element": "Eau",
    "rang": "Dragon",
    "fichier": "monstres/MON-051_dragon_eau.png",
-   "taille": 64
+   "taille": 192
   },
   {
    "id": "MON-052",
@@ -536,7 +553,7 @@
    "element": "Eau",
    "rang": "Boss",
    "fichier": "monstres/MON-052_roi_triton.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-053",
@@ -546,7 +563,7 @@
    "element": "Eau",
    "rang": "Normal",
    "fichier": "monstres/MON-053_triton.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-054",
@@ -556,7 +573,7 @@
    "element": "Eau",
    "rang": "Normal",
    "fichier": "monstres/MON-054_lancier_triton.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-055",
@@ -566,7 +583,7 @@
    "element": "Eau",
    "rang": "Normal",
    "fichier": "monstres/MON-055_mage_des_eaux_triton.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-056",
@@ -576,7 +593,7 @@
    "element": "Glace",
    "rang": "Boss",
    "fichier": "monstres/MON-056_yeti.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-057",
@@ -586,7 +603,7 @@
    "element": "Glace",
    "rang": "Fort",
    "fichier": "monstres/MON-057_mammouth_de_glace.png",
-   "taille": 32
+   "taille": 108
   },
   {
    "id": "MON-058",
@@ -596,7 +613,7 @@
    "element": "Glace",
    "rang": "Normal",
    "fichier": "monstres/MON-058_loup_givre.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-059",
@@ -606,7 +623,7 @@
    "element": "Glace",
    "rang": "Normal",
    "fichier": "monstres/MON-059_zombie_gele.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-060",
@@ -616,7 +633,7 @@
    "element": "Glace",
    "rang": "Dragon",
    "fichier": "monstres/MON-060_dragon_glace.png",
-   "taille": 64
+   "taille": 192
   },
   {
    "id": "MON-061",
@@ -626,7 +643,7 @@
    "element": "Glace",
    "rang": "Boss",
    "fichier": "monstres/MON-061_roi_elfique.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-062",
@@ -636,7 +653,7 @@
    "element": "Glace",
    "rang": "Normal",
    "fichier": "monstres/MON-062_elfe.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-063",
@@ -646,7 +663,7 @@
    "element": "Glace",
    "rang": "Normal",
    "fichier": "monstres/MON-063_guerrier_elfe.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-064",
@@ -656,7 +673,7 @@
    "element": "Glace",
    "rang": "Normal",
    "fichier": "monstres/MON-064_archer_elfe.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-065",
@@ -666,7 +683,7 @@
    "element": "Glace",
    "rang": "Normal",
    "fichier": "monstres/MON-065_elementaliste_elfe.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-066",
@@ -676,7 +693,7 @@
    "element": "Électricité",
    "rang": "Boss",
    "fichier": "monstres/MON-066_geant_electrique.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-067",
@@ -686,7 +703,7 @@
    "element": "Électricité",
    "rang": "Fort",
    "fichier": "monstres/MON-067_geant.png",
-   "taille": 36
+   "taille": 108
   },
   {
    "id": "MON-068",
@@ -696,7 +713,7 @@
    "element": "Électricité",
    "rang": "Normal",
    "fichier": "monstres/MON-068_geant_tireur.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-069",
@@ -706,7 +723,7 @@
    "element": "Électricité",
    "rang": "Dragon",
    "fichier": "monstres/MON-069_dragon_electricite.png",
-   "taille": 64
+   "taille": 192
   },
   {
    "id": "MON-070",
@@ -716,7 +733,7 @@
    "element": "Électricité",
    "rang": "Boss",
    "fichier": "monstres/MON-070_wyverne_mutante.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-071",
@@ -726,7 +743,7 @@
    "element": "Électricité",
    "rang": "Normal",
    "fichier": "monstres/MON-071_wyverne.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-072",
@@ -736,7 +753,7 @@
    "element": "Électricité",
    "rang": "Normal",
    "fichier": "monstres/MON-072_oiseau_electrique.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-073",
@@ -746,7 +763,7 @@
    "element": "Lumière",
    "rang": "Boss",
    "fichier": "monstres/MON-073_jesus.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-074",
@@ -756,7 +773,7 @@
    "element": "Lumière",
    "rang": "Faible",
    "fichier": "monstres/MON-074_croyant.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-075",
@@ -766,7 +783,7 @@
    "element": "Lumière",
    "rang": "Normal",
    "fichier": "monstres/MON-075_apotre.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-076",
@@ -776,7 +793,7 @@
    "element": "Lumière",
    "rang": "Dragon",
    "fichier": "monstres/MON-076_dragon_lumiere.png",
-   "taille": 64
+   "taille": 192
   },
   {
    "id": "MON-077",
@@ -786,7 +803,7 @@
    "element": "Lumière",
    "rang": "Boss",
    "fichier": "monstres/MON-077_michel.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-078",
@@ -796,7 +813,7 @@
    "element": "Lumière",
    "rang": "Normal",
    "fichier": "monstres/MON-078_ange.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-079",
@@ -806,7 +823,7 @@
    "element": "Lumière",
    "rang": "Fort",
    "fichier": "monstres/MON-079_archange.png",
-   "taille": 36
+   "taille": 108
   },
   {
    "id": "MON-080",
@@ -816,7 +833,7 @@
    "element": "Lumière",
    "rang": "Fort",
    "fichier": "monstres/MON-080_seraphin.png",
-   "taille": 36
+   "taille": 108
   },
   {
    "id": "MON-081",
@@ -826,7 +843,7 @@
    "element": "Ombre",
    "rang": "Boss",
    "fichier": "monstres/MON-081_wyverne_des_tenebres.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-082",
@@ -836,7 +853,7 @@
    "element": "Ombre",
    "rang": "Normal",
    "fichier": "monstres/MON-082_orc_demoniaque.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-083",
@@ -846,7 +863,7 @@
    "element": "Ombre",
    "rang": "Faible",
    "fichier": "monstres/MON-083_gobelin_demoniaque.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-084",
@@ -856,7 +873,7 @@
    "element": "Ombre",
    "rang": "Normal",
    "fichier": "monstres/MON-084_triton_demoniaque.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-085",
@@ -866,7 +883,7 @@
    "element": "Ombre",
    "rang": "Normal",
    "fichier": "monstres/MON-085_elfe_demoniaque.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-086",
@@ -876,7 +893,7 @@
    "element": "Ombre",
    "rang": "Fort",
    "fichier": "monstres/MON-086_zombie_demoniaque.png",
-   "taille": 36
+   "taille": 108
   },
   {
    "id": "MON-087",
@@ -886,7 +903,7 @@
    "element": "Ombre",
    "rang": "Dragon",
    "fichier": "monstres/MON-087_dragon_ombre.png",
-   "taille": 64
+   "taille": 192
   },
   {
    "id": "MON-088",
@@ -896,7 +913,7 @@
    "element": "Ombre",
    "rang": "Boss",
    "fichier": "monstres/MON-088_roi_demon.png",
-   "taille": 48
+   "taille": 144
   },
   {
    "id": "MON-089",
@@ -906,7 +923,7 @@
    "element": "Ombre",
    "rang": "Fort",
    "fichier": "monstres/MON-089_archidemon.png",
-   "taille": 36
+   "taille": 108
   },
   {
    "id": "MON-090",
@@ -916,7 +933,7 @@
    "element": "Ombre",
    "rang": "Faible",
    "fichier": "monstres/MON-090_demon_inferieur.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-091",
@@ -926,7 +943,7 @@
    "element": "Ombre",
    "rang": "Normal",
    "fichier": "monstres/MON-091_demon.png",
-   "taille": 32
+   "taille": 96
   },
   {
    "id": "MON-092",
@@ -936,7 +953,7 @@
    "element": "Ombre",
    "rang": "Fort",
    "fichier": "monstres/MON-092_demon_superieur.png",
-   "taille": 36
+   "taille": 108
   }
  ],
  "equipements": [
@@ -956,7 +973,7 @@
     "GUE-CHA-P1-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-CHA-P1_casque_en_cuir.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-CHA-P2",
@@ -974,7 +991,7 @@
     "GUE-CHA-P2-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-CHA-P2_casque_en_fer.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-CHA-P3",
@@ -992,7 +1009,7 @@
     "GUE-CHA-P3-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-CHA-P3_casque_en_acier.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-CHA-P4",
@@ -1010,7 +1027,7 @@
     "GUE-CHA-P4-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-CHA-P4_casque_en_mithril.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-CHA-P5",
@@ -1028,7 +1045,7 @@
     "GUE-CHA-P5-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-CHA-P5_casque_en_adamantite.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-CHA-UNI",
@@ -1038,7 +1055,7 @@
    "rarete": "Unique",
    "element": "Neutre",
    "fichier": "equipements/guerrier/GUE-CHA-UNI_heaume_du_roi_dechu.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-ARM-P1",
@@ -1056,7 +1073,7 @@
     "GUE-ARM-P1-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-ARM-P1_plastron_en_cuir.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-ARM-P2",
@@ -1074,7 +1091,7 @@
     "GUE-ARM-P2-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-ARM-P2_plastron_en_fer.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-ARM-P3",
@@ -1092,7 +1109,7 @@
     "GUE-ARM-P3-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-ARM-P3_plastron_en_acier.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-ARM-P4",
@@ -1110,7 +1127,7 @@
     "GUE-ARM-P4-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-ARM-P4_plastron_en_mithril.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-ARM-P5",
@@ -1128,7 +1145,7 @@
     "GUE-ARM-P5-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-ARM-P5_plastron_en_adamantite.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-ARM-UNI",
@@ -1138,7 +1155,7 @@
    "rarete": "Unique",
    "element": "Terre",
    "fichier": "equipements/guerrier/GUE-ARM-UNI_plastron_du_titan_de_pierre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-PAN-P1",
@@ -1156,7 +1173,7 @@
     "GUE-PAN-P1-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-PAN-P1_jambieres_en_cuir.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-PAN-P2",
@@ -1174,7 +1191,7 @@
     "GUE-PAN-P2-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-PAN-P2_jambieres_en_fer.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-PAN-P3",
@@ -1192,7 +1209,7 @@
     "GUE-PAN-P3-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-PAN-P3_jambieres_en_acier.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-PAN-P4",
@@ -1210,7 +1227,7 @@
     "GUE-PAN-P4-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-PAN-P4_jambieres_en_mithril.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-PAN-P5",
@@ -1228,7 +1245,7 @@
     "GUE-PAN-P5-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-PAN-P5_jambieres_en_adamantite.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-PAN-UNI",
@@ -1238,7 +1255,7 @@
    "rarete": "Unique",
    "element": "Feu",
    "fichier": "equipements/guerrier/GUE-PAN-UNI_jambieres_du_brasier_marchant.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-BOT-P1",
@@ -1256,7 +1273,7 @@
     "GUE-BOT-P1-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-BOT-P1_brodequins_en_cuir.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-BOT-P2",
@@ -1274,7 +1291,7 @@
     "GUE-BOT-P2-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-BOT-P2_brodequins_en_fer.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-BOT-P3",
@@ -1292,7 +1309,7 @@
     "GUE-BOT-P3-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-BOT-P3_brodequins_en_acier.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-BOT-P4",
@@ -1310,7 +1327,7 @@
     "GUE-BOT-P4-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-BOT-P4_brodequins_en_mithril.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-BOT-P5",
@@ -1328,7 +1345,7 @@
     "GUE-BOT-P5-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-BOT-P5_brodequins_en_adamantite.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-BOT-UNI",
@@ -1338,7 +1355,7 @@
    "rarete": "Unique",
    "element": "Glace",
    "fichier": "equipements/guerrier/GUE-BOT-UNI_bottes_du_marcheur_glace.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-COL-P1",
@@ -1356,7 +1373,7 @@
     "GUE-COL-P1-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-COL-P1_medaillon_en_cuivre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-COL-P2",
@@ -1374,7 +1391,7 @@
     "GUE-COL-P2-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-COL-P2_medaillon_en_argent.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-COL-P3",
@@ -1392,7 +1409,7 @@
     "GUE-COL-P3-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-COL-P3_medaillon_en_or.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-COL-P4",
@@ -1410,7 +1427,7 @@
     "GUE-COL-P4-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-COL-P4_medaillon_en_platine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-COL-P5",
@@ -1428,7 +1445,7 @@
     "GUE-COL-P5-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-COL-P5_medaillon_en_orichalque.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-COL-UNI",
@@ -1438,7 +1455,7 @@
    "rarete": "Unique",
    "element": "Neutre",
    "fichier": "equipements/guerrier/GUE-COL-UNI_medaillon_du_serment_brise.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AN1-P1",
@@ -1456,7 +1473,7 @@
     "GUE-AN1-P1-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AN1-P1_anneau_de_guerre_en_cuivre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AN1-P2",
@@ -1474,7 +1491,7 @@
     "GUE-AN1-P2-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AN1-P2_anneau_de_guerre_en_argent.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AN1-P3",
@@ -1492,7 +1509,7 @@
     "GUE-AN1-P3-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AN1-P3_anneau_de_guerre_en_or.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AN1-P4",
@@ -1510,7 +1527,7 @@
     "GUE-AN1-P4-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AN1-P4_anneau_de_guerre_en_platine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AN1-P5",
@@ -1528,7 +1545,7 @@
     "GUE-AN1-P5-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AN1-P5_anneau_de_guerre_en_orichalque.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AN1-UNI",
@@ -1538,7 +1555,7 @@
    "rarete": "Unique",
    "element": "Acide",
    "fichier": "equipements/guerrier/GUE-AN1-UNI_anneau_du_briseur_de_remparts.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AN2-P1",
@@ -1556,7 +1573,7 @@
     "GUE-AN2-P1-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AN2-P1_chevaliere_en_cuivre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AN2-P2",
@@ -1574,7 +1591,7 @@
     "GUE-AN2-P2-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AN2-P2_chevaliere_en_argent.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AN2-P3",
@@ -1592,7 +1609,7 @@
     "GUE-AN2-P3-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AN2-P3_chevaliere_en_or.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AN2-P4",
@@ -1610,7 +1627,7 @@
     "GUE-AN2-P4-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AN2-P4_chevaliere_en_platine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AN2-P5",
@@ -1628,7 +1645,7 @@
     "GUE-AN2-P5-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AN2-P5_chevaliere_en_orichalque.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AN2-UNI",
@@ -1638,7 +1655,7 @@
    "rarete": "Unique",
    "element": "Eau",
    "fichier": "equipements/guerrier/GUE-AN2-UNI_chevaliere_du_gardien_des_marees.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-CEI-P1",
@@ -1656,7 +1673,7 @@
     "GUE-CEI-P1-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-CEI-P1_ceinturon_en_cuir.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-CEI-P2",
@@ -1674,7 +1691,7 @@
     "GUE-CEI-P2-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-CEI-P2_ceinturon_en_fer.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-CEI-P3",
@@ -1692,7 +1709,7 @@
     "GUE-CEI-P3-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-CEI-P3_ceinturon_en_acier.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-CEI-P4",
@@ -1710,7 +1727,7 @@
     "GUE-CEI-P4-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-CEI-P4_ceinturon_en_mithril.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-CEI-P5",
@@ -1728,7 +1745,7 @@
     "GUE-CEI-P5-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-CEI-P5_ceinturon_en_adamantite.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-CEI-UNI",
@@ -1738,7 +1755,7 @@
    "rarete": "Unique",
    "element": "Électricité",
    "fichier": "equipements/guerrier/GUE-CEI-UNI_ceinturon_du_tonnerre_rugissant.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AR1-P1",
@@ -1756,7 +1773,7 @@
     "GUE-AR1-P1-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AR1-P1_epee_en_bois.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AR1-P2",
@@ -1774,7 +1791,7 @@
     "GUE-AR1-P2-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AR1-P2_epee_en_fer.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AR1-P3",
@@ -1792,7 +1809,7 @@
     "GUE-AR1-P3-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AR1-P3_epee_en_acier.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AR1-P4",
@@ -1810,7 +1827,7 @@
     "GUE-AR1-P4-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AR1-P4_epee_en_mithril.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AR1-P5",
@@ -1828,7 +1845,7 @@
     "GUE-AR1-P5-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AR1-P5_epee_en_adamantite.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AR1-UNI",
@@ -1838,7 +1855,7 @@
    "rarete": "Unique",
    "element": "Ombre",
    "fichier": "equipements/guerrier/GUE-AR1-UNI_epee_de_la_mort.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AR2-P1",
@@ -1856,7 +1873,7 @@
     "GUE-AR2-P1-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AR2-P1_bouclier_en_bois.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AR2-P2",
@@ -1874,7 +1891,7 @@
     "GUE-AR2-P2-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AR2-P2_bouclier_en_fer.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AR2-P3",
@@ -1892,7 +1909,7 @@
     "GUE-AR2-P3-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AR2-P3_bouclier_en_acier.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AR2-P4",
@@ -1910,7 +1927,7 @@
     "GUE-AR2-P4-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AR2-P4_bouclier_en_mithril.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AR2-P5",
@@ -1928,7 +1945,7 @@
     "GUE-AR2-P5-LEG"
    ],
    "fichier": "equipements/guerrier/GUE-AR2-P5_bouclier_en_adamantite.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "GUE-AR2-UNI",
@@ -1938,7 +1955,7 @@
    "rarete": "Unique",
    "element": "Lumière",
    "fichier": "equipements/guerrier/GUE-AR2-UNI_rempart_de_l_aube_eternelle.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-CHA-P1",
@@ -1956,7 +1973,7 @@
     "MAG-CHA-P1-LEG"
    ],
    "fichier": "equipements/mage/MAG-CHA-P1_chapeau_en_lin.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-CHA-P2",
@@ -1974,7 +1991,7 @@
     "MAG-CHA-P2-LEG"
    ],
    "fichier": "equipements/mage/MAG-CHA-P2_chapeau_en_laine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-CHA-P3",
@@ -1992,7 +2009,7 @@
     "MAG-CHA-P3-LEG"
    ],
    "fichier": "equipements/mage/MAG-CHA-P3_chapeau_en_soie.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-CHA-P4",
@@ -2010,7 +2027,7 @@
     "MAG-CHA-P4-LEG"
    ],
    "fichier": "equipements/mage/MAG-CHA-P4_chapeau_en_velours_enchante.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-CHA-P5",
@@ -2028,7 +2045,7 @@
     "MAG-CHA-P5-LEG"
    ],
    "fichier": "equipements/mage/MAG-CHA-P5_chapeau_en_etoffe_astrale.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-CHA-UNI",
@@ -2038,7 +2055,7 @@
    "rarete": "Unique",
    "element": "Vent",
    "fichier": "equipements/mage/MAG-CHA-UNI_chapeau_du_sage_des_cieux.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-ARM-P1",
@@ -2056,7 +2073,7 @@
     "MAG-ARM-P1-LEG"
    ],
    "fichier": "equipements/mage/MAG-ARM-P1_robe_en_lin.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-ARM-P2",
@@ -2074,7 +2091,7 @@
     "MAG-ARM-P2-LEG"
    ],
    "fichier": "equipements/mage/MAG-ARM-P2_robe_en_laine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-ARM-P3",
@@ -2092,7 +2109,7 @@
     "MAG-ARM-P3-LEG"
    ],
    "fichier": "equipements/mage/MAG-ARM-P3_robe_en_soie.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-ARM-P4",
@@ -2110,7 +2127,7 @@
     "MAG-ARM-P4-LEG"
    ],
    "fichier": "equipements/mage/MAG-ARM-P4_robe_en_velours_enchante.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-ARM-P5",
@@ -2128,7 +2145,7 @@
     "MAG-ARM-P5-LEG"
    ],
    "fichier": "equipements/mage/MAG-ARM-P5_robe_en_etoffe_astrale.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-ARM-UNI",
@@ -2138,7 +2155,7 @@
    "rarete": "Unique",
    "element": "Glace",
    "fichier": "equipements/mage/MAG-ARM-UNI_robe_du_givre_eternel.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-PAN-P1",
@@ -2156,7 +2173,7 @@
     "MAG-PAN-P1-LEG"
    ],
    "fichier": "equipements/mage/MAG-PAN-P1_pantalon_en_lin.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-PAN-P2",
@@ -2174,7 +2191,7 @@
     "MAG-PAN-P2-LEG"
    ],
    "fichier": "equipements/mage/MAG-PAN-P2_pantalon_en_laine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-PAN-P3",
@@ -2192,7 +2209,7 @@
     "MAG-PAN-P3-LEG"
    ],
    "fichier": "equipements/mage/MAG-PAN-P3_pantalon_en_soie.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-PAN-P4",
@@ -2210,7 +2227,7 @@
     "MAG-PAN-P4-LEG"
    ],
    "fichier": "equipements/mage/MAG-PAN-P4_pantalon_en_velours_enchante.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-PAN-P5",
@@ -2228,7 +2245,7 @@
     "MAG-PAN-P5-LEG"
    ],
    "fichier": "equipements/mage/MAG-PAN-P5_pantalon_en_etoffe_astrale.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-PAN-UNI",
@@ -2238,7 +2255,7 @@
    "rarete": "Unique",
    "element": "Électricité",
    "fichier": "equipements/mage/MAG-PAN-UNI_pantalon_du_tisseur_de_tempetes.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-BOT-P1",
@@ -2256,7 +2273,7 @@
     "MAG-BOT-P1-LEG"
    ],
    "fichier": "equipements/mage/MAG-BOT-P1_bottines_en_lin.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-BOT-P2",
@@ -2274,7 +2291,7 @@
     "MAG-BOT-P2-LEG"
    ],
    "fichier": "equipements/mage/MAG-BOT-P2_bottines_en_laine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-BOT-P3",
@@ -2292,7 +2309,7 @@
     "MAG-BOT-P3-LEG"
    ],
    "fichier": "equipements/mage/MAG-BOT-P3_bottines_en_soie.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-BOT-P4",
@@ -2310,7 +2327,7 @@
     "MAG-BOT-P4-LEG"
    ],
    "fichier": "equipements/mage/MAG-BOT-P4_bottines_en_velours_enchante.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-BOT-P5",
@@ -2328,7 +2345,7 @@
     "MAG-BOT-P5-LEG"
    ],
    "fichier": "equipements/mage/MAG-BOT-P5_bottines_en_etoffe_astrale.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-BOT-UNI",
@@ -2338,7 +2355,7 @@
    "rarete": "Unique",
    "element": "Eau",
    "fichier": "equipements/mage/MAG-BOT-UNI_bottes_du_voyageur_des_eaux.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-COL-P1",
@@ -2356,7 +2373,7 @@
     "MAG-COL-P1-LEG"
    ],
    "fichier": "equipements/mage/MAG-COL-P1_amulette_en_cuivre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-COL-P2",
@@ -2374,7 +2391,7 @@
     "MAG-COL-P2-LEG"
    ],
    "fichier": "equipements/mage/MAG-COL-P2_amulette_en_argent.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-COL-P3",
@@ -2392,7 +2409,7 @@
     "MAG-COL-P3-LEG"
    ],
    "fichier": "equipements/mage/MAG-COL-P3_amulette_en_or.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-COL-P4",
@@ -2410,7 +2427,7 @@
     "MAG-COL-P4-LEG"
    ],
    "fichier": "equipements/mage/MAG-COL-P4_amulette_en_platine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-COL-P5",
@@ -2428,7 +2445,7 @@
     "MAG-COL-P5-LEG"
    ],
    "fichier": "equipements/mage/MAG-COL-P5_amulette_en_orichalque.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-COL-UNI",
@@ -2438,7 +2455,7 @@
    "rarete": "Unique",
    "element": "Ombre",
    "fichier": "equipements/mage/MAG-COL-UNI_amulette_de_l_oeil_maudit.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AN1-P1",
@@ -2456,7 +2473,7 @@
     "MAG-AN1-P1-LEG"
    ],
    "fichier": "equipements/mage/MAG-AN1-P1_anneau_runique_en_cuivre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AN1-P2",
@@ -2474,7 +2491,7 @@
     "MAG-AN1-P2-LEG"
    ],
    "fichier": "equipements/mage/MAG-AN1-P2_anneau_runique_en_argent.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AN1-P3",
@@ -2492,7 +2509,7 @@
     "MAG-AN1-P3-LEG"
    ],
    "fichier": "equipements/mage/MAG-AN1-P3_anneau_runique_en_or.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AN1-P4",
@@ -2510,7 +2527,7 @@
     "MAG-AN1-P4-LEG"
    ],
    "fichier": "equipements/mage/MAG-AN1-P4_anneau_runique_en_platine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AN1-P5",
@@ -2528,7 +2545,7 @@
     "MAG-AN1-P5-LEG"
    ],
    "fichier": "equipements/mage/MAG-AN1-P5_anneau_runique_en_orichalque.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AN1-UNI",
@@ -2538,7 +2555,7 @@
    "rarete": "Unique",
    "element": "Acide",
    "fichier": "equipements/mage/MAG-AN1-UNI_anneau_de_l_alchimiste_fou.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AN2-P1",
@@ -2556,7 +2573,7 @@
     "MAG-AN2-P1-LEG"
    ],
    "fichier": "equipements/mage/MAG-AN2-P1_sceau_en_cuivre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AN2-P2",
@@ -2574,7 +2591,7 @@
     "MAG-AN2-P2-LEG"
    ],
    "fichier": "equipements/mage/MAG-AN2-P2_sceau_en_argent.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AN2-P3",
@@ -2592,7 +2609,7 @@
     "MAG-AN2-P3-LEG"
    ],
    "fichier": "equipements/mage/MAG-AN2-P3_sceau_en_or.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AN2-P4",
@@ -2610,7 +2627,7 @@
     "MAG-AN2-P4-LEG"
    ],
    "fichier": "equipements/mage/MAG-AN2-P4_sceau_en_platine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AN2-P5",
@@ -2628,7 +2645,7 @@
     "MAG-AN2-P5-LEG"
    ],
    "fichier": "equipements/mage/MAG-AN2-P5_sceau_en_orichalque.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AN2-UNI",
@@ -2638,7 +2655,7 @@
    "rarete": "Unique",
    "element": "Terre",
    "fichier": "equipements/mage/MAG-AN2-UNI_sceau_de_la_terre_ancestrale.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-CEI-P1",
@@ -2656,7 +2673,7 @@
     "MAG-CEI-P1-LEG"
    ],
    "fichier": "equipements/mage/MAG-CEI-P1_ceinture_en_lin.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-CEI-P2",
@@ -2674,7 +2691,7 @@
     "MAG-CEI-P2-LEG"
    ],
    "fichier": "equipements/mage/MAG-CEI-P2_ceinture_en_laine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-CEI-P3",
@@ -2692,7 +2709,7 @@
     "MAG-CEI-P3-LEG"
    ],
    "fichier": "equipements/mage/MAG-CEI-P3_ceinture_en_soie.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-CEI-P4",
@@ -2710,7 +2727,7 @@
     "MAG-CEI-P4-LEG"
    ],
    "fichier": "equipements/mage/MAG-CEI-P4_ceinture_en_velours_enchante.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-CEI-P5",
@@ -2728,7 +2745,7 @@
     "MAG-CEI-P5-LEG"
    ],
    "fichier": "equipements/mage/MAG-CEI-P5_ceinture_en_etoffe_astrale.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-CEI-UNI",
@@ -2738,7 +2755,7 @@
    "rarete": "Unique",
    "element": "Feu",
    "fichier": "equipements/mage/MAG-CEI-UNI_ceinture_du_feu_interieur.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AR1-P1",
@@ -2756,7 +2773,7 @@
     "MAG-AR1-P1-LEG"
    ],
    "fichier": "equipements/mage/MAG-AR1-P1_baton_en_bois.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AR1-P2",
@@ -2774,7 +2791,7 @@
     "MAG-AR1-P2-LEG"
    ],
    "fichier": "equipements/mage/MAG-AR1-P2_baton_en_chene.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AR1-P3",
@@ -2792,7 +2809,7 @@
     "MAG-AR1-P3-LEG"
    ],
    "fichier": "equipements/mage/MAG-AR1-P3_baton_en_ebene.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AR1-P4",
@@ -2810,7 +2827,7 @@
     "MAG-AR1-P4-LEG"
    ],
    "fichier": "equipements/mage/MAG-AR1-P4_baton_en_cristal.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AR1-P5",
@@ -2828,7 +2845,7 @@
     "MAG-AR1-P5-LEG"
    ],
    "fichier": "equipements/mage/MAG-AR1-P5_baton_en_ether.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AR1-UNI",
@@ -2838,7 +2855,7 @@
    "rarete": "Unique",
    "element": "Neutre",
    "fichier": "equipements/mage/MAG-AR1-UNI_baton_de_la_singularite.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AR2-P1",
@@ -2856,7 +2873,7 @@
     "MAG-AR2-P1-LEG"
    ],
    "fichier": "equipements/mage/MAG-AR2-P1_orbe_en_verre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AR2-P2",
@@ -2874,7 +2891,7 @@
     "MAG-AR2-P2-LEG"
    ],
    "fichier": "equipements/mage/MAG-AR2-P2_orbe_en_quartz.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AR2-P3",
@@ -2892,7 +2909,7 @@
     "MAG-AR2-P3-LEG"
    ],
    "fichier": "equipements/mage/MAG-AR2-P3_orbe_en_amethyste.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AR2-P4",
@@ -2910,7 +2927,7 @@
     "MAG-AR2-P4-LEG"
    ],
    "fichier": "equipements/mage/MAG-AR2-P4_orbe_en_saphir.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AR2-P5",
@@ -2928,7 +2945,7 @@
     "MAG-AR2-P5-LEG"
    ],
    "fichier": "equipements/mage/MAG-AR2-P5_orbe_en_diamant.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "MAG-AR2-UNI",
@@ -2938,7 +2955,7 @@
    "rarete": "Unique",
    "element": "Lumière",
    "fichier": "equipements/mage/MAG-AR2-UNI_orbe_de_l_eclipse.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-CHA-P1",
@@ -2956,7 +2973,7 @@
     "TIR-CHA-P1-LEG"
    ],
    "fichier": "equipements/tireur/TIR-CHA-P1_capuche_en_toile.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-CHA-P2",
@@ -2974,7 +2991,7 @@
     "TIR-CHA-P2-LEG"
    ],
    "fichier": "equipements/tireur/TIR-CHA-P2_capuche_en_cuir.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-CHA-P3",
@@ -2992,7 +3009,7 @@
     "TIR-CHA-P3-LEG"
    ],
    "fichier": "equipements/tireur/TIR-CHA-P3_capuche_en_cuir_cloute.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-CHA-P4",
@@ -3010,7 +3027,7 @@
     "TIR-CHA-P4-LEG"
    ],
    "fichier": "equipements/tireur/TIR-CHA-P4_capuche_en_ecailles.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-CHA-P5",
@@ -3028,7 +3045,7 @@
     "TIR-CHA-P5-LEG"
    ],
    "fichier": "equipements/tireur/TIR-CHA-P5_capuche_en_peau_de_dragon.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-CHA-UNI",
@@ -3038,7 +3055,7 @@
    "rarete": "Unique",
    "element": "Lumière",
    "fichier": "equipements/tireur/TIR-CHA-UNI_capuche_de_l_oeil_du_faucon.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-ARM-P1",
@@ -3056,7 +3073,7 @@
     "TIR-ARM-P1-LEG"
    ],
    "fichier": "equipements/tireur/TIR-ARM-P1_veste_en_toile.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-ARM-P2",
@@ -3074,7 +3091,7 @@
     "TIR-ARM-P2-LEG"
    ],
    "fichier": "equipements/tireur/TIR-ARM-P2_veste_en_cuir.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-ARM-P3",
@@ -3092,7 +3109,7 @@
     "TIR-ARM-P3-LEG"
    ],
    "fichier": "equipements/tireur/TIR-ARM-P3_veste_en_cuir_cloute.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-ARM-P4",
@@ -3110,7 +3127,7 @@
     "TIR-ARM-P4-LEG"
    ],
    "fichier": "equipements/tireur/TIR-ARM-P4_veste_en_ecailles.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-ARM-P5",
@@ -3128,7 +3145,7 @@
     "TIR-ARM-P5-LEG"
    ],
    "fichier": "equipements/tireur/TIR-ARM-P5_veste_en_peau_de_dragon.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-ARM-UNI",
@@ -3138,7 +3155,7 @@
    "rarete": "Unique",
    "element": "Eau",
    "fichier": "equipements/tireur/TIR-ARM-UNI_veste_du_brouillard_mouvant.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-PAN-P1",
@@ -3156,7 +3173,7 @@
     "TIR-PAN-P1-LEG"
    ],
    "fichier": "equipements/tireur/TIR-PAN-P1_pantalon_en_toile.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-PAN-P2",
@@ -3174,7 +3191,7 @@
     "TIR-PAN-P2-LEG"
    ],
    "fichier": "equipements/tireur/TIR-PAN-P2_pantalon_en_cuir.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-PAN-P3",
@@ -3192,7 +3209,7 @@
     "TIR-PAN-P3-LEG"
    ],
    "fichier": "equipements/tireur/TIR-PAN-P3_pantalon_en_cuir_cloute.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-PAN-P4",
@@ -3210,7 +3227,7 @@
     "TIR-PAN-P4-LEG"
    ],
    "fichier": "equipements/tireur/TIR-PAN-P4_pantalon_en_ecailles.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-PAN-P5",
@@ -3228,7 +3245,7 @@
     "TIR-PAN-P5-LEG"
    ],
    "fichier": "equipements/tireur/TIR-PAN-P5_pantalon_en_peau_de_dragon.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-PAN-UNI",
@@ -3238,7 +3255,7 @@
    "rarete": "Unique",
    "element": "Glace",
    "fichier": "equipements/tireur/TIR-PAN-UNI_pantalon_du_pisteur_givre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-BOT-P1",
@@ -3256,7 +3273,7 @@
     "TIR-BOT-P1-LEG"
    ],
    "fichier": "equipements/tireur/TIR-BOT-P1_bottes_en_toile.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-BOT-P2",
@@ -3274,7 +3291,7 @@
     "TIR-BOT-P2-LEG"
    ],
    "fichier": "equipements/tireur/TIR-BOT-P2_bottes_en_cuir.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-BOT-P3",
@@ -3292,7 +3309,7 @@
     "TIR-BOT-P3-LEG"
    ],
    "fichier": "equipements/tireur/TIR-BOT-P3_bottes_en_cuir_cloute.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-BOT-P4",
@@ -3310,7 +3327,7 @@
     "TIR-BOT-P4-LEG"
    ],
    "fichier": "equipements/tireur/TIR-BOT-P4_bottes_en_ecailles.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-BOT-P5",
@@ -3328,7 +3345,7 @@
     "TIR-BOT-P5-LEG"
    ],
    "fichier": "equipements/tireur/TIR-BOT-P5_bottes_en_peau_de_dragon.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-BOT-UNI",
@@ -3338,7 +3355,7 @@
    "rarete": "Unique",
    "element": "Électricité",
    "fichier": "equipements/tireur/TIR-BOT-UNI_bottes_du_chasseur_de_foudre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-COL-P1",
@@ -3356,7 +3373,7 @@
     "TIR-COL-P1-LEG"
    ],
    "fichier": "equipements/tireur/TIR-COL-P1_pendentif_en_cuivre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-COL-P2",
@@ -3374,7 +3391,7 @@
     "TIR-COL-P2-LEG"
    ],
    "fichier": "equipements/tireur/TIR-COL-P2_pendentif_en_argent.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-COL-P3",
@@ -3392,7 +3409,7 @@
     "TIR-COL-P3-LEG"
    ],
    "fichier": "equipements/tireur/TIR-COL-P3_pendentif_en_or.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-COL-P4",
@@ -3410,7 +3427,7 @@
     "TIR-COL-P4-LEG"
    ],
    "fichier": "equipements/tireur/TIR-COL-P4_pendentif_en_platine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-COL-P5",
@@ -3428,7 +3445,7 @@
     "TIR-COL-P5-LEG"
    ],
    "fichier": "equipements/tireur/TIR-COL-P5_pendentif_en_orichalque.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-COL-UNI",
@@ -3438,7 +3455,7 @@
    "rarete": "Unique",
    "element": "Terre",
    "fichier": "equipements/tireur/TIR-COL-UNI_pendentif_de_la_sentinelle_de_pierre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AN1-P1",
@@ -3456,7 +3473,7 @@
     "TIR-AN1-P1-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AN1-P1_anneau_de_chasseur_en_cuivre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AN1-P2",
@@ -3474,7 +3491,7 @@
     "TIR-AN1-P2-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AN1-P2_anneau_de_chasseur_en_argent.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AN1-P3",
@@ -3492,7 +3509,7 @@
     "TIR-AN1-P3-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AN1-P3_anneau_de_chasseur_en_or.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AN1-P4",
@@ -3510,7 +3527,7 @@
     "TIR-AN1-P4-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AN1-P4_anneau_de_chasseur_en_platine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AN1-P5",
@@ -3528,7 +3545,7 @@
     "TIR-AN1-P5-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AN1-P5_anneau_de_chasseur_en_orichalque.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AN1-UNI",
@@ -3538,7 +3555,7 @@
    "rarete": "Unique",
    "element": "Feu",
    "fichier": "equipements/tireur/TIR-AN1-UNI_anneau_des_fleches_ardentes.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AN2-P1",
@@ -3556,7 +3573,7 @@
     "TIR-AN2-P1-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AN2-P1_bague_en_cuivre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AN2-P2",
@@ -3574,7 +3591,7 @@
     "TIR-AN2-P2-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AN2-P2_bague_en_argent.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AN2-P3",
@@ -3592,7 +3609,7 @@
     "TIR-AN2-P3-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AN2-P3_bague_en_or.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AN2-P4",
@@ -3610,7 +3627,7 @@
     "TIR-AN2-P4-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AN2-P4_bague_en_platine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AN2-P5",
@@ -3628,7 +3645,7 @@
     "TIR-AN2-P5-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AN2-P5_bague_en_orichalque.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AN2-UNI",
@@ -3638,7 +3655,7 @@
    "rarete": "Unique",
    "element": "Neutre",
    "fichier": "equipements/tireur/TIR-AN2-UNI_bague_du_dernier_souffle.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-CEI-P1",
@@ -3656,7 +3673,7 @@
     "TIR-CEI-P1-LEG"
    ],
    "fichier": "equipements/tireur/TIR-CEI-P1_ceinture_en_toile.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-CEI-P2",
@@ -3674,7 +3691,7 @@
     "TIR-CEI-P2-LEG"
    ],
    "fichier": "equipements/tireur/TIR-CEI-P2_ceinture_en_cuir.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-CEI-P3",
@@ -3692,7 +3709,7 @@
     "TIR-CEI-P3-LEG"
    ],
    "fichier": "equipements/tireur/TIR-CEI-P3_ceinture_en_cuir_cloute.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-CEI-P4",
@@ -3710,7 +3727,7 @@
     "TIR-CEI-P4-LEG"
    ],
    "fichier": "equipements/tireur/TIR-CEI-P4_ceinture_en_ecailles.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-CEI-P5",
@@ -3728,7 +3745,7 @@
     "TIR-CEI-P5-LEG"
    ],
    "fichier": "equipements/tireur/TIR-CEI-P5_ceinture_en_peau_de_dragon.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-CEI-UNI",
@@ -3738,7 +3755,7 @@
    "rarete": "Unique",
    "element": "Acide",
    "fichier": "equipements/tireur/TIR-CEI-UNI_ceinture_de_l_alchimiste_chasseur.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AR1-P1",
@@ -3756,7 +3773,7 @@
     "TIR-AR1-P1-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AR1-P1_arc_en_bois.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AR1-P2",
@@ -3774,7 +3791,7 @@
     "TIR-AR1-P2-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AR1-P2_arc_en_frene.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AR1-P3",
@@ -3792,7 +3809,7 @@
     "TIR-AR1-P3-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AR1-P3_arc_en_if.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AR1-P4",
@@ -3810,7 +3827,7 @@
     "TIR-AR1-P4-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AR1-P4_arc_en_ebene.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AR1-P5",
@@ -3828,7 +3845,7 @@
     "TIR-AR1-P5-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AR1-P5_arc_en_os_de_dragon.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AR1-UNI",
@@ -3838,7 +3855,7 @@
    "rarete": "Unique",
    "element": "Vent",
    "fichier": "equipements/tireur/TIR-AR1-UNI_arc_des_mille_tempetes.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AR2-P1",
@@ -3856,7 +3873,7 @@
     "TIR-AR2-P1-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AR2-P1_carquois_en_toile.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AR2-P2",
@@ -3874,7 +3891,7 @@
     "TIR-AR2-P2-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AR2-P2_carquois_en_cuir.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AR2-P3",
@@ -3892,7 +3909,7 @@
     "TIR-AR2-P3-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AR2-P3_carquois_en_cuir_cloute.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AR2-P4",
@@ -3910,7 +3927,7 @@
     "TIR-AR2-P4-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AR2-P4_carquois_en_ecailles.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AR2-P5",
@@ -3928,7 +3945,7 @@
     "TIR-AR2-P5-LEG"
    ],
    "fichier": "equipements/tireur/TIR-AR2-P5_carquois_en_peau_de_dragon.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "TIR-AR2-UNI",
@@ -3938,7 +3955,7 @@
    "rarete": "Unique",
    "element": "Ombre",
    "fichier": "equipements/tireur/TIR-AR2-UNI_carquois_du_chasseur_de_spectres.png",
-   "taille": 16
+   "taille": 48
   }
  ],
  "village": [
@@ -3946,61 +3963,61 @@
    "id": "taverne",
    "nom": "Taverne (marchand)",
    "fichier": "village/taverne.png",
-   "taille": 32
+   "taille": 128
   },
   {
    "id": "entrepot",
    "nom": "Entrepôt (stockage)",
    "fichier": "village/entrepot.png",
-   "taille": 32
+   "taille": 128
   },
   {
    "id": "scierie",
    "nom": "Scierie (bois)",
    "fichier": "village/scierie.png",
-   "taille": 32
+   "taille": 128
   },
   {
    "id": "terrain_de_chasse",
    "nom": "Terrain de chasse (cuir)",
    "fichier": "village/terrain_de_chasse.png",
-   "taille": 32
+   "taille": 128
   },
   {
    "id": "champs",
    "nom": "Champs (lin, laine, soie…)",
    "fichier": "village/champs.png",
-   "taille": 32
+   "taille": 128
   },
   {
    "id": "mine",
    "nom": "Mine (fer, charbon…)",
    "fichier": "village/mine.png",
-   "taille": 32
+   "taille": 128
   },
   {
    "id": "atelier_fabrication",
    "nom": "Atelier de fabrication (forge)",
    "fichier": "village/atelier_fabrication.png",
-   "taille": 32
+   "taille": 128
   },
   {
    "id": "tour_amelioration",
    "nom": "Tour d'amélioration",
    "fichier": "village/tour_amelioration.png",
-   "taille": 32
+   "taille": 128
   },
   {
    "id": "tour_alchimie",
    "nom": "Tour d'alchimie",
    "fichier": "village/tour_alchimie.png",
-   "taille": 32
+   "taille": 128
   },
   {
    "id": "tour",
    "nom": "La Tour (entrée des étages)",
    "fichier": "village/tour.png",
-   "taille": 32
+   "taille": 128
   }
  ],
  "ressources": [
@@ -4008,199 +4025,199 @@
    "id": "bois",
    "nom": "bois",
    "fichier": "ressources/bois.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "chene",
    "nom": "chêne",
    "fichier": "ressources/chene.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "frene",
    "nom": "frêne",
    "fichier": "ressources/frene.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "if",
    "nom": "if",
    "fichier": "ressources/if.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "ebene",
    "nom": "ébène",
    "fichier": "ressources/ebene.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "fer",
    "nom": "fer",
    "fichier": "ressources/fer.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "acier",
    "nom": "acier",
    "fichier": "ressources/acier.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "mithril",
    "nom": "mithril",
    "fichier": "ressources/mithril.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "adamantite",
    "nom": "adamantite",
    "fichier": "ressources/adamantite.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "cuivre",
    "nom": "cuivre",
    "fichier": "ressources/cuivre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "argent",
    "nom": "argent",
    "fichier": "ressources/argent.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "or",
    "nom": "or",
    "fichier": "ressources/or.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "platine",
    "nom": "platine",
    "fichier": "ressources/platine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "orichalque",
    "nom": "orichalque",
    "fichier": "ressources/orichalque.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "charbon",
    "nom": "charbon",
    "fichier": "ressources/charbon.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "verre",
    "nom": "verre",
    "fichier": "ressources/verre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "quartz",
    "nom": "quartz",
    "fichier": "ressources/quartz.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "amethyste",
    "nom": "améthyste",
    "fichier": "ressources/amethyste.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "saphir",
    "nom": "saphir",
    "fichier": "ressources/saphir.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "diamant",
    "nom": "diamant",
    "fichier": "ressources/diamant.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "cristal",
    "nom": "cristal",
    "fichier": "ressources/cristal.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "lin",
    "nom": "lin",
    "fichier": "ressources/lin.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "laine",
    "nom": "laine",
    "fichier": "ressources/laine.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "soie",
    "nom": "soie",
    "fichier": "ressources/soie.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "velours_enchante",
    "nom": "velours enchanté",
    "fichier": "ressources/velours_enchante.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "etoffe_astrale",
    "nom": "étoffe astrale",
    "fichier": "ressources/etoffe_astrale.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "toile",
    "nom": "toile",
    "fichier": "ressources/toile.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "cuir",
    "nom": "cuir",
    "fichier": "ressources/cuir.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "cuir_cloute",
    "nom": "cuir clouté",
    "fichier": "ressources/cuir_cloute.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "ecailles",
    "nom": "écailles",
    "fichier": "ressources/ecailles.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "peau_de_dragon",
    "nom": "peau de dragon",
    "fichier": "ressources/peau_de_dragon.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "os_de_dragon",
    "nom": "os de dragon",
    "fichier": "ressources/os_de_dragon.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "ether",
    "nom": "éther",
    "fichier": "ressources/ether.png",
-   "taille": 16
+   "taille": 48
   }
  ],
  "elements": [
@@ -4208,61 +4225,61 @@
    "id": "neutre",
    "nom": "Neutre",
    "fichier": "elements/neutre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "feu",
    "nom": "Feu",
    "fichier": "elements/feu.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "electricite",
    "nom": "Électricité",
    "fichier": "elements/electricite.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "acide",
    "nom": "Acide",
    "fichier": "elements/acide.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "glace",
    "nom": "Glace",
    "fichier": "elements/glace.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "eau",
    "nom": "Eau",
    "fichier": "elements/eau.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "vent",
    "nom": "Vent",
    "fichier": "elements/vent.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "terre",
    "nom": "Terre",
    "fichier": "elements/terre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "ombre",
    "nom": "Ombre",
    "fichier": "elements/ombre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "id": "lumiere",
    "nom": "Lumière",
    "fichier": "elements/lumiere.png",
-   "taille": 16
+   "taille": 48
   }
  ],
  "cadres_rarete": [
@@ -4271,56 +4288,56 @@
    "nom": "Commun",
    "couleur": "#b8b8c0",
    "fichier": "ui/cadre_commun.png",
-   "taille": 20,
-   "note": "poser l'icône 16x16 en (2,2)"
+   "taille": 56,
+   "note": "poser l'icône 48x48 en (4,4)"
   },
   {
    "id": "rare",
    "nom": "Rare",
    "couleur": "#60a917",
    "fichier": "ui/cadre_rare.png",
-   "taille": 20,
-   "note": "poser l'icône 16x16 en (2,2)"
+   "taille": 56,
+   "note": "poser l'icône 48x48 en (4,4)"
   },
   {
    "id": "super_rare",
    "nom": "Super rare",
    "couleur": "#1ba1e2",
    "fichier": "ui/cadre_super_rare.png",
-   "taille": 20,
-   "note": "poser l'icône 16x16 en (2,2)"
+   "taille": 56,
+   "note": "poser l'icône 48x48 en (4,4)"
   },
   {
    "id": "epique",
    "nom": "Épique",
    "couleur": "#6a00ff",
    "fichier": "ui/cadre_epique.png",
-   "taille": 20,
-   "note": "poser l'icône 16x16 en (2,2)"
+   "taille": 56,
+   "note": "poser l'icône 48x48 en (4,4)"
   },
   {
    "id": "mythique",
    "nom": "Mythique",
    "couleur": "#e51400",
    "fichier": "ui/cadre_mythique.png",
-   "taille": 20,
-   "note": "poser l'icône 16x16 en (2,2)"
+   "taille": 56,
+   "note": "poser l'icône 48x48 en (4,4)"
   },
   {
    "id": "legendaire",
    "nom": "Légendaire",
    "couleur": "#f0a30a",
    "fichier": "ui/cadre_legendaire.png",
-   "taille": 20,
-   "note": "poser l'icône 16x16 en (2,2)"
+   "taille": 56,
+   "note": "poser l'icône 48x48 en (4,4)"
   },
   {
    "id": "unique",
    "nom": "Unique",
    "couleur": "#b1ddf0",
    "fichier": "ui/cadre_unique.png",
-   "taille": 20,
-   "note": "poser l'icône 16x16 en (2,2)"
+   "taille": 56,
+   "note": "poser l'icône 48x48 en (4,4)"
   }
  ],
  "competences": [
@@ -4334,7 +4351,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A01-NEU_frappe_rapide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A01-TER",
@@ -4346,7 +4363,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A01-TER_frappe_rapide_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A01-FEU",
@@ -4358,7 +4375,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A01-FEU_frappe_rapide_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A01-VEN",
@@ -4370,7 +4387,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A01-VEN_frappe_rapide_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A01-ACI",
@@ -4382,7 +4399,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A01-ACI_frappe_rapide_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A01-EAU",
@@ -4394,7 +4411,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A01-EAU_frappe_rapide_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A01-GLA",
@@ -4406,7 +4423,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A01-GLA_frappe_rapide_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A01-ELE",
@@ -4418,7 +4435,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A01-ELE_frappe_rapide_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A01-LUM",
@@ -4430,7 +4447,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A01-LUM_frappe_rapide_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A01-OMB",
@@ -4442,7 +4459,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A01-OMB_frappe_rapide_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A02-NEU",
@@ -4454,7 +4471,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A02-NEU_coup_d_estoc.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A02-TER",
@@ -4466,7 +4483,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A02-TER_estoc_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A02-FEU",
@@ -4478,7 +4495,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A02-FEU_estoc_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A02-VEN",
@@ -4490,7 +4507,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A02-VEN_estoc_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A02-ACI",
@@ -4502,7 +4519,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A02-ACI_estoc_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A02-EAU",
@@ -4514,7 +4531,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A02-EAU_estoc_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A02-GLA",
@@ -4526,7 +4543,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A02-GLA_estoc_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A02-ELE",
@@ -4538,7 +4555,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A02-ELE_estoc_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A02-LUM",
@@ -4550,7 +4567,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A02-LUM_estoc_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A02-OMB",
@@ -4562,7 +4579,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A02-OMB_estoc_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A03-NEU",
@@ -4574,7 +4591,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A03-NEU_coup_vertical.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A03-TER",
@@ -4586,7 +4603,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A03-TER_coup_vertical_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A03-FEU",
@@ -4598,7 +4615,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A03-FEU_coup_vertical_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A03-VEN",
@@ -4610,7 +4627,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A03-VEN_coup_vertical_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A03-ACI",
@@ -4622,7 +4639,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A03-ACI_coup_vertical_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A03-EAU",
@@ -4634,7 +4651,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A03-EAU_coup_vertical_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A03-GLA",
@@ -4646,7 +4663,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A03-GLA_coup_vertical_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A03-ELE",
@@ -4658,7 +4675,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A03-ELE_coup_vertical_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A03-LUM",
@@ -4670,7 +4687,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A03-LUM_coup_vertical_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A03-OMB",
@@ -4682,7 +4699,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A03-OMB_coup_vertical_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A04-NEU",
@@ -4694,7 +4711,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A04-NEU_tourbillon.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A04-TER",
@@ -4706,7 +4723,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A04-TER_tourbillon_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A04-FEU",
@@ -4718,7 +4735,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A04-FEU_tourbillon_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A04-VEN",
@@ -4730,7 +4747,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A04-VEN_tourbillon_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A04-ACI",
@@ -4742,7 +4759,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A04-ACI_tourbillon_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A04-EAU",
@@ -4754,7 +4771,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A04-EAU_tourbillon_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A04-GLA",
@@ -4766,7 +4783,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A04-GLA_tourbillon_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A04-ELE",
@@ -4778,7 +4795,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A04-ELE_tourbillon_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A04-LUM",
@@ -4790,7 +4807,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A04-LUM_tourbillon_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A04-OMB",
@@ -4802,7 +4819,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A04-OMB_tourbillon_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A05-NEU",
@@ -4814,7 +4831,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A05-NEU_entaille.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A05-TER",
@@ -4826,7 +4843,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A05-TER_entaille_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A05-FEU",
@@ -4838,7 +4855,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A05-FEU_entaille_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A05-VEN",
@@ -4850,7 +4867,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A05-VEN_entaille_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A05-ACI",
@@ -4862,7 +4879,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A05-ACI_entaille_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A05-EAU",
@@ -4874,7 +4891,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A05-EAU_entaille_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A05-GLA",
@@ -4886,7 +4903,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A05-GLA_entaille_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A05-ELE",
@@ -4898,7 +4915,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A05-ELE_entaille_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A05-LUM",
@@ -4910,7 +4927,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A05-LUM_entaille_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A05-OMB",
@@ -4922,7 +4939,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A05-OMB_entaille_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A06-NEU",
@@ -4934,7 +4951,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A06-NEU_charge.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A06-TER",
@@ -4946,7 +4963,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A06-TER_charge_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A06-FEU",
@@ -4958,7 +4975,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A06-FEU_charge_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A06-VEN",
@@ -4970,7 +4987,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A06-VEN_charge_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A06-ACI",
@@ -4982,7 +4999,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A06-ACI_charge_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A06-EAU",
@@ -4994,7 +5011,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A06-EAU_charge_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A06-GLA",
@@ -5006,7 +5023,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A06-GLA_charge_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A06-ELE",
@@ -5018,7 +5035,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A06-ELE_charge_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A06-LUM",
@@ -5030,7 +5047,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A06-LUM_charge_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A06-OMB",
@@ -5042,7 +5059,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-A06-OMB_charge_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A07-NEU",
@@ -5054,7 +5071,7 @@
    "element": "Neutre",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A07-NEU_execution.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A07-TER",
@@ -5066,7 +5083,7 @@
    "element": "Terre",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A07-TER_execution_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A07-FEU",
@@ -5078,7 +5095,7 @@
    "element": "Feu",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A07-FEU_execution_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A07-VEN",
@@ -5090,7 +5107,7 @@
    "element": "Vent",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A07-VEN_execution_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A07-ACI",
@@ -5102,7 +5119,7 @@
    "element": "Acide",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A07-ACI_execution_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A07-EAU",
@@ -5114,7 +5131,7 @@
    "element": "Eau",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A07-EAU_execution_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A07-GLA",
@@ -5126,7 +5143,7 @@
    "element": "Glace",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A07-GLA_execution_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A07-ELE",
@@ -5138,7 +5155,7 @@
    "element": "Électricité",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A07-ELE_execution_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A07-LUM",
@@ -5150,7 +5167,7 @@
    "element": "Lumière",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A07-LUM_execution_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A07-OMB",
@@ -5162,7 +5179,7 @@
    "element": "Ombre",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A07-OMB_execution_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A08-NEU",
@@ -5174,7 +5191,7 @@
    "element": "Neutre",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A08-NEU_onde_de_choc.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A08-TER",
@@ -5186,7 +5203,7 @@
    "element": "Terre",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A08-TER_onde_de_choc_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A08-FEU",
@@ -5198,7 +5215,7 @@
    "element": "Feu",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A08-FEU_onde_de_choc_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A08-VEN",
@@ -5210,7 +5227,7 @@
    "element": "Vent",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A08-VEN_onde_de_choc_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A08-ACI",
@@ -5222,7 +5239,7 @@
    "element": "Acide",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A08-ACI_onde_de_choc_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A08-EAU",
@@ -5234,7 +5251,7 @@
    "element": "Eau",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A08-EAU_onde_de_choc_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A08-GLA",
@@ -5246,7 +5263,7 @@
    "element": "Glace",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A08-GLA_onde_de_choc_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A08-ELE",
@@ -5258,7 +5275,7 @@
    "element": "Électricité",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A08-ELE_onde_de_choc_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A08-LUM",
@@ -5270,7 +5287,7 @@
    "element": "Lumière",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A08-LUM_onde_de_choc_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-A08-OMB",
@@ -5282,7 +5299,7 @@
    "element": "Ombre",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-A08-OMB_onde_de_choc_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S01-NEU",
@@ -5294,7 +5311,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S01-NEU_garde.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S01-TER",
@@ -5306,7 +5323,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S01-TER_garde_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S01-FEU",
@@ -5318,7 +5335,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S01-FEU_garde_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S01-VEN",
@@ -5330,7 +5347,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S01-VEN_garde_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S01-ACI",
@@ -5342,7 +5359,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S01-ACI_garde_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S01-EAU",
@@ -5354,7 +5371,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S01-EAU_garde_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S01-GLA",
@@ -5366,7 +5383,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S01-GLA_garde_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S01-ELE",
@@ -5378,7 +5395,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S01-ELE_garde_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S01-LUM",
@@ -5390,7 +5407,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S01-LUM_garde_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S01-OMB",
@@ -5402,7 +5419,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S01-OMB_garde_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S02-NEU",
@@ -5414,7 +5431,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S02-NEU_coup_de_bouclier.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S02-TER",
@@ -5426,7 +5443,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S02-TER_coup_de_bouclier_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S02-FEU",
@@ -5438,7 +5455,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S02-FEU_coup_de_bouclier_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S02-VEN",
@@ -5450,7 +5467,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S02-VEN_coup_de_bouclier_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S02-ACI",
@@ -5462,7 +5479,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S02-ACI_coup_de_bouclier_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S02-EAU",
@@ -5474,7 +5491,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S02-EAU_coup_de_bouclier_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S02-GLA",
@@ -5486,7 +5503,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S02-GLA_coup_de_bouclier_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S02-ELE",
@@ -5498,7 +5515,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S02-ELE_coup_de_bouclier_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S02-LUM",
@@ -5510,7 +5527,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S02-LUM_coup_de_bouclier_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S02-OMB",
@@ -5522,7 +5539,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S02-OMB_coup_de_bouclier_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S03-NEU",
@@ -5534,7 +5551,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S03-NEU_cri_de_guerre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S03-TER",
@@ -5546,7 +5563,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S03-TER_cri_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S03-FEU",
@@ -5558,7 +5575,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S03-FEU_cri_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S03-VEN",
@@ -5570,7 +5587,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S03-VEN_cri_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S03-ACI",
@@ -5582,7 +5599,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S03-ACI_cri_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S03-EAU",
@@ -5594,7 +5611,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S03-EAU_cri_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S03-GLA",
@@ -5606,7 +5623,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S03-GLA_cri_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S03-ELE",
@@ -5618,7 +5635,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S03-ELE_cri_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S03-LUM",
@@ -5630,7 +5647,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S03-LUM_cri_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S03-OMB",
@@ -5642,7 +5659,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S03-OMB_cri_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S04-NEU",
@@ -5654,7 +5671,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S04-NEU_mur_de_boucliers.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S04-TER",
@@ -5666,7 +5683,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S04-TER_rempart_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S04-FEU",
@@ -5678,7 +5695,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S04-FEU_rempart_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S04-VEN",
@@ -5690,7 +5707,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S04-VEN_rempart_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S04-ACI",
@@ -5702,7 +5719,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S04-ACI_rempart_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S04-EAU",
@@ -5714,7 +5731,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S04-EAU_rempart_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S04-GLA",
@@ -5726,7 +5743,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S04-GLA_rempart_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S04-ELE",
@@ -5738,7 +5755,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S04-ELE_rempart_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S04-LUM",
@@ -5750,7 +5767,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S04-LUM_rempart_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S04-OMB",
@@ -5762,7 +5779,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S04-OMB_rempart_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S05-NEU",
@@ -5774,7 +5791,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S05-NEU_second_souffle.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S05-TER",
@@ -5786,7 +5803,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S05-TER_souffle_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S05-FEU",
@@ -5798,7 +5815,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S05-FEU_souffle_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S05-VEN",
@@ -5810,7 +5827,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S05-VEN_souffle_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S05-ACI",
@@ -5822,7 +5839,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S05-ACI_souffle_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S05-EAU",
@@ -5834,7 +5851,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S05-EAU_souffle_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S05-GLA",
@@ -5846,7 +5863,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S05-GLA_souffle_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S05-ELE",
@@ -5858,7 +5875,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S05-ELE_souffle_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S05-LUM",
@@ -5870,7 +5887,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S05-LUM_souffle_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S05-OMB",
@@ -5882,7 +5899,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S05-OMB_souffle_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S06-NEU",
@@ -5894,7 +5911,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S06-NEU_riposte.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S06-TER",
@@ -5906,7 +5923,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S06-TER_riposte_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S06-FEU",
@@ -5918,7 +5935,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S06-FEU_riposte_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S06-VEN",
@@ -5930,7 +5947,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S06-VEN_riposte_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S06-ACI",
@@ -5942,7 +5959,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S06-ACI_riposte_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S06-EAU",
@@ -5954,7 +5971,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S06-EAU_riposte_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S06-GLA",
@@ -5966,7 +5983,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S06-GLA_riposte_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S06-ELE",
@@ -5978,7 +5995,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S06-ELE_riposte_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S06-LUM",
@@ -5990,7 +6007,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S06-LUM_riposte_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S06-OMB",
@@ -6002,7 +6019,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-S06-OMB_riposte_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S07-NEU",
@@ -6014,7 +6031,7 @@
    "element": "Neutre",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-S07-NEU_forteresse.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S07-TER",
@@ -6026,7 +6043,7 @@
    "element": "Terre",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-S07-TER_forteresse_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S07-FEU",
@@ -6038,7 +6055,7 @@
    "element": "Feu",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-S07-FEU_forteresse_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S07-VEN",
@@ -6050,7 +6067,7 @@
    "element": "Vent",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-S07-VEN_forteresse_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S07-ACI",
@@ -6062,7 +6079,7 @@
    "element": "Acide",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-S07-ACI_forteresse_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S07-EAU",
@@ -6074,7 +6091,7 @@
    "element": "Eau",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-S07-EAU_forteresse_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S07-GLA",
@@ -6086,7 +6103,7 @@
    "element": "Glace",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-S07-GLA_forteresse_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S07-ELE",
@@ -6098,7 +6115,7 @@
    "element": "Électricité",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-S07-ELE_forteresse_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S07-LUM",
@@ -6110,7 +6127,7 @@
    "element": "Lumière",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-S07-LUM_forteresse_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-S07-OMB",
@@ -6122,7 +6139,7 @@
    "element": "Ombre",
    "ultime": true,
    "fichier": "competences/guerrier/GUE-S07-OMB_forteresse_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-P01",
@@ -6134,7 +6151,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-P01_peau_dure.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-P02",
@@ -6146,7 +6163,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-P02_soif_de_sang.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-P03",
@@ -6158,7 +6175,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-P03_contre_attaque.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-P04",
@@ -6170,7 +6187,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-P04_rage.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-P05",
@@ -6182,7 +6199,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-P05_briseur_de_garde.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-P06",
@@ -6194,7 +6211,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-P06_bouclier_reflexe.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-P07",
@@ -6206,7 +6223,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-P07_maitre_d_armes.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "GUE-P08",
@@ -6218,7 +6235,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/guerrier/GUE-P08_endurance_du_veteran.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A01-NEU",
@@ -6230,7 +6247,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A01-NEU_boule_arcanique.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A01-TER",
@@ -6242,7 +6259,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A01-TER_boule_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A01-FEU",
@@ -6254,7 +6271,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/mage/MAG-A01-FEU_boule_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A01-VEN",
@@ -6266,7 +6283,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/mage/MAG-A01-VEN_boule_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A01-ACI",
@@ -6278,7 +6295,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/mage/MAG-A01-ACI_boule_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A01-EAU",
@@ -6290,7 +6307,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/mage/MAG-A01-EAU_boule_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A01-GLA",
@@ -6302,7 +6319,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/mage/MAG-A01-GLA_boule_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A01-ELE",
@@ -6314,7 +6331,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/mage/MAG-A01-ELE_boule_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A01-LUM",
@@ -6326,7 +6343,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/mage/MAG-A01-LUM_boule_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A01-OMB",
@@ -6338,7 +6355,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A01-OMB_boule_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A02-NEU",
@@ -6350,7 +6367,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A02-NEU_lance_arcanique.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A02-TER",
@@ -6362,7 +6379,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A02-TER_lance_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A02-FEU",
@@ -6374,7 +6391,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/mage/MAG-A02-FEU_lance_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A02-VEN",
@@ -6386,7 +6403,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/mage/MAG-A02-VEN_lance_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A02-ACI",
@@ -6398,7 +6415,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/mage/MAG-A02-ACI_lance_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A02-EAU",
@@ -6410,7 +6427,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/mage/MAG-A02-EAU_lance_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A02-GLA",
@@ -6422,7 +6439,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/mage/MAG-A02-GLA_lance_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A02-ELE",
@@ -6434,7 +6451,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/mage/MAG-A02-ELE_lance_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A02-LUM",
@@ -6446,7 +6463,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/mage/MAG-A02-LUM_lance_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A02-OMB",
@@ -6458,7 +6475,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A02-OMB_lance_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A03-NEU",
@@ -6470,7 +6487,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A03-NEU_tornade_arcanique.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A03-TER",
@@ -6482,7 +6499,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A03-TER_tornade_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A03-FEU",
@@ -6494,7 +6511,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/mage/MAG-A03-FEU_tornade_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A03-VEN",
@@ -6506,7 +6523,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/mage/MAG-A03-VEN_tornade_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A03-ACI",
@@ -6518,7 +6535,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/mage/MAG-A03-ACI_tornade_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A03-EAU",
@@ -6530,7 +6547,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/mage/MAG-A03-EAU_tornade_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A03-GLA",
@@ -6542,7 +6559,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/mage/MAG-A03-GLA_tornade_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A03-ELE",
@@ -6554,7 +6571,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/mage/MAG-A03-ELE_tornade_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A03-LUM",
@@ -6566,7 +6583,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/mage/MAG-A03-LUM_tornade_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A03-OMB",
@@ -6578,7 +6595,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A03-OMB_tornade_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A04-NEU",
@@ -6590,7 +6607,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A04-NEU_rayon_arcanique.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A04-TER",
@@ -6602,7 +6619,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A04-TER_rayon_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A04-FEU",
@@ -6614,7 +6631,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/mage/MAG-A04-FEU_rayon_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A04-VEN",
@@ -6626,7 +6643,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/mage/MAG-A04-VEN_rayon_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A04-ACI",
@@ -6638,7 +6655,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/mage/MAG-A04-ACI_rayon_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A04-EAU",
@@ -6650,7 +6667,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/mage/MAG-A04-EAU_rayon_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A04-GLA",
@@ -6662,7 +6679,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/mage/MAG-A04-GLA_rayon_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A04-ELE",
@@ -6674,7 +6691,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/mage/MAG-A04-ELE_rayon_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A04-LUM",
@@ -6686,7 +6703,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/mage/MAG-A04-LUM_rayon_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A04-OMB",
@@ -6698,7 +6715,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A04-OMB_rayon_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A05-NEU",
@@ -6710,7 +6727,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A05-NEU_pluie_arcanique.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A05-TER",
@@ -6722,7 +6739,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A05-TER_pluie_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A05-FEU",
@@ -6734,7 +6751,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/mage/MAG-A05-FEU_pluie_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A05-VEN",
@@ -6746,7 +6763,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/mage/MAG-A05-VEN_pluie_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A05-ACI",
@@ -6758,7 +6775,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/mage/MAG-A05-ACI_pluie_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A05-EAU",
@@ -6770,7 +6787,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/mage/MAG-A05-EAU_pluie_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A05-GLA",
@@ -6782,7 +6799,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/mage/MAG-A05-GLA_pluie_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A05-ELE",
@@ -6794,7 +6811,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/mage/MAG-A05-ELE_pluie_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A05-LUM",
@@ -6806,7 +6823,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/mage/MAG-A05-LUM_pluie_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A05-OMB",
@@ -6818,7 +6835,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A05-OMB_pluie_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A06-NEU",
@@ -6830,7 +6847,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A06-NEU_nova_arcanique.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A06-TER",
@@ -6842,7 +6859,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A06-TER_nova_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A06-FEU",
@@ -6854,7 +6871,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/mage/MAG-A06-FEU_nova_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A06-VEN",
@@ -6866,7 +6883,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/mage/MAG-A06-VEN_nova_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A06-ACI",
@@ -6878,7 +6895,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/mage/MAG-A06-ACI_nova_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A06-EAU",
@@ -6890,7 +6907,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/mage/MAG-A06-EAU_nova_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A06-GLA",
@@ -6902,7 +6919,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/mage/MAG-A06-GLA_nova_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A06-ELE",
@@ -6914,7 +6931,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/mage/MAG-A06-ELE_nova_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A06-LUM",
@@ -6926,7 +6943,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/mage/MAG-A06-LUM_nova_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A06-OMB",
@@ -6938,7 +6955,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/mage/MAG-A06-OMB_nova_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A07-NEU",
@@ -6950,7 +6967,7 @@
    "element": "Neutre",
    "ultime": true,
    "fichier": "competences/mage/MAG-A07-NEU_meteore.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A07-TER",
@@ -6962,7 +6979,7 @@
    "element": "Terre",
    "ultime": true,
    "fichier": "competences/mage/MAG-A07-TER_meteore_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A07-FEU",
@@ -6974,7 +6991,7 @@
    "element": "Feu",
    "ultime": true,
    "fichier": "competences/mage/MAG-A07-FEU_meteore_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A07-VEN",
@@ -6986,7 +7003,7 @@
    "element": "Vent",
    "ultime": true,
    "fichier": "competences/mage/MAG-A07-VEN_meteore_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A07-ACI",
@@ -6998,7 +7015,7 @@
    "element": "Acide",
    "ultime": true,
    "fichier": "competences/mage/MAG-A07-ACI_meteore_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A07-EAU",
@@ -7010,7 +7027,7 @@
    "element": "Eau",
    "ultime": true,
    "fichier": "competences/mage/MAG-A07-EAU_meteore_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A07-GLA",
@@ -7022,7 +7039,7 @@
    "element": "Glace",
    "ultime": true,
    "fichier": "competences/mage/MAG-A07-GLA_meteore_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A07-ELE",
@@ -7034,7 +7051,7 @@
    "element": "Électricité",
    "ultime": true,
    "fichier": "competences/mage/MAG-A07-ELE_meteore_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A07-LUM",
@@ -7046,7 +7063,7 @@
    "element": "Lumière",
    "ultime": true,
    "fichier": "competences/mage/MAG-A07-LUM_meteore_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A07-OMB",
@@ -7058,7 +7075,7 @@
    "element": "Ombre",
    "ultime": true,
    "fichier": "competences/mage/MAG-A07-OMB_meteore_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A08-NEU",
@@ -7070,7 +7087,7 @@
    "element": "Neutre",
    "ultime": true,
    "fichier": "competences/mage/MAG-A08-NEU_explosion_arcanique.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A08-TER",
@@ -7082,7 +7099,7 @@
    "element": "Terre",
    "ultime": true,
    "fichier": "competences/mage/MAG-A08-TER_explosion_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A08-FEU",
@@ -7094,7 +7111,7 @@
    "element": "Feu",
    "ultime": true,
    "fichier": "competences/mage/MAG-A08-FEU_explosion_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A08-VEN",
@@ -7106,7 +7123,7 @@
    "element": "Vent",
    "ultime": true,
    "fichier": "competences/mage/MAG-A08-VEN_explosion_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A08-ACI",
@@ -7118,7 +7135,7 @@
    "element": "Acide",
    "ultime": true,
    "fichier": "competences/mage/MAG-A08-ACI_explosion_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A08-EAU",
@@ -7130,7 +7147,7 @@
    "element": "Eau",
    "ultime": true,
    "fichier": "competences/mage/MAG-A08-EAU_explosion_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A08-GLA",
@@ -7142,7 +7159,7 @@
    "element": "Glace",
    "ultime": true,
    "fichier": "competences/mage/MAG-A08-GLA_explosion_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A08-ELE",
@@ -7154,7 +7171,7 @@
    "element": "Électricité",
    "ultime": true,
    "fichier": "competences/mage/MAG-A08-ELE_explosion_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A08-LUM",
@@ -7166,7 +7183,7 @@
    "element": "Lumière",
    "ultime": true,
    "fichier": "competences/mage/MAG-A08-LUM_explosion_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-A08-OMB",
@@ -7178,7 +7195,7 @@
    "element": "Ombre",
    "ultime": true,
    "fichier": "competences/mage/MAG-A08-OMB_explosion_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S01-NEU",
@@ -7190,7 +7207,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S01-NEU_barriere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S01-TER",
@@ -7202,7 +7219,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S01-TER_barriere_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S01-FEU",
@@ -7214,7 +7231,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/mage/MAG-S01-FEU_barriere_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S01-VEN",
@@ -7226,7 +7243,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/mage/MAG-S01-VEN_barriere_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S01-ACI",
@@ -7238,7 +7255,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/mage/MAG-S01-ACI_barriere_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S01-EAU",
@@ -7250,7 +7267,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/mage/MAG-S01-EAU_barriere_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S01-GLA",
@@ -7262,7 +7279,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/mage/MAG-S01-GLA_barriere_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S01-ELE",
@@ -7274,7 +7291,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/mage/MAG-S01-ELE_barriere_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S01-LUM",
@@ -7286,7 +7303,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/mage/MAG-S01-LUM_barriere_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S01-OMB",
@@ -7298,7 +7315,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S01-OMB_barriere_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S02-NEU",
@@ -7310,7 +7327,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S02-NEU_soin.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S02-TER",
@@ -7322,7 +7339,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S02-TER_soin_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S02-FEU",
@@ -7334,7 +7351,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/mage/MAG-S02-FEU_soin_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S02-VEN",
@@ -7346,7 +7363,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/mage/MAG-S02-VEN_soin_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S02-ACI",
@@ -7358,7 +7375,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/mage/MAG-S02-ACI_soin_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S02-EAU",
@@ -7370,7 +7387,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/mage/MAG-S02-EAU_soin_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S02-GLA",
@@ -7382,7 +7399,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/mage/MAG-S02-GLA_soin_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S02-ELE",
@@ -7394,7 +7411,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/mage/MAG-S02-ELE_soin_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S02-LUM",
@@ -7406,7 +7423,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/mage/MAG-S02-LUM_soin_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S02-OMB",
@@ -7418,7 +7435,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S02-OMB_soin_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S03-NEU",
@@ -7430,7 +7447,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S03-NEU_amplification.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S03-TER",
@@ -7442,7 +7459,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S03-TER_amplification_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S03-FEU",
@@ -7454,7 +7471,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/mage/MAG-S03-FEU_amplification_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S03-VEN",
@@ -7466,7 +7483,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/mage/MAG-S03-VEN_amplification_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S03-ACI",
@@ -7478,7 +7495,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/mage/MAG-S03-ACI_amplification_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S03-EAU",
@@ -7490,7 +7507,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/mage/MAG-S03-EAU_amplification_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S03-GLA",
@@ -7502,7 +7519,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/mage/MAG-S03-GLA_amplification_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S03-ELE",
@@ -7514,7 +7531,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/mage/MAG-S03-ELE_amplification_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S03-LUM",
@@ -7526,7 +7543,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/mage/MAG-S03-LUM_amplification_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S03-OMB",
@@ -7538,7 +7555,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S03-OMB_amplification_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S04-NEU",
@@ -7550,7 +7567,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S04-NEU_malediction.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S04-TER",
@@ -7562,7 +7579,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S04-TER_malediction_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S04-FEU",
@@ -7574,7 +7591,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/mage/MAG-S04-FEU_malediction_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S04-VEN",
@@ -7586,7 +7603,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/mage/MAG-S04-VEN_malediction_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S04-ACI",
@@ -7598,7 +7615,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/mage/MAG-S04-ACI_malediction_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S04-EAU",
@@ -7610,7 +7627,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/mage/MAG-S04-EAU_malediction_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S04-GLA",
@@ -7622,7 +7639,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/mage/MAG-S04-GLA_malediction_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S04-ELE",
@@ -7634,7 +7651,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/mage/MAG-S04-ELE_malediction_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S04-LUM",
@@ -7646,7 +7663,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/mage/MAG-S04-LUM_malediction_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S04-OMB",
@@ -7658,7 +7675,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S04-OMB_malediction_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S05-NEU",
@@ -7670,7 +7687,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S05-NEU_regeneration.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S05-TER",
@@ -7682,7 +7699,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S05-TER_regeneration_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S05-FEU",
@@ -7694,7 +7711,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/mage/MAG-S05-FEU_regeneration_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S05-VEN",
@@ -7706,7 +7723,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/mage/MAG-S05-VEN_regeneration_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S05-ACI",
@@ -7718,7 +7735,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/mage/MAG-S05-ACI_regeneration_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S05-EAU",
@@ -7730,7 +7747,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/mage/MAG-S05-EAU_regeneration_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S05-GLA",
@@ -7742,7 +7759,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/mage/MAG-S05-GLA_regeneration_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S05-ELE",
@@ -7754,7 +7771,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/mage/MAG-S05-ELE_regeneration_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S05-LUM",
@@ -7766,7 +7783,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/mage/MAG-S05-LUM_regeneration_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S05-OMB",
@@ -7778,7 +7795,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S05-OMB_regeneration_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S06-NEU",
@@ -7790,7 +7807,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S06-NEU_purification.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S06-TER",
@@ -7802,7 +7819,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S06-TER_purification_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S06-FEU",
@@ -7814,7 +7831,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/mage/MAG-S06-FEU_purification_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S06-VEN",
@@ -7826,7 +7843,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/mage/MAG-S06-VEN_purification_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S06-ACI",
@@ -7838,7 +7855,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/mage/MAG-S06-ACI_purification_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S06-EAU",
@@ -7850,7 +7867,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/mage/MAG-S06-EAU_purification_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S06-GLA",
@@ -7862,7 +7879,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/mage/MAG-S06-GLA_purification_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S06-ELE",
@@ -7874,7 +7891,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/mage/MAG-S06-ELE_purification_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S06-LUM",
@@ -7886,7 +7903,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/mage/MAG-S06-LUM_purification_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S06-OMB",
@@ -7898,7 +7915,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/mage/MAG-S06-OMB_purification_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S07-NEU",
@@ -7910,7 +7927,7 @@
    "element": "Neutre",
    "ultime": true,
    "fichier": "competences/mage/MAG-S07-NEU_sanctuaire.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S07-TER",
@@ -7922,7 +7939,7 @@
    "element": "Terre",
    "ultime": true,
    "fichier": "competences/mage/MAG-S07-TER_sanctuaire_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S07-FEU",
@@ -7934,7 +7951,7 @@
    "element": "Feu",
    "ultime": true,
    "fichier": "competences/mage/MAG-S07-FEU_sanctuaire_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S07-VEN",
@@ -7946,7 +7963,7 @@
    "element": "Vent",
    "ultime": true,
    "fichier": "competences/mage/MAG-S07-VEN_sanctuaire_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S07-ACI",
@@ -7958,7 +7975,7 @@
    "element": "Acide",
    "ultime": true,
    "fichier": "competences/mage/MAG-S07-ACI_sanctuaire_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S07-EAU",
@@ -7970,7 +7987,7 @@
    "element": "Eau",
    "ultime": true,
    "fichier": "competences/mage/MAG-S07-EAU_sanctuaire_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S07-GLA",
@@ -7982,7 +7999,7 @@
    "element": "Glace",
    "ultime": true,
    "fichier": "competences/mage/MAG-S07-GLA_sanctuaire_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S07-ELE",
@@ -7994,7 +8011,7 @@
    "element": "Électricité",
    "ultime": true,
    "fichier": "competences/mage/MAG-S07-ELE_sanctuaire_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S07-LUM",
@@ -8006,7 +8023,7 @@
    "element": "Lumière",
    "ultime": true,
    "fichier": "competences/mage/MAG-S07-LUM_sanctuaire_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-S07-OMB",
@@ -8018,7 +8035,7 @@
    "element": "Ombre",
    "ultime": true,
    "fichier": "competences/mage/MAG-S07-OMB_sanctuaire_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-P01",
@@ -8030,7 +8047,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-P01_concentration_arcanique.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-P02",
@@ -8042,7 +8059,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-P02_siphon.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-P03",
@@ -8054,7 +8071,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-P03_echo.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-P04",
@@ -8066,7 +8083,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-P04_persistance.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-P05",
@@ -8078,7 +8095,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-P05_bouclier_de_mana.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-P06",
@@ -8090,7 +8107,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-P06_sagesse.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-P07",
@@ -8102,7 +8119,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-P07_acceleration.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "MAG-P08",
@@ -8114,7 +8131,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/mage/MAG-P08_erosion_magique.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A01-NEU",
@@ -8126,7 +8143,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A01-NEU_tir_rapide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A01-TER",
@@ -8138,7 +8155,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A01-TER_tir_rapide_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A01-FEU",
@@ -8150,7 +8167,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A01-FEU_tir_rapide_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A01-VEN",
@@ -8162,7 +8179,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A01-VEN_tir_rapide_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A01-ACI",
@@ -8174,7 +8191,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A01-ACI_tir_rapide_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A01-EAU",
@@ -8186,7 +8203,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A01-EAU_tir_rapide_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A01-GLA",
@@ -8198,7 +8215,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A01-GLA_tir_rapide_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A01-ELE",
@@ -8210,7 +8227,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A01-ELE_tir_rapide_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A01-LUM",
@@ -8222,7 +8239,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A01-LUM_tir_rapide_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A01-OMB",
@@ -8234,7 +8251,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A01-OMB_tir_rapide_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A02-NEU",
@@ -8246,7 +8263,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A02-NEU_tir_precis.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A02-TER",
@@ -8258,7 +8275,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A02-TER_tir_precis_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A02-FEU",
@@ -8270,7 +8287,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A02-FEU_tir_precis_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A02-VEN",
@@ -8282,7 +8299,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A02-VEN_tir_precis_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A02-ACI",
@@ -8294,7 +8311,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A02-ACI_tir_precis_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A02-EAU",
@@ -8306,7 +8323,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A02-EAU_tir_precis_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A02-GLA",
@@ -8318,7 +8335,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A02-GLA_tir_precis_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A02-ELE",
@@ -8330,7 +8347,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A02-ELE_tir_precis_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A02-LUM",
@@ -8342,7 +8359,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A02-LUM_tir_precis_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A02-OMB",
@@ -8354,7 +8371,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A02-OMB_tir_precis_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A03-NEU",
@@ -8366,7 +8383,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A03-NEU_tir_multiple.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A03-TER",
@@ -8378,7 +8395,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A03-TER_tir_multiple_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A03-FEU",
@@ -8390,7 +8407,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A03-FEU_tir_multiple_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A03-VEN",
@@ -8402,7 +8419,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A03-VEN_tir_multiple_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A03-ACI",
@@ -8414,7 +8431,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A03-ACI_tir_multiple_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A03-EAU",
@@ -8426,7 +8443,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A03-EAU_tir_multiple_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A03-GLA",
@@ -8438,7 +8455,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A03-GLA_tir_multiple_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A03-ELE",
@@ -8450,7 +8467,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A03-ELE_tir_multiple_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A03-LUM",
@@ -8462,7 +8479,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A03-LUM_tir_multiple_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A03-OMB",
@@ -8474,7 +8491,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A03-OMB_tir_multiple_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A04-NEU",
@@ -8486,7 +8503,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A04-NEU_double_tir.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A04-TER",
@@ -8498,7 +8515,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A04-TER_double_tir_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A04-FEU",
@@ -8510,7 +8527,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A04-FEU_double_tir_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A04-VEN",
@@ -8522,7 +8539,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A04-VEN_double_tir_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A04-ACI",
@@ -8534,7 +8551,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A04-ACI_double_tir_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A04-EAU",
@@ -8546,7 +8563,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A04-EAU_double_tir_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A04-GLA",
@@ -8558,7 +8575,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A04-GLA_double_tir_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A04-ELE",
@@ -8570,7 +8587,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A04-ELE_double_tir_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A04-LUM",
@@ -8582,7 +8599,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A04-LUM_double_tir_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A04-OMB",
@@ -8594,7 +8611,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A04-OMB_double_tir_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A05-NEU",
@@ -8606,7 +8623,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A05-NEU_tir_percant.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A05-TER",
@@ -8618,7 +8635,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A05-TER_tir_percant_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A05-FEU",
@@ -8630,7 +8647,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A05-FEU_tir_percant_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A05-VEN",
@@ -8642,7 +8659,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A05-VEN_tir_percant_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A05-ACI",
@@ -8654,7 +8671,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A05-ACI_tir_percant_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A05-EAU",
@@ -8666,7 +8683,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A05-EAU_tir_percant_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A05-GLA",
@@ -8678,7 +8695,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A05-GLA_tir_percant_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A05-ELE",
@@ -8690,7 +8707,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A05-ELE_tir_percant_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A05-LUM",
@@ -8702,7 +8719,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A05-LUM_tir_percant_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A05-OMB",
@@ -8714,7 +8731,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A05-OMB_tir_percant_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A06-NEU",
@@ -8726,7 +8743,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A06-NEU_volee_de_fleches.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A06-TER",
@@ -8738,7 +8755,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A06-TER_volee_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A06-FEU",
@@ -8750,7 +8767,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A06-FEU_volee_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A06-VEN",
@@ -8762,7 +8779,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A06-VEN_volee_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A06-ACI",
@@ -8774,7 +8791,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A06-ACI_volee_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A06-EAU",
@@ -8786,7 +8803,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A06-EAU_volee_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A06-GLA",
@@ -8798,7 +8815,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A06-GLA_volee_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A06-ELE",
@@ -8810,7 +8827,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A06-ELE_volee_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A06-LUM",
@@ -8822,7 +8839,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A06-LUM_volee_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A06-OMB",
@@ -8834,7 +8851,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-A06-OMB_volee_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A07-NEU",
@@ -8846,7 +8863,7 @@
    "element": "Neutre",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A07-NEU_tir_mortel.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A07-TER",
@@ -8858,7 +8875,7 @@
    "element": "Terre",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A07-TER_tir_mortel_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A07-FEU",
@@ -8870,7 +8887,7 @@
    "element": "Feu",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A07-FEU_tir_mortel_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A07-VEN",
@@ -8882,7 +8899,7 @@
    "element": "Vent",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A07-VEN_tir_mortel_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A07-ACI",
@@ -8894,7 +8911,7 @@
    "element": "Acide",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A07-ACI_tir_mortel_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A07-EAU",
@@ -8906,7 +8923,7 @@
    "element": "Eau",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A07-EAU_tir_mortel_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A07-GLA",
@@ -8918,7 +8935,7 @@
    "element": "Glace",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A07-GLA_tir_mortel_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A07-ELE",
@@ -8930,7 +8947,7 @@
    "element": "Électricité",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A07-ELE_tir_mortel_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A07-LUM",
@@ -8942,7 +8959,7 @@
    "element": "Lumière",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A07-LUM_tir_mortel_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A07-OMB",
@@ -8954,7 +8971,7 @@
    "element": "Ombre",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A07-OMB_tir_mortel_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A08-NEU",
@@ -8966,7 +8983,7 @@
    "element": "Neutre",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A08-NEU_averse_de_fleches.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A08-TER",
@@ -8978,7 +8995,7 @@
    "element": "Terre",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A08-TER_averse_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A08-FEU",
@@ -8990,7 +9007,7 @@
    "element": "Feu",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A08-FEU_averse_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A08-VEN",
@@ -9002,7 +9019,7 @@
    "element": "Vent",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A08-VEN_averse_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A08-ACI",
@@ -9014,7 +9031,7 @@
    "element": "Acide",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A08-ACI_averse_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A08-EAU",
@@ -9026,7 +9043,7 @@
    "element": "Eau",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A08-EAU_averse_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A08-GLA",
@@ -9038,7 +9055,7 @@
    "element": "Glace",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A08-GLA_averse_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A08-ELE",
@@ -9050,7 +9067,7 @@
    "element": "Électricité",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A08-ELE_averse_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A08-LUM",
@@ -9062,7 +9079,7 @@
    "element": "Lumière",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A08-LUM_averse_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-A08-OMB",
@@ -9074,7 +9091,7 @@
    "element": "Ombre",
    "ultime": true,
    "fichier": "competences/tireur/TIR-A08-OMB_averse_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S01-NEU",
@@ -9086,7 +9103,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S01-NEU_oeil_de_faucon.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S01-TER",
@@ -9098,7 +9115,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S01-TER_oeil_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S01-FEU",
@@ -9110,7 +9127,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S01-FEU_oeil_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S01-VEN",
@@ -9122,7 +9139,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S01-VEN_oeil_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S01-ACI",
@@ -9134,7 +9151,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S01-ACI_oeil_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S01-EAU",
@@ -9146,7 +9163,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S01-EAU_oeil_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S01-GLA",
@@ -9158,7 +9175,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S01-GLA_oeil_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S01-ELE",
@@ -9170,7 +9187,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S01-ELE_oeil_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S01-LUM",
@@ -9182,7 +9199,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S01-LUM_oeil_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S01-OMB",
@@ -9194,7 +9211,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S01-OMB_oeil_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S02-NEU",
@@ -9206,7 +9223,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S02-NEU_roulade.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S02-TER",
@@ -9218,7 +9235,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S02-TER_roulade_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S02-FEU",
@@ -9230,7 +9247,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S02-FEU_roulade_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S02-VEN",
@@ -9242,7 +9259,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S02-VEN_roulade_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S02-ACI",
@@ -9254,7 +9271,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S02-ACI_roulade_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S02-EAU",
@@ -9266,7 +9283,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S02-EAU_roulade_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S02-GLA",
@@ -9278,7 +9295,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S02-GLA_roulade_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S02-ELE",
@@ -9290,7 +9307,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S02-ELE_roulade_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S02-LUM",
@@ -9302,7 +9319,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S02-LUM_roulade_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S02-OMB",
@@ -9314,7 +9331,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S02-OMB_roulade_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S03-NEU",
@@ -9326,7 +9343,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S03-NEU_fleche_marquante.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S03-TER",
@@ -9338,7 +9355,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S03-TER_marque_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S03-FEU",
@@ -9350,7 +9367,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S03-FEU_marque_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S03-VEN",
@@ -9362,7 +9379,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S03-VEN_marque_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S03-ACI",
@@ -9374,7 +9391,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S03-ACI_marque_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S03-EAU",
@@ -9386,7 +9403,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S03-EAU_marque_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S03-GLA",
@@ -9398,7 +9415,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S03-GLA_marque_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S03-ELE",
@@ -9410,7 +9427,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S03-ELE_marque_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S03-LUM",
@@ -9422,7 +9439,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S03-LUM_marque_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S03-OMB",
@@ -9434,7 +9451,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S03-OMB_marque_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S04-NEU",
@@ -9446,7 +9463,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S04-NEU_piege_a_loup.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S04-TER",
@@ -9458,7 +9475,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S04-TER_piege_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S04-FEU",
@@ -9470,7 +9487,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S04-FEU_piege_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S04-VEN",
@@ -9482,7 +9499,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S04-VEN_piege_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S04-ACI",
@@ -9494,7 +9511,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S04-ACI_piege_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S04-EAU",
@@ -9506,7 +9523,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S04-EAU_piege_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S04-GLA",
@@ -9518,7 +9535,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S04-GLA_piege_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S04-ELE",
@@ -9530,7 +9547,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S04-ELE_piege_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S04-LUM",
@@ -9542,7 +9559,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S04-LUM_piege_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S04-OMB",
@@ -9554,7 +9571,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S04-OMB_piege_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S05-NEU",
@@ -9566,7 +9583,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S05-NEU_remede.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S05-TER",
@@ -9578,7 +9595,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S05-TER_remede_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S05-FEU",
@@ -9590,7 +9607,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S05-FEU_remede_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S05-VEN",
@@ -9602,7 +9619,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S05-VEN_remede_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S05-ACI",
@@ -9614,7 +9631,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S05-ACI_remede_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S05-EAU",
@@ -9626,7 +9643,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S05-EAU_remede_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S05-GLA",
@@ -9638,7 +9655,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S05-GLA_remede_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S05-ELE",
@@ -9650,7 +9667,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S05-ELE_remede_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S05-LUM",
@@ -9662,7 +9679,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S05-LUM_remede_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S05-OMB",
@@ -9674,7 +9691,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S05-OMB_remede_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S06-NEU",
@@ -9686,7 +9703,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S06-NEU_visee.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S06-TER",
@@ -9698,7 +9715,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S06-TER_visee_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S06-FEU",
@@ -9710,7 +9727,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S06-FEU_visee_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S06-VEN",
@@ -9722,7 +9739,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S06-VEN_visee_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S06-ACI",
@@ -9734,7 +9751,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S06-ACI_visee_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S06-EAU",
@@ -9746,7 +9763,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S06-EAU_visee_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S06-GLA",
@@ -9758,7 +9775,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S06-GLA_visee_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S06-ELE",
@@ -9770,7 +9787,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S06-ELE_visee_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S06-LUM",
@@ -9782,7 +9799,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S06-LUM_visee_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S06-OMB",
@@ -9794,7 +9811,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-S06-OMB_visee_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S07-NEU",
@@ -9806,7 +9823,7 @@
    "element": "Neutre",
    "ultime": true,
    "fichier": "competences/tireur/TIR-S07-NEU_instinct_du_predateur.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S07-TER",
@@ -9818,7 +9835,7 @@
    "element": "Terre",
    "ultime": true,
    "fichier": "competences/tireur/TIR-S07-TER_instinct_de_pierre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S07-FEU",
@@ -9830,7 +9847,7 @@
    "element": "Feu",
    "ultime": true,
    "fichier": "competences/tireur/TIR-S07-FEU_instinct_de_feu.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S07-VEN",
@@ -9842,7 +9859,7 @@
    "element": "Vent",
    "ultime": true,
    "fichier": "competences/tireur/TIR-S07-VEN_instinct_de_vent.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S07-ACI",
@@ -9854,7 +9871,7 @@
    "element": "Acide",
    "ultime": true,
    "fichier": "competences/tireur/TIR-S07-ACI_instinct_d_acide.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S07-EAU",
@@ -9866,7 +9883,7 @@
    "element": "Eau",
    "ultime": true,
    "fichier": "competences/tireur/TIR-S07-EAU_instinct_d_eau.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S07-GLA",
@@ -9878,7 +9895,7 @@
    "element": "Glace",
    "ultime": true,
    "fichier": "competences/tireur/TIR-S07-GLA_instinct_de_glace.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S07-ELE",
@@ -9890,7 +9907,7 @@
    "element": "Électricité",
    "ultime": true,
    "fichier": "competences/tireur/TIR-S07-ELE_instinct_de_foudre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S07-LUM",
@@ -9902,7 +9919,7 @@
    "element": "Lumière",
    "ultime": true,
    "fichier": "competences/tireur/TIR-S07-LUM_instinct_de_lumiere.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-S07-OMB",
@@ -9914,7 +9931,7 @@
    "element": "Ombre",
    "ultime": true,
    "fichier": "competences/tireur/TIR-S07-OMB_instinct_d_ombre.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-P01",
@@ -9926,7 +9943,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-P01_oeil_vif.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-P02",
@@ -9938,7 +9955,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-P02_chasseur.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-P03",
@@ -9950,7 +9967,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-P03_premier_sang.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-P04",
@@ -9962,7 +9979,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-P04_pas_leger.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-P05",
@@ -9974,7 +9991,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-P05_pointes_barbelees.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-P06",
@@ -9986,7 +10003,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-P06_carquois_sans_fond.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-P07",
@@ -9998,7 +10015,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-P07_precision_mortelle.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TIR-P08",
@@ -10010,7 +10027,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/tireur/TIR-P08_vampirisme.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TOU-AFF-NEU",
@@ -10022,7 +10039,7 @@
    "element": "Neutre",
    "ultime": false,
    "fichier": "competences/affinites/TOU-AFF-NEU_maitrise_arcanique.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TOU-AFF-TER",
@@ -10034,7 +10051,7 @@
    "element": "Terre",
    "ultime": false,
    "fichier": "competences/affinites/TOU-AFF-TER_affinite_tellurique.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TOU-AFF-FEU",
@@ -10046,7 +10063,7 @@
    "element": "Feu",
    "ultime": false,
    "fichier": "competences/affinites/TOU-AFF-FEU_affinite_ardente.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TOU-AFF-VEN",
@@ -10058,7 +10075,7 @@
    "element": "Vent",
    "ultime": false,
    "fichier": "competences/affinites/TOU-AFF-VEN_affinite_des_vents.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TOU-AFF-ACI",
@@ -10070,7 +10087,7 @@
    "element": "Acide",
    "ultime": false,
    "fichier": "competences/affinites/TOU-AFF-ACI_affinite_corrosive.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TOU-AFF-EAU",
@@ -10082,7 +10099,7 @@
    "element": "Eau",
    "ultime": false,
    "fichier": "competences/affinites/TOU-AFF-EAU_affinite_des_marees.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TOU-AFF-GLA",
@@ -10094,7 +10111,7 @@
    "element": "Glace",
    "ultime": false,
    "fichier": "competences/affinites/TOU-AFF-GLA_affinite_glaciale.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TOU-AFF-ELE",
@@ -10106,7 +10123,7 @@
    "element": "Électricité",
    "ultime": false,
    "fichier": "competences/affinites/TOU-AFF-ELE_affinite_orageuse.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TOU-AFF-LUM",
@@ -10118,7 +10135,7 @@
    "element": "Lumière",
    "ultime": false,
    "fichier": "competences/affinites/TOU-AFF-LUM_affinite_solaire.png",
-   "taille": 24
+   "taille": 72
   },
   {
    "id": "TOU-AFF-OMB",
@@ -10130,7 +10147,7 @@
    "element": "Ombre",
    "ultime": false,
    "fichier": "competences/affinites/TOU-AFF-OMB_affinite_tenebreuse.png",
-   "taille": 24
+   "taille": 72
   }
  ],
  "fusions": [
@@ -10139,386 +10156,386 @@
    "element_2": "Feu",
    "nom": "Brasier",
    "fichier": "competences/fusions/fusion_brasier.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Feu",
    "element_2": "Électricité",
    "nom": "Plasma",
    "fichier": "competences/fusions/fusion_plasma.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Feu",
    "element_2": "Acide",
    "nom": "Brimstone",
    "fichier": "competences/fusions/fusion_brimstone.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Feu",
    "element_2": "Glace",
    "nom": "Cryopyre",
    "fichier": "competences/fusions/fusion_cryopyre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Feu",
    "element_2": "Eau",
    "nom": "Vapeur",
    "fichier": "competences/fusions/fusion_vapeur.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Feu",
    "element_2": "Vent",
    "nom": "Feu follet",
    "fichier": "competences/fusions/fusion_feu_follet.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Feu",
    "element_2": "Terre",
    "nom": "Magma",
    "fichier": "competences/fusions/fusion_magma.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Feu",
    "element_2": "Ombre",
    "nom": "Feu maudit",
    "fichier": "competences/fusions/fusion_feu_maudit.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Feu",
    "element_2": "Lumière",
    "nom": "Feu solaire",
    "fichier": "competences/fusions/fusion_feu_solaire.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Feu",
    "element_2": "Neutre",
    "nom": "Flamme arcanique",
    "fichier": "competences/fusions/fusion_flamme_arcanique.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Électricité",
    "element_2": "Électricité",
    "nom": "Foudre",
    "fichier": "competences/fusions/fusion_foudre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Électricité",
    "element_2": "Acide",
    "nom": "Flux corrosif",
    "fichier": "competences/fusions/fusion_flux_corrosif.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Électricité",
    "element_2": "Glace",
    "nom": "Cryo-éclair",
    "fichier": "competences/fusions/fusion_cryo_eclair.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Électricité",
    "element_2": "Eau",
    "nom": "Orage",
    "fichier": "competences/fusions/fusion_orage.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Électricité",
    "element_2": "Vent",
    "nom": "Tempête",
    "fichier": "competences/fusions/fusion_tempete.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Électricité",
    "element_2": "Terre",
    "nom": "Magnétisme",
    "fichier": "competences/fusions/fusion_magnetisme.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Électricité",
    "element_2": "Ombre",
    "nom": "Foudre spectrale",
    "fichier": "competences/fusions/fusion_foudre_spectrale.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Électricité",
    "element_2": "Lumière",
    "nom": "Arc céleste",
    "fichier": "competences/fusions/fusion_arc_celeste.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Électricité",
    "element_2": "Neutre",
    "nom": "Surcharge",
    "fichier": "competences/fusions/fusion_surcharge.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Acide",
    "element_2": "Acide",
    "nom": "Corrosion",
    "fichier": "competences/fusions/fusion_corrosion.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Acide",
    "element_2": "Glace",
    "nom": "Cryocorrosion",
    "fichier": "competences/fusions/fusion_cryocorrosion.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Acide",
    "element_2": "Eau",
    "nom": "Solution caustique",
    "fichier": "competences/fusions/fusion_solution_caustique.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Acide",
    "element_2": "Vent",
    "nom": "Brume toxique",
    "fichier": "competences/fusions/fusion_brume_toxique.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Acide",
    "element_2": "Terre",
    "nom": "Putréfaction",
    "fichier": "competences/fusions/fusion_putrefaction.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Acide",
    "element_2": "Ombre",
    "nom": "Fléau",
    "fichier": "competences/fusions/fusion_fleau.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Acide",
    "element_2": "Lumière",
    "nom": "Alchimie",
    "fichier": "competences/fusions/fusion_alchimie.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Acide",
    "element_2": "Neutre",
    "nom": "Dissolution",
    "fichier": "competences/fusions/fusion_dissolution.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Glace",
    "element_2": "Glace",
    "nom": "Grand Gel",
    "fichier": "competences/fusions/fusion_grand_gel.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Glace",
    "element_2": "Eau",
    "nom": "Glacier",
    "fichier": "competences/fusions/fusion_glacier.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Glace",
    "element_2": "Vent",
    "nom": "Blizzard",
    "fichier": "competences/fusions/fusion_blizzard.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Glace",
    "element_2": "Terre",
    "nom": "Permafrost",
    "fichier": "competences/fusions/fusion_permafrost.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Glace",
    "element_2": "Ombre",
    "nom": "Froid spectral",
    "fichier": "competences/fusions/fusion_froid_spectral.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Glace",
    "element_2": "Lumière",
    "nom": "Cristal sacré",
    "fichier": "competences/fusions/fusion_cristal_sacre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Glace",
    "element_2": "Neutre",
    "nom": "Zéro absolu",
    "fichier": "competences/fusions/fusion_zero_absolu.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Eau",
    "element_2": "Eau",
    "nom": "Marée",
    "fichier": "competences/fusions/fusion_maree.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Eau",
    "element_2": "Vent",
    "nom": "Typhon",
    "fichier": "competences/fusions/fusion_typhon.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Eau",
    "element_2": "Terre",
    "nom": "Bourbier",
    "fichier": "competences/fusions/fusion_bourbier.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Eau",
    "element_2": "Ombre",
    "nom": "Eau noire",
    "fichier": "competences/fusions/fusion_eau_noire.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Eau",
    "element_2": "Lumière",
    "nom": "Eau bénite",
    "fichier": "competences/fusions/fusion_eau_benite.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Eau",
    "element_2": "Neutre",
    "nom": "Onde arcanique",
    "fichier": "competences/fusions/fusion_onde_arcanique.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Vent",
    "element_2": "Vent",
    "nom": "Ouragan",
    "fichier": "competences/fusions/fusion_ouragan.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Vent",
    "element_2": "Terre",
    "nom": "Tempête de sable",
    "fichier": "competences/fusions/fusion_tempete_de_sable.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Vent",
    "element_2": "Ombre",
    "nom": "Vent funeste",
    "fichier": "competences/fusions/fusion_vent_funeste.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Vent",
    "element_2": "Lumière",
    "nom": "Ailes célestes",
    "fichier": "competences/fusions/fusion_ailes_celestes.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Vent",
    "element_2": "Neutre",
    "nom": "Lame d’air",
    "fichier": "competences/fusions/fusion_lame_dair.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Terre",
    "element_2": "Terre",
    "nom": "Séisme",
    "fichier": "competences/fusions/fusion_seisme.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Terre",
    "element_2": "Ombre",
    "nom": "Tombeau",
    "fichier": "competences/fusions/fusion_tombeau.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Terre",
    "element_2": "Lumière",
    "nom": "Bastion sacré",
    "fichier": "competences/fusions/fusion_bastion_sacre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Terre",
    "element_2": "Neutre",
    "nom": "Gravité",
    "fichier": "competences/fusions/fusion_gravite.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Ombre",
    "element_2": "Ombre",
    "nom": "Néant",
    "fichier": "competences/fusions/fusion_neant.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Ombre",
    "element_2": "Lumière",
    "nom": "Crépuscule",
    "fichier": "competences/fusions/fusion_crepuscule.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Ombre",
    "element_2": "Neutre",
    "nom": "Distorsion",
    "fichier": "competences/fusions/fusion_distorsion.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Lumière",
    "element_2": "Lumière",
    "nom": "Révélation",
    "fichier": "competences/fusions/fusion_revelation.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Lumière",
    "element_2": "Neutre",
    "nom": "Équilibre",
    "fichier": "competences/fusions/fusion_equilibre.png",
-   "taille": 16
+   "taille": 48
   },
   {
    "element_1": "Neutre",
    "element_2": "Neutre",
    "nom": "Singularité",
    "fichier": "competences/fusions/fusion_singularite.png",
-   "taille": 16
+   "taille": 48
   }
  ],
- "note_competences": "Icône 24x24 par ID du Catalogue. Cadre : acier = attaque, turquoise = soutien, violet = passif, or = ultime. Pour une compétence fusionnée, afficher l'icône de l'élément 1 avec le badge de fusion 16x16 en coin."
+ "note_competences": "Icône 72x72 par ID du Catalogue. Cadre : acier = attaque, turquoise = soutien, violet = passif, or = ultime. Les variantes élémentaires portent un badge d'élément en bas à droite. Pour une compétence fusionnée, afficher l'icône de l'élément 1 avec le badge de fusion 48x48 (réduit à 24x24) en coin."
 }
