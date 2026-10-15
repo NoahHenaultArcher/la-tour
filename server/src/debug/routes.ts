@@ -13,10 +13,12 @@ import {
   debugGiveGoldSchema,
   debugGiveResourcesSchema,
   debugGiveXpSchema,
+  debugGiveRelicSchema,
   debugGoToAbyssSchema,
   debugGoToFloorSchema,
   debugSetLevelSchema,
   debugUnlockElementSchema,
+  RELIC_IDS,
   TOWER_FLOORS,
   winCurrentWave,
 } from '@la-tour/shared';
@@ -127,6 +129,16 @@ export async function debugRoutes(
         highestFloorCleared: TOWER_FLOORS,
       }),
     );
+  });
+
+  // Reliques : une précise, ou « all » pour toutes (celles déjà possédées sont ignorées).
+  action('relic', debugGiveRelicSchema, async ({ relicId }, saveId) => {
+    const ids = relicId === 'all' ? RELIC_IDS : [relicId];
+    if (!ids.every((id) => RELIC_IDS.includes(id))) throw new HttpError(400, 'VALIDATION');
+    await prisma.relic.createMany({
+      data: ids.map((id) => ({ saveId, relicId: id })),
+      skipDuplicates: true,
+    });
   });
 
   // Abysse : ouvre la tour en entier si besoin, puis place le joueur à cet étage de l'Abysse.

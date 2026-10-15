@@ -36,6 +36,9 @@ interface SessionState {
   upgradeBuilding: (buildingId: string) => Promise<void>;
   equipItem: (itemId: string, characterId: string) => Promise<void>;
   unequipItem: (itemId: string) => Promise<void>;
+  /** Reliques : équiper dans un emplacement (0 à 5), ou retirer. */
+  equipRelic: (relicId: string, slot: number) => Promise<void>;
+  unequipRelic: (relicId: string) => Promise<void>;
   upgradeItem: (itemId: string) => Promise<void>;
   craftItem: (body: CraftItemBody) => Promise<void>;
   allocateStatPoints: (characterId: string, add: Partial<StatAllocation>) => Promise<void>;
@@ -123,6 +126,12 @@ export const useSession = create<SessionState>((set) => {
     },
     unequipItem: async (itemId) => {
       set(withSave(await api.unequipItem({ itemId })));
+    },
+    equipRelic: async (relicId, slot) => {
+      set(withSave(await api.equipRelic({ relicId, slot })));
+    },
+    unequipRelic: async (relicId) => {
+      set(withSave(await api.unequipRelic({ relicId })));
     },
     upgradeItem: async (itemId) => {
       set(withSave(await api.upgradeItem({ itemId })));

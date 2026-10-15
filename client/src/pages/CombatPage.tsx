@@ -7,6 +7,8 @@ import { MultiOutcomeModal } from '../components/combat/MultiOutcomeModal.tsx';
 import { OutcomeModal } from '../components/combat/OutcomeModal.tsx';
 import { SkillBar } from '../components/combat/SkillBar.tsx';
 import { ElementBadge } from '../components/ElementBadge.tsx';
+import { RelicIcon, RelicTooltip } from '../components/relics/RelicIcon.tsx';
+import { Tooltip } from '../components/Tooltip.tsx';
 import { TopBar } from '../components/TopBar.tsx';
 import { useDebug } from '../debug/console.ts';
 import { backgroundSleep, usePageHidden } from '../game/background.ts';
@@ -300,6 +302,18 @@ export function CombatPage() {
           </button>
         </header>
 
+        {(view.relics?.length ?? 0) > 0 && (
+          <div className="combat-relics" aria-label={t('relic.combatTitle')}>
+            <span className="muted small">{t('relic.combatTitle')}</span>
+            {view.relics!.map((relicId, i) => (
+              <Tooltip key={`${relicId}-${i}`} content={<RelicTooltip relicId={relicId} />}>
+                <span tabIndex={0}>
+                  <RelicIcon relicId={relicId} size={36} />
+                </span>
+              </Tooltip>
+            ))}
+          </div>
+        )}
         <div className="initiative-bar" aria-label={t('combat.initiative')}>
           <span className={`initiative-side heroes${view.firstSide === 'hero' ? ' first' : ''}`}>
             {t('combat.side.heroes')} ·{' '}

@@ -102,6 +102,7 @@ model Save {
   updatedAt           DateTime            @updatedAt
   characters          Character[]
   items               Item[]
+  relics              Relic[]
   resources           ResourceStock[]
   buildings           Building[]
   upgradeTower        UpgradeTowerLevel[]
@@ -180,6 +181,19 @@ model ResourceStock {
   fraction   Float  @default(0)
 
   @@id([saveId, resourceId])
+}
+
+/// Relique ou œuf de dragon possédé (une seule fois par compte), équipé dans un des 6 emplacements.
+model Relic {
+  saveId     String   @db.Uuid
+  save       Save     @relation(fields: [saveId], references: [id], onDelete: Cascade)
+  relicId    String
+  /// Emplacement 0 à 5, ou null si la relique n'est pas équipée.
+  slot       Int?
+  acquiredAt DateTime @default(now())
+
+  @@id([saveId, relicId])
+  @@unique([saveId, slot])
 }
 
 /// Bâtiment construit (niveau 1 dès son étage de déblocage).

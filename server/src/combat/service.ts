@@ -36,6 +36,7 @@ import {
 } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { HttpError } from '../http/errors.ts';
+import { equippedRelics, grantRelics } from '../relics/service.ts';
 import { applyTowerProgress, loadSave } from '../save/service.ts';
 import { lockSave } from '../village/service.ts';
 
@@ -243,6 +244,7 @@ export async function startCombat(
       tower: towerLevels(save.upgradeTower),
       seed: randomInt(0, 2 ** 32 - 1),
       alchemyLevel: save.buildings[0]?.level ?? 0,
+      relics: await equippedRelics(tx, saveId),
     });
     await tx.combatSession.create({
       data: { saveId, floor, state: state as unknown as Prisma.InputJsonValue },
@@ -340,6 +342,8 @@ async function finishCombat(
   // Butin : un tirage pour l'équipe (solo), sur les monstres vaincus, même en cas de défaite.
   // Les objets peuvent être de n'importe quelle classe, même absente de l'équipe (à revendre ou garder).
   const loot = await grantLoot(tx, saveId, state.rng, state.killed, state.floor, mode);
+  // Reliques et œufs des boss et dragons vaincus (5 %, une seule fois chacun).
+  const relics = await grantRelics(tx, saveId, state.rng, state.killed, mode);
 
   return {
     result: state.phase === 'retreat' ? 'retreat' : victory ? 'victory' : 'defeat',
@@ -351,6 +355,7 @@ async function finishCombat(
     floorCleared,
     unlocked,
     loot,
+    relics,
     save: await loadSave(tx, userId),
   };
 }

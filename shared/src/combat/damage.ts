@@ -192,7 +192,7 @@ export function attack(
   return { amount, critical, missed: false };
 }
 
-/** Alphas de l'Abysse : « Épines » renvoie une part des coups reçus, « Vampirique » se soigne. */
+/** Abysse : alphas « Épines » (renvoi) et « Vampirique » (soin), miroir de la fusion Cristal sacré. */
 function alphaReactions(
   attacker: Combatant,
   defender: Combatant,
@@ -201,6 +201,17 @@ function alphaReactions(
 ): void {
   if (defender.alpha === 'thorns' && attacker.side === 'hero' && attacker.hp > 0)
     directDamage(defender, attacker, amount * ALPHA.thorns, events);
+  // Fusion d'un monstre de l'Abysse (Cristal sacré) : renvoie une part du prochain coup reçu.
+  // Les renvois des héros sont gérés après le coup du monstre (actions.ts, afterHeroHit).
+  if (defender.side === 'monster' && attacker.side === 'hero' && attacker.hp > 0) {
+    const mirror = defender.modifiers.find((m) => m.reflectNextHit);
+    if (mirror) {
+      directDamage(defender, attacker, amount * mirror.reflectNextHit!, events);
+      mirror.reflectNextHit = 0;
+      mirror.remaining = 0;
+      defender.modifiers = defender.modifiers.filter((m) => m.remaining > 0);
+    }
+  }
   if (attacker.alpha === 'vampiric' && attacker.hp > 0)
     heal(attacker, attacker, amount * ALPHA.vampiric, events);
 }

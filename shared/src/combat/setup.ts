@@ -2,6 +2,7 @@
  * Préparation d'un combat : composition des vagues d'un étage et création des combattants.
  */
 import {
+  ABYSS,
   ALPHA,
   ALPHA_TRAIT_IDS,
   EARLY_GAME,
@@ -11,7 +12,7 @@ import {
   monsterDifficulty,
   type AlphaTraitId,
 } from '../balance.ts';
-import type { ClassId, ElementId, StatBlock } from '../constants.ts';
+import { ELEMENT_IDS, type ClassId, type ElementId, type StatBlock } from '../constants.ts';
 import {
   abyssBosses,
   abyssDifficulty,
@@ -21,6 +22,7 @@ import {
   abyssRegulars,
 } from '../rules/abyss.ts';
 import { classAttackStat, heroStats } from '../rules/heroes.ts';
+import { emptyRelicBonus, type RelicBonus, type RelicStat } from '../rules/relics.ts';
 import { monsterStats } from '../rules/monsters.ts';
 import { chance, nextInt, pick, type Rng } from '../rules/random.ts';
 import type { StatAllocation } from '../rules/statPoints.ts';
@@ -83,6 +85,14 @@ function rollAlpha(rng: Rng): AlphaTraitId | undefined {
 }
 
 /**
+ * Abysse : fusion d'un monstre (son élément + un élément au hasard). Toujours pour un alpha
+ * « Fusionné », sinon une chance sur ABYSS.fusionChance.
+ */
+function rollFusion(rng: Rng, alpha: AlphaTraitId | undefined): ElementId | undefined {
+  return alpha === 'fused' || chance(rng, ABYSS.fusionChance) ? pick(rng, ELEMENT_IDS) : undefined;
+}
+
+/**
  * Vagues d'un étage de l'Abysse : comme la tour (3 vagues de 3 ; boss tous les 5 étages avec
  * 4 vagues puis le boss + 2 escortes ; tanière = le dragon seul), mais les monstres viennent de
  * toutes les zones, le boss est tiré parmi tous les boss, et certains monstres sont alpha.
@@ -91,12 +101,16 @@ export function buildAbyssWaves(data: CombatData, floor: number, rng: Rng): Mons
   const params = data.monsters.params.floors;
   const level = abyssMonsterLevel(floor);
   const regulars = abyssRegulars(data.monsters);
-  const spawn = (monsterId: string, alpha = rollAlpha(rng)): MonsterSpawn => ({
-    monsterId,
-    level,
-    abyssFloor: floor,
-    ...(alpha ? { alpha } : {}),
-  });
+  const spawn = (monsterId: string, alpha = rollAlpha(rng)): MonsterSpawn => {
+    const fusion = rollFusion(rng, alpha);
+    return {
+      monsterId,
+      level,
+      abyssFloor: floor,
+      ...(alpha ? { alpha } : {}),
+      ...(fusion ? { fusion } : {}),
+    };
+  };
   const regularWave = () =>
     Array.from({ length: params.monstersPerWave }, () => spawn(pick(rng, regulars).id));
 
@@ -117,13 +131,14 @@ export function buildAbyssWaves(data: CombatData, floor: number, rng: Rng): Mons
 }
 
 /**
- * Stats de combat d'un héros : base + équipement + héritage, puis passifs du deck
+ * Stats de combat d'un héros : base + équipement + héritage, puis passifs du deck, reliques équipées
  * et bonus de PV de la Tour d'amélioration. Sert au combat et à la page Équipe.
  */
 export function heroCombatStats(
   data: CombatData,
   hero: HeroSetup,
   tower: UpgradeTowerLevels,
+  relics: RelicBonus = emptyRelicBonus(),
 ): CombatStats {
   const stats = heroStats(data.stats, hero);
   let dodgeBonus = 0;
@@ -139,6 +154,14 @@ export function heroCombatStats(
       else stats[stat as keyof StatBlock] += value;
     }
   }
+  // Reliques : toute l'équipe en profite.
+  for (const [stat, value] of Object.entries(relics.stats) as [RelicStat, number][])
+    stats[stat] = Math.round(stats[stat] * (1 + value));
+  stats.critChance += relics.critChance;
+  stats.critDamage += relics.critDamage;
+  stats.statusResistance += relics.statusResistance;
+  stats.healingBonus += relics.healingBonus;
+  dodgeBonus += relics.dodge;
   return {
     maxHp: Math.round(
       stats.vitality *
@@ -184,8 +207,9 @@ export function createHeroCombatant(
   hero: HeroSetup,
   index: number,
   tower: UpgradeTowerLevels,
+  relics: RelicBonus = emptyRelicBonus(),
 ): Combatant {
-  const stats = heroCombatStats(data, hero, tower);
+  const stats = heroCombatStats(data, hero, tower, relics);
   const passives = hero.deck
     .filter((s) => !ACTIVE_POSITIONS.includes(s.position))
     .map((s) => s.skillId);
@@ -224,8 +248,8 @@ export function createHeroCombatant(
     passives,
     inflicts: [],
     ...(hero.alchemyLevel !== undefined ? { alchemyLevel: hero.alchemyLevel } : {}),
-    damageBonus: upgradeTowerBonus(data.village, tower, 'damage'),
-    defenseBonus: upgradeTowerBonus(data.village, tower, 'defense'),
+    damageBonus: upgradeTowerBonus(data.village, tower, 'damage') + relics.damageDealt,
+    defenseBonus: upgradeTowerBonus(data.village, tower, 'defense') + relics.damageTaken,
     isBoss: false,
     dead: false,
     reward: null,
@@ -315,6 +339,7 @@ export function createMonsterCombatant(
     defenseBonus: alpha === 'carapace' ? ALPHA.carapace : 0,
     isBoss: monster.rank === 'boss' || monster.rank === 'dragon',
     alpha,
+    fusion: spawn.fusion ?? null,
     dead: false,
     reward: { xp: s.xp * rewardFactor, gold: s.gold * rewardFactor },
   };

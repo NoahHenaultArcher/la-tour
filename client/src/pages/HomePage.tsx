@@ -1,6 +1,7 @@
 import {
   CLASS_IDS,
   MAX_HERO_LEVEL,
+  RELICS,
   SLOT_IDS,
   TOWER_FLOORS,
   XP_GAIN,
@@ -28,12 +29,14 @@ import { ElementBadge } from '../components/ElementBadge.tsx';
 import { FloorTooltip } from '../components/FloorTooltip.tsx';
 import { ItemIcon } from '../components/items/ItemIcon.tsx';
 import { ItemTooltip } from '../components/items/ItemTooltip.tsx';
+import { RelicIcon, RelicTooltip } from '../components/relics/RelicIcon.tsx';
 import { PixelImage } from '../components/PixelImage.tsx';
 import { Tooltip } from '../components/Tooltip.tsx';
 import { TopBar } from '../components/TopBar.tsx';
 import { CLASS_IMAGES } from '../game/assets.ts';
 import { elementName, elementStyle } from '../game/elements.ts';
 import { catalogItem, characterStats, equippedIn, statsOf } from '../game/items.ts';
+import { relicSlots } from '../game/relics.ts';
 import { resourceById, useVillageView, type VillageView } from '../game/village.ts';
 import { formatNumber, t } from '../i18n/index.ts';
 import { useCombat } from '../stores/combat.ts';
@@ -549,6 +552,36 @@ function VillageCard({ save, view }: { save: SaveDto; view: VillageView }) {
   );
 }
 
+/** Reliques et œufs équipés (6 emplacements), avec leurs effets au survol. */
+function RelicsCard({ save }: { save: SaveDto }) {
+  const slots = relicSlots(save);
+  const owned = save.relics.length;
+  return (
+    <Card title={t('relic.homeTitle')} link={{ to: '/equipe', label: t('relic.manage') }}>
+      <div className="home-relics">
+        {slots.map((relicId, slot) =>
+          relicId ? (
+            <Tooltip key={slot} content={<RelicTooltip relicId={relicId} save={save} />}>
+              <span tabIndex={0}>
+                <RelicIcon relicId={relicId} />
+              </span>
+            </Tooltip>
+          ) : (
+            <Tooltip key={slot} content={t('relic.emptySlot', { slot: slot + 1 })}>
+              <span className="relic-empty" tabIndex={0} />
+            </Tooltip>
+          ),
+        )}
+      </div>
+      <p className="muted small">
+        {owned === 0
+          ? t('relic.homeNone')
+          : t('relic.homeOwned', { count: owned, total: RELICS.length })}
+      </p>
+    </Card>
+  );
+}
+
 interface Goal {
   floor: number;
   label: ReactNode;
@@ -658,6 +691,7 @@ export function HomePage() {
               <RecruitHint save={save} />
             </div>
           </Card>
+          <RelicsCard save={save} />
           <VillageCard save={save} view={view} />
           <GoalsCard save={save} />
         </div>

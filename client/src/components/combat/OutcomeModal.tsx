@@ -1,4 +1,10 @@
-import { STAT_POINTS, sellPrice, type CombatMode, type CombatOutcome } from '@la-tour/shared';
+import {
+  STAT_POINTS,
+  relicById,
+  sellPrice,
+  type CombatMode,
+  type CombatOutcome,
+} from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { useEffect, useState, type CSSProperties } from 'react';
 import { catalogItem, equippedIn, rarityInfo } from '../../game/items.ts';
@@ -11,6 +17,7 @@ import { ItemIcon } from '../items/ItemIcon.tsx';
 import { ItemName, ItemTooltip } from '../items/ItemTooltip.tsx';
 import { StatDeltas } from '../items/StatDeltas.tsx';
 import { Modal } from '../Modal.tsx';
+import { RelicIcon, RelicTooltip } from '../relics/RelicIcon.tsx';
 import { Tooltip } from '../Tooltip.tsx';
 
 interface Action {
@@ -153,6 +160,32 @@ export function LootRow({
 }
 
 /** Fin de combat : victoire, défaite ou fin de chasse ; or, XP, montées de niveau et déblocages. */
+/** Reliques et œufs obtenus : mis en avant (rares, une seule fois par compte). */
+export function RelicDrops({ relicIds }: { relicIds: string[] }) {
+  return (
+    <section className="relic-drops">
+      <h3>{t('relic.dropped')}</h3>
+      <ul>
+        {relicIds.map((id) => (
+          <li key={id}>
+            <Tooltip content={<RelicTooltip relicId={id} />}>
+              <span tabIndex={0}>
+                <RelicIcon relicId={id} />
+              </span>
+            </Tooltip>
+            <span>
+              <strong className={`relic-name ${relicById(id)?.kind ?? ''}`}>
+                {relicById(id)?.name}
+              </strong>
+              <span className="muted small"> {t('relic.droppedHint')}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 /** Conseil après une défaite, selon le contenu joué. */
 export function defeatAdvice(mode: CombatMode) {
   return mode === 'hunt'
@@ -217,6 +250,7 @@ export function OutcomeModal({ outcome, onVillage, onTower, onTeam, next, replay
           );
         })}
       </ul>
+      {outcome.relics.length > 0 && <RelicDrops relicIds={outcome.relics} />}
       {outcome.loot.length > 0 && (
         <section>
           <h3>{t('outcome.loot')}</h3>

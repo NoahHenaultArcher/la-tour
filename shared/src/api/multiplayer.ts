@@ -113,6 +113,8 @@ export interface MultiPlayerReward {
   gold: number;
   levelUp: { from: number; to: number } | null;
   loot: { itemId: string; catalogId: string }[];
+  /** Reliques et œufs obtenus par ce joueur. */
+  relics: string[];
   /** L'étage était l'étage courant du joueur : il monte d'un étage. */
   floorCleared: boolean;
   /** Le joueur avait retiré son héros (zone de chasse). */

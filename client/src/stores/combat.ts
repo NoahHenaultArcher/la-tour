@@ -1,4 +1,4 @@
-import { byId } from '@la-tour/shared';
+import { byId, fusionOf } from '@la-tour/shared';
 /**
  * État du combat côté client. Le serveur renvoie l'état final et la liste des événements ;
  * le client rejoue les événements un par un (animations, journal) avant d'afficher l'état final.
@@ -400,6 +400,37 @@ export const useCombat = create<CombatStore>((set, get) => {
               id: floaterId++,
               targetId: event.targetId,
               text: t('combat.fury'),
+              kind: 'critical',
+            });
+            playSound('roar');
+            break;
+          case 'revive':
+            if (next.heroes.some((h) => h.id === event.targetId)) {
+              const hero = next.heroes.find((h) => h.id === event.targetId)!;
+              hero.hp = event.amount;
+              hero.alterations = [];
+            }
+            floaters.push({
+              id: floaterId++,
+              targetId: event.targetId,
+              text: t('combat.revive'),
+              kind: 'heal',
+            });
+            playSound('heal');
+            break;
+          case 'taunt':
+            floaters.push({
+              id: floaterId++,
+              targetId: event.targetId,
+              text: t('combat.taunt'),
+              kind: 'critical',
+            });
+            break;
+          case 'fusion':
+            floaters.push({
+              id: floaterId++,
+              targetId: event.actorId,
+              text: fusionOf(gameData, event.element, event.fusion)?.name ?? '',
               kind: 'critical',
             });
             playSound('roar');

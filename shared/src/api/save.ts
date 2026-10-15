@@ -56,6 +56,8 @@ export interface SaveDto {
   lastIdleCollectAt: string;
   characters: CharacterDto[];
   items: ItemDto[];
+  /** Reliques et œufs possédés, et leur emplacement (0 à 5) s'ils sont équipés. */
+  relics: { relicId: string; slot: number | null }[];
   /** Stock de chaque ressource possédée. */
   resources: Record<string, number>;
   /** Niveau de chaque bâtiment construit. */

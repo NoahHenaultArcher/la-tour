@@ -36,6 +36,11 @@ export const debugGoToAbyssSchema = z.strictObject({
   floor: z.int().min(1).max(10_000),
 });
 
+/** Donner une relique (ou « all » : toutes). */
+export const debugGiveRelicSchema = z.strictObject({
+  relicId: z.string().min(1).max(32),
+});
+
 export const debugUnlockElementSchema = z.strictObject({
   element: z.enum(ELEMENT_IDS),
 });

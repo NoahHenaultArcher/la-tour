@@ -10537,5 +10537,263 @@
    "taille": 48
   }
  ],
- "note_competences": "Icône 72x72 par ID du Catalogue. Cadre : acier = attaque, turquoise = soutien, violet = passif, or = ultime. Les variantes élémentaires portent un badge d'élément en bas à droite. Pour une compétence fusionnée, afficher l'icône de l'élément 1 avec le badge de fusion 48x48 (réduit à 24x24) en coin."
+ "note_competences": "Icône 72x72 par ID du Catalogue. Cadre : acier = attaque, turquoise = soutien, violet = passif, or = ultime. Les variantes élémentaires portent un badge d'élément en bas à droite. Pour une compétence fusionnée, afficher l'icône de l'élément 1 avec le badge de fusion 48x48 (réduit à 24x24) en coin.",
+ "cadres_reliques": [
+  {
+   "id": "relique",
+   "nom": "Relique",
+   "couleur": "#2fb59a",
+   "fichier": "ui/cadre_relique.png",
+   "taille": 56
+  },
+  {
+   "id": "oeuf",
+   "nom": "Œuf de dragon",
+   "couleur": "#c23a7a",
+   "fichier": "ui/cadre_oeuf.png",
+   "taille": 56
+  }
+ ],
+ "reliques": [
+  {
+   "id": "REL-01",
+   "type": "relique",
+   "nom": "Trophée de l'ours enragé",
+   "monstre": "MON-004",
+   "fichier": "reliques/REL-01_trophee_ours_enrage.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-02",
+   "type": "relique",
+   "nom": "Trésor du chef gobelin",
+   "monstre": "MON-006",
+   "fichier": "reliques/REL-02_tresor_chef_gobelin.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-03",
+   "type": "relique",
+   "nom": "Totem du haut chaman",
+   "monstre": "MON-011",
+   "fichier": "reliques/REL-03_totem_haut_chaman.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-04",
+   "type": "relique",
+   "nom": "Os de guerre orc",
+   "monstre": "MON-017",
+   "fichier": "reliques/REL-04_os_de_guerre_orc.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-05",
+   "type": "relique",
+   "nom": "Pierre ancestrale",
+   "monstre": "MON-022",
+   "fichier": "reliques/REL-05_pierre_ancestrale.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-06",
+   "type": "relique",
+   "nom": "Lampe de l'Ifrit",
+   "monstre": "MON-025",
+   "fichier": "reliques/REL-06_lampe_ifrit.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-07",
+   "type": "relique",
+   "nom": "Épice",
+   "monstre": "MON-029",
+   "fichier": "reliques/REL-07_epice.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-08",
+   "type": "relique",
+   "nom": "Ankh d'Anubis",
+   "monstre": "MON-034",
+   "fichier": "reliques/REL-08_ankh_anubis.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-09",
+   "type": "relique",
+   "nom": "Gelée royale",
+   "monstre": "MON-038",
+   "fichier": "reliques/REL-09_gelee_royale.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-10",
+   "type": "relique",
+   "nom": "Cœur putride",
+   "monstre": "MON-043",
+   "fichier": "reliques/REL-10_coeur_putride.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-11",
+   "type": "relique",
+   "nom": "Encre du Kraken",
+   "monstre": "MON-047",
+   "fichier": "reliques/REL-11_encre_kraken.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-12",
+   "type": "relique",
+   "nom": "Sceptre du roi triton",
+   "monstre": "MON-052",
+   "fichier": "reliques/REL-12_sceptre_roi_triton.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-13",
+   "type": "relique",
+   "nom": "Fourrure de yéti",
+   "monstre": "MON-056",
+   "fichier": "reliques/REL-13_fourrure_yeti.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-14",
+   "type": "relique",
+   "nom": "Arbre-Monde",
+   "monstre": "MON-061",
+   "fichier": "reliques/REL-14_arbre_monde.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-15",
+   "type": "relique",
+   "nom": "Cristal électrique",
+   "monstre": "MON-066",
+   "fichier": "reliques/REL-15_cristal_electrique.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-16",
+   "type": "relique",
+   "nom": "Croc de wyverne mutante",
+   "monstre": "MON-070",
+   "fichier": "reliques/REL-16_croc_wyverne_mutante.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-17",
+   "type": "relique",
+   "nom": "Orbe de grâce",
+   "monstre": "MON-073",
+   "fichier": "reliques/REL-17_orbe_de_grace.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-18",
+   "type": "relique",
+   "nom": "Égide de l'archange",
+   "monstre": "MON-077",
+   "fichier": "reliques/REL-18_egide_archange.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-19",
+   "type": "relique",
+   "nom": "Écaille des ténèbres",
+   "monstre": "MON-081",
+   "fichier": "reliques/REL-19_ecaille_tenebres.png",
+   "taille": 48
+  },
+  {
+   "id": "REL-20",
+   "type": "relique",
+   "nom": "Couronne du roi démon",
+   "monstre": "MON-088",
+   "fichier": "reliques/REL-20_couronne_roi_demon.png",
+   "taille": 48
+  },
+  {
+   "id": "OEUF-NEUTRE",
+   "type": "oeuf",
+   "nom": "Œuf de dragon neutre",
+   "monstre": "MON-005",
+   "fichier": "reliques/OEUF-neutre.png",
+   "taille": 48
+  },
+  {
+   "id": "OEUF-TERRE",
+   "type": "oeuf",
+   "nom": "Œuf de dragon de terre",
+   "monstre": "MON-016",
+   "fichier": "reliques/OEUF-terre.png",
+   "taille": 48
+  },
+  {
+   "id": "OEUF-FEU",
+   "type": "oeuf",
+   "nom": "Œuf de dragon de feu",
+   "monstre": "MON-024",
+   "fichier": "reliques/OEUF-feu.png",
+   "taille": 48
+  },
+  {
+   "id": "OEUF-VENT",
+   "type": "oeuf",
+   "nom": "Œuf de dragon de vent",
+   "monstre": "MON-033",
+   "fichier": "reliques/OEUF-vent.png",
+   "taille": 48
+  },
+  {
+   "id": "OEUF-ACIDE",
+   "type": "oeuf",
+   "nom": "Œuf de dragon d'acide",
+   "monstre": "MON-042",
+   "fichier": "reliques/OEUF-acide.png",
+   "taille": 48
+  },
+  {
+   "id": "OEUF-EAU",
+   "type": "oeuf",
+   "nom": "Œuf de dragon d'eau",
+   "monstre": "MON-051",
+   "fichier": "reliques/OEUF-eau.png",
+   "taille": 48
+  },
+  {
+   "id": "OEUF-GLACE",
+   "type": "oeuf",
+   "nom": "Œuf de dragon de glace",
+   "monstre": "MON-060",
+   "fichier": "reliques/OEUF-glace.png",
+   "taille": 48
+  },
+  {
+   "id": "OEUF-ELECTRICITE",
+   "type": "oeuf",
+   "nom": "Œuf de dragon électrique",
+   "monstre": "MON-069",
+   "fichier": "reliques/OEUF-electricite.png",
+   "taille": 48
+  },
+  {
+   "id": "OEUF-LUMIERE",
+   "type": "oeuf",
+   "nom": "Œuf de dragon de lumière",
+   "monstre": "MON-076",
+   "fichier": "reliques/OEUF-lumiere.png",
+   "taille": 48
+  },
+  {
+   "id": "OEUF-OMBRE",
+   "type": "oeuf",
+   "nom": "Œuf de dragon d'ombre",
+   "monstre": "MON-087",
+   "fichier": "reliques/OEUF-ombre.png",
+   "taille": 48
+  }
+ ]
 }

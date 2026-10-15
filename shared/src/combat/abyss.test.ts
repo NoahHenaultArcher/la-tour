@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ABYSS, ALPHA } from '../balance.ts';
+import { ABYSS, ALPHA, ALPHA_TRAIT_IDS } from '../balance.ts';
 import { gameData } from '../data/index.ts';
 import {
   abyssDifficulty,
@@ -95,7 +95,7 @@ describe('Abysse : vagues', () => {
     const share = alphas.length / spawns.length;
     expect(share).toBeGreaterThan(ALPHA.chance / 2);
     expect(share).toBeLessThan(ALPHA.chance * 2);
-    expect(new Set(alphas.map((s) => s.alpha)).size).toBe(6);
+    expect(new Set(alphas.map((s) => s.alpha)).size).toBe(ALPHA_TRAIT_IDS.length);
   });
 });
 
@@ -132,7 +132,8 @@ describe('Abysse : monstres', () => {
           characterId: 'c',
           classId: 'warrior',
           level: 100,
-          heritageCount: 0,
+          // Très robuste : « Gagner la vague » ne protège pas des monstres qui jouent en premier.
+          heritageCount: 20,
           equipment: [],
           deck: starterDeckFor(gameData, 'warrior'),
         },

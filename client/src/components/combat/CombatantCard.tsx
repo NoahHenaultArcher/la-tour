@@ -1,4 +1,5 @@
 import {
+  ABYSS,
   ALPHA,
   COMBAT_RULES,
   DRAGON_RULES,
@@ -9,13 +10,13 @@ import {
   type ElementId,
 } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { CLASS_IMAGES } from '../../game/assets.ts';
 import { alterationName, combatantName } from '../../game/combatText.ts';
-import { elementStyle } from '../../game/elements.ts';
+import { elementStyle, fusionColor } from '../../game/elements.ts';
 import { formatNumber, t } from '../../i18n/index.ts';
 import type { Floater, Impact } from '../../stores/combat.ts';
-import { ElementBadge } from '../ElementBadge.tsx';
+import { ElementBadge, FusionBadge } from '../ElementBadge.tsx';
 import { PixelImage } from '../PixelImage.tsx';
 import { Tooltip } from '../Tooltip.tsx';
 
@@ -46,6 +47,35 @@ interface MonsterTooltipProps {
   levelText: string;
   /** Monstre alpha de l'Abysse : son trait. */
   alpha?: AlphaTraitId | null;
+  /** Monstre de l'Abysse : second élément de sa fusion. */
+  fusion?: ElementId | null;
+}
+
+/** Fusion d'un monstre de l'Abysse : nom, éléments, effet, chance de la déclencher. */
+function MonsterFusion({
+  element,
+  fusion,
+  alpha,
+}: {
+  element: ElementId;
+  fusion: ElementId;
+  alpha: AlphaTraitId | null;
+}) {
+  const fused = fusionOf(gameData, element, fusion);
+  if (!fused) return null;
+  return (
+    <>
+      <span>
+        {t('combat.monsterFusion')} : <FusionBadge a={element} b={fusion} name={fused.name} />
+      </span>
+      <span className="muted">
+        {t('combat.fusionTrigger', {
+          chance: percent(alpha === 'fused' ? ALPHA.fusedTrigger : ABYSS.fusionTrigger),
+        })}{' '}
+        {fused.combatEffect}
+      </span>
+    </>
+  );
 }
 
 /** Ce que fait un trait d'alpha, avec les valeurs de balance.ts. */
@@ -58,6 +88,7 @@ export function alphaTraitText(trait: AlphaTraitId): string {
     vampiric: percent(ALPHA.vampiric),
     carapace: percent(ALPHA.carapace),
     actions: ALPHA.fastActions,
+    fused: percent(ALPHA.fusedTrigger),
   });
 }
 
@@ -79,6 +110,7 @@ export function MonsterTooltip({
   element: elementId,
   levelText,
   alpha = null,
+  fusion = null,
 }: MonsterTooltipProps) {
   const monster = byId(gameData.monsters.monsters, monsterId);
   const element = gameData.elements.elements.find((e) => e.id === elementId);
@@ -124,6 +156,7 @@ export function MonsterTooltip({
           </span>
         </>
       )}
+      {fusion && <MonsterFusion element={elementId} fusion={fusion} alpha={alpha} />}
       {/* Les dragons ne sont plus de simples « sacs à PV » (phase 9) : description du jeu. */}
       {role && (
         <span className="muted">{role.id === 'dragon' ? dragonBehavior() : role.behavior}</span>
@@ -177,11 +210,13 @@ function modifierName(m: ModifierView): string {
   if (m.key === 'dragon:fury') return t('modifier.fury');
   if (m.key.startsWith('sunder:')) return t('modifier.sunder');
   const skill = m.skillId ? byId(gameData.skills.catalog, m.skillId) : null;
-  if (!skill) return t(m.kind === 'buff' ? 'modifier.buff' : 'modifier.debuff');
+  // Fusion d'un héros, ou d'un monstre de l'Abysse (sans compétence).
   if (m.key.startsWith('fusion:')) {
     const [a, b] = m.key.slice('fusion:'.length).split('+') as [ElementId, ElementId];
-    return fusionOf(gameData, a, b)?.name ?? skill.name;
+    const name = fusionOf(gameData, a, b)?.name;
+    if (name) return name;
   }
+  if (!skill) return t(m.kind === 'buff' ? 'modifier.buff' : 'modifier.debuff');
   return m.key.startsWith('element:')
     ? t('modifier.elementSuffix', { skill: skill.name })
     : skill.name;
@@ -369,6 +404,7 @@ export function CombatantCard({
               element={c.element}
               levelText={t('combat.level', { level: c.level })}
               alpha={c.alpha ?? null}
+              fusion={c.fusion ?? null}
             />
           )
         }
@@ -395,6 +431,15 @@ export function CombatantCard({
       </Tooltip>
       <span className="combatant-name">
         {c.alpha && <span className="alpha-tag">{t('alpha.tag')}</span>}
+        {c.fusion && (
+          <span
+            className="fusion-tag"
+            style={{ '--el': fusionColor(c.element, c.fusion) } as CSSProperties}
+            title={fusionOf(gameData, c.element, c.fusion)?.name}
+          >
+            ⚗
+          </span>
+        )}
         {combatantName(view, c.id)}{' '}
         <span className="muted">{t('combat.levelShort', { level: c.level })}</span>
       </span>

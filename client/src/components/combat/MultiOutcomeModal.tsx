@@ -8,7 +8,8 @@ import { ItemIcon } from '../items/ItemIcon.tsx';
 import { ItemName } from '../items/ItemTooltip.tsx';
 import { Modal } from '../Modal.tsx';
 import { Tooltip } from '../Tooltip.tsx';
-import { LootRow, defeatAdvice } from './OutcomeModal.tsx';
+import { RelicIcon, RelicTooltip } from '../relics/RelicIcon.tsx';
+import { LootRow, RelicDrops, defeatAdvice } from './OutcomeModal.tsx';
 
 interface Props {
   outcome: MultiOutcome;
@@ -67,7 +68,14 @@ export function MultiOutcomeModal({ outcome, onRoom, onVillage }: Props) {
                 {p.withdrawn && <span className="muted"> · {t('outcome.withdrawnTag')}</span>}
               </div>
               <div className="who-loot">
-                {p.loot.length === 0 ? (
+                {p.relics.map((id) => (
+                  <Tooltip key={id} content={<RelicTooltip relicId={id} />}>
+                    <span tabIndex={0}>
+                      <RelicIcon relicId={id} size={34} />
+                    </span>
+                  </Tooltip>
+                ))}
+                {p.loot.length === 0 && p.relics.length === 0 ? (
                   <span className="muted small">{t('outcome.noLoot')}</span>
                 ) : (
                   p.loot.map((drop) => (
@@ -84,6 +92,7 @@ export function MultiOutcomeModal({ outcome, onRoom, onVillage }: Props) {
         </ul>
       </section>
 
+      {mine && mine.relics.length > 0 && <RelicDrops relicIds={mine.relics} />}
       {mine && mine.loot.length > 0 && (
         <section>
           <h3>{t('outcome.yourLoot')}</h3>

@@ -178,6 +178,12 @@ export const ABYSS = {
    * chaque étage de boss était un mur alors que les étages normaux passaient à coup sûr.
    */
   bossFactor: 0.7,
+  /**
+   * Fusions ennemies (décision du 15/10/2026, Abysse seulement) : part des monstres qui en possèdent
+   * une (leur élément + un élément au hasard, hors dragons), et chance de la déclencher à chaque attaque.
+   */
+  fusionChance: 0.15,
+  fusionTrigger: 0.3,
   /** Butin : chances de Mythique et Légendaire × (1 + croissance × étage), plafonnées. */
   highRarityGrowth: 0.04,
   highRarityMaxBoost: 4,
@@ -205,6 +211,8 @@ export const ALPHA = {
   carapace: 0.25,
   /** Rapide : actions par manche. */
   fastActions: 2,
+  /** Fusionné : l'alpha possède toujours une fusion, déclenchée plus souvent. */
+  fusedTrigger: 0.6,
 } as const;
 
 export const ALPHA_TRAIT_IDS = [
@@ -214,6 +222,7 @@ export const ALPHA_TRAIT_IDS = [
   'vampiric',
   'carapace',
   'fast',
+  'fused',
 ] as const;
 export type AlphaTraitId = (typeof ALPHA_TRAIT_IDS)[number];
 

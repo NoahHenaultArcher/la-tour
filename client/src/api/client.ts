@@ -10,6 +10,8 @@ import type {
   CombatResponse,
   CraftItemBody,
   EquipItemBody,
+  EquipRelicBody,
+  UnequipRelicBody,
   ItemIdBody,
   ItemIdsBody,
   LeaderboardDto,
@@ -88,6 +90,8 @@ export const api = {
   debugWinWave: () => request<CombatResponse>('POST', '/api/debug/win-wave', {}),
   equipItem: (body: EquipItemBody) => request<SaveDto>('POST', '/api/items/equip', body),
   unequipItem: (body: ItemIdBody) => request<SaveDto>('POST', '/api/items/unequip', body),
+  equipRelic: (body: EquipRelicBody) => request<SaveDto>('POST', '/api/relics/equip', body),
+  unequipRelic: (body: UnequipRelicBody) => request<SaveDto>('POST', '/api/relics/unequip', body),
   upgradeItem: (body: ItemIdBody) => request<SaveDto>('POST', '/api/workshop/upgrade', body),
   craftItem: (body: CraftItemBody) => request<SaveDto>('POST', '/api/workshop/craft', body),
   allocateStatPoints: (body: AllocateStatPointsBody) =>

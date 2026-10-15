@@ -59,6 +59,7 @@ export async function loadSave(db: Db, userId: string): Promise<SaveDto> {
         orderBy: { createdAt: 'asc' },
       },
       items: { orderBy: { acquiredAt: 'asc' } },
+      relics: { orderBy: { acquiredAt: 'asc' } },
       resources: true,
       buildings: true,
       upgradeTower: true,
@@ -101,6 +102,7 @@ export async function loadSave(db: Db, userId: string): Promise<SaveDto> {
       equippedBy: i.equippedById,
       slot: i.equippedSlot as SlotId | null,
     })),
+    relics: save.relics.map((r) => ({ relicId: r.relicId, slot: r.slot })),
     resources: Object.fromEntries(save.resources.map((r) => [r.resourceId, r.amount])),
     buildings: Object.fromEntries(save.buildings.map((b) => [b.buildingId, b.level])),
     upgradeTower: Object.fromEntries(

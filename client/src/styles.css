@@ -3371,3 +3371,228 @@ a.button.primary {
     grid-template-columns: 1fr;
   }
 }
+
+/* Monstre de l'Abysse qui maîtrise une fusion : pastille à la couleur de la fusion. */
+.fusion-tag {
+  margin-right: 4px;
+  padding: 0 3px;
+  border: 1px solid var(--el);
+  border-radius: 3px;
+  color: var(--el);
+  font-size: 0.75rem;
+}
+
+/* --- Reliques et œufs de dragon --- */
+
+:root {
+  --relic: #2fb59a;
+  --egg: #c23a7a;
+}
+
+.relic-icon {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+  line-height: 0;
+}
+
+.relic-icon-image {
+  position: absolute;
+  line-height: 0;
+}
+
+/* Pas encore obtenue : silhouette grisée. */
+.relic-icon.locked {
+  filter: grayscale(1) brightness(0.45);
+  opacity: 0.7;
+}
+
+.relic-name.relic {
+  color: color-mix(in srgb, var(--relic) 60%, white);
+}
+
+.relic-name.egg {
+  color: color-mix(in srgb, var(--egg) 55%, white);
+}
+
+.tabs .relic-tab {
+  border-color: var(--relic);
+}
+
+.team-page > .relics-layout {
+  grid-column: 1 / -1;
+}
+
+.relics-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  grid-template-areas:
+    'eggs slots'
+    'eggs inventory';
+  gap: 12px;
+  align-items: start;
+}
+
+.relics-layout .panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.relics-layout .panel p,
+.relics-layout h3 {
+  margin: 0;
+}
+
+.relics-eggs {
+  grid-area: eggs;
+  border-color: var(--egg);
+}
+
+.relics-slots {
+  grid-area: slots;
+}
+
+.relics-inventory {
+  grid-area: inventory;
+  border-color: var(--relic);
+}
+
+.relic-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.relic-grid.eggs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 60px);
+}
+
+.relic-cell {
+  padding: 2px;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  line-height: 0;
+}
+
+.relic-cell[aria-disabled='true'] {
+  cursor: default;
+}
+
+.relic-cell.equipped {
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgb(240 163 10 / 35%);
+}
+
+.relic-slot-row {
+  display: grid;
+  grid-template-columns: repeat(6, 92px);
+  gap: 8px;
+}
+
+.relic-slot {
+  width: 92px;
+  height: 92px;
+  padding: 2px;
+  display: grid;
+  place-items: center;
+  background: #1d1826;
+  border: 2px dashed var(--panel-border);
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+
+.relic-slot.filled {
+  border-style: solid;
+  border-color: var(--panel-border);
+}
+
+.relic-slot.selected {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.relic-effects ul {
+  margin: 4px 0 0;
+  padding-left: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.9rem;
+}
+
+.combat-relics {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.combat-relics > span[tabindex] {
+  line-height: 0;
+}
+
+.home-relics {
+  display: grid;
+  grid-template-columns: repeat(6, 56px);
+  gap: 6px;
+}
+
+.home-relics > span {
+  line-height: 0;
+}
+
+.relic-empty {
+  display: block;
+  width: 56px;
+  height: 56px;
+  box-sizing: border-box;
+  border: 2px dashed var(--panel-border);
+  border-radius: 6px;
+}
+
+.relic-drops {
+  padding: 8px 10px;
+  border: 2px solid var(--relic);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--relic) 10%, transparent);
+}
+
+.relic-drops h3 {
+  margin: 0 0 6px;
+  color: color-mix(in srgb, var(--relic) 60%, white);
+}
+
+.relic-drops ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.relic-drops li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (max-width: 1000px) {
+  .relics-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'slots'
+      'eggs'
+      'inventory';
+  }
+
+  .relic-slot-row {
+    grid-template-columns: repeat(3, 92px);
+  }
+}

@@ -54,6 +54,8 @@ export interface CombatOutcome {
   unlocked: CombatUnlocks;
   /** Objets obtenus (ajoutés à l'inventaire). */
   loot: { itemId: string; catalogId: string }[];
+  /** Reliques et œufs obtenus pendant ce combat. */
+  relics: string[];
   save: SaveDto;
 }
 

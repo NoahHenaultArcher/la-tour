@@ -9,6 +9,7 @@ import {
   addXp,
   createRng,
   participantRewards,
+  relicBonus,
   upgradeTowerBonus,
   type CombatState,
   type MultiPlayerReward,
@@ -21,6 +22,7 @@ import {
   grantLoot,
   towerLevels,
 } from '../combat/service.ts';
+import { grantRelics } from '../relics/service.ts';
 import { lockSave } from '../village/service.ts';
 
 export interface Participant {
@@ -46,7 +48,14 @@ export async function rewardParticipant(
     });
     const character = await tx.character.findUniqueOrThrow({ where: { id: characterId } });
     const bonus = upgradeTowerBonus(gameData.village, towerLevels(save.upgradeTower), 'goldXp');
-    const rewards = participantRewards(gameData.monsters, killed, character.level, bonus);
+    // Reliques du salon (cumulées) : l'or en plus vaut pour chacun.
+    const rewards = participantRewards(
+      gameData.monsters,
+      killed,
+      character.level,
+      bonus,
+      relicBonus(state.relics ?? []).gold,
+    );
 
     const next = addXp(gameData.monsters, character, rewards.xp);
     await tx.character.update({
@@ -79,14 +88,11 @@ export async function rewardParticipant(
     if (abyssCleared) await applyAbyssVictory(tx, saveId, save, state.floor);
 
     // Un tirage par joueur, avec un aléa propre (le serveur tire la graine).
-    const loot = await grantLoot(
-      tx,
-      saveId,
-      createRng(randomInt(0, 2 ** 32 - 1)),
-      killed,
-      state.floor,
-      state.mode ?? 'tower',
-    );
+    const rng = createRng(randomInt(0, 2 ** 32 - 1));
+    const loot = await grantLoot(tx, saveId, rng, killed, state.floor, state.mode ?? 'tower');
+    const relics = withdrawn
+      ? []
+      : await grantRelics(tx, saveId, rng, killed, state.mode ?? 'tower');
 
     return {
       userId: participant.userId,
@@ -96,6 +102,7 @@ export async function rewardParticipant(
       gold: rewards.gold,
       levelUp: next.levelsGained > 0 ? { from: character.level, to: next.level } : null,
       loot,
+      relics,
       floorCleared,
       withdrawn,
       unlocked,

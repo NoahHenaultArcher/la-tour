@@ -9,7 +9,8 @@
     "test": "vitest run",
     "balance-report": "tsx balance-report.ts",
     "progression-sim": "tsx progression-sim.ts",
-    "abyss-sim": "tsx abyss-sim.ts"
+    "abyss-sim": "tsx abyss-sim.ts",
+    "relic-art": "tsx relic-art.ts"
   },
   "dependencies": {
     "@la-tour/shared": "workspace:*",

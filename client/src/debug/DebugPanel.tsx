@@ -226,6 +226,10 @@ export function DebugPanel() {
             <button type="submit">{t('debug.unlockElement')}</button>
           </Action>
 
+          <Action title={t('debug.relics')} onSubmit={() => run('relic', { relicId: 'all' })}>
+            <button type="submit">{t('debug.giveAllRelics')}</button>
+          </Action>
+
           <Action title={t('debug.item')} onSubmit={() => run('item', item)}>
             <select
               value={item.classId}

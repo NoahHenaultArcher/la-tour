@@ -11,6 +11,7 @@ import { debugRoutes } from './debug/routes.ts';
 import { HttpError, registerErrorHandling } from './http/errors.ts';
 import { itemRoutes } from './items/routes.ts';
 import { leaderboardRoutes } from './leaderboard/routes.ts';
+import { relicRoutes } from './relics/routes.ts';
 import type { ManagerOptions } from './multiplayer/manager.ts';
 import { attachMultiplayer } from './multiplayer/socket.ts';
 import { DEFAULT_RATE_LIMITS, type RateLimits } from './http/rate-limits.ts';
@@ -88,6 +89,7 @@ export function buildApp({
   app.register(itemRoutes, { prisma, rateLimits });
   app.register(characterRoutes, { prisma, rateLimits });
   app.register(shopRoutes, { prisma, rateLimits });
+  app.register(relicRoutes, { prisma, rateLimits });
   app.register(leaderboardRoutes, { prisma, rateLimits, cacheMs: leaderboardCacheMs });
   // Mode debug : jamais disponible en production.
   if (config.NODE_ENV !== 'production') app.register(debugRoutes, { prisma, rateLimits });

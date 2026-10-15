@@ -15,6 +15,7 @@ import { ItemIcon } from '../components/items/ItemIcon.tsx';
 import { ItemName, ItemTooltip } from '../components/items/ItemTooltip.tsx';
 import { StatDeltas } from '../components/items/StatDeltas.tsx';
 import { PixelImage } from '../components/PixelImage.tsx';
+import { RelicsPanel } from '../components/relics/RelicsPanel.tsx';
 import { StatSheet } from '../components/team/StatSheet.tsx';
 import { Tooltip } from '../components/Tooltip.tsx';
 import { TopBar } from '../components/TopBar.tsx';
@@ -63,6 +64,8 @@ export function TeamPage() {
   const [slot, setSlot] = useState<SlotId | null>(null);
   const [pending, setPending] = useState(false);
   const [confirmSellAll, setConfirmSellAll] = useState(false);
+  // Onglet « Reliques » (à côté des héros) : reliques et œufs de dragon de toute l'équipe.
+  const [showRelics, setShowRelics] = useState(false);
 
   const character = save.characters.find((c) => c.id === characterId) ?? save.characters[0]!;
   // Héros qui recevrait les objets de l'onglet d'inventaire affiché (null : classe pas encore achetée).
@@ -120,202 +123,219 @@ export function TeamPage() {
       <main className="team-page">
         <header className="team-header">
           <h1>{t('team.title')}</h1>
-          {save.characters.length > 1 && (
-            <div className="tabs" role="tablist">
-              {save.characters.map((c) => (
-                <button
-                  key={c.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={c.id === character.id}
-                  className={c.id === character.id ? 'toggled' : ''}
-                  onClick={() => selectCharacter(c.id)}
-                >
-                  {t(`class.name.${c.classId}`)}
-                </button>
-              ))}
-            </div>
-          )}
-        </header>
-
-        <section className="panel hero-sheet">
-          <div className="hero-identity">
-            <PixelImage src={CLASS_IMAGES[character.classId]} alt="" size={96} />
-            <div>
-              <h2>{t(`class.name.${character.classId}`)}</h2>
-              <p>{t('home.level', { level: character.level })}</p>
-              <p className="muted">
-                {character.xpToNextLevel === null
-                  ? t('home.xpMax')
-                  : t('home.xp', {
-                      xp: formatNumber(character.xp),
-                      next: formatNumber(character.xpToNextLevel),
-                    })}
-              </p>
-            </div>
-          </div>
-          {/* La clé remet l'aperçu à zéro quand on change de personnage. */}
-          <StatSheet key={character.id} save={save} character={character} />
-          <p className="muted small">{t('team.statsNote')}</p>
-        </section>
-
-        <section className="panel equipment-panel">
-          <h2>{t('team.equipment')}</h2>
-          <p className="muted small">{t('team.slotHint')}</p>
-          <div className="slot-list">
-            {SLOT_IDS.map((id) => {
-              const item = equippedIn(save, character.id, id);
-              const selected = slot === id && inventoryClass === character.classId;
-              return (
-                <div
-                  key={id}
-                  role="button"
-                  tabIndex={0}
-                  aria-pressed={selected}
-                  className={`slot-row${selected ? ' selected' : ''}`}
-                  onClick={() => {
-                    setInventoryClass(character.classId);
-                    setSlot(selected ? null : id);
-                    setConfirmSellAll(false);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      e.currentTarget.click();
-                    }
-                  }}
-                >
-                  {item ? (
-                    <Tooltip
-                      content={<ItemTooltip item={item} save={save} resources={view.resources} />}
-                    >
-                      <span>
-                        <ItemIcon catalogId={item.catalogId} upgradeLevel={item.upgradeLevel} />
-                      </span>
-                    </Tooltip>
-                  ) : (
-                    <span className="slot-empty" />
-                  )}
-                  <span className="slot-row-text">
-                    <span className="slot-label">{t(`slot.${id}`)}</span>
-                    {item ? (
-                      <>
-                        <ItemName catalogId={item.catalogId} upgradeLevel={item.upgradeLevel} />
-                        <span className="slot-summary">{statSummary(item)}</span>
-                      </>
-                    ) : (
-                      <span className="slot-empty-text">{t('team.slotEmpty')}</span>
-                    )}
-                  </span>
-                  {item && (
-                    <button
-                      type="button"
-                      disabled={pending}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        void run(() => unequipItem(item.id));
-                      }}
-                    >
-                      {t('team.unequip')}
-                    </button>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        <section className="panel inventory-panel">
-          <h2>{t('team.inventory')}</h2>
-          <div className="tabs inventory-toolbar" role="tablist">
-            {CLASS_IDS.map((classId) => (
+          <div className="tabs" role="tablist">
+            {save.characters.map((c) => (
               <button
-                key={classId}
+                key={c.id}
                 type="button"
                 role="tab"
-                aria-selected={classId === inventoryClass}
-                className={classId === inventoryClass ? 'toggled' : ''}
+                aria-selected={!showRelics && c.id === character.id}
+                className={!showRelics && c.id === character.id ? 'toggled' : ''}
                 onClick={() => {
-                  setInventoryClass(classId);
-                  setSlot(null);
-                  setConfirmSellAll(false);
+                  setShowRelics(false);
+                  selectCharacter(c.id);
                 }}
               >
-                {t(`class.name.${classId}`)}
-                <span className="tab-count">{countFor(classId)}</span>
+                {t(`class.name.${c.classId}`)}
               </button>
             ))}
-          </div>
-          <div className="inventory-toolbar">
-            <select
-              value={slot ?? ''}
-              aria-label={t('team.filterAll')}
-              onChange={(e) => {
-                setSlot((e.target.value || null) as SlotId | null);
-                setConfirmSellAll(false);
-              }}
-            >
-              <option value="">{t('team.filterAll')}</option>
-              {SLOT_IDS.map((id) => (
-                <option key={id} value={id}>
-                  {t(`slot.${id}`)}
-                </option>
-              ))}
-            </select>
-            <span className="spacer" />
             <button
               type="button"
-              className="danger"
-              disabled={pending || shown.length === 0}
-              onClick={() => setConfirmSellAll(true)}
+              role="tab"
+              aria-selected={showRelics}
+              className={`relic-tab${showRelics ? ' toggled' : ''}`}
+              onClick={() => setShowRelics(true)}
             >
-              {t('team.sellAll', { count: shown.length })}
+              {t('relic.tab')}
             </button>
           </div>
-          {confirmSellAll && shown.length > 0 && (
-            <div className="sell-all-confirm">
-              <span>
-                {t('team.sellAllConfirm', {
-                  count: shown.length,
-                  gold: formatNumber(shownValue),
+        </header>
+        {showRelics ? (
+          <RelicsPanel save={save} />
+        ) : (
+          <>
+            <section className="panel hero-sheet">
+              <div className="hero-identity">
+                <PixelImage src={CLASS_IMAGES[character.classId]} alt="" size={96} />
+                <div>
+                  <h2>{t(`class.name.${character.classId}`)}</h2>
+                  <p>{t('home.level', { level: character.level })}</p>
+                  <p className="muted">
+                    {character.xpToNextLevel === null
+                      ? t('home.xpMax')
+                      : t('home.xp', {
+                          xp: formatNumber(character.xp),
+                          next: formatNumber(character.xpToNextLevel),
+                        })}
+                  </p>
+                </div>
+              </div>
+              {/* La clé remet l'aperçu à zéro quand on change de personnage. */}
+              <StatSheet key={character.id} save={save} character={character} />
+              <p className="muted small">{t('team.statsNote')}</p>
+            </section>
+
+            <section className="panel equipment-panel">
+              <h2>{t('team.equipment')}</h2>
+              <p className="muted small">{t('team.slotHint')}</p>
+              <div className="slot-list">
+                {SLOT_IDS.map((id) => {
+                  const item = equippedIn(save, character.id, id);
+                  const selected = slot === id && inventoryClass === character.classId;
+                  return (
+                    <div
+                      key={id}
+                      role="button"
+                      tabIndex={0}
+                      aria-pressed={selected}
+                      className={`slot-row${selected ? ' selected' : ''}`}
+                      onClick={() => {
+                        setInventoryClass(character.classId);
+                        setSlot(selected ? null : id);
+                        setConfirmSellAll(false);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          e.currentTarget.click();
+                        }
+                      }}
+                    >
+                      {item ? (
+                        <Tooltip
+                          content={
+                            <ItemTooltip item={item} save={save} resources={view.resources} />
+                          }
+                        >
+                          <span>
+                            <ItemIcon catalogId={item.catalogId} upgradeLevel={item.upgradeLevel} />
+                          </span>
+                        </Tooltip>
+                      ) : (
+                        <span className="slot-empty" />
+                      )}
+                      <span className="slot-row-text">
+                        <span className="slot-label">{t(`slot.${id}`)}</span>
+                        {item ? (
+                          <>
+                            <ItemName catalogId={item.catalogId} upgradeLevel={item.upgradeLevel} />
+                            <span className="slot-summary">{statSummary(item)}</span>
+                          </>
+                        ) : (
+                          <span className="slot-empty-text">{t('team.slotEmpty')}</span>
+                        )}
+                      </span>
+                      {item && (
+                        <button
+                          type="button"
+                          disabled={pending}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            void run(() => unequipItem(item.id));
+                          }}
+                        >
+                          {t('team.unequip')}
+                        </button>
+                      )}
+                    </div>
+                  );
                 })}
-              </span>
-              <button type="button" className="danger" disabled={pending} onClick={sellAll}>
-                {t('team.sellAllConfirmButton')}
-              </button>
-              <button type="button" onClick={() => setConfirmSellAll(false)}>
-                {t('team.cancel')}
-              </button>
-            </div>
-          )}
-          {owner ? (
-            <p className="muted small">
-              {t('team.compareHint', { hero: t(`class.name.${owner.classId}`) })}
-            </p>
-          ) : (
-            <p className="warning">
-              {t('team.noHeroForClass', { class: t(`class.name.${inventoryClass}`) })}
-            </p>
-          )}
-          {shown.length === 0 ? (
-            <p className="muted">{t('team.noItems')}</p>
-          ) : (
-            <ul className="inventory-list">
-              {shown.map((item) => (
-                <InventoryRow
-                  key={item.id}
-                  item={item}
-                  save={save}
-                  resources={view.resources}
-                  ownerId={owner?.id ?? null}
-                  pending={pending}
-                  onEquip={() => void run(() => equipItem(item.id, owner!.id))}
-                  onSell={() => sellOne(item)}
-                />
-              ))}
-            </ul>
-          )}
-        </section>
+              </div>
+            </section>
+
+            <section className="panel inventory-panel">
+              <h2>{t('team.inventory')}</h2>
+              <div className="tabs inventory-toolbar" role="tablist">
+                {CLASS_IDS.map((classId) => (
+                  <button
+                    key={classId}
+                    type="button"
+                    role="tab"
+                    aria-selected={classId === inventoryClass}
+                    className={classId === inventoryClass ? 'toggled' : ''}
+                    onClick={() => {
+                      setInventoryClass(classId);
+                      setSlot(null);
+                      setConfirmSellAll(false);
+                    }}
+                  >
+                    {t(`class.name.${classId}`)}
+                    <span className="tab-count">{countFor(classId)}</span>
+                  </button>
+                ))}
+              </div>
+              <div className="inventory-toolbar">
+                <select
+                  value={slot ?? ''}
+                  aria-label={t('team.filterAll')}
+                  onChange={(e) => {
+                    setSlot((e.target.value || null) as SlotId | null);
+                    setConfirmSellAll(false);
+                  }}
+                >
+                  <option value="">{t('team.filterAll')}</option>
+                  {SLOT_IDS.map((id) => (
+                    <option key={id} value={id}>
+                      {t(`slot.${id}`)}
+                    </option>
+                  ))}
+                </select>
+                <span className="spacer" />
+                <button
+                  type="button"
+                  className="danger"
+                  disabled={pending || shown.length === 0}
+                  onClick={() => setConfirmSellAll(true)}
+                >
+                  {t('team.sellAll', { count: shown.length })}
+                </button>
+              </div>
+              {confirmSellAll && shown.length > 0 && (
+                <div className="sell-all-confirm">
+                  <span>
+                    {t('team.sellAllConfirm', {
+                      count: shown.length,
+                      gold: formatNumber(shownValue),
+                    })}
+                  </span>
+                  <button type="button" className="danger" disabled={pending} onClick={sellAll}>
+                    {t('team.sellAllConfirmButton')}
+                  </button>
+                  <button type="button" onClick={() => setConfirmSellAll(false)}>
+                    {t('team.cancel')}
+                  </button>
+                </div>
+              )}
+              {owner ? (
+                <p className="muted small">
+                  {t('team.compareHint', { hero: t(`class.name.${owner.classId}`) })}
+                </p>
+              ) : (
+                <p className="warning">
+                  {t('team.noHeroForClass', { class: t(`class.name.${inventoryClass}`) })}
+                </p>
+              )}
+              {shown.length === 0 ? (
+                <p className="muted">{t('team.noItems')}</p>
+              ) : (
+                <ul className="inventory-list">
+                  {shown.map((item) => (
+                    <InventoryRow
+                      key={item.id}
+                      item={item}
+                      save={save}
+                      resources={view.resources}
+                      ownerId={owner?.id ?? null}
+                      pending={pending}
+                      onEquip={() => void run(() => equipItem(item.id, owner!.id))}
+                      onSell={() => sellOne(item)}
+                    />
+                  ))}
+                </ul>
+              )}
+            </section>
+          </>
+        )}
       </main>
     </div>
   );

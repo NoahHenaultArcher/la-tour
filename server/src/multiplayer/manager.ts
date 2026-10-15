@@ -41,6 +41,7 @@ import {
 } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { loadHeroSetup } from '../combat/service.ts';
+import { equippedRelics } from '../relics/service.ts';
 import { loadSave } from '../save/service.ts';
 import { rewardParticipant, type Participant } from './rewards.ts';
 
@@ -302,6 +303,10 @@ export class MultiplayerManager {
       const heroes = await Promise.all(
         room.players.map((p) => loadHeroSetup(this.prisma, p.saveId, p.characterId!)),
       );
+      // Les reliques de chaque joueur se cumulent (18 au plus, doublons compris).
+      const relics = (
+        await Promise.all(room.players.map((p) => equippedRelics(this.prisma, p.saveId)))
+      ).flat();
       const { state, events } = createCombat(gameData, {
         floor: room.content.floor,
         mode: room.content.mode,
@@ -309,6 +314,7 @@ export class MultiplayerManager {
         tower: {},
         seed: randomInt(0, 2 ** 32 - 1),
         multiplayer: true,
+        relics,
       });
       room.combat = {
         state,

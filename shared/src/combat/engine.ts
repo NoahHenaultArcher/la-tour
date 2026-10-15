@@ -11,7 +11,8 @@
  */
 import { ABYSS, ALPHA, COMBAT_RULES, DRAGON_RULES } from '../balance.ts';
 import { abyssFloorType, abyssRegulars } from '../rules/abyss.ts';
-import { createRng, pick, type Rng } from '../rules/random.ts';
+import { RELIC_RULES, relicBonus } from '../rules/relics.ts';
+import { chance, createRng, pick, type Rng } from '../rules/random.ts';
 import { floorType, zoneFloorOf } from '../rules/tower.ts';
 import type { UpgradeTowerLevels } from '../rules/village.ts';
 import { afterHeroHit, beforeMonsterAttack, heroEndOfRound, useHeroSkill } from './actions.ts';
@@ -23,7 +24,8 @@ import {
 } from './alterations.ts';
 import { attack, type AttackSpec } from './damage.ts';
 import { SUPPORT_EFFECTS } from './effects.ts';
-import { addModifier, heal, tickModifiers } from './modifiers.ts';
+import { addModifier, addShield, heal, tickModifiers } from './modifiers.ts';
+import { monsterFusionAttack, rollMonsterFusion } from './monsterFusion.ts';
 import {
   buildAbyssWaves,
   buildFloorWaves,
@@ -71,6 +73,8 @@ export interface CombatSetup {
   alchemyLevel?: number;
   /** Multijoueur : 3 actions par héros (chaque joueur joue le sien) au lieu de 3 pour l'équipe. */
   multiplayer?: boolean;
+  /** Reliques équipées : celles du joueur, ou de tous les joueurs du salon (elles se cumulent). */
+  relics?: string[];
 }
 
 export interface CombatResult {
@@ -98,6 +102,8 @@ export function createCombat(data: CombatData, setup: CombatSetup): CombatResult
     throw new Error('1 à 3 héros par combat');
   const rng = createRng(setup.seed);
   const mode = setup.mode ?? 'tower';
+  const relics = setup.relics ?? [];
+  const bonus = relicBonus(relics);
   const state: CombatState = {
     version: 1,
     mode,
@@ -135,14 +141,25 @@ export function createCombat(data: CombatData, setup: CombatSetup): CombatResult
     heroInitiative: 0,
     monsterInitiative: 0,
     heroes: setup.heroes.map((hero, i) =>
-      createHeroCombatant(data, hero, i, hero.tower ?? setup.tower),
+      createHeroCombatant(data, hero, i, hero.tower ?? setup.tower, bonus),
     ),
     monsters: [],
     killed: [],
     rng,
     spawned: 0,
+    relics,
+    revivesLeft: bonus.revive,
   };
   const ctx: Ctx = { data, state, events: [] };
+  // Égide de l'archange : bouclier de début de combat.
+  if (bonus.startShield > 0)
+    for (const hero of state.heroes)
+      addShield(
+        hero,
+        hero.stats.maxHp * bonus.startShield,
+        RELIC_RULES.startShieldRounds,
+        ctx.events,
+      );
   spawnWave(ctx);
   startRound(ctx);
   return { state, events: ctx.events };
@@ -470,7 +487,9 @@ function heroAction(ctx: Ctx, input: HeroActionInput): void {
 
   events.push({ type: 'action', actorId: hero.id, skillId: slot.skillId, targetIds });
   slot.remaining = slot.cooldown;
-  useHeroSkill(ctx, hero, slot, chosen);
+  // Lave (fusion Magma d'un monstre de l'Abysse) : le héros se brûle en attaquant.
+  beforeMonsterAttack(ctx, hero);
+  if (alive(hero)) useHeroSkill(ctx, hero, slot, chosen);
   if (state.heroActions) {
     state.heroActions[hero.id] = (state.heroActions[hero.id] ?? 1) - 1;
     syncActions(state);
@@ -633,7 +652,7 @@ function monsterAct(ctx: Ctx, monster: Combatant, action = 0): void {
     : COMBAT_RULES.dragonBreathEvery;
   const breath = monster.role === 'dragon' && action === 0 && state.round % breathEvery === 0;
   const breathAlterationId = breath ? breathAlteration(data, monster) : null;
-  const targets = breath ? heroes : [chooseMonsterTarget(monster, heroes, rng)];
+  const targets = breath ? heroes : [tauntTarget(ctx, chooseMonsterTarget(monster, heroes, rng))];
   events.push({
     type: 'action',
     actorId: monster.id,
@@ -649,18 +668,34 @@ function monsterAct(ctx: Ctx, monster: Combatant, action = 0): void {
     neverMiss: false,
     bonusCrit: 0,
   };
-  for (const target of targets) {
-    if (!alive(monster)) break;
-    const { amount } = attack(data, rng, monster, target, spec, events);
-    if (amount > 0) {
-      for (const alteration of monster.inflicts) {
-        // Souffle élémentaire : l'altération de l'élément est infligée à coup sûr (résistance comprise).
-        const chance = alteration.id === breathAlterationId ? 1 : alteration.chance;
-        tryApplyAlteration(data, rng, monster, target, alteration.id, chance, events);
-      }
-      afterHeroHit(ctx, monster, target, amount);
+  // Abysse : un monstre qui possède une fusion peut la déclencher (jamais pendant un souffle).
+  const strikes =
+    !breath && rollMonsterFusion(rng, monster)
+      ? monsterFusionAttack(ctx, monster, targets[0]!, spec)
+      : targets.map((target) => ({
+          target,
+          result: alive(monster) ? attack(data, rng, monster, target, spec, events) : null,
+        }));
+  for (const { target, result } of strikes) {
+    if (!result || result.amount <= 0 || result.missed || !alive(monster)) continue;
+    for (const alteration of monster.inflicts) {
+      // Souffle élémentaire : l'altération de l'élément est infligée à coup sûr (résistance comprise).
+      const chance = alteration.id === breathAlterationId ? 1 : alteration.chance;
+      tryApplyAlteration(data, rng, monster, target, alteration.id, chance, events);
     }
+    afterHeroHit(ctx, monster, target, result.amount);
   }
+}
+
+/** Pierre ancestrale : une attaque mono-cible peut être attirée par le Guerrier. */
+function tauntTarget(ctx: Ctx, target: Combatant): Combatant {
+  const { state, events } = ctx;
+  const taunt = relicBonus(state.relics ?? []).taunt;
+  if (taunt <= 0 || target.classId === 'warrior') return target;
+  const warrior = state.heroes.find((h) => h.classId === 'warrior' && alive(h));
+  if (!warrior || !chance(state.rng, taunt)) return target;
+  events.push({ type: 'taunt', targetId: warrior.id });
+  return warrior;
 }
 
 /** Assassins et tireurs visent le héros le plus faible ; les autres frappent au hasard. */
@@ -712,6 +747,14 @@ function settle(ctx: Ctx, endRoundOnWaveClear = true): boolean {
     }
   }
   for (const h of state.heroes) {
+    // Ankh d'Anubis : le premier héros vaincu se relève (une fois par Ankh et par combat).
+    if (h.hp <= 0 && !h.dead && (state.revivesLeft ?? 0) > 0) {
+      state.revivesLeft = (state.revivesLeft ?? 0) - 1;
+      h.hp = Math.max(1, Math.round(h.stats.maxHp * RELIC_RULES.reviveShare));
+      h.alterations = [];
+      events.push({ type: 'revive', targetId: h.id, amount: h.hp });
+      continue;
+    }
     if (h.hp <= 0 && !h.dead) {
       h.dead = true;
       if (!events.some((e) => e.type === 'death' && e.targetId === h.id))

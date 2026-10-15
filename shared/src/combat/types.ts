@@ -167,6 +167,8 @@ export interface Combatant {
   isBoss: boolean;
   /** Monstre alpha de l'Abysse : son trait (null ou absent sinon). */
   alpha?: AlphaTraitId | null;
+  /** Abysse : second élément de la fusion du monstre (avec son propre élément), sinon null. */
+  fusion?: ElementId | null;
   /** Mort déjà prise en compte (récompenses, événement). */
   dead: boolean;
   /** XP et or rapportés par un monstre vaincu. */
@@ -180,6 +182,8 @@ export interface MonsterSpawn {
   abyssFloor?: number;
   /** Abysse : monstre alpha et son trait. */
   alpha?: AlphaTraitId;
+  /** Abysse : second élément de la fusion du monstre. */
+  fusion?: ElementId;
 }
 
 export interface KilledMonster {
@@ -235,6 +239,12 @@ export type CombatEvent =
   | { type: 'summon'; sourceId: string; monsterIds: string[] }
   /** Monstre alpha enragé (trait « Enragé ») sous la moitié de ses PV. */
   | { type: 'alphaRage'; targetId: string }
+  /** Ankh d'Anubis : un héros vaincu se relève. */
+  | { type: 'revive'; targetId: string; amount: number }
+  /** Pierre ancestrale : le Guerrier attire l'attaque. */
+  | { type: 'taunt'; targetId: string }
+  /** Un monstre de l'Abysse déclenche sa fusion (élément du monstre + `fusion`). */
+  | { type: 'fusion'; actorId: string; element: ElementId; fusion: ElementId }
   | { type: 'end'; outcome: 'victory' | 'defeat' | 'retreat' };
 
 export interface CombatState {
@@ -268,6 +278,10 @@ export interface CombatState {
   rng: Rng;
   /** Compteur pour les identifiants des monstres. */
   spawned: number;
+  /** Reliques et œufs équipés (tous les joueurs en multijoueur, doublons compris). */
+  relics?: string[];
+  /** Ankh d'Anubis : héros que l'on peut encore relever pendant ce combat. */
+  revivesLeft?: number;
 }
 
 export interface HeroActionInput {

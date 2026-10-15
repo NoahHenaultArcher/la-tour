@@ -4,6 +4,7 @@ import {
   byId,
   heroCombatStats,
   itemStats,
+  relicBonus,
   type CharacterDto,
   type ItemDto,
   type RarityId,
@@ -77,5 +78,6 @@ export function characterStats(
       allocation,
     },
     save.upgradeTower,
+    relicBonus(save.relics.filter((r) => r.slot !== null).map((r) => r.relicId)),
   );
 }

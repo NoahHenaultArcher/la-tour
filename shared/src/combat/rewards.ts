@@ -5,6 +5,7 @@
  * × gain d'XP global (balance.ts, XP_GAIN).
  */
 import { XP_GAIN } from '../balance.ts';
+import { relicBonus } from '../rules/relics.ts';
 import type { MonstersData } from '../data/schemas.ts';
 import { levelGapXpFactor, xpShare } from '../rules/rewards.ts';
 import type { CombatState, KilledMonster } from './types.ts';
@@ -23,6 +24,8 @@ export function combatRewards(
 ): CombatRewards {
   const share = xpShare(state.heroes.length);
   const gold = state.killed.reduce((sum, k) => sum + k.gold, 0);
+  // Trésor du chef gobelin : or en plus (s'ajoute au bonus de la Tour d'amélioration).
+  const goldBonus = goldXpBonus + relicBonus(state.relics ?? []).gold;
   const xp: Record<string, number> = {};
   for (const hero of state.heroes) {
     let total = 0;
@@ -30,7 +33,7 @@ export function combatRewards(
       total += k.xp * levelGapXpFactor(data, k.level, hero.level) * share;
     xp[hero.refId] = Math.floor(total * XP_GAIN.multiplier * (1 + goldXpBonus));
   }
-  return { gold: Math.floor(gold * (1 + goldXpBonus)), xp };
+  return { gold: Math.floor(gold * (1 + goldBonus)), xp };
 }
 
 /**
@@ -43,6 +46,8 @@ export function participantRewards(
   killed: readonly KilledMonster[],
   heroLevel: number,
   goldXpBonus = 0,
+  /** Reliques du salon (Trésor du chef gobelin) : or en plus pour chacun. */
+  relicGoldBonus = 0,
 ): { xp: number; gold: number } {
   let xp = 0;
   let gold = 0;
@@ -53,6 +58,6 @@ export function participantRewards(
   }
   return {
     xp: Math.floor(xp * XP_GAIN.multiplier * (1 + goldXpBonus)),
-    gold: Math.floor(gold * (1 + goldXpBonus)),
+    gold: Math.floor(gold * (1 + goldXpBonus + relicGoldBonus)),
   };
 }

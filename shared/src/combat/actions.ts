@@ -5,6 +5,7 @@
  */
 import { ALCHEMY, COMBAT_RULES } from '../balance.ts';
 import type { ElementId } from '../constants.ts';
+import { eggDamageBonus, relicBonus } from '../rules/relics.ts';
 import { chance, pick, type Rng } from '../rules/random.ts';
 import {
   activeAlteration,
@@ -171,7 +172,12 @@ export function performAttack(
   const results: AttackResult[] = [];
 
   // Bonus valables pour toute l'action.
-  let actionBonus = consumeNextAttackBonus(hero, area) + (effect.damageBonus ?? 0);
+  const relics = relicBonus(state.relics ?? []);
+  // Œufs de dragon : compétences de leur élément et fusions qui le contiennent.
+  let actionBonus =
+    consumeNextAttackBonus(hero, area) +
+    (effect.damageBonus ?? 0) +
+    eggDamageBonus(relics, skill.element, fusion);
   actionBonus += passiveSum(passives, (p) =>
     p.elementDamage?.element === skill.element ? p.elementDamage.bonus : 0,
   );
@@ -211,12 +217,13 @@ export function performAttack(
       : 0);
   const power = skill.power * (fusion ? data.skills.params.fusionPowerBonus : 1);
   const hits = Math.max(1, effect.hits ?? 1);
-  const lifesteal = (effect.lifesteal ?? 0) + passiveSum(passives, (p) => p.lifesteal);
+  const lifesteal =
+    (effect.lifesteal ?? 0) + passiveSum(passives, (p) => p.lifesteal) + relics.lifesteal;
   const vsAltered = (effect.bonusVsAltered ?? 0) + passiveSum(passives, (p) => p.bonusVsAltered);
   const critHeal = passiveSum(passives, (p) => p.critHeal);
   const critBleed = passives.some((p) => p.critBleed);
   const sunder = passives.find((p) => p.sunder)?.sunder;
-  const chanceFactor = 1 + (effect.alterationChanceBonus ?? 0);
+  const chanceFactor = 1 + (effect.alterationChanceBonus ?? 0) + relics.alterationChance;
 
   const tryAlteration = (target: Combatant, spec: AlterationSpec, fromElement: boolean) => {
     if (spec.singleTargetOnly && area) return false;
@@ -444,7 +451,10 @@ export function performAttack(
 // Réactions et effets périodiques
 // ---------------------------------------------------------------------------
 
-/** Un monstre attaque : il subit d'abord la lave (Magma) qui le recouvre. */
+/**
+ * Un combattant attaque : il subit d'abord la lave (Magma) qui le recouvre. Les monstres la reçoivent
+ * des héros ; dans l'Abysse, les héros la reçoivent aussi des monstres qui ont la fusion Magma.
+ */
 export function beforeMonsterAttack(ctx: ActionCtx, monster: Combatant): void {
   for (const m of monster.modifiers) {
     if (m.onAttackDamage && alive(monster))
@@ -516,6 +526,9 @@ export function heroEndOfRound(ctx: ActionCtx, hero: Combatant): void {
   if (!alive(hero)) return;
   const passives = passiveEffectsOf(data, hero.passives);
   const round = state.round;
+  // Totem du haut chaman : régénération de toute l'équipe.
+  const regen = relicBonus(state.relics ?? []).regen;
+  if (regen > 0) heal(hero, hero, hero.stats.maxHp * regen, events);
   for (const p of passives) {
     if (p.regen) heal(hero, hero, hero.stats.maxHp * p.regen, events);
     if (p.periodicShield && round % p.periodicShield.every === 0)

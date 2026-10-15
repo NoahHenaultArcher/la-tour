@@ -1,4 +1,4 @@
-import { byId } from '@la-tour/shared';
+import { byId, fusionOf } from '@la-tour/shared';
 /** Textes du journal de combat (gabarits dans fr.json). */
 import type { CombatEvent, CombatView } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
@@ -105,6 +105,15 @@ export function describeEvent(event: CombatEvent, view: CombatView | null): stri
       return t('combat.log.enrage', { target: name(event.targetId) });
     case 'alphaRage':
       return t('combat.log.alphaRage', { target: name(event.targetId) });
+    case 'revive':
+      return t('combat.log.revive', { target: name(event.targetId), amount: event.amount });
+    case 'taunt':
+      return t('combat.log.taunt', { target: name(event.targetId) });
+    case 'fusion':
+      return t('combat.log.fusion', {
+        actor: name(event.actorId),
+        fusion: fusionOf(gameData, event.element, event.fusion)?.name ?? '',
+      });
     case 'summon':
       return t('combat.log.summon', {
         source: name(event.sourceId),

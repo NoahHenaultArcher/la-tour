@@ -220,6 +220,12 @@ export function AbyssPage() {
             <li>{t('abyss.rule.mixed')}</li>
             <li>{t('abyss.rule.boss')}</li>
             <li>{t('abyss.rule.lair', { chance: percent(ABYSS.dragonChance) })}</li>
+            <li>
+              {t('abyss.rule.fusion', {
+                share: percent(ABYSS.fusionChance),
+                chance: percent(ABYSS.fusionTrigger),
+              })}
+            </li>
             <li>{t('abyss.rule.loot')}</li>
             <li>{t('abyss.rule.heritage')}</li>
             <li>
