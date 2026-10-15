@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
+import { Leaderboard } from '../components/Leaderboard.tsx';
 import { TopBar } from '../components/TopBar.tsx';
 import { errorMessage, t } from '../i18n/index.ts';
 import { useNotifications } from '../stores/notifications.ts';
@@ -68,6 +69,7 @@ export function MultiPage() {
           </form>
         </section>
         <p className="muted small">{t('room.progressRule')}</p>
+        <Leaderboard />
       </main>
     </div>
   );

@@ -107,8 +107,9 @@ export const HERO_STATUS_RESISTANCE = { atLevel1: 0.05, atLevel100: 0.3 } as con
  * Gain d'XP (demande de l'utilisateur, 14/10/2026) : avec la difficulté exigeante, on passait trop
  * de temps à chasser pour monter de niveau. L'XP gagnée en combat (tour et chasse, solo et multi)
  * est multipliée par ce facteur ; la courbe d'XP et l'XP des monstres du bestiaire ne changent pas.
+ * 15/10/2026 : doublé (×1,5 → ×3) pour monter la tour plus vite (scripts/progression-sim.ts).
  */
-export const XP_GAIN = { multiplier: 1.5 } as const;
+export const XP_GAIN = { multiplier: 3 } as const;
 
 /**
  * Dragons (décision de l'utilisateur, 14/10/2026) : plus seulement des « sacs à PV ».

@@ -1,4 +1,4 @@
-import { RARITY_IDS, tierForFloor, unlockedHuntingZones } from '@la-tour/shared';
+import { RARITY_IDS, XP_GAIN, tierForFloor, unlockedHuntingZones } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
@@ -101,7 +101,8 @@ function ZoneCard({
           {estimates.xpPerHour !== null && (
             <p className="muted zone-estimates">
               {t('hunt.estimates', {
-                xp: formatNumber(Math.round(estimates.xpPerHour)),
+                // Estimation du bestiaire × gain d'XP du jeu (balance.ts).
+                xp: formatNumber(Math.round(estimates.xpPerHour * XP_GAIN.multiplier)),
                 gold: formatNumber(Math.round(estimates.goldPerHour ?? 0)),
                 items: formatNumber(Math.round(estimates.itemsPerHour ?? 0)),
               })}

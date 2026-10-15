@@ -10,6 +10,7 @@ import type { Config } from './config.ts';
 import { debugRoutes } from './debug/routes.ts';
 import { HttpError, registerErrorHandling } from './http/errors.ts';
 import { itemRoutes } from './items/routes.ts';
+import { leaderboardRoutes } from './leaderboard/routes.ts';
 import type { ManagerOptions } from './multiplayer/manager.ts';
 import { attachMultiplayer } from './multiplayer/socket.ts';
 import { DEFAULT_RATE_LIMITS, type RateLimits } from './http/rate-limits.ts';
@@ -26,6 +27,8 @@ export interface AppDependencies {
   rateLimits?: RateLimits;
   /** Réglages du multijoueur (durée des tours…), surtout pour les tests. */
   multiplayer?: ManagerOptions;
+  /** Durée du cache du classement (0 dans les tests). */
+  leaderboardCacheMs?: number;
 }
 
 export function buildApp({
@@ -35,6 +38,7 @@ export function buildApp({
   checkDatabase,
   rateLimits = DEFAULT_RATE_LIMITS,
   multiplayer: multiplayerOptions,
+  leaderboardCacheMs,
 }: AppDependencies): FastifyInstance {
   const app = Fastify({ logger });
   const pingDatabase =
@@ -84,6 +88,7 @@ export function buildApp({
   app.register(itemRoutes, { prisma, rateLimits });
   app.register(characterRoutes, { prisma, rateLimits });
   app.register(shopRoutes, { prisma, rateLimits });
+  app.register(leaderboardRoutes, { prisma, rateLimits, cacheMs: leaderboardCacheMs });
   // Mode debug : jamais disponible en production.
   if (config.NODE_ENV !== 'production') app.register(debugRoutes, { prisma, rateLimits });
 

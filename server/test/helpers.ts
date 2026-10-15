@@ -47,6 +47,7 @@ export async function createTestContext(
     logger: false,
     rateLimits,
     multiplayer,
+    leaderboardCacheMs: 0,
   });
   await app.ready();
   return { prisma, app };

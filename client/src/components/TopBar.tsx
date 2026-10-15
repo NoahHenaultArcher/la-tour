@@ -1,5 +1,5 @@
 import { MAX_HERO_LEVEL, canInherit } from '@la-tour/shared';
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import { t } from '../i18n/index.ts';
 import { useRoom } from '../stores/room.ts';
 import { useSession } from '../stores/session.ts';
@@ -27,11 +27,12 @@ export function TopBar() {
   const inRoom = useRoom((s) => s.room !== null);
   return (
     <header className="topbar">
-      <strong className="logo-small">
+      <Link to="/accueil" className="logo-small">
         <PixelImage src={TOWER_IMAGE} alt="" size={28} />
-        {t('app.title')}
-      </strong>
+        <strong>{t('app.title')}</strong>
+      </Link>
       <nav className="main-nav">
+        <NavLink to="/accueil">{t('nav.home')}</NavLink>
         <NavLink to="/tour">{t('nav.tower')}</NavLink>
         <NavLink to="/village">{t('nav.village')}</NavLink>
         <NavLink to="/chasse">{t('nav.hunt')}</NavLink>

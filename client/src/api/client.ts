@@ -12,6 +12,7 @@ import type {
   EquipItemBody,
   ItemIdBody,
   ItemIdsBody,
+  LeaderboardDto,
   UpgradeBuildingBody,
   UpgradeTowerBranchBody,
   LoginBody,
@@ -98,4 +99,5 @@ export const api = {
     request<SaveDto>('POST', '/api/village/upgrade-tower', body),
   setDeck: (body: SetDeckBody) => request<SaveDto>('POST', '/api/characters/deck', body),
   heritage: () => request<SaveDto>('POST', '/api/save/heritage', {}),
+  getLeaderboard: () => request<LeaderboardDto>('GET', '/api/leaderboard'),
 };

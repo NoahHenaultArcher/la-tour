@@ -231,6 +231,8 @@ button.primary {
   align-items: center;
   gap: 6px;
   letter-spacing: 0.08em;
+  color: var(--text);
+  text-decoration: none;
 }
 
 .sound-control {
@@ -2810,4 +2812,377 @@ button.danger {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
+}
+
+/* --- Accueil --- */
+
+.warn-text {
+  color: var(--warn);
+}
+
+/* Lien présenté comme un bouton. */
+a.button {
+  display: inline-block;
+  border: 2px solid var(--panel-border);
+  border-radius: 4px;
+  padding: 6px 12px;
+  background: var(--panel-border);
+  color: var(--text);
+  text-decoration: none;
+}
+
+a.button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+  font-weight: bold;
+}
+
+.home-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.home-welcome p {
+  margin: 4px 0 0;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  /* Les cartes d'une même ligne (Prochain défi et Chasse…) prennent la même hauteur. */
+  align-items: stretch;
+}
+
+.home-team {
+  grid-column: 1 / -1;
+}
+
+.home-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.home-card p {
+  margin: 0;
+}
+
+.home-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.home-tower-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.home-floor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: help;
+}
+
+.home-floor-number {
+  font-size: 2.4rem;
+  font-weight: bold;
+  min-width: 2.2em;
+  text-align: center;
+  color: color-mix(in srgb, var(--el) 70%, white);
+}
+
+.home-monsters {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.home-monsters li {
+  line-height: 0;
+  padding: 2px;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  background: #1d1826;
+}
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.biome-strip {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
+}
+
+.biome-segment {
+  display: block;
+  height: 12px;
+  border: 1px solid var(--el);
+  border-radius: 2px;
+  background: #120e18;
+  overflow: hidden;
+}
+
+.biome-segment > span {
+  display: block;
+  height: 100%;
+  background: var(--el);
+}
+
+.home-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  border: 2px solid var(--el);
+  border-radius: 6px;
+}
+
+/* Héros centrés dans le cadre, quel que soit leur nombre. */
+.home-heroes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.home-heroes > .home-hero {
+  flex: 0 1 340px;
+  min-width: 260px;
+}
+
+.home-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  background: #1d1826;
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+}
+
+.home-hero-identity {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.home-hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.home-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin: 0;
+}
+
+.home-hero-stats dt {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.home-hero-stats dd {
+  margin: 0;
+  font-weight: bold;
+}
+
+.home-equipment {
+  display: grid;
+  grid-template-columns: repeat(5, 40px);
+  gap: 4px;
+}
+
+.home-equipment > span {
+  line-height: 0;
+}
+
+.home-slot-empty {
+  display: block;
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  border: 2px dashed var(--panel-border);
+  border-radius: 4px;
+}
+
+.home-deck {
+  display: flex;
+  gap: 4px;
+}
+
+.home-deck > span {
+  line-height: 0;
+  padding: 2px;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+}
+
+/* Les passives se distinguent des actives par une bordure pointillée. */
+.home-deck > .home-passive {
+  border-style: dashed;
+}
+
+.home-alerts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem;
+}
+
+.home-recruit {
+  justify-content: center;
+}
+
+.home-recruit-portraits {
+  display: flex;
+  gap: 6px;
+  opacity: 0.6;
+}
+
+.home-production {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 12px;
+}
+
+.home-production li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.home-production li .muted {
+  margin-left: auto;
+}
+
+.home-goals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.home-goals li {
+  display: grid;
+  grid-template-columns: 5.5em 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.home-goal-floor {
+  font-weight: bold;
+  color: var(--accent);
+}
+
+.home-heritage {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+@media (max-width: 900px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Classement (page Multijoueur) --- */
+
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.leaderboard p {
+  margin: 0;
+}
+
+.leaderboard table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.leaderboard th {
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: var(--muted);
+  padding: 4px 8px;
+  border-bottom: 2px solid var(--panel-border);
+}
+
+.leaderboard td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.leaderboard-rank {
+  font-weight: bold;
+  width: 2em;
+}
+
+.leaderboard-number {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.leaderboard th:nth-child(n + 4) {
+  text-align: right;
+}
+
+.leaderboard-score {
+  font-weight: bold;
+  color: var(--accent);
+}
+
+.leaderboard-heroes {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.leaderboard-heroes > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.85rem;
+}
+
+/* La ligne du joueur connecté ressort. */
+.leaderboard-me td {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.leaderboard-mine {
+  padding: 6px 8px;
+  border-left: 3px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
 }

@@ -7,7 +7,8 @@
     "import-data": "tsx import-data.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "balance-report": "tsx balance-report.ts"
+    "balance-report": "tsx balance-report.ts",
+    "progression-sim": "tsx progression-sim.ts"
   },
   "dependencies": {
     "@la-tour/shared": "workspace:*",

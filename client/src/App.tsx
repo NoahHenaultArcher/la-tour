@@ -6,6 +6,7 @@ import { TooltipProvider } from './components/Tooltip.tsx';
 import { useDebug } from './debug/console.ts';
 import { errorMessage, t } from './i18n/index.ts';
 import { AuthPage } from './pages/AuthPage.tsx';
+import { HomePage } from './pages/HomePage.tsx';
 import { VillagePage } from './pages/VillagePage.tsx';
 import { useRoom } from './stores/room.ts';
 import { useSession } from './stores/session.ts';
@@ -73,7 +74,7 @@ function useIdleCollection(active: boolean) {
 }
 
 /**
- * Aiguillage : visiteur → connexion ; compte sans personnage → choix de la classe ; sinon → village.
+ * Aiguillage : visiteur → connexion ; compte sans personnage → choix de la classe ; sinon → accueil.
  */
 export function App() {
   const status = useSession((s) => s.status);
@@ -98,7 +99,8 @@ export function App() {
   if (fatal) return <p className="error center">{fatal}</p>;
   if (status === 'loading') return <p className="muted center">{t('app.loading')}</p>;
 
-  const home = status === 'anonymous' ? '/connexion' : hasCharacter ? '/village' : '/classe';
+  const home = status === 'anonymous' ? '/connexion' : hasCharacter ? '/accueil' : '/classe';
+  const playing = home === '/accueil';
   const anonymousOnly = (page: ReactNode) =>
     status === 'anonymous' ? page : <Navigate to={home} replace />;
 
@@ -113,40 +115,29 @@ export function App() {
             element={home === '/classe' ? <ChooseClassPage /> : <Navigate to={home} replace />}
           />
           <Route
+            path="/accueil"
+            element={playing ? <HomePage /> : <Navigate to={home} replace />}
+          />
+          <Route
             path="/village"
-            element={home === '/village' ? <VillagePage /> : <Navigate to={home} replace />}
+            element={playing ? <VillagePage /> : <Navigate to={home} replace />}
           />
-          <Route
-            path="/tour"
-            element={home === '/village' ? <TowerPage /> : <Navigate to={home} replace />}
-          />
-          <Route
-            path="/chasse"
-            element={home === '/village' ? <HuntPage /> : <Navigate to={home} replace />}
-          />
-          <Route
-            path="/equipe"
-            element={home === '/village' ? <TeamPage /> : <Navigate to={home} replace />}
-          />
+          <Route path="/tour" element={playing ? <TowerPage /> : <Navigate to={home} replace />} />
+          <Route path="/chasse" element={playing ? <HuntPage /> : <Navigate to={home} replace />} />
+          <Route path="/equipe" element={playing ? <TeamPage /> : <Navigate to={home} replace />} />
           <Route
             path="/competences"
-            element={home === '/village' ? <SkillsPage /> : <Navigate to={home} replace />}
+            element={playing ? <SkillsPage /> : <Navigate to={home} replace />}
           />
-          <Route
-            path="/multi"
-            element={home === '/village' ? <MultiPage /> : <Navigate to={home} replace />}
-          />
-          <Route
-            path="/salon"
-            element={home === '/village' ? <RoomPage /> : <Navigate to={home} replace />}
-          />
+          <Route path="/multi" element={playing ? <MultiPage /> : <Navigate to={home} replace />} />
+          <Route path="/salon" element={playing ? <RoomPage /> : <Navigate to={home} replace />} />
           <Route
             path="/heritage"
-            element={home === '/village' ? <HeritagePage /> : <Navigate to={home} replace />}
+            element={playing ? <HeritagePage /> : <Navigate to={home} replace />}
           />
           <Route
             path="/combat"
-            element={home === '/village' ? <CombatPage /> : <Navigate to={home} replace />}
+            element={playing ? <CombatPage /> : <Navigate to={home} replace />}
           />
           <Route path="*" element={<Navigate to={home} replace />} />
         </Routes>
