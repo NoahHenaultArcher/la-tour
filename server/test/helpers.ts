@@ -16,6 +16,8 @@ export function testConfig(overrides: Partial<Config> = {}): Config {
   return {
     NODE_ENV: 'test',
     SERVER_PORT: 0,
+    HOST: '127.0.0.1',
+    TRUST_PROXY: false,
     DATABASE_URL: testDatabaseUrl ?? 'postgresql://absent',
     CLIENT_ORIGIN: 'http://localhost:5173',
     ...overrides,

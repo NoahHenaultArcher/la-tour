@@ -1,6 +1,7 @@
 import type { ApiErrorBody, ApiErrorCode } from '@la-tour/shared';
 import type { FastifyError, FastifyInstance } from 'fastify';
 import { z } from 'zod';
+import { isClientRoute } from './client-files.ts';
 
 /** Erreur HTTP métier : un statut et un code, traduits côté client via fr.json. */
 export class HttpError extends Error {
@@ -23,7 +24,10 @@ export function parseInput<T extends z.ZodType>(schema: T, input: unknown): z.in
   return result.data;
 }
 
-export function registerErrorHandling(app: FastifyInstance): void {
+export function registerErrorHandling(
+  app: FastifyInstance,
+  { clientApp = false }: { clientApp?: boolean } = {},
+): void {
   app.setErrorHandler((error: FastifyError | HttpError, request, reply) => {
     if (error instanceof HttpError) {
       const body: ApiErrorBody = { error: { code: error.code, details: error.details } };
@@ -38,7 +42,9 @@ export function registerErrorHandling(app: FastifyInstance): void {
     return reply.status(500).send({ error: { code: 'INTERNAL' } } satisfies ApiErrorBody);
   });
 
-  app.setNotFoundHandler((_request, reply) =>
-    reply.status(404).send({ error: { code: 'NOT_FOUND' } } satisfies ApiErrorBody),
-  );
+  app.setNotFoundHandler((request, reply) => {
+    // Lien direct vers une page du jeu (/village…) : le client choisit la vue à afficher.
+    if (clientApp && isClientRoute(request)) return reply.sendFile('index.html');
+    return reply.status(404).send({ error: { code: 'NOT_FOUND' } } satisfies ApiErrorBody);
+  });
 }

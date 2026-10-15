@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "concurrently -n server,client -c blue,green \"pnpm --filter @la-tour/server dev\" \"pnpm --filter @la-tour/client dev\"",
     "build": "pnpm -r build",
+    "start": "pnpm --filter @la-tour/server start:prod",
     "typecheck": "pnpm -r typecheck",
     "test": "vitest run",
     "test:watch": "vitest",

@@ -8,6 +8,7 @@ import { characterRoutes } from './characters/routes.ts';
 import { combatRoutes } from './combat/routes.ts';
 import type { Config } from './config.ts';
 import { debugRoutes } from './debug/routes.ts';
+import { registerClientFiles } from './http/client-files.ts';
 import { HttpError, registerErrorHandling } from './http/errors.ts';
 import { itemRoutes } from './items/routes.ts';
 import { leaderboardRoutes } from './leaderboard/routes.ts';
@@ -30,6 +31,8 @@ export interface AppDependencies {
   multiplayer?: ManagerOptions;
   /** Durée du cache du classement (0 dans les tests). */
   leaderboardCacheMs?: number;
+  /** Dossier du client compilé à servir (production) ; absent en développement et en test. */
+  clientDir?: string;
 }
 
 export function buildApp({
@@ -40,8 +43,9 @@ export function buildApp({
   rateLimits = DEFAULT_RATE_LIMITS,
   multiplayer: multiplayerOptions,
   leaderboardCacheMs,
+  clientDir,
 }: AppDependencies): FastifyInstance {
-  const app = Fastify({ logger });
+  const app = Fastify({ logger, trustProxy: config.TRUST_PROXY });
   const pingDatabase =
     checkDatabase ??
     (async () => {
@@ -49,7 +53,8 @@ export function buildApp({
     });
 
   app.decorateRequest('user', null);
-  registerErrorHandling(app);
+  registerErrorHandling(app, { clientApp: clientDir !== undefined });
+  if (clientDir) registerClientFiles(app, clientDir);
   app.register(cookie);
   app.register(rateLimit, {
     global: false,
