@@ -27,6 +27,7 @@ import {
   type ApiErrorCode,
   type ChatMessage,
   type ClassId,
+  type HostProgress,
   type CombatEvent,
   type CombatResult,
   type CombatState,
@@ -95,7 +96,7 @@ interface Room {
   hostId: string;
   players: Player[];
   content: RoomContent | null;
-  hostProgress: { currentFloor: number; highestFloorCleared: number };
+  hostProgress: HostProgress;
   chat: ChatMessage[];
   nextChatId: number;
   combat: ActiveCombat | null;
@@ -578,7 +579,13 @@ export class MultiplayerManager {
   private checkContent(room: Room, content: RoomContent): void {
     const options = roomContentOptions(gameData, room.hostProgress);
     if (!options.some((o) => o.mode === content.mode && o.floor === content.floor))
-      throw new RoomError(content.mode === 'hunt' ? 'ZONE_LOCKED' : 'FLOOR_LOCKED');
+      throw new RoomError(
+        content.mode === 'hunt'
+          ? 'ZONE_LOCKED'
+          : content.mode === 'abyss'
+            ? 'ABYSS_LOCKED'
+            : 'FLOOR_LOCKED',
+      );
   }
 
   private async newPlayer(user: UserDto): Promise<Player> {
@@ -608,7 +615,7 @@ export class MultiplayerManager {
   private async progressOf(saveId: string) {
     const save = await this.prisma.save.findUniqueOrThrow({
       where: { id: saveId },
-      select: { currentFloor: true, highestFloorCleared: true },
+      select: { currentFloor: true, highestFloorCleared: true, abyssFloor: true },
     });
     return save;
   }

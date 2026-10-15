@@ -73,6 +73,12 @@ export async function combatRoutes(
     return startCombat(prisma, saveId, zoneFloor, 'hunt');
   });
 
+  // Abysse (après l'étage 100) : toujours l'étage courant du joueur.
+  app.post('/api/combat/abyss', options, async (request) => {
+    const { saveId } = await ids(request);
+    return startCombat(prisma, saveId, 1, 'abyss');
+  });
+
   app.post('/api/combat/retreat', options, async (request) => {
     const { userId, saveId } = await ids(request);
     return playCombat(prisma, userId, saveId, (state) => retreatFromHunt(gameData, state));

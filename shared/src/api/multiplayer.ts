@@ -4,12 +4,13 @@
  * sur le combat, les récompenses et la progression.
  */
 import { z } from 'zod';
-import type { CombatEvent } from '../combat/types.ts';
-import type { ClassId, ElementId } from '../constants.ts';
+import type { CombatEvent, CombatMode } from '../combat/types.ts';
+import type { ClassId } from '../constants.ts';
+import { ABYSS_MAX_FLOOR, isAbyssUnlocked } from '../rules/abyss.ts';
 import { isReplayable, unlockedHuntingZones } from '../rules/tower.ts';
 import type { ZonesData } from '../data/schemas.ts';
 import type { ApiErrorCode } from './common.ts';
-import type { CombatView } from './combat.ts';
+import type { CombatUnlocks, CombatView } from './combat.ts';
 import type { SaveDto } from './save.ts';
 
 /** Code de salon : 6 caractères, sans 0/O ni 1/I pour éviter les confusions. */
@@ -27,8 +28,8 @@ export const roomCharacterSchema = z.strictObject({ characterId: z.uuid() });
 export const roomReadySchema = z.strictObject({ ready: z.boolean() });
 export const roomChatSchema = z.strictObject({ text: z.string().trim().min(1).max(200) });
 export const roomContentSchema = z.strictObject({
-  mode: z.enum(['tower', 'hunt']),
-  floor: z.int().min(1).max(100),
+  mode: z.enum(['tower', 'hunt', 'abyss']),
+  floor: z.int().min(1).max(ABYSS_MAX_FLOOR),
 });
 export const multiActionSchema = z.strictObject({
   skillId: z.string().min(1).max(32),
@@ -37,18 +38,29 @@ export const multiActionSchema = z.strictObject({
 export type RoomContent = z.infer<typeof roomContentSchema>;
 export type MultiAction = z.infer<typeof multiActionSchema>;
 
-/** Contenus que l'hôte peut choisir : son étage courant, un boss déjà battu, une zone de chasse. */
+/**
+ * Contenus que l'hôte peut choisir : son étage courant, son étage de l'Abysse (une fois la tour
+ * finie), un boss déjà battu, une zone de chasse.
+ */
 export interface RoomContentOption extends RoomContent {
-  kind: 'current' | 'boss' | 'hunt';
+  kind: 'current' | 'abyss' | 'boss' | 'hunt';
+}
+
+export interface HostProgress {
+  currentFloor: number;
+  highestFloorCleared: number;
+  abyssFloor: number;
 }
 
 export function roomContentOptions(
   data: { zones: ZonesData },
-  progress: { currentFloor: number; highestFloorCleared: number },
+  progress: HostProgress,
 ): RoomContentOption[] {
   const options: RoomContentOption[] = [
     { kind: 'current', mode: 'tower', floor: progress.currentFloor },
   ];
+  if (isAbyssUnlocked(progress.highestFloorCleared))
+    options.push({ kind: 'abyss', mode: 'abyss', floor: progress.abyssFloor });
   for (let floor = progress.highestFloorCleared; floor >= 1; floor--) {
     if (isReplayable(floor) && floor !== progress.currentFloor)
       options.push({ kind: 'boss', mode: 'tower', floor });
@@ -106,12 +118,12 @@ export interface MultiPlayerReward {
   /** Le joueur avait retiré son héros (zone de chasse). */
   withdrawn: boolean;
   /** Déblocages du joueur (s'il a validé son étage). */
-  unlocked: { elements: ElementId[]; buildings: string[]; huntingZones: string[] };
+  unlocked: CombatUnlocks;
 }
 
 export interface MultiOutcome {
   result: 'victory' | 'defeat' | 'retreat';
-  mode: 'tower' | 'hunt';
+  mode: CombatMode;
   floor: number;
   players: MultiPlayerReward[];
 }

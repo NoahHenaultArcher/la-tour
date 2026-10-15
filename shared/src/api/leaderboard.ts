@@ -7,6 +7,8 @@ export interface LeaderboardEntryDto {
   score: number;
   floorsCleared: number;
   heritageCount: number;
+  /** Record de l'Abysse (meilleur étage terminé). */
+  bestAbyssFloor: number;
   heroes: { classId: ClassId; level: number }[];
   /** Vrai pour le joueur qui demande le classement. */
   isMe: boolean;

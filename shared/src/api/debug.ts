@@ -31,6 +31,11 @@ export const debugGoToFloorSchema = z.strictObject({
   floor: z.int().min(1).max(100),
 });
 
+/** Étage de l'Abysse à jouer (ouvre l'Abysse si besoin). */
+export const debugGoToAbyssSchema = z.strictObject({
+  floor: z.int().min(1).max(10_000),
+});
+
 export const debugUnlockElementSchema = z.strictObject({
   element: z.enum(ELEMENT_IDS),
 });
@@ -53,6 +58,7 @@ export type DebugGiveResources = z.infer<typeof debugGiveResourcesSchema>;
 export type DebugGiveXp = z.infer<typeof debugGiveXpSchema>;
 export type DebugSetLevel = z.infer<typeof debugSetLevelSchema>;
 export type DebugGoToFloor = z.infer<typeof debugGoToFloorSchema>;
+export type DebugGoToAbyss = z.infer<typeof debugGoToAbyssSchema>;
 export type DebugUnlockElement = z.infer<typeof debugUnlockElementSchema>;
 export type DebugCreateItem = z.infer<typeof debugCreateItemSchema>;
 export type DebugAdvanceIdle = z.infer<typeof debugAdvanceIdleSchema>;

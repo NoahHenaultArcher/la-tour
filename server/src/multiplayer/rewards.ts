@@ -14,7 +14,13 @@ import {
   type MultiPlayerReward,
 } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
-import { applyFloorVictory, grantLoot, towerLevels } from '../combat/service.ts';
+import {
+  applyAbyssVictory,
+  applyFloorVictory,
+  clearsAbyssFloor,
+  grantLoot,
+  towerLevels,
+} from '../combat/service.ts';
 import { lockSave } from '../village/service.ts';
 
 export interface Participant {
@@ -58,15 +64,19 @@ export async function rewardParticipant(
       });
     }
 
-    // Règle validée : on ne monte que si l'étage joué était son propre étage courant.
-    const floorCleared =
+    // Règle validée : on ne monte que si l'étage joué était son propre étage courant
+    // (de la tour, ou de l'Abysse).
+    const towerCleared =
       !withdrawn &&
       (state.mode ?? 'tower') === 'tower' &&
       state.phase === 'victory' &&
       state.floor === save.currentFloor;
-    const unlocked = floorCleared
+    const abyssCleared = !withdrawn && clearsAbyssFloor(state, save);
+    const floorCleared = towerCleared || abyssCleared;
+    const unlocked = towerCleared
       ? await applyFloorVictory(tx, saveId, save, state.floor)
       : { elements: [], buildings: [], huntingZones: [] };
+    if (abyssCleared) await applyAbyssVictory(tx, saveId, save, state.floor);
 
     // Un tirage par joueur, avec un aléa propre (le serveur tire la graine).
     const loot = await grantLoot(
@@ -75,6 +85,7 @@ export async function rewardParticipant(
       createRng(randomInt(0, 2 ** 32 - 1)),
       killed,
       state.floor,
+      state.mode ?? 'tower',
     );
 
     return {

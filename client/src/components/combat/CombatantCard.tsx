@@ -1,8 +1,10 @@
 import {
+  ALPHA,
   COMBAT_RULES,
   DRAGON_RULES,
   byId,
   fusionOf,
+  type AlphaTraitId,
   type CombatView,
   type ElementId,
 } from '@la-tour/shared';
@@ -42,6 +44,21 @@ interface MonsterTooltipProps {
   element: ElementId;
   /** Niveau affiché (« Niveau 12 », ou une plage en zone de chasse). */
   levelText: string;
+  /** Monstre alpha de l'Abysse : son trait. */
+  alpha?: AlphaTraitId | null;
+}
+
+/** Ce que fait un trait d'alpha, avec les valeurs de balance.ts. */
+export function alphaTraitText(trait: AlphaTraitId): string {
+  return t(`alpha.trait.${trait}.effect`, {
+    threshold: percent(ALPHA.enragedThreshold),
+    bonus: percent(ALPHA.enragedDamageBonus),
+    regen: percent(ALPHA.regeneration),
+    thorns: percent(ALPHA.thorns),
+    vampiric: percent(ALPHA.vampiric),
+    carapace: percent(ALPHA.carapace),
+    actions: ALPHA.fastActions,
+  });
 }
 
 /** Comportement des dragons, d'après leurs réglages (balance.ts). */
@@ -57,13 +74,23 @@ function dragonBehavior(): string {
 }
 
 /** Infobulle d'un monstre : niveau, élément, faiblesses et résistances, altérations. */
-export function MonsterTooltip({ monsterId, element: elementId, levelText }: MonsterTooltipProps) {
+export function MonsterTooltip({
+  monsterId,
+  element: elementId,
+  levelText,
+  alpha = null,
+}: MonsterTooltipProps) {
   const monster = byId(gameData.monsters.monsters, monsterId);
   const element = gameData.elements.elements.find((e) => e.id === elementId);
   const rank = gameData.monsters.ranks.find((r) => r.id === monster?.rank);
   const role = gameData.monsters.roles.find((r) => r.id === monster?.role);
   return (
     <div className="tooltip-body">
+      {alpha && (
+        <span className="alpha-banner">
+          {t('alpha.title')} · {t(`alpha.trait.${alpha}.name`)}
+        </span>
+      )}
       <strong>{monster?.name ?? monsterId}</strong>
       <span>
         {levelText} · {rank?.name} · {role?.name}
@@ -84,6 +111,18 @@ export function MonsterTooltip({ monsterId, element: elementId, levelText }: Mon
             .map((a) => `${alterationName(a.id)} (${percent(a.chance)})`)
             .join(', ')}
         </span>
+      )}
+      {alpha && (
+        <>
+          <span className="alpha-text">{alphaTraitText(alpha)}</span>
+          <span className="alpha-text">
+            {t('alpha.stats', {
+              hp: ALPHA.hpMultiplier,
+              attack: String(ALPHA.attackMultiplier).replace('.', ','),
+              rewards: ALPHA.rewardMultiplier,
+            })}
+          </span>
+        </>
       )}
       {/* Les dragons ne sont plus de simples « sacs à PV » (phase 9) : description du jeu. */}
       {role && (
@@ -307,6 +346,7 @@ export function CombatantCard({
         selected ? 'selected' : '',
         targetable ? 'targetable' : '',
         c.isBoss ? 'boss' : '',
+        c.alpha ? 'alpha' : '',
       ].join(' ')}
       role={clickable ? 'button' : undefined}
       tabIndex={clickable ? 0 : undefined}
@@ -319,6 +359,7 @@ export function CombatantCard({
       }}
     >
       <Tooltip
+        className={c.alpha ? 'alpha' : undefined}
         content={
           c.side === 'hero' ? (
             <HeroTooltip c={c} />
@@ -327,6 +368,7 @@ export function CombatantCard({
               monsterId={c.refId!}
               element={c.element}
               levelText={t('combat.level', { level: c.level })}
+              alpha={c.alpha ?? null}
             />
           )
         }
@@ -352,6 +394,7 @@ export function CombatantCard({
         </div>
       </Tooltip>
       <span className="combatant-name">
+        {c.alpha && <span className="alpha-tag">{t('alpha.tag')}</span>}
         {combatantName(view, c.id)}{' '}
         <span className="muted">{t('combat.levelShort', { level: c.level })}</span>
       </span>

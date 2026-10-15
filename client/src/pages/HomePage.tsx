@@ -7,6 +7,8 @@ import {
   byId,
   canAfford,
   canInherit,
+  abyssFloorType,
+  isAbyssUnlocked,
   classAttackStat,
   excelRound,
   itemPower,
@@ -139,6 +141,7 @@ function BiomeStrip({ cleared }: { cleared: number }) {
 /** Prochain défi de la tour : étage courant, écart de niveau, lancement direct. */
 function TowerCard({ save }: { save: SaveDto }) {
   const start = useCombat((s) => s.start);
+  const startAbyss = useCombat((s) => s.startAbyss);
   const inProgress = useCombat((s) => s.target);
   const busy = useCombat((s) => s.busy);
   const launch = useLaunch();
@@ -165,7 +168,17 @@ function TowerCard({ save }: { save: SaveDto }) {
     >
       <div className="home-tower-body">
         {finished ? (
-          <p className="ok">{t('home.towerDone')}</p>
+          <div className="home-abyss">
+            <p className="ok">{t('home.towerDone')}</p>
+            <p>
+              {t('home.abyssLine', {
+                floor: save.abyssFloor,
+                type: t(`abyss.type.${abyssFloorType(save.abyssFloor)}`),
+                record: save.bestAbyssFloor,
+              })}
+            </p>
+            <Link to="/abysse">{t('home.seeAbyss')} →</Link>
+          </div>
         ) : (
           <>
             <Tooltip content={<FloorTooltip floor={floor} />}>
@@ -213,19 +226,28 @@ function TowerCard({ save }: { save: SaveDto }) {
             <Link to="/combat" className="button primary">
               {t('combat.resume')}
             </Link>
+          ) : finished ? (
+            <button
+              type="button"
+              className="primary"
+              aria-disabled={busy}
+              onClick={() => {
+                if (!busy) void launch(startAbyss);
+              }}
+            >
+              {t('abyss.descend', { floor: save.abyssFloor })}
+            </button>
           ) : (
-            !finished && (
-              <button
-                type="button"
-                className="primary"
-                aria-disabled={busy}
-                onClick={() => {
-                  if (!busy) void launch(() => start(floor.floor));
-                }}
-              >
-                {t('home.fightFloor', { floor: floor.floor })}
-              </button>
-            )
+            <button
+              type="button"
+              className="primary"
+              aria-disabled={busy}
+              onClick={() => {
+                if (!busy) void launch(() => start(floor.floor));
+              }}
+            >
+              {t('home.fightFloor', { floor: floor.floor })}
+            </button>
           )}
         </div>
       </div>
@@ -565,6 +587,7 @@ function GoalsCard({ save }: { save: SaveDto }) {
       floor: dragon.floor,
       label: t('home.goalDragon', { name: dragon.bossName ?? elementName(dragon.element) }),
     });
+  if (!isAbyssUnlocked(cleared)) goals.push({ floor: TOWER_FLOORS, label: t('home.goalAbyss') });
   goals.sort((a, b) => a.floor - b.floor);
 
   const bestLevel = Math.max(...save.characters.map((c) => c.level));

@@ -3186,3 +3186,188 @@ a.button.primary {
   border-left: 3px solid var(--accent);
   background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
+
+/* --- Abysse et monstres alpha --- */
+
+:root {
+  --alpha: #e0282e;
+  --abyss: #8a3df0;
+}
+
+/* Monstre alpha : cadre rouge sur sa carte et sur son infobulle. */
+.combatant.alpha {
+  border-color: var(--alpha);
+  box-shadow: 0 0 12px rgb(224 40 46 / 45%);
+}
+
+.tooltip.alpha {
+  border-color: var(--alpha);
+  box-shadow: 0 0 10px rgb(224 40 46 / 40%);
+}
+
+.alpha-banner {
+  align-self: flex-start;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--alpha);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+}
+
+.alpha-text {
+  color: #ff8a8e;
+}
+
+.alpha-tag {
+  margin-right: 4px;
+  padding: 0 4px;
+  border-radius: 3px;
+  background: var(--alpha);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.main-nav a.nav-abyss {
+  color: color-mix(in srgb, var(--abyss) 60%, white);
+}
+
+.abyss-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.abyss-page .panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.abyss-page .panel p {
+  margin: 0;
+}
+
+.abyss-current {
+  border-color: var(--abyss);
+  background: color-mix(in srgb, var(--abyss) 10%, var(--panel));
+}
+
+.abyss-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.abyss-stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.abyss-big {
+  font-size: 1.8rem;
+  color: color-mix(in srgb, var(--abyss) 55%, white);
+}
+
+.abyss-next {
+  cursor: help;
+}
+
+.abyss-dragon {
+  align-self: flex-start;
+  line-height: 0;
+  padding: 4px;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  background: #1d1826;
+}
+
+.abyss-floors {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.abyss-floor {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 5px 10px;
+  border: 1px solid var(--panel-border);
+  border-left-width: 4px;
+  border-radius: 4px;
+  background: #1d1826;
+  cursor: help;
+}
+
+.abyss-floor.boss {
+  border-left-color: var(--accent);
+}
+
+.abyss-floor.dragon {
+  border-left-color: var(--alpha);
+}
+
+.abyss-floor.current {
+  border-color: var(--abyss);
+  box-shadow: 0 0 8px rgb(138 61 240 / 35%);
+}
+
+.alpha-traits {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.alpha-traits li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border: 1px solid var(--alpha);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--alpha) 8%, transparent);
+}
+
+.alpha-traits strong {
+  color: #ff8a8e;
+}
+
+.abyss-rules {
+  margin: 0;
+  padding-left: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.home-abyss {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.outcome-unlocks .abyss-unlock {
+  color: color-mix(in srgb, var(--abyss) 55%, white);
+  font-weight: bold;
+}
+
+@media (max-width: 700px) {
+  .alpha-traits,
+  .abyss-stats {
+    grid-template-columns: 1fr;
+  }
+}

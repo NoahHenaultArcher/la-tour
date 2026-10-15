@@ -103,6 +103,8 @@ export function describeEvent(event: CombatEvent, view: CombatView | null): stri
       return t('combat.log.death', { target: name(event.targetId) });
     case 'enrage':
       return t('combat.log.enrage', { target: name(event.targetId) });
+    case 'alphaRage':
+      return t('combat.log.alphaRage', { target: name(event.targetId) });
     case 'summon':
       return t('combat.log.summon', {
         source: name(event.sourceId),

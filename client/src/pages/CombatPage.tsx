@@ -1,4 +1,4 @@
-import { byId, canPlayFloor } from '@la-tour/shared';
+import { ABYSS, byId, canPlayFloor } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useNavigate } from 'react-router';
@@ -196,29 +196,44 @@ export function CombatPage() {
   // La sélection reste active pour enchaîner, tant que la compétence est prête.
   const selectedSlot = hero.skills.find((s) => s.skillId === selectedSkillId && s.remaining === 0);
   const selectedSkill = selectedSlot ? byId(gameData.skills.catalog, selectedSlot.skillId) : null;
-  const floor = gameData.floors.floors.find((f) => f.floor === view.floor)!;
+  const abyss = view.mode === 'abyss';
+  // L'Abysse prolonge le dernier étage de la tour (décor et élément du Palais démoniaque).
+  const floor = gameData.floors.floors.find(
+    (f) => f.floor === (abyss ? ABYSS.unlockFloor : view.floor),
+  )!;
   const hunting = view.mode === 'hunt';
   const zone = hunting ? gameData.zones.zones.find((z) => z.floor === view.floor) : undefined;
 
   // Le décor prend la couleur de l'élément du biome (Forêt : Neutre, Volcan : Feu…).
   const element = zone?.element ?? floor.element;
 
-  const leave = (to: '/village' | '/tour' | '/chasse' | '/equipe') => {
+  const leave = (to: '/village' | '/tour' | '/chasse' | '/abysse' | '/equipe') => {
     combat.clearOutcome();
     navigate(to);
   };
   // Enchaîner : étage suivant après une victoire, ou nouvelle chasse dans la même zone.
+  // Abysse : l'étage suivant après une victoire, le même étage après une défaite.
   const next: { label: string; run: () => void } | null =
     outcome?.mode === 'hunt'
       ? { label: t('outcome.huntAgain'), run: () => void combat.startHunt(outcome.floor) }
-      : outcome?.result === 'victory' &&
-          outcome.floorCleared &&
-          outcome.save.currentFloor > view.floor
+      : outcome?.mode === 'abyss'
         ? {
-            label: t('outcome.nextFloor'),
-            run: () => void combat.start(outcome.save.currentFloor),
+            label: t(
+              outcome.result === 'victory' && outcome.floorCleared
+                ? 'outcome.nextAbyss'
+                : 'outcome.retryAbyss',
+              { floor: outcome.save.abyssFloor },
+            ),
+            run: () => void combat.startAbyss(),
           }
-        : null;
+        : outcome?.result === 'victory' &&
+            outcome.floorCleared &&
+            outcome.save.currentFloor > view.floor
+          ? {
+              label: t('outcome.nextFloor'),
+              run: () => void combat.start(outcome.save.currentFloor),
+            }
+          : null;
   // Rejouer un étage de boss ou de dragon (victoire comme défaite), s'il reste accessible.
   const replay: { label: string; run: () => void } | null =
     outcome?.mode === 'tower' &&
@@ -244,7 +259,13 @@ export function CombatPage() {
       <TopBar />
       <main className="combat-page">
         <header className="combat-header">
-          {hunting ? (
+          {abyss ? (
+            <>
+              <h1>{t('abyss.floor', { floor: view.floor })}</h1>
+              <span>{t(`abyss.type.${view.floorType}`)}</span>
+              <span>{t('combat.wave', { wave: view.waveIndex + 1, total: view.waveCount })}</span>
+            </>
+          ) : hunting ? (
             <>
               <h1>{zone?.name}</h1>
               <span>
@@ -486,7 +507,11 @@ export function CombatPage() {
         <OutcomeModal
           outcome={outcome}
           onVillage={() => leave('/village')}
-          onTower={() => leave(outcome.mode === 'hunt' ? '/chasse' : '/tour')}
+          onTower={() =>
+            leave(
+              outcome.mode === 'hunt' ? '/chasse' : outcome.mode === 'abyss' ? '/abysse' : '/tour',
+            )
+          }
           onTeam={() => leave('/equipe')}
           next={next}
           replay={replay}

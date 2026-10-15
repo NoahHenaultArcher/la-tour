@@ -5,9 +5,13 @@
  *  3. pour chaque objet : une classe au hasard (les trois, même hors de l'équipe), une rareté tirée
  *     dans la table du biome (monstres, boss ou dragon), un slot au hasard, le matériau du palier de l'étage, amélioration +0.
  *  Si la rareté tirée est Unique : l'Unique du biome pour cette classe.
+ * Abysse : tables du dernier biome (palier adamantite), Mythique et Légendaire plus fréquents avec la
+ * profondeur, Uniques du biome d'origine du monstre (boss, dragon), butin garanti sur un alpha.
  */
 import { RARITY_IDS, SLOT_IDS, type ClassId, type RarityId } from '../constants.ts';
 import type { ElementsData, EquipmentData, LootData, MonstersData } from '../data/schemas.ts';
+import { ABYSS } from '../balance.ts';
+import { abyssHighRarityBoost } from './abyss.ts';
 import { tierForFloor } from './equipment.ts';
 import { chance, nextFloat, pick, type Rng } from './random.ts';
 import { byId } from './lookup.ts';
@@ -49,9 +53,11 @@ export function catalogItemFor(
   rarity: RarityId,
   floor: number,
   rng: Rng,
+  /** Étage dont le biome donne l'Unique (par défaut, celui de l'étage). */
+  uniqueFloor = floor,
 ): string {
   if (rarity === 'unique') {
-    const biome = biomeOfFloor(data, floor);
+    const biome = biomeOfFloor(data, uniqueFloor);
     const entry = data.loot.uniquesByBiome.find((u) => u.biome === biome.id);
     const unique = data.equipment.uniques.find(
       (u) => u.classId === classId && u.name === entry?.uniques[classId],
@@ -75,25 +81,46 @@ export function catalogItemFor(
 export function rollLoot(
   data: LootRulesData,
   rng: Rng,
-  killed: readonly { monsterId: string }[],
+  /** `alpha` : monstre alpha (vrai ou son trait), butin garanti. */
+  killed: readonly { monsterId: string; alpha?: boolean | string }[],
   floor: number,
   classes: readonly ClassId[],
+  /** Étage de l'Abysse (`floor` est alors ignoré pour le palier et les tables). */
+  options: { abyssFloor?: number } = {},
 ): LootDrop[] {
   if (classes.length === 0) return [];
-  const biome = biomeOfFloor(data, floor);
+  const { abyssFloor } = options;
+  const lootFloor = abyssFloor ? ABYSS.unlockFloor : floor;
+  const biome = biomeOfFloor(data, lootFloor);
   const drops: LootDrop[] = [];
-  for (const { monsterId } of killed) {
+  for (const { monsterId, alpha } of killed) {
     const monster = byId(data.monsters.monsters, monsterId);
     const rule = monster && data.loot.dropByRank.find((r) => r.rank === monster.rank);
-    if (!rule || !chance(rng, rule.dropChance)) continue;
+    if (!rule || !chance(rng, alpha ? 1 : rule.dropChance)) continue;
     const count = rule.itemsPerDrop + (chance(rng, rule.bonusItemChance) ? 1 : 0);
     const table = data.loot.rarityTables[rule.rarityTable].find((t) => t.biome === biome.id);
     if (!table) continue;
+    const weights = abyssFloor ? boostHighRarities(table.weights, abyssFloor) : table.weights;
+    // Abysse : l'Unique d'un boss ou d'un dragon vient de son biome d'origine.
+    const uniqueFloor = abyssFloor ? monster.zoneFloor : lootFloor;
     for (let i = 0; i < count; i++) {
       const classId = pick(rng, classes);
-      const rarity = weightedRarity(rng, table.weights);
-      drops.push({ classId, rarity, catalogId: catalogItemFor(data, classId, rarity, floor, rng) });
+      const rarity = weightedRarity(rng, weights);
+      drops.push({
+        classId,
+        rarity,
+        catalogId: catalogItemFor(data, classId, rarity, lootFloor, rng, uniqueFloor),
+      });
     }
   }
   return drops;
+}
+
+/** Abysse : chances de Mythique et Légendaire multipliées selon la profondeur. */
+function boostHighRarities(
+  weights: Record<RarityId, number>,
+  abyssFloor: number,
+): Record<RarityId, number> {
+  const boost = abyssHighRarityBoost(abyssFloor);
+  return { ...weights, mythic: weights.mythic * boost, legendary: weights.legendary * boost };
 }

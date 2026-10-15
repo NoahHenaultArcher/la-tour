@@ -1,4 +1,4 @@
-import { MAX_HERO_LEVEL, canInherit } from '@la-tour/shared';
+import { MAX_HERO_LEVEL, canInherit, isAbyssUnlocked } from '@la-tour/shared';
 import { Link, NavLink } from 'react-router';
 import { t } from '../i18n/index.ts';
 import { useRoom } from '../stores/room.ts';
@@ -25,6 +25,8 @@ export function TopBar() {
     s.save ? canInherit(s.save.characters, MAX_HERO_LEVEL) : false,
   );
   const inRoom = useRoom((s) => s.room !== null);
+  // L'Abysse apparaît dans le menu une fois la tour terminée.
+  const abyss = useSession((s) => (s.save ? isAbyssUnlocked(s.save.highestFloorCleared) : false));
   return (
     <header className="topbar">
       <Link to="/accueil" className="logo-small">
@@ -36,6 +38,11 @@ export function TopBar() {
         <NavLink to="/tour">{t('nav.tower')}</NavLink>
         <NavLink to="/village">{t('nav.village')}</NavLink>
         <NavLink to="/chasse">{t('nav.hunt')}</NavLink>
+        {abyss && (
+          <NavLink to="/abysse" className="nav-abyss">
+            {t('nav.abyss')}
+          </NavLink>
+        )}
         <NavLink to="/equipe">
           {t('nav.team')}
           {pointsToSpend && (

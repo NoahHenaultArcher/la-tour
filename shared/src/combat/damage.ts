@@ -3,13 +3,13 @@
  * K choisi pour que le monstre étalon du niveau de l'attaquant réduise de 20 % (Armure) et 15 % (Résistance).
  * Physique : Armure puis Résistance ; magique : Résistance seule. Pénétration : ignore une part de l'Armure.
  */
-import { COMBAT_RULES } from '../balance.ts';
+import { ALPHA, COMBAT_RULES } from '../balance.ts';
 import type { ElementId } from '../constants.ts';
 import { elementMultiplier } from '../rules/elements.ts';
 import { clamp, levelFactor } from '../rules/math.ts';
 import { chance, nextFloat, type Rng } from '../rules/random.ts';
 import { alterationDamageFactors, effectiveStat, isDodgeCancelled } from './alterations.ts';
-import { modifierSum } from './modifiers.ts';
+import { heal, modifierSum } from './modifiers.ts';
 import type { CombatData, CombatEvent, Combatant } from './types.ts';
 
 export interface AttackSpec {
@@ -188,7 +188,21 @@ export function attack(
     cause: 'attack',
   });
   if (defender.hp <= 0) events.push({ type: 'death', targetId: defender.id });
+  alphaReactions(attacker, defender, amount, events);
   return { amount, critical, missed: false };
+}
+
+/** Alphas de l'Abysse : « Épines » renvoie une part des coups reçus, « Vampirique » se soigne. */
+function alphaReactions(
+  attacker: Combatant,
+  defender: Combatant,
+  amount: number,
+  events: CombatEvent[],
+): void {
+  if (defender.alpha === 'thorns' && attacker.side === 'hero' && attacker.hp > 0)
+    directDamage(defender, attacker, amount * ALPHA.thorns, events);
+  if (attacker.alpha === 'vampiric' && attacker.hp > 0)
+    heal(attacker, attacker, amount * ALPHA.vampiric, events);
 }
 
 /**

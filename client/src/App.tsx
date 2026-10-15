@@ -19,6 +19,7 @@ const pageLoaders = {
   ChooseClassPage: () => import('./pages/ChooseClassPage.tsx'),
   TowerPage: () => import('./pages/TowerPage.tsx'),
   HuntPage: () => import('./pages/HuntPage.tsx'),
+  AbyssPage: () => import('./pages/AbyssPage.tsx'),
   TeamPage: () => import('./pages/TeamPage.tsx'),
   SkillsPage: () => import('./pages/SkillsPage.tsx'),
   MultiPage: () => import('./pages/MultiPage.tsx'),
@@ -32,6 +33,7 @@ const ChooseClassPage = lazy(() =>
 );
 const TowerPage = lazy(() => pageLoaders.TowerPage().then((m) => ({ default: m.TowerPage })));
 const HuntPage = lazy(() => pageLoaders.HuntPage().then((m) => ({ default: m.HuntPage })));
+const AbyssPage = lazy(() => pageLoaders.AbyssPage().then((m) => ({ default: m.AbyssPage })));
 const TeamPage = lazy(() => pageLoaders.TeamPage().then((m) => ({ default: m.TeamPage })));
 const SkillsPage = lazy(() => pageLoaders.SkillsPage().then((m) => ({ default: m.SkillsPage })));
 const MultiPage = lazy(() => pageLoaders.MultiPage().then((m) => ({ default: m.MultiPage })));
@@ -124,6 +126,10 @@ export function App() {
           />
           <Route path="/tour" element={playing ? <TowerPage /> : <Navigate to={home} replace />} />
           <Route path="/chasse" element={playing ? <HuntPage /> : <Navigate to={home} replace />} />
+          <Route
+            path="/abysse"
+            element={playing ? <AbyssPage /> : <Navigate to={home} replace />}
+          />
           <Route path="/equipe" element={playing ? <TeamPage /> : <Navigate to={home} replace />} />
           <Route
             path="/competences"

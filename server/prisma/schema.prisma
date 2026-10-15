@@ -84,6 +84,12 @@ model Save {
   /// Plus haut étage jamais terminé, conservé à l'héritage (déblocages définitifs).
   bestFloorEver       Int                 @default(0)
   heritageCount       Int                 @default(0)
+  /// Abysse (après l'étage 100) : prochain étage à jouer. Remis à 1 par l'héritage.
+  abyssFloor          Int                 @default(1)
+  /// Plus haut étage de l'Abysse terminé depuis le dernier héritage (0 = aucun).
+  abyssCleared        Int                 @default(0)
+  /// Record de l'Abysse, conservé à l'héritage (classement).
+  bestAbyssFloor      Int                 @default(0)
   /// Éléments débloqués pour les compétences (conservés à l'héritage).
   unlockedElements    String[]            @default([])
   /// Dernière collecte de la production idle (horloge du serveur).

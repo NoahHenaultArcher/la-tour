@@ -146,6 +146,78 @@ export function monsterHpForTeam(heroCount: number): number {
 }
 
 /**
+ * L'Abysse (décisions de l'utilisateur, 15/10/2026) : étages sans fin, ouverts après l'étage 100.
+ * Vagues comme la tour (3 × 3 monstres, boss tous les 5 étages), mais monstres de TOUTES les zones
+ * mélangés ; un étage non-boss a une chance d'être une tanière de dragon (élément au hasard).
+ * Les monstres ont le niveau 100 + étage (leurs stats suivent la courbe de niveau au-delà de 100)
+ * et un renfort qui grandit à chaque étage. Calibrage (scripts/abyss-sim.ts, trio niveau 100, mode auto,
+ * 10 essais par étage) : mur médian vers l'étage 15 en Légendaire sans héritage (5-10 en Épique), puis
+ * 30, 45 et 55 avec 1, 2 et 3 héritages. La courbe de niveau des monstres (au-delà de 100) fait
+ * l'essentiel de la montée : un renfort qui grandit vite rendait les héritages presque inutiles.
+ */
+export const ABYSS = {
+  /** Étage de la tour à terminer pour ouvrir l'Abysse. */
+  unlockFloor: 100,
+  /** Niveau des monstres : 100 + étage × ce nombre. */
+  levelsPerFloor: 1,
+  /** PV des monstres : × base × (1 + croissance) ^ (étage − 1). */
+  hpBase: 1.85,
+  hpGrowth: 0.005,
+  /** Attaque des monstres : × base × (1 + croissance) ^ (étage − 1). */
+  attackBase: 1.45,
+  attackGrowth: 0.005,
+  /** Chance qu'un étage non-boss soit une tanière de dragon (tirage fixe pour chaque étage). */
+  dragonChance: 0.1,
+  /**
+   * Dragons de l'Abysse : PV et attaque × ce facteur, en plus du renfort de l'étage. Sans lui, une
+   * tanière (2 actions, souffle, invocations, PV × 3 contre un trio) bloquait même avec 3 héritages.
+   */
+  dragonFactor: 0.5,
+  /**
+   * Boss de l'Abysse (tirés parmi tous les boss de la tour) : PV et attaque × ce facteur. Sans lui,
+   * chaque étage de boss était un mur alors que les étages normaux passaient à coup sûr.
+   */
+  bossFactor: 0.7,
+  /** Butin : chances de Mythique et Légendaire × (1 + croissance × étage), plafonnées. */
+  highRarityGrowth: 0.04,
+  highRarityMaxBoost: 4,
+} as const;
+
+/**
+ * Monstres alpha (Abysse uniquement, décision du 15/10/2026) : un monstre sur 20 environ est plus
+ * fort que la moyenne et porte un trait ; il rapporte plus et lâche toujours un objet.
+ */
+export const ALPHA = {
+  chance: 0.05,
+  hpMultiplier: 2,
+  attackMultiplier: 1.5,
+  rewardMultiplier: 3,
+  /** Enragé : dégâts infligés en plus sous la moitié de ses PV. */
+  enragedThreshold: 0.5,
+  enragedDamageBonus: 0.5,
+  /** Régénération : part des PV max rendue à chaque fin de manche. */
+  regeneration: 0.05,
+  /** Épines : part des dégâts reçus d'un héros renvoyée à l'attaquant. */
+  thorns: 0.15,
+  /** Vampirique : part des dégâts infligés rendue en PV. */
+  vampiric: 0.3,
+  /** Carapace : dégâts reçus réduits. */
+  carapace: 0.25,
+  /** Rapide : actions par manche. */
+  fastActions: 2,
+} as const;
+
+export const ALPHA_TRAIT_IDS = [
+  'enraged',
+  'regeneration',
+  'thorns',
+  'vampiric',
+  'carapace',
+  'fast',
+] as const;
+export type AlphaTraitId = (typeof ALPHA_TRAIT_IDS)[number];
+
+/**
  * Fabrication à l'Atelier (PROPOSITION à valider, absente des classeurs) : un objet Commun +0 coûte
  * en matériau l'équivalent de son prix en boutique (prix Commun du palier ÷ prix unitaire du matériau :
  * 14 bois pour une Épée en bois, plus d'unités quand le matériau est bon marché), × ce facteur.

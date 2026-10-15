@@ -48,6 +48,10 @@ export interface SaveDto {
   highestFloorCleared: number;
   bestFloorEver: number;
   heritageCount: number;
+  /** Abysse : prochain étage à jouer, étages terminés depuis l'héritage, record de toujours. */
+  abyssFloor: number;
+  abyssCleared: number;
+  bestAbyssFloor: number;
   unlockedElements: ElementId[];
   lastIdleCollectAt: string;
   characters: CharacterDto[];

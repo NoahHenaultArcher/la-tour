@@ -73,6 +73,7 @@ export const api = {
   combatPass: () => request<CombatResponse>('POST', '/api/combat/pass', {}),
   combatAuto: () => request<CombatResponse>('POST', '/api/combat/auto', {}),
   combatForfeit: () => request<CombatResponse>('POST', '/api/combat/forfeit', {}),
+  startAbyss: () => request<CombatResponse>('POST', '/api/combat/abyss', {}),
   startHunt: (zoneFloor: number) =>
     request<CombatResponse>('POST', '/api/combat/hunt', { zoneFloor }),
   combatRetreat: () => request<CombatResponse>('POST', '/api/combat/retreat', {}),

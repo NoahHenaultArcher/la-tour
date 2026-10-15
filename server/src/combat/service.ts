@@ -12,6 +12,7 @@ import {
   TOWER_FLOORS,
   addXp,
   canPlayFloor,
+  isAbyssUnlocked,
   combatRewards,
   createCombat,
   itemStats,
@@ -27,6 +28,7 @@ import {
   type CombatResponse,
   type CombatResult,
   type CombatState,
+  type CombatUnlocks,
   type ElementId,
   type HeroSetup,
   type Rng,
@@ -116,7 +118,7 @@ export async function applyFloorVictory(
     buildings: { buildingId: string }[];
   },
   floor: number,
-): Promise<CombatOutcome['unlocked']> {
+): Promise<CombatUnlocks> {
   const highest = Math.max(save.highestFloorCleared, floor);
   const elementsBefore = new Set(save.unlockedElements);
   const buildingsBefore = new Set(save.buildings.map((b) => b.buildingId));
@@ -135,12 +137,45 @@ export async function applyFloorVictory(
     huntingZones: gameData.zones.zones
       .filter((z) => z.hasHuntingZone && z.floor === floor && floor > save.highestFloorCleared)
       .map((z) => z.name),
+    ...(isAbyssUnlocked(highest) && !isAbyssUnlocked(save.highestFloorCleared)
+      ? { abyss: true }
+      : {}),
   };
+}
+
+/** Victoire sur l'étage courant de l'Abysse : étage suivant, et record si besoin. */
+export async function applyAbyssVictory(
+  tx: Tx,
+  saveId: string,
+  save: { abyssCleared: number; bestAbyssFloor: number },
+  floor: number,
+): Promise<void> {
+  await tx.save.update({
+    where: { id: saveId },
+    data: {
+      abyssFloor: floor + 1,
+      abyssCleared: Math.max(save.abyssCleared, floor),
+      bestAbyssFloor: Math.max(save.bestAbyssFloor, floor),
+    },
+  });
+}
+
+/** Un combat de l'Abysse valide-t-il l'étage de ce joueur ? (son étage courant, Abysse ouverte) */
+export function clearsAbyssFloor(
+  state: CombatState,
+  save: { abyssFloor: number; highestFloorCleared: number },
+): boolean {
+  return (
+    state.mode === 'abyss' &&
+    state.phase === 'victory' &&
+    isAbyssUnlocked(save.highestFloorCleared) &&
+    state.floor === save.abyssFloor
+  );
 }
 
 /**
  * Butin d'un tirage (sur les monstres vaincus) : objets de n'importe quelle classe,
- * ajoutés à l'inventaire.
+ * ajoutés à l'inventaire. Dans l'Abysse, `floor` est l'étage de l'Abysse.
  */
 export async function grantLoot(
   tx: Tx,
@@ -148,9 +183,11 @@ export async function grantLoot(
   rng: Rng,
   killed: CombatState['killed'],
   floor: number,
+  mode: CombatMode = 'tower',
 ): Promise<CombatOutcome['loot']> {
   const loot: CombatOutcome['loot'] = [];
-  for (const drop of rollLoot(gameData, rng, killed, floor, CLASS_IDS)) {
+  const options = mode === 'abyss' ? { abyssFloor: floor } : {};
+  for (const drop of rollLoot(gameData, rng, killed, floor, CLASS_IDS, options)) {
     const item = await tx.item.create({ data: { saveId, catalogId: drop.catalogId } });
     loot.push({ itemId: item.id, catalogId: drop.catalogId });
   }
@@ -168,7 +205,8 @@ export async function getCombat(prisma: PrismaClient, saveId: string): Promise<C
 
 /**
  * Lance un combat : un étage de la tour (l'étage courant, ou un boss/dragon déjà battu),
- * ou une zone de chasse débloquée (étage de boss déjà battu).
+ * une zone de chasse débloquée (étage de boss déjà battu), ou l'étage courant de l'Abysse
+ * (`floor` est alors ignoré : on joue toujours son propre étage).
  */
 export async function startCombat(
   prisma: PrismaClient,
@@ -186,6 +224,9 @@ export async function startCombat(
       include: { upgradeTower: true, buildings: { where: { buildingId: 'tour_alchimie' } } },
     });
     if (mode === 'tower' && !canPlayFloor(save, floor)) throw new HttpError(409, 'FLOOR_LOCKED');
+    if (mode === 'abyss' && !isAbyssUnlocked(save.highestFloorCleared))
+      throw new HttpError(409, 'ABYSS_LOCKED');
+    if (mode === 'abyss') floor = save.abyssFloor;
     if (
       mode === 'hunt' &&
       !unlockedHuntingZones(gameData.zones, save.highestFloorCleared).some((z) => z.floor === floor)
@@ -287,15 +328,18 @@ async function finishCombat(
   // Progression : seule la victoire sur l'étage courant fait monter (les boss rejoués ne comptent pas).
   const victory = state.phase === 'victory';
   const mode = state.mode ?? 'tower';
-  // La chasse ne fait jamais monter dans la tour.
-  const floorCleared = mode === 'tower' && victory && state.floor === save.currentFloor;
-  const unlocked: CombatOutcome['unlocked'] = floorCleared
+  // La chasse ne fait jamais monter dans la tour ; l'Abysse a sa propre progression.
+  const towerCleared = mode === 'tower' && victory && state.floor === save.currentFloor;
+  const abyssCleared = clearsAbyssFloor(state, save);
+  const floorCleared = towerCleared || abyssCleared;
+  const unlocked: CombatUnlocks = towerCleared
     ? await applyFloorVictory(tx, saveId, save, state.floor)
     : { elements: [], buildings: [], huntingZones: [] };
+  if (abyssCleared) await applyAbyssVictory(tx, saveId, save, state.floor);
 
   // Butin : un tirage pour l'équipe (solo), sur les monstres vaincus, même en cas de défaite.
   // Les objets peuvent être de n'importe quelle classe, même absente de l'équipe (à revendre ou garder).
-  const loot = await grantLoot(tx, saveId, state.rng, state.killed, state.floor);
+  const loot = await grantLoot(tx, saveId, state.rng, state.killed, state.floor, mode);
 
   return {
     result: state.phase === 'retreat' ? 'retreat' : victory ? 'victory' : 'defeat',

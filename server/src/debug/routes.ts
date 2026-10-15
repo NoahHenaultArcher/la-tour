@@ -13,6 +13,7 @@ import {
   debugGiveGoldSchema,
   debugGiveResourcesSchema,
   debugGiveXpSchema,
+  debugGoToAbyssSchema,
   debugGoToFloorSchema,
   debugSetLevelSchema,
   debugUnlockElementSchema,
@@ -126,6 +127,29 @@ export async function debugRoutes(
         highestFloorCleared: TOWER_FLOORS,
       }),
     );
+  });
+
+  // Abysse : ouvre la tour en entier si besoin, puis place le joueur à cet étage de l'Abysse.
+  action('abyss', debugGoToAbyssSchema, async ({ floor }, saveId) => {
+    await prisma.$transaction(async (tx) => {
+      const save = await tx.save.findUniqueOrThrow({
+        where: { id: saveId },
+        select: { highestFloorCleared: true, bestAbyssFloor: true },
+      });
+      if (save.highestFloorCleared < TOWER_FLOORS)
+        await applyTowerProgress(tx, saveId, {
+          currentFloor: TOWER_FLOORS,
+          highestFloorCleared: TOWER_FLOORS,
+        });
+      await tx.save.update({
+        where: { id: saveId },
+        data: {
+          abyssFloor: floor,
+          abyssCleared: floor - 1,
+          bestAbyssFloor: Math.max(save.bestAbyssFloor, floor - 1),
+        },
+      });
+    });
   });
 
   action('element', debugUnlockElementSchema, async ({ element }, saveId) => {

@@ -71,6 +71,9 @@ export async function loadSave(db: Db, userId: string): Promise<SaveDto> {
     highestFloorCleared: save.highestFloorCleared,
     bestFloorEver: save.bestFloorEver,
     heritageCount: save.heritageCount,
+    abyssFloor: save.abyssFloor,
+    abyssCleared: save.abyssCleared,
+    bestAbyssFloor: save.bestAbyssFloor,
     unlockedElements: save.unlockedElements as ElementId[],
     lastIdleCollectAt: save.lastIdleCollectAt.toISOString(),
     characters: save.characters.map((c) => ({
@@ -199,9 +202,16 @@ export async function performHeritage(prisma: PrismaClient, saveId: string): Pro
       });
     }
     // Le meilleur étage atteint (bestFloorEver) reste : les déblocages du village sont définitifs.
+    // L'Abysse repart de zéro (il faut refinir la tour) ; son record reste pour le classement.
     await tx.save.update({
       where: { id: saveId },
-      data: { heritageCount: { increment: 1 }, currentFloor: 1, highestFloorCleared: 0 },
+      data: {
+        heritageCount: { increment: 1 },
+        currentFloor: 1,
+        highestFloorCleared: 0,
+        abyssFloor: 1,
+        abyssCleared: 0,
+      },
     });
   });
 }

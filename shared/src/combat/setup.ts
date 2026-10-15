@@ -2,16 +2,27 @@
  * Préparation d'un combat : composition des vagues d'un étage et création des combattants.
  */
 import {
+  ALPHA,
+  ALPHA_TRAIT_IDS,
   EARLY_GAME,
   MONSTER_SCALING,
   earlyGameFactor,
   monsterHpForTeam,
   monsterDifficulty,
+  type AlphaTraitId,
 } from '../balance.ts';
 import type { ClassId, ElementId, StatBlock } from '../constants.ts';
+import {
+  abyssBosses,
+  abyssDifficulty,
+  abyssDragon,
+  abyssFloorType,
+  abyssMonsterLevel,
+  abyssRegulars,
+} from '../rules/abyss.ts';
 import { classAttackStat, heroStats } from '../rules/heroes.ts';
 import { monsterStats } from '../rules/monsters.ts';
-import { nextInt, pick, type Rng } from '../rules/random.ts';
+import { chance, nextInt, pick, type Rng } from '../rules/random.ts';
 import type { StatAllocation } from '../rules/statPoints.ts';
 import { floorType, zoneFloorOf } from '../rules/tower.ts';
 import { upgradeTowerBonus, type UpgradeTowerLevels } from '../rules/village.ts';
@@ -61,6 +72,45 @@ export function buildFloorWaves(data: CombatData, floor: number, rng: Rng): Mons
   const waves = Array.from({ length: params.bossWaves - 1 }, regularWave);
   waves.push([
     spawn(boss.id),
+    ...Array.from({ length: params.bossEscorts }, () => spawn(pick(rng, regulars).id)),
+  ]);
+  return waves;
+}
+
+/** Abysse : un monstre sur ALPHA.chance devient alpha, avec un trait au hasard. */
+function rollAlpha(rng: Rng): AlphaTraitId | undefined {
+  return chance(rng, ALPHA.chance) ? pick(rng, ALPHA_TRAIT_IDS) : undefined;
+}
+
+/**
+ * Vagues d'un étage de l'Abysse : comme la tour (3 vagues de 3 ; boss tous les 5 étages avec
+ * 4 vagues puis le boss + 2 escortes ; tanière = le dragon seul), mais les monstres viennent de
+ * toutes les zones, le boss est tiré parmi tous les boss, et certains monstres sont alpha.
+ */
+export function buildAbyssWaves(data: CombatData, floor: number, rng: Rng): MonsterSpawn[][] {
+  const params = data.monsters.params.floors;
+  const level = abyssMonsterLevel(floor);
+  const regulars = abyssRegulars(data.monsters);
+  const spawn = (monsterId: string, alpha = rollAlpha(rng)): MonsterSpawn => ({
+    monsterId,
+    level,
+    abyssFloor: floor,
+    ...(alpha ? { alpha } : {}),
+  });
+  const regularWave = () =>
+    Array.from({ length: params.monstersPerWave }, () => spawn(pick(rng, regulars).id));
+
+  const type = abyssFloorType(floor);
+  if (type === 'dragon') {
+    const dragon = abyssDragon(data.monsters, floor);
+    if (!dragon) throw new Error(`Pas de dragon pour l'étage ${floor} de l'Abysse`);
+    // Le dragon n'est jamais alpha : il est déjà le défi de l'étage.
+    return [[{ monsterId: dragon.id, level, abyssFloor: floor }]];
+  }
+  if (type === 'normal') return Array.from({ length: params.normalWaves }, regularWave);
+  const waves = Array.from({ length: params.bossWaves - 1 }, regularWave);
+  waves.push([
+    spawn(pick(rng, abyssBosses(data.monsters)).id),
     ...Array.from({ length: params.bossEscorts }, () => spawn(pick(rng, regulars).id)),
   ]);
   return waves;
@@ -196,22 +246,27 @@ export function createMonsterCombatant(
   const s = monsterStats(data.monsters, monster, spawn.level, element);
   // Début de partie adouci (balance.ts, EARLY_GAME) : PV et attaque réduits sur les premiers niveaux.
   // Difficulté exigeante (MONSTER_SCALING) : PV et attaque montent avec le niveau du monstre.
-  const hp = Math.max(
-    1,
-    Math.round(
-      s.hp *
-        earlyGameFactor(spawn.level, EARLY_GAME.hpFactorAtLevel1) *
-        monsterDifficulty(spawn.level, MONSTER_SCALING.hpAtLevel1, MONSTER_SCALING.hpAtLevel100) *
-        monsterHpForTeam(heroCount),
-    ),
-  );
+  // Abysse : renfort de l'étage, et alpha (PV, attaque et récompenses multipliés).
+  const baseHp =
+    s.hp *
+    earlyGameFactor(spawn.level, EARLY_GAME.hpFactorAtLevel1) *
+    monsterDifficulty(spawn.level, MONSTER_SCALING.hpAtLevel1, MONSTER_SCALING.hpAtLevel100) *
+    monsterHpForTeam(heroCount);
+  const abyss = spawn.abyssFloor
+    ? abyssDifficulty(spawn.abyssFloor, monster.rank)
+    : { hp: 1, attack: 1 };
+  const alpha = spawn.alpha ?? null;
+  const hp = Math.max(1, Math.round(baseHp * abyss.hp * (alpha ? ALPHA.hpMultiplier : 1)));
   const attack =
     earlyGameFactor(spawn.level, EARLY_GAME.attackFactorAtLevel1) *
     monsterDifficulty(
       spawn.level,
       MONSTER_SCALING.attackAtLevel1,
       MONSTER_SCALING.attackAtLevel100,
-    );
+    ) *
+    abyss.attack *
+    (alpha ? ALPHA.attackMultiplier : 1);
+  const rewardFactor = alpha ? ALPHA.rewardMultiplier : 1;
   return {
     id,
     side: 'monster',
@@ -256,9 +311,11 @@ export function createMonsterCombatant(
     passives: [],
     inflicts: monster.alterations,
     damageBonus: 0,
-    defenseBonus: 0,
+    // Carapace : dégâts reçus réduits pendant tout le combat.
+    defenseBonus: alpha === 'carapace' ? ALPHA.carapace : 0,
     isBoss: monster.rank === 'boss' || monster.rank === 'dragon',
+    alpha,
     dead: false,
-    reward: { xp: s.xp, gold: s.gold },
+    reward: { xp: s.xp * rewardFactor, gold: s.gold * rewardFactor },
   };
 }

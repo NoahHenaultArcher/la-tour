@@ -9,7 +9,8 @@
  * Les PV des héros sont conservés entre les vagues. Le serveur appelle ces fonctions ;
  * le client n'envoie que des intentions.
  */
-import { COMBAT_RULES, DRAGON_RULES } from '../balance.ts';
+import { ABYSS, ALPHA, COMBAT_RULES, DRAGON_RULES } from '../balance.ts';
+import { abyssFloorType, abyssRegulars } from '../rules/abyss.ts';
 import { createRng, pick, type Rng } from '../rules/random.ts';
 import { floorType, zoneFloorOf } from '../rules/tower.ts';
 import type { UpgradeTowerLevels } from '../rules/village.ts';
@@ -22,8 +23,9 @@ import {
 } from './alterations.ts';
 import { attack, type AttackSpec } from './damage.ts';
 import { SUPPORT_EFFECTS } from './effects.ts';
-import { addModifier, tickModifiers } from './modifiers.ts';
+import { addModifier, heal, tickModifiers } from './modifiers.ts';
 import {
+  buildAbyssWaves,
   buildFloorWaves,
   buildHuntWave,
   createHeroCombatant,
@@ -58,9 +60,9 @@ export class CombatError extends Error {
 }
 
 export interface CombatSetup {
-  /** Étage de la tour, ou étage de la zone pour une chasse. */
+  /** Étage de la tour, étage de la zone pour une chasse, ou étage de l'Abysse. */
   floor: number;
-  /** Tour (étage normal, boss, dragon) ou zone de chasse (vagues sans fin). Par défaut : tour. */
+  /** Tour (étage normal, boss, dragon), zone de chasse (vagues sans fin) ou Abysse. Par défaut : tour. */
   mode?: CombatMode;
   heroes: HeroSetup[];
   tower: UpgradeTowerLevels;
@@ -100,8 +102,19 @@ export function createCombat(data: CombatData, setup: CombatSetup): CombatResult
     version: 1,
     mode,
     floor: setup.floor,
-    floorType: mode === 'hunt' ? 'normal' : floorType(setup.floor),
-    zoneFloor: mode === 'hunt' ? setup.floor : zoneFloorOf(setup.floor),
+    floorType:
+      mode === 'hunt'
+        ? 'normal'
+        : mode === 'abyss'
+          ? abyssFloorType(setup.floor)
+          : floorType(setup.floor),
+    // L'Abysse prolonge le dernier biome (décor, élément par défaut).
+    zoneFloor:
+      mode === 'hunt'
+        ? setup.floor
+        : mode === 'abyss'
+          ? ABYSS.unlockFloor
+          : zoneFloorOf(setup.floor),
     actionsPerRound: setup.multiplayer
       ? data.skills.params.multiActionsPerRound
       : data.skills.params.soloActionsPerRound,
@@ -110,7 +123,9 @@ export function createCombat(data: CombatData, setup: CombatSetup): CombatResult
     waves:
       mode === 'hunt'
         ? [buildHuntWave(data, setup.floor, rng)]
-        : buildFloorWaves(data, setup.floor, rng),
+        : mode === 'abyss'
+          ? buildAbyssWaves(data, setup.floor, rng)
+          : buildFloorWaves(data, setup.floor, rng),
     waveIndex: 0,
     round: 0,
     phase: 'heroes',
@@ -483,7 +498,13 @@ function monsterPhase(ctx: Ctx): void {
   for (const monster of order) {
     if (!canAct(monster) || !state.heroes.some(alive)) continue;
     if (monster.role === 'dragon') dragonTurnStart(ctx, monster);
-    const actions = monster.role === 'dragon' ? DRAGON_RULES.actionsPerRound : 1;
+    if (monster.alpha === 'enraged') alphaRage(ctx, monster);
+    const actions =
+      monster.role === 'dragon'
+        ? DRAGON_RULES.actionsPerRound
+        : monster.alpha === 'fast'
+          ? ALPHA.fastActions
+          : 1;
     for (let action = 0; action < actions; action++) {
       if (!canAct(monster) || !state.heroes.some(alive)) break;
       monsterAct(ctx, monster, action);
@@ -491,6 +512,15 @@ function monsterPhase(ctx: Ctx): void {
     }
   }
   for (const m of state.monsters) m.stunnedThisPhase = false;
+}
+
+/** Alpha « Enragé » : sous la moitié de ses PV, ses dégâts augmentent jusqu'à la fin du combat. */
+function alphaRage(ctx: Ctx, monster: Combatant): void {
+  if (monster.counters.alphaRage || monster.hp / monster.stats.maxHp > ALPHA.enragedThreshold)
+    return;
+  monster.counters.alphaRage = 1;
+  monster.damageBonus += ALPHA.enragedDamageBonus;
+  ctx.events.push({ type: 'alphaRage', targetId: monster.id });
 }
 
 /**
@@ -513,11 +543,15 @@ function dragonTurnStart(ctx: Ctx, dragon: Combatant): void {
       events,
     );
   }
-  // Renforts : monstres de la zone qui entoure la tanière (étage 29 → zone de l'étage 30).
+  // Renforts : monstres de la zone qui entoure la tanière (étage 29 → zone de l'étage 30) ;
+  // dans l'Abysse, des monstres de toutes les zones, avec le renfort de l'étage.
+  const abyss = state.mode === 'abyss';
   const zoneFloor = 5 * Math.ceil(state.floor / 5);
-  const regulars = data.monsters.monsters.filter(
-    (m) => m.zoneFloor === zoneFloor && m.rank !== 'boss' && m.rank !== 'dragon',
-  );
+  const regulars = abyss
+    ? abyssRegulars(data.monsters)
+    : data.monsters.monsters.filter(
+        (m) => m.zoneFloor === zoneFloor && m.rank !== 'boss' && m.rank !== 'dragon',
+      );
   const thresholds = DRAGON_RULES.summonThresholds;
   while (
     regulars.length > 0 &&
@@ -528,7 +562,11 @@ function dragonTurnStart(ctx: Ctx, dragon: Combatant): void {
     const summoned = Array.from({ length: DRAGON_RULES.summonCount }, () =>
       createMonsterCombatant(
         data,
-        { monsterId: pick(state.rng, regulars).id, level: dragon.level },
+        {
+          monsterId: pick(state.rng, regulars).id,
+          level: dragon.level,
+          ...(abyss ? { abyssFloor: state.floor } : {}),
+        },
         `m${state.spawned++}`,
         state.heroes.length,
       ),
@@ -636,6 +674,11 @@ function chooseMonsterTarget(monster: Combatant, heroes: Combatant[], rng: Rng):
 function endRound(ctx: Ctx): void {
   const { state } = ctx;
   for (const hero of state.heroes) heroEndOfRound(ctx, hero);
+  // Alpha « Régénération » : se soigne à chaque fin de manche.
+  for (const m of state.monsters) {
+    if (m.alpha === 'regeneration' && alive(m))
+      heal(m, m, m.stats.maxHp * ALPHA.regeneration, ctx.events);
+  }
   for (const c of [...state.heroes, ...state.monsters]) {
     tickAlterations(c, ctx.events);
     tickModifiers(c, ctx.events);
@@ -664,6 +707,7 @@ function settle(ctx: Ctx, endRoundOnWaveClear = true): boolean {
           level: m.level,
           ...m.reward,
           sharedBy: state.heroes.length,
+          ...(m.alpha ? { alpha: true } : {}),
         });
     }
   }

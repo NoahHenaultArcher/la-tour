@@ -14,6 +14,7 @@ import type {
   VillageData,
   ZonesData,
 } from '../data/schemas.ts';
+import type { AlphaTraitId } from '../balance.ts';
 import type { Rng } from '../rules/random.ts';
 
 /** Données du jeu dont le moteur a besoin (passées explicitement : le moteur reste pur). */
@@ -164,6 +165,8 @@ export interface Combatant {
   damageBonus: number;
   defenseBonus: number;
   isBoss: boolean;
+  /** Monstre alpha de l'Abysse : son trait (null ou absent sinon). */
+  alpha?: AlphaTraitId | null;
   /** Mort déjà prise en compte (récompenses, événement). */
   dead: boolean;
   /** XP et or rapportés par un monstre vaincu. */
@@ -173,6 +176,10 @@ export interface Combatant {
 export interface MonsterSpawn {
   monsterId: string;
   level: number;
+  /** Abysse : étage dont le renfort s'applique (PV et attaque). */
+  abyssFloor?: number;
+  /** Abysse : monstre alpha et son trait. */
+  alpha?: AlphaTraitId;
 }
 
 export interface KilledMonster {
@@ -182,10 +189,12 @@ export interface KilledMonster {
   gold: number;
   /** Héros présents quand le monstre est tombé (partage de l'XP et de l'or en multijoueur). */
   sharedBy?: number;
+  /** Monstre alpha : butin garanti. */
+  alpha?: boolean;
 }
 
-/** Tour (étage) ou zone de chasse (vagues sans fin, sans boss). */
-export type CombatMode = 'tower' | 'hunt';
+/** Tour (étage), zone de chasse (vagues sans fin, sans boss) ou Abysse (étages sans fin après la tour). */
+export type CombatMode = 'tower' | 'hunt' | 'abyss';
 
 /** « retreat » : le joueur quitte une zone de chasse en gardant ses gains. */
 export type CombatPhase = 'heroes' | 'victory' | 'defeat' | 'retreat';
@@ -224,13 +233,15 @@ export type CombatEvent =
   | { type: 'enrage'; targetId: string }
   /** Dragon : appelle des monstres de sa zone en renfort. */
   | { type: 'summon'; sourceId: string; monsterIds: string[] }
+  /** Monstre alpha enragé (trait « Enragé ») sous la moitié de ses PV. */
+  | { type: 'alphaRage'; targetId: string }
   | { type: 'end'; outcome: 'victory' | 'defeat' | 'retreat' };
 
 export interface CombatState {
   version: 1;
   /** Absent dans les combats enregistrés avant les zones de chasse : « tower ». */
   mode?: CombatMode;
-  /** Étage de la tour, ou étage de la zone pour une chasse. */
+  /** Étage de la tour, étage de la zone pour une chasse, ou étage de l'Abysse. */
   floor: number;
   floorType: FloorTypeId;
   zoneFloor: number;

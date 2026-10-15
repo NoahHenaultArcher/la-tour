@@ -1,4 +1,4 @@
-import type { RoomContent, RoomContentOption } from '@la-tour/shared';
+import { abyssFloorType, type RoomContent, type RoomContentOption } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { useEffect, useRef, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
@@ -17,6 +17,11 @@ function contentLabel(content: RoomContent | RoomContentOption): string {
     const zone = gameData.zones.zones.find((z) => z.floor === content.floor);
     return t('room.content.hunt', { zone: zone?.name ?? String(content.floor) });
   }
+  if (content.mode === 'abyss')
+    return t('room.content.abyss', {
+      floor: content.floor,
+      type: t(`abyss.type.${abyssFloorType(content.floor)}`),
+    });
   if ('kind' in content && content.kind === 'current')
     return t('room.content.current', { floor: content.floor });
   const floor = gameData.floors.floors.find((f) => f.floor === content.floor);

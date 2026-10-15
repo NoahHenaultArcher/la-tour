@@ -28,6 +28,7 @@ export async function computeRanking(prisma: PrismaClient): Promise<RankedPlayer
       userId: true,
       highestFloorCleared: true,
       heritageCount: true,
+      bestAbyssFloor: true,
       user: { select: { username: true } },
       characters: { select: { class: true, level: true }, orderBy: { createdAt: 'asc' } },
       items: {
@@ -47,6 +48,7 @@ export async function computeRanking(prisma: PrismaClient): Promise<RankedPlayer
         return item ? [{ item, upgradeLevel: i.upgradeLevel }] : [];
       }),
       buildingLevels: save.buildings.map((b) => b.level),
+      bestAbyssFloor: save.bestAbyssFloor,
     });
     return {
       userId: save.userId,
@@ -54,13 +56,15 @@ export async function computeRanking(prisma: PrismaClient): Promise<RankedPlayer
       score: score.total,
       floorsCleared: save.highestFloorCleared,
       heritageCount: save.heritageCount,
+      bestAbyssFloor: save.bestAbyssFloor,
       heroes: save.characters.map((c) => ({ classId: c.class, level: c.level })),
     };
   });
-  // À égalité de score : la progression dans la tour, puis l'ordre alphabétique.
+  // À égalité de score : l'Abysse, la progression dans la tour, puis l'ordre alphabétique.
   players.sort(
     (a, b) =>
       b.score - a.score ||
+      b.bestAbyssFloor - a.bestAbyssFloor ||
       b.heritageCount * 100 + b.floorsCleared - (a.heritageCount * 100 + a.floorsCleared) ||
       a.username.localeCompare(b.username, 'fr'),
   );

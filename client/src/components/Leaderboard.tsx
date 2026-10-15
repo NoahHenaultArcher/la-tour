@@ -25,6 +25,7 @@ function Row({ entry }: { entry: LeaderboardEntryDto }) {
       </td>
       <td className="leaderboard-number">{entry.floorsCleared}</td>
       <td className="leaderboard-number">{entry.heritageCount}</td>
+      <td className="leaderboard-number">{entry.bestAbyssFloor || '—'}</td>
       <td className="leaderboard-number leaderboard-score">{formatNumber(entry.score)}</td>
     </tr>
   );
@@ -58,6 +59,7 @@ export function Leaderboard() {
                 <th>{t('leaderboard.heroes')}</th>
                 <th>{t('leaderboard.floors')}</th>
                 <th>{t('leaderboard.heritages')}</th>
+                <th>{t('leaderboard.abyss')}</th>
                 <th>{t('leaderboard.score')}</th>
               </tr>
             </thead>
@@ -83,6 +85,7 @@ export function Leaderboard() {
               level: w.perHeroLevel,
               power: w.perEquipmentPower,
               building: w.perBuildingLevel,
+              abyss: w.perAbyssFloor,
             })}
           </p>
         </>

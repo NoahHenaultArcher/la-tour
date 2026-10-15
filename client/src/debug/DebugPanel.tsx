@@ -66,6 +66,7 @@ export function DebugPanel() {
   const [xp, setXp] = useState(1000);
   const [level, setLevel] = useState(10);
   const [floor, setFloor] = useState(15);
+  const [abyssFloor, setAbyssFloor] = useState(10);
   const [element, setElement] = useState<ElementId>('fire');
   const [item, setItem] = useState({
     classId: 'warrior' as ClassId,
@@ -200,6 +201,18 @@ export function DebugPanel() {
             <button type="button" onClick={() => run('unlock-tower')}>
               {t('debug.unlockTower')}
             </button>
+          </Action>
+
+          <Action title={t('debug.abyss')} onSubmit={() => run('abyss', { floor: abyssFloor })}>
+            <input
+              type="number"
+              min={1}
+              max={10_000}
+              value={abyssFloor}
+              onChange={(e) => setAbyssFloor(Number(e.target.value))}
+              aria-label={t('debug.floor')}
+            />
+            <button type="submit">{t('debug.goToAbyss')}</button>
           </Action>
 
           <Action title={t('debug.element')} onSubmit={() => run('element', { element })}>

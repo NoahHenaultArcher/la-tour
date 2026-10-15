@@ -93,6 +93,8 @@ interface CombatStore {
   playAuto: () => Promise<void>;
   forfeit: () => Promise<void>;
   startHunt: (zoneFloor: number) => Promise<void>;
+  /** Abysse : toujours l'étage courant du joueur (le serveur le choisit). */
+  startAbyss: () => Promise<void>;
   /** Quitte une zone de chasse (gains conservés). */
   retreat: () => Promise<void>;
   winWave: () => Promise<void>;
@@ -281,6 +283,11 @@ export const useCombat = create<CombatStore>((set, get) => {
       applyPreferences();
       return call(() => api.startHunt(zoneFloor), true);
     },
+    startAbyss: () => {
+      if (multi()) get().clearOutcome();
+      applyPreferences();
+      return call(api.startAbyss, true);
+    },
     retreat: () => {
       if (multi()) return multiCall(useRoom.getState().withdraw);
       // L'auto s'arrête pendant la retraite ; le choix du joueur reste retenu pour la prochaine chasse.
@@ -393,6 +400,15 @@ export const useCombat = create<CombatStore>((set, get) => {
               id: floaterId++,
               targetId: event.targetId,
               text: t('combat.fury'),
+              kind: 'critical',
+            });
+            playSound('roar');
+            break;
+          case 'alphaRage':
+            floaters.push({
+              id: floaterId++,
+              targetId: event.targetId,
+              text: t('combat.alphaRage'),
               kind: 'critical',
             });
             playSound('roar');

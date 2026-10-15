@@ -1,7 +1,7 @@
-import { canPlayFloor } from '@la-tour/shared';
+import { canPlayFloor, isAbyssUnlocked } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { FloorTooltip } from '../components/FloorTooltip.tsx';
 import { Tooltip } from '../components/Tooltip.tsx';
 import { TopBar } from '../components/TopBar.tsx';
@@ -47,6 +47,11 @@ export function TowerPage() {
           <p className="muted">
             {t('tower.progress', { floor: save.currentFloor, cleared: save.highestFloorCleared })}
           </p>
+          {isAbyssUnlocked(save.highestFloorCleared) && (
+            <Link to="/abysse" className="button primary">
+              {t('abyss.enter', { floor: save.abyssFloor })}
+            </Link>
+          )}
           {inProgress && inProgress.phase === 'heroes' && (
             <button type="button" className="primary" onClick={() => navigate('/combat')}>
               {inProgress.mode === 'hunt'

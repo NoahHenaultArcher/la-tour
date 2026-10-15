@@ -23,6 +23,7 @@ export * from './rules/workshop.ts';
 export * from './rules/statPoints.ts';
 export * from './rules/shop.ts';
 export * from './rules/leaderboard.ts';
+export * from './rules/abyss.ts';
 export * from './balance.ts';
 export * from './combat/index.ts';
 export * from './api/common.ts';

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { normalizeCombatState } from '../combat/engine.ts';
-import type { CombatEvent, CombatState } from '../combat/types.ts';
+import type { CombatEvent, CombatMode, CombatState } from '../combat/types.ts';
 import type { ElementId } from '../constants.ts';
 import type { SaveDto } from './save.ts';
 
@@ -31,18 +31,27 @@ export const startHuntBodySchema = z.strictObject({
 });
 export type StartHuntBody = z.infer<typeof startHuntBodySchema>;
 
+/** Ce qu'une victoire vient de débloquer. */
+export interface CombatUnlocks {
+  elements: ElementId[];
+  buildings: string[];
+  huntingZones: string[];
+  /** L'étage 100 vient d'être terminé : l'Abysse s'ouvre. */
+  abyss?: boolean;
+}
+
 export interface CombatOutcome {
   /** « retreat » : le joueur a quitté une zone de chasse (gains conservés). */
   result: 'victory' | 'defeat' | 'retreat';
-  mode: 'tower' | 'hunt';
+  mode: CombatMode;
   floor: number;
   gold: number;
   /** XP gagnée par personnage. */
   xp: Record<string, number>;
   levelUps: { characterId: string; from: number; to: number }[];
-  /** Vrai si l'étage courant a été validé (progression). */
+  /** Vrai si l'étage courant (de la tour ou de l'Abysse) a été validé (progression). */
   floorCleared: boolean;
-  unlocked: { elements: ElementId[]; buildings: string[]; huntingZones: string[] };
+  unlocked: CombatUnlocks;
   /** Objets obtenus (ajoutés à l'inventaire). */
   loot: { itemId: string; catalogId: string }[];
   save: SaveDto;

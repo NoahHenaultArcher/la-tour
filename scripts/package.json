@@ -8,7 +8,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "balance-report": "tsx balance-report.ts",
-    "progression-sim": "tsx progression-sim.ts"
+    "progression-sim": "tsx progression-sim.ts",
+    "abyss-sim": "tsx abyss-sim.ts"
   },
   "dependencies": {
     "@la-tour/shared": "workspace:*",

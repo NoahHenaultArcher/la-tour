@@ -1,4 +1,4 @@
-import { STAT_POINTS, sellPrice, type CombatOutcome } from '@la-tour/shared';
+import { STAT_POINTS, sellPrice, type CombatMode, type CombatOutcome } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { useEffect, useState, type CSSProperties } from 'react';
 import { catalogItem, equippedIn, rarityInfo } from '../../game/items.ts';
@@ -153,6 +153,15 @@ export function LootRow({
 }
 
 /** Fin de combat : victoire, défaite ou fin de chasse ; or, XP, montées de niveau et déblocages. */
+/** Conseil après une défaite, selon le contenu joué. */
+export function defeatAdvice(mode: CombatMode) {
+  return mode === 'hunt'
+    ? 'outcome.huntDefeat'
+    : mode === 'abyss'
+      ? 'outcome.abyssDefeat'
+      : 'outcome.defeatAdvice';
+}
+
 export function OutcomeModal({ outcome, onVillage, onTower, onTeam, next, replay }: Props) {
   const characters = useSession((s) => s.save?.characters ?? []);
   const classOf = (id: string) => characters.find((c) => c.id === id)?.classId;
@@ -174,17 +183,15 @@ export function OutcomeModal({ outcome, onVillage, onTower, onTeam, next, replay
     >
       {outcome.result === 'victory' && (
         <p>
-          {outcome.floorCleared
-            ? t('outcome.floorCleared', { floor: outcome.floor })
-            : t('outcome.replayed', { floor: outcome.floor })}
+          {outcome.mode === 'abyss'
+            ? t('outcome.abyssCleared', { floor: outcome.floor })
+            : outcome.floorCleared
+              ? t('outcome.floorCleared', { floor: outcome.floor })
+              : t('outcome.replayed', { floor: outcome.floor })}
         </p>
       )}
       {outcome.result === 'retreat' && <p>{t('outcome.huntEnded', { zone: zoneName })}</p>}
-      {outcome.result === 'defeat' && (
-        <p className="warning">
-          {t(outcome.mode === 'hunt' ? 'outcome.huntDefeat' : 'outcome.defeatAdvice')}
-        </p>
-      )}
+      {outcome.result === 'defeat' && <p className="warning">{t(defeatAdvice(outcome.mode))}</p>}
       <ul className="outcome-rewards">
         <li>
           <span className="gold-icon" aria-hidden="true" />
@@ -226,7 +233,10 @@ export function OutcomeModal({ outcome, onVillage, onTower, onTeam, next, replay
           </ul>
         </section>
       )}
-      {(elements.length > 0 || buildings.length > 0 || huntingZones.length > 0) && (
+      {(elements.length > 0 ||
+        buildings.length > 0 ||
+        huntingZones.length > 0 ||
+        outcome.unlocked.abyss) && (
         <section>
           <h3>{t('outcome.unlocked')}</h3>
           <ul className="outcome-unlocks">
@@ -247,6 +257,9 @@ export function OutcomeModal({ outcome, onVillage, onTower, onTeam, next, replay
             {huntingZones.map((name) => (
               <li key={name}>{t('outcome.unlockedZone', { name })}</li>
             ))}
+            {outcome.unlocked.abyss && (
+              <li className="abyss-unlock">{t('outcome.unlockedAbyss')}</li>
+            )}
           </ul>
         </section>
       )}
@@ -256,7 +269,13 @@ export function OutcomeModal({ outcome, onVillage, onTower, onTeam, next, replay
           {t('outcome.toVillage')}
         </button>
         <button type="button" onClick={onTower}>
-          {t(outcome.mode === 'hunt' ? 'outcome.toHunt' : 'outcome.toTower')}
+          {t(
+            outcome.mode === 'hunt'
+              ? 'outcome.toHunt'
+              : outcome.mode === 'abyss'
+                ? 'outcome.toAbyss'
+                : 'outcome.toTower',
+          )}
         </button>
         <button type="button" onClick={onTeam}>
           {t('outcome.toTeam')}

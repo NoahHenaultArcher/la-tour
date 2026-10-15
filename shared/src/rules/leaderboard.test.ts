@@ -21,6 +21,7 @@ describe('classement', () => {
       heroLevels: [15, 10],
       equipped: [{ item, upgradeLevel: 3 }],
       buildingLevels: [2, 1, 1],
+      bestAbyssFloor: 4,
     });
     expect(score).toEqual({
       floors: 600,
@@ -28,7 +29,8 @@ describe('classement', () => {
       heroes: 250,
       equipment: Math.round(power * 10),
       buildings: 80,
-      total: 600 + 8000 + 250 + Math.round(power * 10) + 80,
+      abyss: 600,
+      total: 600 + 8000 + 250 + Math.round(power * 10) + 80 + 600,
     });
     expect(leaderboardScore(gameData.equipment, empty).total).toBe(0);
   });

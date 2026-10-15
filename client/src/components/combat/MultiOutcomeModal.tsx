@@ -8,7 +8,7 @@ import { ItemIcon } from '../items/ItemIcon.tsx';
 import { ItemName } from '../items/ItemTooltip.tsx';
 import { Modal } from '../Modal.tsx';
 import { Tooltip } from '../Tooltip.tsx';
-import { LootRow } from './OutcomeModal.tsx';
+import { LootRow, defeatAdvice } from './OutcomeModal.tsx';
 
 interface Props {
   outcome: MultiOutcome;
@@ -43,11 +43,7 @@ export function MultiOutcomeModal({ outcome, onRoom, onVillage }: Props) {
     >
       {outcome.result === 'victory' && <p>{t('outcome.multiVictory', { floor: outcome.floor })}</p>}
       {outcome.result === 'retreat' && <p>{t('outcome.huntEnded', { zone: zoneName })}</p>}
-      {outcome.result === 'defeat' && (
-        <p className="warning">
-          {t(outcome.mode === 'hunt' ? 'outcome.huntDefeat' : 'outcome.defeatAdvice')}
-        </p>
-      )}
+      {outcome.result === 'defeat' && <p className="warning">{t(defeatAdvice(outcome.mode))}</p>}
 
       <section>
         <h3>{t('outcome.whoGotWhat')}</h3>
