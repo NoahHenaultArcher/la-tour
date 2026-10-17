@@ -248,8 +248,8 @@ export function CombatPage() {
     if (hero.id !== selectedHeroId) combat.selectHero(hero.id);
     combat.selectSkill(skillId);
     const skill = byId(gameData.skills.catalog, skillId);
-    // Une attaque de zone ou une compétence sur soi n'a pas besoin de cible.
-    if (skill?.target === 'area' || skill?.target === 'self') void useCombat.getState().act();
+    // Une attaque de zone ou une compétence sur soi ou sur l'équipe n'a pas besoin de cible.
+    if (skill && skill.target !== 'single') void useCombat.getState().act();
   };
 
   return (

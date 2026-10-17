@@ -45,10 +45,27 @@ export interface ActionCtx {
 
 const alive = (c: Combatant) => c.hp > 0;
 
-/** Soin d'un héros par lui-même : Bonus de soins et soins reçus compris. */
-function selfHealAmount(hero: Combatant, passives: readonly PassiveEffect[], share: number) {
-  const received = passiveSum(passives, (p) => p.healReceived);
-  return hero.stats.maxHp * share * (1 + hero.stats.healingBonus) * (1 + received);
+/**
+ * Soin d'un héros (`target`) par un héros (`healer`, lui-même ou un allié) : part des PV max du
+ * soigné, Bonus de soins du soigneur et soins reçus (passifs) du soigné compris.
+ */
+function healAmount(
+  healer: Combatant,
+  target: Combatant,
+  targetPassives: readonly PassiveEffect[],
+  share: number,
+) {
+  const received = passiveSum(targetPassives, (p) => p.healReceived);
+  return target.stats.maxHp * share * (1 + healer.stats.healingBonus) * (1 + received);
+}
+
+/** Héros touchés par une compétence de soutien : toute l'équipe vivante, ou le lanceur seul. */
+export function supportRecipients(
+  state: CombatState,
+  hero: Combatant,
+  skill: Pick<CatalogSkill, 'target'>,
+): Combatant[] {
+  return skill.target === 'team' ? state.heroes.filter(alive) : [hero];
 }
 
 /** Autre ennemi vivant au hasard (rebonds, propagations). */
@@ -118,14 +135,21 @@ function useSupport(
   const support = SUPPORT_EFFECTS[skill.baseId] ?? { duration: COMBAT_RULES.defaultEffectRounds };
   const element = ELEMENT_SUPPORT_EFFECTS[skill.element];
   const boost = 1 + (element.healShieldBoost ?? 0);
-
-  if (support.cleanse) cleanse(hero, hero.alterations.length, events);
   const healShare = (support.heal ?? 0) * boost + (element.extraHeal ?? 0);
-  if (healShare > 0) heal(hero, hero, selfHealAmount(hero, passives, healShare), events);
+
+  // Soin, bouclier, purification et bonus : le lanceur, ou chaque héros vivant (compétence d'équipe).
+  for (const ally of supportRecipients(ctx.state, hero, skill)) {
+    if (support.cleanse) cleanse(ally, ally.alterations.length, events);
+    if (healShare > 0) {
+      const allyPassives = ally === hero ? passives : passiveEffectsOf(ctx.data, ally.passives);
+      heal(hero, ally, healAmount(hero, ally, allyPassives, healShare), events);
+    }
+    if (support.shield)
+      addShield(ally, ally.stats.maxHp * support.shield * boost, support.duration, events);
+    if (support.buff) addModifier(hero, ally, skill.baseId, skill.id, 'buff', support.buff, events);
+  }
+  // Effet de l'élément (onglet Éléments, « effet soutien ») : sur le lanceur seulement.
   if (element.removeBurn) removeAlteration(hero, 'brulure', events);
-  if (support.shield)
-    addShield(hero, hero.stats.maxHp * support.shield * boost, support.duration, events);
-  if (support.buff) addModifier(hero, hero, skill.baseId, skill.id, 'buff', support.buff, events);
   if (element.modifier) {
     addModifier(
       hero,
@@ -417,9 +441,9 @@ export function performAttack(
   }
 
   // Effets sur le lanceur.
-  if (effect.selfHeal) heal(hero, hero, selfHealAmount(hero, passives, effect.selfHeal), events);
+  if (effect.selfHeal) heal(hero, hero, healAmount(hero, hero, passives, effect.selfHeal), events);
   if (effect.special === 'crepuscule' && !oddRound)
-    heal(hero, hero, selfHealAmount(hero, passives, 0.05), events);
+    heal(hero, hero, healAmount(hero, hero, passives, 0.05), events);
   if (effect.selfShield)
     addShield(hero, hero.stats.maxHp * effect.selfShield, COMBAT_RULES.defaultEffectRounds, events);
   if (effect.cleanseSelf) cleanse(hero, effect.cleanseSelf, events);

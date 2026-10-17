@@ -15,7 +15,13 @@ import { RELIC_RULES, relicBonus } from '../rules/relics.ts';
 import { chance, createRng, pick, type Rng } from '../rules/random.ts';
 import { floorType, zoneFloorOf } from '../rules/tower.ts';
 import type { UpgradeTowerLevels } from '../rules/village.ts';
-import { afterHeroHit, beforeMonsterAttack, heroEndOfRound, useHeroSkill } from './actions.ts';
+import {
+  afterHeroHit,
+  beforeMonsterAttack,
+  heroEndOfRound,
+  supportRecipients,
+  useHeroSkill,
+} from './actions.ts';
 import {
   ALTERATION_RULES,
   resolveTurnStart,
@@ -302,8 +308,9 @@ export function winCurrentWave(data: CombatData, current: CombatState): CombatRe
 
 /**
  * Choix de l'IA, pour un héros capable d'agir (à tour de rôle) :
- *  1. se soigner sous 45 % de PV, se protéger sous 70 % ;
- *  2. poser un bonus ou un malus pas encore actif ;
+ *  1. soigner un héros sous 45 % de PV, protéger un héros sous 70 % (le lanceur, ou un allié si la
+ *     compétence touche toute l'équipe) ;
+ *  2. poser un bonus (qui manque à au moins un héros concerné) ou un malus pas encore actif ;
  *  3. sinon, l'attaque prête la plus forte (une attaque de zone compte pour chaque cible),
  *     sur le monstre le plus affaibli.
  */
@@ -330,21 +337,26 @@ export function chooseHeroAction(
   const ready = hero.skills
     .filter((s) => s.remaining === 0 && (!options.noCooldownOnly || s.cooldown === 0))
     .map((slot) => ({ slot, skill: skillById(data, slot.skillId) }));
-  const hpShare = hero.hp / hero.stats.maxHp;
+  const hpShare = (c: Combatant) => c.hp / c.stats.maxHp;
 
-  const support = (kinds: string[]) =>
+  // Soutien prêt de ce type dont au moins un des héros touchés remplit la condition.
+  const support = (kind: string, needs: (c: Combatant) => boolean) =>
     ready.find(
       ({ skill }) =>
-        skill.family === 'support' && kinds.includes(skill.kind) && !dealsDamage(skill),
+        skill.family === 'support' &&
+        skill.kind === kind &&
+        !dealsDamage(skill) &&
+        supportRecipients(state, hero, skill).some(needs),
     );
-  const heal = hpShare < 0.45 ? support(['heal']) : undefined;
+  const heal = support('heal', (c) => hpShare(c) < 0.45);
   if (heal) return { heroId: hero.id, skillId: heal.slot.skillId };
-  const shield = hpShare < 0.7 && hero.shield === 0 ? support(['shield']) : undefined;
+  const shield = support('shield', (c) => hpShare(c) < 0.7 && c.shield === 0);
   if (shield) return { heroId: hero.id, skillId: shield.slot.skillId };
   for (const { slot, skill } of ready) {
     if (skill.family !== 'support' || dealsDamage(skill)) continue;
     const effect = SUPPORT_EFFECTS[skill.baseId];
-    if (effect?.buff && !hero.modifiers.some((m) => m.key === skill.baseId))
+    const missingBuff = (c: Combatant) => !c.modifiers.some((m) => m.key === skill.baseId);
+    if (effect?.buff && supportRecipients(state, hero, skill).some(missingBuff))
       return { heroId: hero.id, skillId: slot.skillId };
     if (effect?.targetModifier && !strongest.modifiers.some((m) => m.key === skill.baseId))
       return { heroId: hero.id, skillId: slot.skillId, targetId: strongest.id };
@@ -481,9 +493,11 @@ function heroAction(ctx: Ctx, input: HeroActionInput): void {
   const targetIds =
     skill.target === 'area'
       ? living.map((t) => t.id)
-      : skill.target === 'self'
-        ? [hero.id]
-        : [chosen!.id];
+      : skill.target === 'team'
+        ? state.heroes.filter(alive).map((h) => h.id)
+        : skill.target === 'self'
+          ? [hero.id]
+          : [chosen!.id];
 
   events.push({ type: 'action', actorId: hero.id, skillId: slot.skillId, targetIds });
   slot.remaining = slot.cooldown;

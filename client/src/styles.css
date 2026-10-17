@@ -771,11 +771,19 @@ button.primary {
   padding-left: 6px;
 }
 
-/* Boutons compacts : − + Max tiennent dans la colonne du personnage. */
+/* Champ de saisie et bouton Max compacts : ils tiennent dans la colonne du personnage. */
 .alloc-buttons button {
   padding: 0 6px;
   font-size: 0.85rem;
   line-height: 1.5;
+}
+
+.alloc-buttons .alloc-input {
+  width: 4.5em;
+  padding: 0 4px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  text-align: right;
 }
 
 .points-actions {

@@ -206,7 +206,12 @@ export const SKILL_KINDS: LabelMap<SkillKindId> = {
   Passif: 'passive',
 };
 
-export const SKILL_TARGETS: LabelMap<SkillTargetId> = { Mono: 'single', Zone: 'area', Soi: 'self' };
+export const SKILL_TARGETS: LabelMap<SkillTargetId> = {
+  Mono: 'single',
+  Zone: 'area',
+  Soi: 'self',
+  Équipe: 'team',
+};
 
 export const ATTACK_STATS: LabelMap<AttackStatId> = { Force: 'strength', Magie: 'magic' };
 

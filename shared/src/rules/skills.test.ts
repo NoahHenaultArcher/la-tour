@@ -19,6 +19,30 @@ describe('recharges (onglet Bases, colonnes H et P)', () => {
       if (base.ultimate && base.requiredLevel > 1) expect(base.cooldown, base.id).toBe(3);
     }
   });
+
+  it('chaque classe a autant de recharges 1 que de recharges 2 (hors kit de départ et ultimes)', () => {
+    for (const classId of CLASS_IDS) {
+      const actives = skills.bases.filter(
+        (b) => b.classId === classId && b.family !== 'passive' && b.cooldown! > 0 && !b.ultimate,
+      );
+      const count = (cooldown: number) => actives.filter((b) => b.cooldown === cooldown).length;
+      expect(count(1), classId).toBe(count(2));
+    }
+  });
+
+  it('chaque classe a des soutiens qui touchent toute l’équipe, dont au moins un soin ou bouclier', () => {
+    for (const classId of CLASS_IDS) {
+      const team = skills.bases.filter((b) => b.classId === classId && b.target === 'team');
+      expect(
+        team.some((b) => b.kind === 'buff' || b.kind === 'heal'),
+        classId,
+      ).toBe(true);
+      expect(
+        team.some((b) => b.kind === 'heal' || b.kind === 'shield'),
+        classId,
+      ).toBe(true);
+    }
+  });
 });
 
 describe('catalogue des compétences (484 variantes)', () => {

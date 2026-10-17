@@ -10,11 +10,12 @@ type Skill = (typeof gameData.skills.catalog)[number];
 
 const TARGETS: Record<
   Skill['target'],
-  'skill.target.single' | 'skill.target.area' | 'skill.target.self'
+  'skill.target.single' | 'skill.target.area' | 'skill.target.self' | 'skill.target.team'
 > = {
   single: 'skill.target.single',
   area: 'skill.target.area',
   self: 'skill.target.self',
+  team: 'skill.target.team',
 };
 
 /**

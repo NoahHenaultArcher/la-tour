@@ -250,8 +250,7 @@
 
   "team.points.available": "Points à répartir : {points}",
   "team.points.rule": "{perLevel} points par niveau · 1 point = +{vitality} Vitalité (PV ×10) ou +1 dans une autre stat",
-  "team.points.add": "Ajouter un point en {stat}",
-  "team.points.remove": "Retirer un point de {stat}",
+  "team.points.input": "Points à ajouter en {stat}",
   "team.points.max": "Mettre tous les points restants en {stat}",
   "team.points.maxShort": "Max",
   "team.points.confirm": "Valider",
@@ -494,6 +493,7 @@
   "skill.target.single": "Cible : un ennemi",
   "skill.target.area": "Cible : toute la vague",
   "skill.target.self": "Cible : soi-même",
+  "skill.target.team": "Cible : toute l'équipe",
   "skill.power": "Puissance : ×{power}",
   "skill.noCooldown": "Sans recharge",
   "skill.cooldown": "Recharge : {rounds} manche(s)",

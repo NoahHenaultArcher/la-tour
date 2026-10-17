@@ -3,7 +3,13 @@ import type { ClassId, ElementId } from '../constants.ts';
 import { gameData } from '../data/index.ts';
 import { applyAlteration } from './alterations.ts';
 import { attack } from './damage.ts';
-import { createCombat, endHeroTurn, normalizeCombatState, performHeroAction } from './engine.ts';
+import {
+  chooseHeroAction,
+  createCombat,
+  endHeroTurn,
+  normalizeCombatState,
+  performHeroAction,
+} from './engine.ts';
 import type { HeroSetup } from './setup.ts';
 import type { CombatEvent, CombatState } from './types.ts';
 
@@ -29,45 +35,105 @@ const act = (state: CombatState, skillId: string, targetId?: string) =>
   performHeroAction(data, state, { heroId: 'h0', skillId, targetId });
 const firstMonster = (state: CombatState) => state.monsters.find((m) => m.hp > 0)!;
 
+/** Attaque de départ de chaque classe (deck des héros du combat à trois). */
+const BASIC_ATTACK: Record<ClassId, string> = {
+  warrior: 'GUE-A01-NEU',
+  mage: 'MAG-A01-NEU',
+  ranger: 'TIR-A01-NEU',
+};
+
+/**
+ * Combat à trois héros (le lanceur en h0, puis les deux autres classes) ; le lanceur porte la
+ * compétence testée. `halfHp` : tous les héros commencent à la moitié de leurs PV.
+ */
+function startTeam(
+  skillId: string,
+  options: { caster?: ClassId; halfHp?: boolean } = {},
+): CombatState {
+  const caster = options.caster ?? 'mage';
+  const classes: ClassId[] = [
+    caster,
+    ...(['warrior', 'mage', 'ranger'] as const).filter((c) => c !== caster),
+  ];
+  const state = createCombat(data, {
+    floor: 1,
+    heroes: classes.map((classId, i) =>
+      hero(classId, 60, [
+        { position: 0, skillId: BASIC_ATTACK[classId] },
+        ...(i === 0 ? [{ position: 1, skillId }] : []),
+      ]),
+    ),
+    tower: {},
+    seed: 7,
+  }).state;
+  if (options.halfHp) for (const h of state.heroes) h.hp = Math.round(h.stats.maxHp / 2);
+  return state;
+}
+
+const actTeam = (state: CombatState, skillId: string) =>
+  performHeroAction(data, state, { heroId: 'h0', skillId });
+
 describe('soutiens', () => {
-  it('Soin : rend 18 % des PV max (Bonus de soins compris), sans cible', () => {
-    let state = start('mage', [
-      { position: 0, skillId: 'MAG-A01-NEU' },
-      { position: 1, skillId: 'MAG-S02-NEU' },
-    ]);
-    const mage = state.heroes[0]!;
-    mage.hp = Math.round(mage.stats.maxHp / 2);
-    const result = act(state, 'MAG-S02-NEU');
-    state = result.state;
-    const heal = result.events.find((e) => e.type === 'heal' && e.targetId === 'h0');
-    expect(heal).toMatchObject({
-      amount: Math.round(mage.stats.maxHp * 0.18 * (1 + mage.stats.healingBonus)),
-    });
+  it('Soin : soigne toute l’équipe de 15 % de ses PV max (Bonus de soins du mage), sans cible', () => {
+    const result = actTeam(startTeam('MAG-S02-NEU', { halfHp: true }), 'MAG-S02-NEU');
+    const mage = result.state.heroes[0]!;
+    expect(result.events).toContainEqual(
+      expect.objectContaining({ type: 'action', targetIds: ['h0', 'h1', 'h2'] }),
+    );
+    for (const ally of result.state.heroes) {
+      const heal = result.events.find((e) => e.type === 'heal' && e.targetId === ally.id);
+      expect(heal).toMatchObject({
+        sourceId: 'h0',
+        amount: Math.round(ally.stats.maxHp * 0.15 * (1 + mage.stats.healingBonus)),
+      });
+    }
   });
 
-  it('Mur de boucliers : bouclier de 15 % des PV max qui absorbe, puis expire après 2 manches', () => {
-    let state = start('warrior', [
-      { position: 0, skillId: 'GUE-A01-NEU' },
-      { position: 1, skillId: 'GUE-S04-NEU' },
-    ]);
-    state = act(state, 'GUE-S04-NEU').state;
-    const warrior = state.heroes[0]!;
-    expect(warrior.shield).toBe(Math.round(warrior.stats.maxHp * 0.15));
-    expect(warrior.shieldRemaining).toBe(2);
+  it('Mur de boucliers : bouclier de 12 % des PV max sur chaque héros, qui expire après 2 manches', () => {
+    let state = actTeam(startTeam('GUE-S04-NEU', { caster: 'warrior' }), 'GUE-S04-NEU').state;
+    for (const ally of state.heroes) {
+      expect(ally.shield).toBe(Math.round(ally.stats.maxHp * 0.12));
+      expect(ally.shieldRemaining).toBe(2);
+    }
     // Deux fins de manche plus tard, le bouclier restant disparaît.
     state = endHeroTurn(data, state).state;
     if (state.phase === 'heroes') state = endHeroTurn(data, state).state;
-    if (state.phase === 'heroes') expect(state.heroes[0]!.shield).toBe(0);
+    if (state.phase === 'heroes') for (const ally of state.heroes) expect(ally.shield).toBe(0);
   });
 
-  it('Cri de guerre : +20 % de Force pendant 2 manches', () => {
-    const state = start('warrior', [
-      { position: 0, skillId: 'GUE-A01-NEU' },
-      { position: 1, skillId: 'GUE-S03-NEU' },
+  it('Cri de guerre : +15 % de dégâts infligés pour toute l’équipe pendant 2 manches', () => {
+    const after = actTeam(startTeam('GUE-S03-NEU', { caster: 'warrior' }), 'GUE-S03-NEU').state;
+    for (const ally of after.heroes) {
+      const buff = ally.modifiers.find((m) => m.key === 'GUE-S03');
+      expect(buff).toMatchObject({ kind: 'buff', damageDealt: 0.15, remaining: 2 });
+    }
+  });
+
+  it('une compétence d’équipe ignore les héros morts et marche avec un héros seul', () => {
+    const state = startTeam('MAG-S06-NEU', { halfHp: true });
+    state.heroes[1]!.hp = 0;
+    const result = actTeam(state, 'MAG-S06-NEU');
+    expect(result.events.some((e) => e.type === 'heal' && e.targetId === 'h1')).toBe(false);
+    expect(result.events.some((e) => e.type === 'heal' && e.targetId === 'h2')).toBe(true);
+
+    let solo = start('mage', [
+      { position: 0, skillId: 'MAG-A01-NEU' },
+      { position: 1, skillId: 'MAG-S05-NEU' },
     ]);
-    const after = act(state, 'GUE-S03-NEU').state;
-    const buff = after.heroes[0]!.modifiers.find((m) => m.key === 'GUE-S03');
-    expect(buff).toMatchObject({ kind: 'buff', stats: { strength: 0.2 }, remaining: 2 });
+    solo = act(solo, 'MAG-S05-NEU').state;
+    expect(solo.heroes[0]!.modifiers).toContainEqual(
+      expect.objectContaining({ key: 'MAG-S05', regen: 0.05 }),
+    );
+  });
+
+  it('IA : soigne l’équipe quand un allié (et pas le lanceur) passe sous 45 % de PV', () => {
+    const state = startTeam('MAG-S02-NEU');
+    const ally = state.heroes[1]!;
+    ally.hp = Math.round(ally.stats.maxHp * 0.3);
+    expect(chooseHeroAction(data, state, state.heroes[0]!)).toMatchObject({
+      heroId: 'h0',
+      skillId: 'MAG-S02-NEU',
+    });
   });
 
   it('Malédiction : la cible inflige −15 % de dégâts (cible obligatoire)', () => {

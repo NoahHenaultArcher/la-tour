@@ -92,16 +92,19 @@ export interface AttackEffect {
     | 'orage';
 }
 
-/** Effets d'une compétence de soutien. */
+/**
+ * Effets d'une compétence de soutien. Soin, bouclier, purification et bonus touchent le lanceur,
+ * ou chaque héros vivant si la compétence cible toute l'équipe (Cible « Équipe » de l'onglet Bases).
+ */
 export interface SupportEffect {
   /** Durée de l'effet (sert aussi à l'effet d'élément du soutien). */
   duration: number;
-  /** Soin et bouclier du lanceur (part des PV max). */
+  /** Soin et bouclier (part des PV max de chaque héros soigné ou protégé). */
   heal?: number;
   shield?: number;
-  /** Retire toutes les altérations du lanceur. */
+  /** Retire toutes les altérations. */
   cleanse?: boolean;
-  /** Bonus sur le lanceur. */
+  /** Bonus temporaire. */
   buff?: ModifierSpec;
   /** Malus sur la cible (soutiens « debuff »). */
   targetModifier?: ModifierSpec;
@@ -212,22 +215,24 @@ export const SUPPORT_EFFECTS: Record<string, SupportEffect> = {
   // Guerrier
   'GUE-S01': { duration: 2, buff: { duration: 2, stats: { resistance: 0.3 } } }, // Garde.
   'GUE-S02': { duration: ROUNDS, attack: { alterations: [{ id: 'assomme', chance: 0.25 }] } },
-  'GUE-S03': { duration: 2, buff: { duration: 2, stats: { strength: 0.2 } } }, // Cri de guerre.
-  'GUE-S04': { duration: 2, shield: 0.15 }, // Mur de boucliers.
+  // Cri de guerre (équipe) : +15 % de dégâts infligés pendant 2 tours.
+  'GUE-S03': { duration: 2, buff: { duration: 2, damageDealt: 0.15 } },
+  'GUE-S04': { duration: 2, shield: 0.12 }, // Mur de boucliers (équipe).
   'GUE-S05': { duration: ROUNDS, heal: 0.15 }, // Second souffle.
   'GUE-S06': { duration: 2, buff: { duration: 2, reflect: 0.3 } }, // Riposte.
-  // Forteresse : bouclier 30 % + immunité aux contrôles 2 tours.
-  'GUE-S07': { duration: 2, shield: 0.3, buff: { duration: 2, controlImmune: true } },
+  // Forteresse (équipe) : bouclier 20 % + immunité aux contrôles 2 tours.
+  'GUE-S07': { duration: 2, shield: 0.2, buff: { duration: 2, controlImmune: true } },
   // Mage
   'MAG-S01': { duration: 2, shield: 0.12 }, // Barrière.
-  'MAG-S02': { duration: ROUNDS, heal: 0.18 }, // Soin.
+  'MAG-S02': { duration: ROUNDS, heal: 0.15 }, // Soin (équipe).
   'MAG-S03': { duration: 2, buff: { duration: 2, stats: { magic: 0.25 } } }, // Amplification.
   'MAG-S04': { duration: 2, targetModifier: { duration: 2, damageDealt: -0.15 } }, // Malédiction.
-  'MAG-S05': { duration: 3, buff: { duration: 3, regen: 0.06 } }, // Régénération.
-  'MAG-S06': { duration: ROUNDS, cleanse: true, heal: 0.08 }, // Purification.
-  'MAG-S07': { duration: 2, heal: 0.3, shield: 0.15 }, // Sanctuaire.
+  'MAG-S05': { duration: 3, buff: { duration: 3, regen: 0.05 } }, // Régénération (équipe).
+  'MAG-S06': { duration: ROUNDS, cleanse: true, heal: 0.06 }, // Purification (équipe).
+  'MAG-S07': { duration: 2, heal: 0.25, shield: 0.1 }, // Sanctuaire (équipe).
   // Tireur
-  'TIR-S01': { duration: 2, buff: { duration: 2, stats: { accuracy: 0.2 }, critChance: 0.15 } },
+  // Œil de faucon (équipe) : +15 % de Précision et +10 % de critique pendant 2 tours.
+  'TIR-S01': { duration: 2, buff: { duration: 2, stats: { accuracy: 0.15 }, critChance: 0.1 } },
   'TIR-S02': { duration: 1, buff: { duration: 1, dodge: 0.4 } }, // Roulade.
   // Flèche marquante : la cible subit +15 % de dégâts pendant 2 tours.
   'TIR-S03': { duration: 2, attack: {}, targetModifier: { duration: 2, damageTaken: 0.15 } },
@@ -241,7 +246,7 @@ export const SUPPORT_EFFECTS: Record<string, SupportEffect> = {
       ],
     },
   },
-  'TIR-S05': { duration: ROUNDS, heal: 0.15 }, // Remède.
+  'TIR-S05': { duration: ROUNDS, heal: 0.08 }, // Remède (équipe).
   // Visée : la prochaine attaque inflige +50 %.
   'TIR-S06': { duration: 3, buff: { duration: 3, nextAttackBonus: 0.5 } },
   // Instinct du prédateur : +30 % de dégâts et +20 % de critique pendant 3 tours.

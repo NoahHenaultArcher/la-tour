@@ -77,8 +77,14 @@ export function StatSheet({ save, character }: { save: SaveDto; character: Chara
   const current = characterStats(save, character);
   const stats = characterStats(save, character, preview);
 
-  const change = (stat: AllocatableStat, delta: number) =>
-    setPendingPoints((p) => ({ ...p, [stat]: Math.max(0, p[stat] + delta) }));
+  /** Fixe les points en attente d'une stat, bornés entre 0 et ce qu'il reste à répartir. */
+  const setPoints = (stat: AllocatableStat, value: number) =>
+    setPendingPoints((p) => {
+      const others = ALLOCATABLE_STATS.reduce((sum, s) => (s === stat ? sum : sum + p[s]), 0);
+      const max = Math.max(0, character.statPoints.available - others);
+      const points = Number.isFinite(value) ? Math.trunc(value) : 0;
+      return { ...p, [stat]: Math.min(max, Math.max(0, points)) };
+    });
 
   const run = async (action: () => Promise<void>, success: string) => {
     setBusy(true);
@@ -96,7 +102,7 @@ export function StatSheet({ save, character }: { save: SaveDto; character: Chara
   const delta = (key: keyof typeof stats) =>
     stats[key] !== current[key] ? ` (+${formatNumber(stats[key] - current[key])})` : '';
 
-  /** Ligne d'une stat qui reçoit des points : valeur, aperçu et boutons − / +. */
+  /** Ligne d'une stat qui reçoit des points : valeur, aperçu, champ de saisie et bouton Max. */
   const allocRow = (stat: AllocatableStat, label: string) => {
     const key = STAT_KEYS[stat];
     const icon: StatIcon = stat === 'vitality' ? 'hp' : stat;
@@ -113,28 +119,27 @@ export function StatSheet({ save, character }: { save: SaveDto; character: Chara
           <span className="muted small">
             {character.statPoints.allocated[stat] + pendingPoints[stat]}
           </span>
-          <button
-            type="button"
-            aria-label={t('team.points.remove', { stat: label })}
-            disabled={busy || pendingPoints[stat] === 0}
-            onClick={() => change(stat, -1)}
-          >
-            −
-          </button>
-          <button
-            type="button"
-            aria-label={t('team.points.add', { stat: label })}
-            disabled={busy || remaining <= 0}
-            onClick={() => change(stat, 1)}
-          >
-            +
-          </button>
+          <input
+            type="number"
+            inputMode="numeric"
+            className="alloc-input"
+            min={0}
+            max={pendingPoints[stat] + remaining}
+            step={1}
+            placeholder="0"
+            aria-label={t('team.points.input', { stat: label })}
+            title={t('team.points.input', { stat: label })}
+            disabled={busy || (remaining <= 0 && pendingPoints[stat] === 0)}
+            value={pendingPoints[stat] === 0 ? '' : pendingPoints[stat]}
+            onChange={(e) => setPoints(stat, e.target.value === '' ? 0 : Number(e.target.value))}
+            onFocus={(e) => e.target.select()}
+          />
           <button
             type="button"
             aria-label={t('team.points.max', { stat: label })}
             title={t('team.points.max', { stat: label })}
             disabled={busy || remaining <= 0}
-            onClick={() => change(stat, remaining)}
+            onClick={() => setPoints(stat, pendingPoints[stat] + remaining)}
           >
             {t('team.points.maxShort')}
           </button>

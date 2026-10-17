@@ -115,7 +115,8 @@ export type SkillFamilyId = (typeof SKILL_FAMILY_IDS)[number];
 export const SKILL_KIND_IDS = ['attack', 'buff', 'debuff', 'shield', 'heal', 'passive'] as const;
 export type SkillKindId = (typeof SKILL_KIND_IDS)[number];
 
-export const SKILL_TARGET_IDS = ['single', 'area', 'self'] as const;
+/** `team` : tous les héros vivants du combat (lanceur compris, alliés multijoueur compris). */
+export const SKILL_TARGET_IDS = ['single', 'area', 'self', 'team'] as const;
 export type SkillTargetId = (typeof SKILL_TARGET_IDS)[number];
 
 export const ATTACK_STAT_IDS = ['strength', 'magic'] as const;
