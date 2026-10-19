@@ -41,6 +41,14 @@ import {
   type HeroSetup,
 } from './setup.ts';
 import { attackEffectOf, dealsDamage, skillById } from './skills.ts';
+import {
+  uniquesAfterSkill,
+  uniquesAtCombatStart,
+  uniquesAtRoundStart,
+  uniquesBeforeDeaths,
+  uniquesBeforeSkill,
+  uniquesWhenDodged,
+} from './uniques.ts';
 import type {
   CombatData,
   CombatEvent,
@@ -166,6 +174,7 @@ export function createCombat(data: CombatData, setup: CombatSetup): CombatResult
         RELIC_RULES.startShieldRounds,
         ctx.events,
       );
+  uniquesAtCombatStart(ctx);
   spawnWave(ctx);
   startRound(ctx);
   return { state, events: ctx.events };
@@ -432,6 +441,8 @@ function startRound(ctx: Ctx): void {
     monsterInitiative: Math.round(state.monsterInitiative),
   });
   state.monstersPending = first === 'hero';
+  // Uniques : Sillage de braise, Piétinement givré, Marée apaisante, Marée montante.
+  uniquesAtRoundStart(ctx);
   if (first === 'monster') {
     monsterPhase(ctx);
     if (state.phase !== 'heroes') return;
@@ -503,7 +514,9 @@ function heroAction(ctx: Ctx, input: HeroActionInput): void {
   slot.remaining = slot.cooldown;
   // Lave (fusion Magma d'un monstre de l'Abysse) : le héros se brûle en attaquant.
   beforeMonsterAttack(ctx, hero);
+  const uniqueState = uniquesBeforeSkill(hero);
   if (alive(hero)) useHeroSkill(ctx, hero, slot, chosen);
+  uniquesAfterSkill(ctx, hero, slot, skill, uniqueState);
   if (state.heroActions) {
     state.heroActions[hero.id] = (state.heroActions[hero.id] ?? 1) - 1;
     syncActions(state);
@@ -691,6 +704,7 @@ function monsterAct(ctx: Ctx, monster: Combatant, action = 0): void {
           result: alive(monster) ? attack(data, rng, monster, target, spec, events) : null,
         }));
   for (const { target, result } of strikes) {
+    if (result?.missed) uniquesWhenDodged(ctx, target);
     if (!result || result.amount <= 0 || result.missed || !alive(monster)) continue;
     for (const alteration of monster.inflicts) {
       // Souffle élémentaire : l'altération de l'élément est infligée à coup sûr (résistance comprise).
@@ -745,6 +759,8 @@ function endRound(ctx: Ctx): void {
  */
 function settle(ctx: Ctx, endRoundOnWaveClear = true): boolean {
   const { state, events } = ctx;
+  // Uniques : Dernier souffle (coup mortel évité) et Dernier rempart (sous 30 % des PV).
+  uniquesBeforeDeaths(ctx);
   for (const m of state.monsters) {
     if (m.hp <= 0 && !m.dead) {
       m.dead = true;

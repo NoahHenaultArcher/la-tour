@@ -17,7 +17,7 @@ import type {
 import { create } from 'zustand';
 import { gameData } from '@la-tour/shared/data';
 import { api } from '../api/client.ts';
-import { describeEvent } from '../game/combatText.ts';
+import { describeEvent, uniquePassiveName } from '../game/combatText.ts';
 import { playSound } from '../game/sound.ts';
 import { errorMessage, t } from '../i18n/index.ts';
 import { useRoom } from './room.ts';
@@ -424,7 +424,8 @@ export const useCombat = create<CombatStore>((set, get) => {
             if (next.heroes.some((h) => h.id === event.targetId)) {
               const hero = next.heroes.find((h) => h.id === event.targetId)!;
               hero.hp = event.amount;
-              hero.alterations = [];
+              // L'Ankh purifie le héros relevé ; Dernier souffle (Unique) le laisse tel quel.
+              if (!event.itemId) hero.alterations = [];
             }
             floaters.push({
               id: floaterId++,
@@ -433,6 +434,14 @@ export const useCombat = create<CombatStore>((set, get) => {
               kind: 'heal',
             });
             playSound('heal');
+            break;
+          case 'uniquePassive':
+            floaters.push({
+              id: floaterId++,
+              targetId: event.actorId,
+              text: uniquePassiveName(event.itemId),
+              kind: 'status',
+            });
             break;
           case 'taunt':
             floaters.push({

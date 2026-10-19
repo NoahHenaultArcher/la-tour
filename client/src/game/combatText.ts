@@ -26,6 +26,11 @@ export function skillName(skillId: string): string {
   return byId(gameData.skills.catalog, skillId)?.name ?? skillId;
 }
 
+/** Nom du passif d'un objet Unique (Volonté inflexible…). */
+export function uniquePassiveName(itemId: string): string {
+  return gameData.equipment.uniques.find((u) => u.id === itemId)?.passiveName ?? itemId;
+}
+
 export function alterationName(id: string): string {
   return gameData.monsters.alterations.find((a) => a.id === id)?.name ?? id;
 }
@@ -77,7 +82,11 @@ export function describeEvent(event: CombatEvent, view: CombatView | null): stri
     case 'modifier':
       return t(event.kind === 'buff' ? 'combat.log.buff' : 'combat.log.debuff', {
         target: name(event.targetId),
-        effect: event.skillId ? skillName(event.skillId) : t('modifier.sunder'),
+        effect: event.skillId
+          ? skillName(event.skillId)
+          : event.key.startsWith('unique:')
+            ? uniquePassiveName(event.key.slice('unique:'.length))
+            : t('modifier.sunder'),
       });
     case 'cleanse':
       return t('combat.log.cleanse', { target: name(event.targetId), count: event.count });
@@ -106,7 +115,14 @@ export function describeEvent(event: CombatEvent, view: CombatView | null): stri
     case 'alphaRage':
       return t('combat.log.alphaRage', { target: name(event.targetId) });
     case 'revive':
-      return t('combat.log.revive', { target: name(event.targetId), amount: event.amount });
+      return event.itemId
+        ? t('combat.log.lastBreath', { target: name(event.targetId) })
+        : t('combat.log.revive', { target: name(event.targetId), amount: event.amount });
+    case 'uniquePassive':
+      return t('combat.log.uniquePassive', {
+        actor: name(event.actorId),
+        passive: uniquePassiveName(event.itemId),
+      });
     case 'taunt':
       return t('combat.log.taunt', { target: name(event.targetId) });
     case 'fusion':

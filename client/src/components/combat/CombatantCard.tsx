@@ -12,7 +12,7 @@ import {
 import { gameData } from '@la-tour/shared/data';
 import type { CSSProperties, ReactNode } from 'react';
 import { CLASS_IMAGES } from '../../game/assets.ts';
-import { alterationName, combatantName } from '../../game/combatText.ts';
+import { alterationName, combatantName, uniquePassiveName } from '../../game/combatText.ts';
 import { elementStyle, fusionColor } from '../../game/elements.ts';
 import { formatNumber, t } from '../../i18n/index.ts';
 import type { Floater, Impact } from '../../stores/combat.ts';
@@ -209,6 +209,7 @@ const STAT_LABELS = {
 function modifierName(m: ModifierView): string {
   if (m.key === 'dragon:fury') return t('modifier.fury');
   if (m.key.startsWith('sunder:')) return t('modifier.sunder');
+  if (m.key.startsWith('unique:')) return uniquePassiveName(m.key.slice('unique:'.length));
   const skill = m.skillId ? byId(gameData.skills.catalog, m.skillId) : null;
   // Fusion d'un héros, ou d'un monstre de l'Abysse (sans compétence).
   if (m.key.startsWith('fusion:')) {

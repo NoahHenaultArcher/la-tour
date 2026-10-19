@@ -36,6 +36,13 @@ import {
   type CatalogSkill,
 } from './skills.ts';
 import type { CombatData, CombatEvent, CombatSkill, CombatState, Combatant } from './types.ts';
+import {
+  uniqueAttackBonus,
+  uniqueHealingFactor,
+  uniquesAfterAttack,
+  uniquesOnStrike,
+  uniquesWhenHit,
+} from './uniques.ts';
 
 export interface ActionCtx {
   data: CombatData;
@@ -47,16 +54,23 @@ const alive = (c: Combatant) => c.hp > 0;
 
 /**
  * Soin d'un héros (`target`) par un héros (`healer`, lui-même ou un allié) : part des PV max du
- * soigné, Bonus de soins du soigneur et soins reçus (passifs) du soigné compris.
+ * soigné, Bonus de soins du soigneur, soins reçus (passifs) du soigné et Unique du soigneur compris.
  */
 function healAmount(
+  state: CombatState,
   healer: Combatant,
   target: Combatant,
   targetPassives: readonly PassiveEffect[],
   share: number,
 ) {
   const received = passiveSum(targetPassives, (p) => p.healReceived);
-  return target.stats.maxHp * share * (1 + healer.stats.healingBonus) * (1 + received);
+  return (
+    target.stats.maxHp *
+    share *
+    (1 + healer.stats.healingBonus) *
+    (1 + received) *
+    uniqueHealingFactor(state, healer)
+  );
 }
 
 /** Héros touchés par une compétence de soutien : toute l'équipe vivante, ou le lanceur seul. */
@@ -142,7 +156,7 @@ function useSupport(
     if (support.cleanse) cleanse(ally, ally.alterations.length, events);
     if (healShare > 0) {
       const allyPassives = ally === hero ? passives : passiveEffectsOf(ctx.data, ally.passives);
-      heal(hero, ally, healAmount(hero, ally, allyPassives, healShare), events);
+      heal(hero, ally, healAmount(ctx.state, hero, ally, allyPassives, healShare), events);
     }
     if (support.shield)
       addShield(ally, ally.stats.maxHp * support.shield * boost, support.duration, events);
@@ -223,6 +237,9 @@ export function performAttack(
   const oddRound = state.round % 2 === 1;
   if (effect.special === 'crepuscule' && oddRound) actionBonus += 0.2;
   if (effect.special === 'orage' && skill.element !== 'lightning') actionBonus += 0.25;
+  // Uniques : Surcharge arcanique, Alternance, Pas d'éclair, Regard perçant.
+  const unique = uniqueAttackBonus(ctx, hero);
+  actionBonus += unique.damageBonus;
   let firstShot = false;
   if (
     passives.some((p) => p.firstShotCrit) &&
@@ -284,7 +301,7 @@ export function performAttack(
       elementalShare: neutral ? 0 : 1,
       armorIgnore: effect.armorIgnore ?? 0,
       resistanceIgnore,
-      neverMiss: effect.neverMiss ?? false,
+      neverMiss: (effect.neverMiss ?? false) || unique.neverMiss,
       bonusCrit: effect.bonusCrit ?? 0,
       guaranteedCrit: effect.guaranteedCrit || firstShot,
       damageBonus: bonus,
@@ -358,6 +375,7 @@ export function performAttack(
       if (effect.special === 'crepuscule' && !oddRound)
         tryApplyAlteration(data, rng, hero, target, 'corruption', 1, events);
     }
+    uniquesOnStrike(ctx, hero, target, skill, result);
     return result;
   };
 
@@ -398,6 +416,15 @@ export function performAttack(
   if (echo && skill.cooldown === 1 && chance(rng, echo.chance)) {
     for (const target of [...struck]) if (alive(target)) strike(target, echo.share, false);
   }
+
+  // Uniques : Pas d'éclair (étourdissement), Conduction, Pluie de flèches, Moisson funeste.
+  if (unique.stunChance > 0)
+    tryApplyAlteration(data, rng, hero, primary, 'etourdissement', unique.stunChance, events);
+  uniquesAfterAttack(ctx, hero, skill, { targets, aliveBefore: living }, (target, share) => {
+    const result = strike(target, share, false);
+    if (!result.missed) struck.add(target);
+    return result;
+  });
 
   // Altérations sur toute la vague (Blizzard, Brume toxique…).
   for (const a of [...(base.alterations ?? []), ...(elemental.alterations ?? [])]) {
@@ -441,9 +468,10 @@ export function performAttack(
   }
 
   // Effets sur le lanceur.
-  if (effect.selfHeal) heal(hero, hero, healAmount(hero, hero, passives, effect.selfHeal), events);
+  if (effect.selfHeal)
+    heal(hero, hero, healAmount(state, hero, hero, passives, effect.selfHeal), events);
   if (effect.special === 'crepuscule' && !oddRound)
-    heal(hero, hero, healAmount(hero, hero, passives, 0.05), events);
+    heal(hero, hero, healAmount(state, hero, hero, passives, 0.05), events);
   if (effect.selfShield)
     addShield(hero, hero.stats.maxHp * effect.selfShield, COMBAT_RULES.defaultEffectRounds, events);
   if (effect.cleanseSelf) cleanse(hero, effect.cleanseSelf, events);
@@ -494,7 +522,9 @@ export function afterHeroHit(
   damage: number,
 ): void {
   const { data, state, events } = ctx;
-  if (damage <= 0 || !alive(monster)) return;
+  if (damage <= 0) return;
+  uniquesWhenHit(ctx, monster, hero, damage);
+  if (!alive(monster)) return;
   const physicalShare =
     monster.attackType === 'physical'
       ? 1

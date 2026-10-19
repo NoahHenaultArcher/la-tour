@@ -42,6 +42,8 @@ export interface HeroSetup {
   heritageCount: number;
   /** Stats des objets équipés. */
   equipment: StatBlock[];
+  /** Objets Uniques équipés (identifiants du catalogue) : leurs passifs agissent en combat. */
+  uniques?: string[];
   deck: { position: number; skillId: string; fusionElement?: ElementId | null }[];
   /** Points de statistiques répartis. */
   allocation?: StatAllocation;
@@ -246,6 +248,7 @@ export function createHeroCombatant(
         fusion: s.fusionElement ?? null,
       })),
     passives,
+    uniques: hero.uniques ?? [],
     inflicts: [],
     ...(hero.alchemyLevel !== undefined ? { alchemyLevel: hero.alchemyLevel } : {}),
     damageBonus: upgradeTowerBonus(data.village, tower, 'damage') + relics.damageDealt,

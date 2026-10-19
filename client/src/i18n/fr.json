@@ -481,6 +481,8 @@
   "combat.log.fusion": "{actor} déchaîne {fusion} !",
   "combat.log.revive": "{target} se relève grâce à l'Ankh d'Anubis ({amount} PV) !",
   "combat.log.taunt": "{target} provoque l'ennemi et attire son attaque.",
+  "combat.log.uniquePassive": "{actor} : {passive} !",
+  "combat.log.lastBreath": "{target} tient bon et reste à 1 PV !",
   "combat.log.summon": "{source} appelle des renforts : {monsters} !",
   "combat.fury": "Furie !",
   "combat.alphaRage": "Enragé !",

@@ -10,6 +10,7 @@ import { clamp, levelFactor } from '../rules/math.ts';
 import { chance, nextFloat, type Rng } from '../rules/random.ts';
 import { alterationDamageFactors, effectiveStat, isDodgeCancelled } from './alterations.ts';
 import { heal, modifierSum } from './modifiers.ts';
+import { uniqueDamageTakenFactor } from './uniqueData.ts';
 import type { CombatData, CombatEvent, Combatant } from './types.ts';
 
 export interface AttackSpec {
@@ -173,6 +174,8 @@ export function attack(
 
   damage *= factors.dealt * factors.taken * (1 + (spec.damageBonus ?? 0));
   damage *= (1 + attacker.damageBonus) * (1 - defender.defenseBonus);
+  // Uniques du défenseur : Peau de granit (dégâts physiques), Pierre de garde.
+  damage *= uniqueDamageTakenFactor(defender, physicalShare);
   const variance = COMBAT_RULES.damageVariance;
   damage *= 1 - variance + 2 * variance * nextFloat(rng);
 

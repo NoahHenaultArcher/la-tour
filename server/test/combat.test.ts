@@ -67,6 +67,24 @@ describeWithDb('combat et tour', () => {
     expect((await start(1)).json().error.code).toBe('COMBAT_IN_PROGRESS');
   });
 
+  it('les Uniques équipés emportent leur passif en combat', async () => {
+    const mage = await ctx.prisma.character.findFirstOrThrow({ where: { saveId } });
+    await ctx.prisma.item.create({
+      data: {
+        saveId,
+        catalogId: 'MAG-AR1-UNI',
+        equippedById: mage.id,
+        equippedSlot: 'weapon1',
+      },
+    });
+    await ctx.prisma.item.create({ data: { saveId, catalogId: 'MAG-CHA-UNI' } });
+    expect((await start(1)).statusCode).toBe(200);
+    const session = await ctx.prisma.combatSession.findUniqueOrThrow({ where: { saveId } });
+    const state = session.state as { heroes: { uniques: string[] }[] };
+    // Seul l'Unique porté compte (l'autre est dans l'inventaire).
+    expect(state.heroes[0]!.uniques).toEqual(['MAG-AR1-UNI']);
+  });
+
   it('refuse un étage verrouillé ou un étage normal déjà passé', async () => {
     expect((await start(2)).json().error.code).toBe('FLOOR_LOCKED');
     await setProgress(7, 6);

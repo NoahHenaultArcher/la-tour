@@ -62,6 +62,8 @@ function heroSetupOf(heritageCount: number, c: CharacterWithGear): HeroSetup {
       // Un Unique grandit avec son porteur (balance.ts, UNIQUE_ITEMS).
       return itemStats(gameData.equipment, catalogItem, item.upgradeLevel, c.level);
     }),
+    // Passifs des Uniques portés (shared/src/combat/uniques.ts).
+    uniques: c.equipment.filter((item) => item.catalogId.endsWith('-UNI')).map((i) => i.catalogId),
     deck: c.skills.map((s) => ({
       position: s.position,
       skillId: s.skillId,

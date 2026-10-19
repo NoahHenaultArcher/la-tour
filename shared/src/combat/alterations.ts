@@ -5,6 +5,7 @@
 import { COMBAT_RULES } from '../balance.ts';
 import { chance, type Rng } from '../rules/random.ts';
 import { isControlImmune, modifierStatFactor, modifierSum } from './modifiers.ts';
+import { UNIQUE, hasUnique } from './uniqueData.ts';
 import type { ActiveAlteration, CombatData, CombatEvent, Combatant } from './types.ts';
 
 type ModifiedStat =
@@ -26,6 +27,8 @@ export interface AlterationOptions {
   freezeAt?: number;
   /** Le Gel fait perdre un tour de plus (Grand Gel, hors boss). */
   longFreeze?: boolean;
+  /** Dégâts par manche imposés (Pointes incendiaires : part des dégâts du coup). */
+  damagePerStack?: number;
 }
 
 interface AlterationRule {
@@ -188,6 +191,13 @@ export function applyAlteration(
 
   if (rule.kind === 'control') {
     if (!canBeControlled(target)) return;
+    // Volonté inflexible (Unique) : le premier contrôle subi pendant le combat est ignoré.
+    if (hasUnique(target, UNIQUE.willpower) && !target.counters.willpowerUsed) {
+      target.counters.willpowerUsed = 1;
+      events.push({ type: 'uniquePassive', actorId: target.id, itemId: UNIQUE.willpower });
+      events.push({ type: 'resisted', targetId: target.id, alterationId });
+      return;
+    }
     target.skipNextTurn = true;
     if (options.longFreeze && alterationId === 'gel' && !target.isBoss) target.extraSkips = 1;
     target.alterations = target.alterations.filter((a) => a.id !== alterationId);
@@ -204,13 +214,14 @@ export function applyAlteration(
 
   const value = options.value ?? alteration.value;
   const damagePerStack =
-    rule.dot === 'sourceStrength'
+    options.damagePerStack ??
+    (rule.dot === 'sourceStrength'
       ? value * (source?.stats.strength ?? 0)
       : rule.dot === 'sourceAttack'
         ? value * Math.max(source?.stats.strength ?? 0, source?.stats.magic ?? 0)
         : rule.dot === 'maxHp'
           ? value * target.stats.maxHp
-          : 0;
+          : 0);
   const maxStacks = Math.max(
     alteration.maxStacks,
     options.maxStacks ?? 0,

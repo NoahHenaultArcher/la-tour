@@ -157,6 +157,8 @@ export interface Combatant {
   skills: CombatSkill[];
   /** Passifs (héros), par identifiant de compétence. */
   passives: string[];
+  /** Objets Uniques portés (héros), par identifiant du catalogue : leurs passifs (uniques.ts). */
+  uniques?: string[];
   /** Altérations que le monstre peut infliger. */
   inflicts: { id: string; chance: number }[];
   /** Niveau de la Tour d'alchimie du propriétaire (multijoueur : chacun la sienne). */
@@ -239,8 +241,10 @@ export type CombatEvent =
   | { type: 'summon'; sourceId: string; monsterIds: string[] }
   /** Monstre alpha enragé (trait « Enragé ») sous la moitié de ses PV. */
   | { type: 'alphaRage'; targetId: string }
-  /** Ankh d'Anubis : un héros vaincu se relève. */
-  | { type: 'revive'; targetId: string; amount: number }
+  /** Ankh d'Anubis : un héros vaincu se relève (`itemId` : Dernier souffle, l'Unique qui l'a sauvé). */
+  | { type: 'revive'; targetId: string; amount: number; itemId?: string }
+  /** Le passif d'un objet Unique porté par ce héros se déclenche. */
+  | { type: 'uniquePassive'; actorId: string; itemId: string }
   /** Pierre ancestrale : le Guerrier attire l'attaque. */
   | { type: 'taunt'; targetId: string }
   /** Un monstre de l'Abysse déclenche sa fusion (élément du monstre + `fusion`). */
