@@ -5,7 +5,9 @@
 import { ALCHEMY } from '../balance.ts';
 import type { ClassId, ElementId } from '../constants.ts';
 import type { SkillsData } from '../data/schemas.ts';
+import { MAX_HERO_LEVEL } from './rewards.ts';
 import { isSkillUnlocked, type Skill } from './skills.ts';
+import { TOWER_FLOORS } from './tower.ts';
 import { byId } from './lookup.ts';
 
 /** Positions du deck : 0 à 2 actives, 3 et 4 passives. */
@@ -135,7 +137,19 @@ export function validateDeck(data: { skills: SkillsData }, input: DeckCheck): De
   return null;
 }
 
-/** Héritage : disponible dès qu'un héros a atteint le niveau maximum. */
-export function canInherit(characters: readonly { level: number }[], maxLevel: number): boolean {
-  return characters.some((c) => c.level >= maxLevel);
+/**
+ * Conditions de l'héritage (décision du 19/10/2026) : un héros au niveau maximum, et la tour conquise
+ * (le dernier étage battu). L'héritage remet la tour à zéro : pour le suivant, il faut la reconquérir.
+ */
+export function heritageStatus(save: {
+  characters: readonly { level: number }[];
+  highestFloorCleared: number;
+}) {
+  const heroReady = save.characters.some((c) => c.level >= MAX_HERO_LEVEL);
+  const towerReady = save.highestFloorCleared >= TOWER_FLOORS;
+  return { heroReady, towerReady, ready: heroReady && towerReady };
+}
+
+export function canInherit(save: Parameters<typeof heritageStatus>[0]): boolean {
+  return heritageStatus(save).ready;
 }

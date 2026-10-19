@@ -22,6 +22,9 @@ import { useSession } from '../stores/session.ts';
 /** Durée d'affichage d'un événement à la vitesse ×1. */
 const EVENT_DELAY_MS = 420;
 
+/** Enchaînement : secondes avant de lancer l'étage suivant. */
+const CHAIN_DELAY_S = 5;
+
 const LOG_OPEN_KEY = 'la-tour.combatLogOpen';
 
 /** Journal replié par défaut ; le choix du joueur est retenu (confort, stockage local facultatif). */
@@ -109,6 +112,86 @@ function useBackgroundPlayback(hidden: boolean) {
   }, [hidden]);
 }
 
+/**
+ * Compte à rebours de l'enchaînement : relancé à chaque fin de combat, il appelle `onDone` à zéro.
+ * Minuterie de Worker : l'enchaînement continue même onglet caché.
+ */
+function useChainCountdown(
+  active: boolean,
+  outcome: unknown,
+  onDone: (() => void) | undefined,
+): number | null {
+  const [seconds, setSeconds] = useState<number | null>(null);
+  const done = useRef(onDone);
+  done.current = onDone;
+  useEffect(() => {
+    if (!active) {
+      setSeconds(null);
+      return;
+    }
+    let cancelled = false;
+    void (async () => {
+      for (let left = CHAIN_DELAY_S; left > 0; left--) {
+        setSeconds(left);
+        await backgroundSleep(1000);
+        if (cancelled) return;
+      }
+      setSeconds(null);
+      done.current?.();
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [active, outcome]);
+  return seconds;
+}
+
+interface OutcomeAction {
+  label: string;
+  run: () => void;
+}
+
+/**
+ * Suites possibles d'une fin de combat solo.
+ * Enchaîner : étage suivant après une victoire, ou nouvelle chasse dans la même zone.
+ * Abysse : l'étage suivant après une victoire, le même étage après une défaite.
+ * Rejouer : un étage de boss ou de dragon (victoire comme défaite), s'il reste accessible.
+ */
+function useOutcomeActions(): { next: OutcomeAction | null; replay: OutcomeAction | null } {
+  const outcome = useCombat((s) => s.outcome);
+  const view = useCombat((s) => s.view);
+  const combat = useCombat.getState();
+  if (!outcome || !view) return { next: null, replay: null };
+  const next: OutcomeAction | null =
+    outcome.mode === 'hunt'
+      ? { label: t('outcome.huntAgain'), run: () => void combat.startHunt(outcome.floor) }
+      : outcome.mode === 'abyss'
+        ? {
+            label: t(
+              outcome.result === 'victory' && outcome.floorCleared
+                ? 'outcome.nextAbyss'
+                : 'outcome.retryAbyss',
+              { floor: outcome.save.abyssFloor },
+            ),
+            run: () => void combat.startAbyss(),
+          }
+        : outcome.result === 'victory' &&
+            outcome.floorCleared &&
+            outcome.save.currentFloor > view.floor
+          ? {
+              label: t('outcome.nextFloor'),
+              run: () => void combat.start(outcome.save.currentFloor),
+            }
+          : null;
+  const replay: OutcomeAction | null =
+    outcome.mode === 'tower' &&
+    view.floorType !== 'normal' &&
+    canPlayFloor(outcome.save, outcome.floor)
+      ? { label: t('outcome.replay'), run: () => void combat.start(outcome.floor) }
+      : null;
+  return { next, replay };
+}
+
 /** Secondes restantes avant la fin du tour (multijoueur) ; le serveur reste seul juge. */
 function useCountdown(deadline: string | null): number | null {
   const [now, setNow] = useState(() => Date.now());
@@ -134,6 +217,7 @@ export function CombatPage() {
   const activeSkillId = useCombat((s) => s.activeSkillId);
   const outcome = useCombat((s) => s.outcome);
   const auto = useCombat((s) => s.auto);
+  const chain = useCombat((s) => s.chain);
   const speed = useCombat((s) => s.speed);
   const selectedHeroId = useCombat((s) => s.selectedHeroId);
   const selectedSkillId = useCombat((s) => s.selectedSkillId);
@@ -148,6 +232,14 @@ export function CombatPage() {
   const settled = usePlayback();
   const logRef = useRef<HTMLOListElement>(null);
   const [logOpen, toggleLog] = useLogOpen();
+  const { next, replay } = useOutcomeActions();
+  // Enchaînement : seulement après une victoire avec un étage suivant (tour ou Abysse).
+  const chainNext =
+    outcome && outcome.mode !== 'hunt' && outcome.result === 'victory' ? next : null;
+  const chainSeconds = useChainCountdown(chain && chainNext !== null, outcome, chainNext?.run);
+  useEffect(() => {
+    if (chain && outcome && !chainNext) combat.stopChain();
+  }, [chain, outcome, chainNext, combat]);
 
   useEffect(() => {
     if (!useCombat.getState().view) void combat.load();
@@ -213,36 +305,6 @@ export function CombatPage() {
     combat.clearOutcome();
     navigate(to);
   };
-  // Enchaîner : étage suivant après une victoire, ou nouvelle chasse dans la même zone.
-  // Abysse : l'étage suivant après une victoire, le même étage après une défaite.
-  const next: { label: string; run: () => void } | null =
-    outcome?.mode === 'hunt'
-      ? { label: t('outcome.huntAgain'), run: () => void combat.startHunt(outcome.floor) }
-      : outcome?.mode === 'abyss'
-        ? {
-            label: t(
-              outcome.result === 'victory' && outcome.floorCleared
-                ? 'outcome.nextAbyss'
-                : 'outcome.retryAbyss',
-              { floor: outcome.save.abyssFloor },
-            ),
-            run: () => void combat.startAbyss(),
-          }
-        : outcome?.result === 'victory' &&
-            outcome.floorCleared &&
-            outcome.save.currentFloor > view.floor
-          ? {
-              label: t('outcome.nextFloor'),
-              run: () => void combat.start(outcome.save.currentFloor),
-            }
-          : null;
-  // Rejouer un étage de boss ou de dragon (victoire comme défaite), s'il reste accessible.
-  const replay: { label: string; run: () => void } | null =
-    outcome?.mode === 'tower' &&
-    view.floorType !== 'normal' &&
-    canPlayFloor(outcome.save, outcome.floor)
-      ? { label: t('outcome.replay'), run: () => void combat.start(outcome.floor) }
-      : null;
 
   const chooseSkill = (skillId: string) => {
     if (hero.id !== selectedHeroId) combat.selectHero(hero.id);
@@ -458,6 +520,11 @@ export function CombatPage() {
                   </span>
                 </>
               )}
+              {chain && (
+                <button type="button" className="toggled" onClick={combat.stopChain}>
+                  {t('combat.chainStop')}
+                </button>
+              )}
               {isDebug && (
                 <button type="button" disabled={!yourTurn} onClick={() => void combat.winWave()}>
                   {t('debug.winWaveNow')}
@@ -529,6 +596,16 @@ export function CombatPage() {
           onTeam={() => leave('/equipe')}
           next={next}
           replay={replay}
+          onChain={
+            chainNext && !chain
+              ? () => {
+                  combat.startChain();
+                  chainNext.run();
+                }
+              : null
+          }
+          chainSeconds={chain ? chainSeconds : null}
+          onStopChain={combat.stopChain}
         />
       )}
     </div>

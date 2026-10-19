@@ -4,6 +4,7 @@ import type {
   SetDeckBody,
   UpgradeTowerBranchId,
   IdleReport,
+  ItemDto,
   SaveDto,
   ShopDto,
   StatAllocation,
@@ -40,7 +41,8 @@ interface SessionState {
   equipRelic: (relicId: string, slot: number) => Promise<void>;
   unequipRelic: (relicId: string) => Promise<void>;
   upgradeItem: (itemId: string) => Promise<void>;
-  craftItem: (body: CraftItemBody) => Promise<void>;
+  /** Fabrique un objet ; renvoie l'objet obtenu (sa rareté est tirée par le serveur). */
+  craftItem: (body: CraftItemBody) => Promise<ItemDto | null>;
   allocateStatPoints: (characterId: string, add: Partial<StatAllocation>) => Promise<void>;
   resetStatPoints: (characterId: string) => Promise<void>;
   /** Achat à la taverne ; renvoie l'assortiment à jour. */
@@ -60,7 +62,7 @@ interface SessionState {
 
 const withSave = (save: SaveDto) => ({ save, saveReceivedAt: Date.now() });
 
-export const useSession = create<SessionState>((set) => {
+export const useSession = create<SessionState>((set, get) => {
   const collect = async (showReport = false) => {
     const { save, report } = await api.collect();
     const worthShowing =
@@ -137,7 +139,10 @@ export const useSession = create<SessionState>((set) => {
       set(withSave(await api.upgradeItem({ itemId })));
     },
     craftItem: async (body) => {
-      set(withSave(await api.craftItem(body)));
+      const before = new Set(get().save?.items.map((i) => i.id));
+      const save = await api.craftItem(body);
+      set(withSave(save));
+      return save.items.find((i) => !before.has(i.id)) ?? null;
     },
     allocateStatPoints: async (characterId, add) => {
       set(withSave(await api.allocateStatPoints({ characterId, add })));

@@ -254,6 +254,12 @@ export function TeamPage() {
                     aria-selected={classId === inventoryClass}
                     className={classId === inventoryClass ? 'toggled' : ''}
                     onClick={() => {
+                      // L'onglet d'une classe possédée affiche aussi son héros à gauche.
+                      const hero = save.characters.find((c) => c.classId === classId);
+                      if (hero) {
+                        selectCharacter(hero.id);
+                        return;
+                      }
                       setInventoryClass(classId);
                       setSlot(null);
                       setConfirmSellAll(false);

@@ -28,6 +28,9 @@ function ZoneLoot({ zone }: { zone: Zone }) {
       .map((m) => m.rank),
   );
   const drops = gameData.loot.dropByRank.filter((d) => ranks.has(d.rank));
+  // Les monstres de chasse ne lâchent jamais d'Unique : les autres raretés se partagent sa part.
+  const rarities = RARITY_IDS.filter((r) => r !== 'unique' && (table?.weights[r] ?? 0) > 0);
+  const total = rarities.reduce((sum, r) => sum + table!.weights[r], 0);
   return (
     <div className="zone-loot">
       <span>
@@ -42,9 +45,9 @@ function ZoneLoot({ zone }: { zone: Zone }) {
         })}
       </span>
       <span className="zone-rarities">
-        {RARITY_IDS.filter((r) => (table?.weights[r] ?? 0) > 0).map((r) => (
+        {rarities.map((r) => (
           <span key={r} style={{ color: rarityInfo(r).color }}>
-            {rarityInfo(r).name} {percent(table!.weights[r])}
+            {rarityInfo(r).name} {percent(table!.weights[r] / total)}
           </span>
         ))}
       </span>

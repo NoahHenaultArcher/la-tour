@@ -837,6 +837,17 @@ button.danger {
   flex: 1;
 }
 
+/* Enchaînement des étages : compte à rebours avant l'étage suivant. */
+.chain-countdown {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 2px solid var(--ok);
+  font-weight: bold;
+}
+
 /* --- Tour --- */
 
 .tower-page {
@@ -2091,6 +2102,16 @@ button.danger {
   margin: 0;
 }
 
+.craft-chances {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85em;
+}
+
 .deck {
   display: flex;
   flex-wrap: wrap;
@@ -2662,6 +2683,15 @@ button.danger {
   gap: 12px;
   align-items: center;
   justify-content: space-between;
+}
+
+.heritage-requirements ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 /* --- Multijoueur --- */

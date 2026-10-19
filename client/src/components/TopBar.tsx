@@ -1,4 +1,4 @@
-import { MAX_HERO_LEVEL, canInherit, isAbyssUnlocked } from '@la-tour/shared';
+import { canInherit, isAbyssUnlocked } from '@la-tour/shared';
 import { Link, NavLink } from 'react-router';
 import { t } from '../i18n/index.ts';
 import { useRoom } from '../stores/room.ts';
@@ -19,11 +19,9 @@ export function TopBar() {
   );
   // L'héritage apparaît dans le menu dès qu'il est possible (ou déjà fait une fois).
   const heritage = useSession((s) =>
-    s.save ? canInherit(s.save.characters, MAX_HERO_LEVEL) || s.save.heritageCount > 0 : false,
+    s.save ? canInherit(s.save) || s.save.heritageCount > 0 : false,
   );
-  const heritageReady = useSession((s) =>
-    s.save ? canInherit(s.save.characters, MAX_HERO_LEVEL) : false,
-  );
+  const heritageReady = useSession((s) => (s.save ? canInherit(s.save) : false));
   const inRoom = useRoom((s) => s.room !== null);
   // L'Abysse apparaît dans le menu une fois la tour terminée.
   const abyss = useSession((s) => (s.save ? isAbyssUnlocked(s.save.highestFloorCleared) : false));

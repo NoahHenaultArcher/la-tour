@@ -4,7 +4,6 @@
  */
 import type { Prisma, PrismaClient } from '@prisma/client';
 import {
-  MAX_HERO_LEVEL,
   availableStatPoints,
   canInherit,
   emptyAllocation,
@@ -180,7 +179,7 @@ export async function applyTowerProgress(
 }
 
 /**
- * Héritage (compte entier, dès qu'un héros est niveau 100) : tous les héros reviennent au niveau 1
+ * Héritage (compte entier, quand un héros est niveau 100 et que la tour est conquise) : tous les héros reviennent au niveau 1
  * (points de stats remis à zéro), la tour et les zones de chasse sont à refaire ; +25 % de stats
  * par héritage, cumulatif. Or, objets, village, compétences et éléments débloqués sont conservés.
  */
@@ -191,7 +190,13 @@ export async function performHeritage(prisma: PrismaClient, saveId: string): Pro
       throw new HttpError(409, 'COMBAT_IN_PROGRESS');
     }
     const characters = await tx.character.findMany({ where: { saveId } });
-    if (!canInherit(characters, MAX_HERO_LEVEL)) throw new HttpError(409, 'HERITAGE_LOCKED');
+    const { highestFloorCleared } = await tx.save.findUniqueOrThrow({
+      where: { id: saveId },
+      select: { highestFloorCleared: true },
+    });
+    if (!canInherit({ characters, highestFloorCleared })) {
+      throw new HttpError(409, 'HERITAGE_LOCKED');
+    }
     for (const character of characters) {
       await tx.character.update({
         where: { id: character.id },

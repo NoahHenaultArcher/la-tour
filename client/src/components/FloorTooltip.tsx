@@ -1,4 +1,6 @@
+import { uniqueForBossFloor } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
+import { rarityInfo } from '../game/items.ts';
 import { t } from '../i18n/index.ts';
 import { ElementBadge } from './ElementBadge.tsx';
 
@@ -11,6 +13,7 @@ export function FloorTooltip({ floor }: { floor: FloorInfo }) {
       m.zoneFloor === floor.zoneFloor &&
       (floor.type !== 'normal' || (m.rank !== 'boss' && m.rank !== 'dragon')),
   );
+  const unique = floor.type === 'normal' ? null : uniqueForBossFloor(gameData, floor.floor);
   return (
     <div className="tooltip-body">
       <strong>{t('tower.floor', { floor: floor.floor })}</strong>
@@ -30,6 +33,13 @@ export function FloorTooltip({ floor }: { floor: FloorInfo }) {
       </span>
       {floor.bossName && (
         <span className="boss-name">{t('tower.boss', { name: floor.bossName })}</span>
+      )}
+      {unique && (
+        <span>
+          {t('tower.unique')} :{' '}
+          <strong style={{ color: rarityInfo('unique').color }}>{unique.name}</strong> (
+          {t(`class.name.${unique.classId}`)})
+        </span>
       )}
       {floor.unlocksHuntingZone && (
         <span className="muted">{t('tower.unlocksZone', { zone: floor.unlocksHuntingZone })}</span>

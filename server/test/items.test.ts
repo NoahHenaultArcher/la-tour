@@ -122,11 +122,13 @@ describeWithDb('équipement, Atelier et butin', () => {
     expect(error.details.missing).toBeLessThanOrEqual(needed - 5);
   });
 
-  it('fabrique un objet Commun +0 pour une classe de l’équipe', async () => {
+  it('fabrique un objet +0 (rareté tirée) pour une classe de l’équipe', async () => {
     await unlockWorkshop();
     await setStock('lin', 20);
     const save = await ok('/api/workshop/craft', { classId: 'mage', slot: 'hat', tier: 1 });
-    expect(save.items.at(-1)).toMatchObject({ catalogId: 'MAG-CHA-P1-COM', upgradeLevel: 0 });
+    // Commun le plus souvent, parfois mieux : même emplacement et même palier.
+    expect(save.items.at(-1)!.catalogId).toMatch(/^MAG-CHA-P1-(COM|RAR|SRA|EPI|MYT|LEG)$/);
+    expect(save.items.at(-1)!.upgradeLevel).toBe(0);
     expect(save.resources.lin).toBeLessThan(20);
     expect(
       (await post('/api/workshop/craft', { classId: 'warrior', slot: 'hat', tier: 1 })).json().error

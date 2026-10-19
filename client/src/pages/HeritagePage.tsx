@@ -1,4 +1,4 @@
-import { GAME_RULES, MAX_HERO_LEVEL, canInherit } from '@la-tour/shared';
+import { GAME_RULES, MAX_HERO_LEVEL, TOWER_FLOORS, heritageStatus } from '@la-tour/shared';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { TopBar } from '../components/TopBar.tsx';
@@ -17,7 +17,7 @@ export function HeritagePage() {
   const [understood, setUnderstood] = useState(false);
   const [pending, setPending] = useState(false);
 
-  const available = canInherit(save.characters, MAX_HERO_LEVEL);
+  const status = heritageStatus(save);
   const bestLevel = Math.max(...save.characters.map((c) => c.level));
 
   const confirm = async () => {
@@ -71,7 +71,7 @@ export function HeritagePage() {
             </ul>
           </section>
         </div>
-        {available ? (
+        {status.ready ? (
           <section className="panel heritage-confirm">
             <label>
               <input
@@ -91,7 +91,24 @@ export function HeritagePage() {
             </button>
           </section>
         ) : (
-          <p className="warning">{t('heritage.locked', { level: bestLevel })}</p>
+          <section className="panel heritage-requirements">
+            <p className="warning">
+              {t(save.heritageCount > 0 ? 'heritage.lockedAgain' : 'heritage.locked')}
+            </p>
+            <ul>
+              <li className={status.heroReady ? 'ok' : 'missing'}>
+                {status.heroReady ? '✔' : '✘'}{' '}
+                {t('heritage.need.level', { max: MAX_HERO_LEVEL, level: bestLevel })}
+              </li>
+              <li className={status.towerReady ? 'ok' : 'missing'}>
+                {status.towerReady ? '✔' : '✘'}{' '}
+                {t('heritage.need.tower', {
+                  floor: TOWER_FLOORS,
+                  cleared: save.highestFloorCleared,
+                })}
+              </li>
+            </ul>
+          </section>
         )}
       </main>
     </div>

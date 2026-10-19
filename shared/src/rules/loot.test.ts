@@ -3,7 +3,13 @@ import { buildFloorWaves } from '../combat/setup.ts';
 import { RARITY_IDS, type ClassId, type RarityId } from '../constants.ts';
 import { gameData } from '../data/index.ts';
 import { createRng } from './random.ts';
-import { biomeOfFloor, catalogItemFor, rollLoot } from './loot.ts';
+import {
+  biomeOfFloor,
+  bossFloorOfUnique,
+  catalogItemFor,
+  rollLoot,
+  uniqueForBossFloor,
+} from './loot.ts';
 
 const RUNS = 3000;
 
@@ -43,15 +49,27 @@ describe('butin (onglet Butin du bestiaire)', () => {
     expect(share).toBeCloseTo(0.8, 1);
   });
 
-  it('les boss de la Forêt peuvent lâcher un Unique', () => {
-    let uniques = 0;
+  it('un boss lâche toujours le même Unique, quelle que soit la classe tirée', () => {
+    const uniques = new Set<string>();
     const rng = createRng(9);
     for (let i = 0; i < 4000; i++) {
-      uniques += rollLoot(gameData, rng, [{ monsterId: 'MON-004' }], 5, ['mage']).filter(
-        (d) => d.rarity === 'unique',
-      ).length;
+      for (const d of rollLoot(gameData, rng, [{ monsterId: 'MON-004' }], 5, ['mage'])) {
+        if (d.rarity === 'unique') uniques.add(d.catalogId);
+      }
     }
-    expect(uniques).toBeGreaterThan(0);
+    // Étage 5 (1er boss de la Forêt) : l'Unique du Guerrier.
+    expect([...uniques]).toEqual(['GUE-CHA-UNI']);
+  });
+
+  it('les monstres des zones de chasse ne lâchent jamais d’Unique', () => {
+    const rng = createRng(4);
+    const normal = gameData.monsters.monsters.find(
+      (m) => m.rank === 'normal' && m.zoneFloor === 100,
+    )!;
+    for (let i = 0; i < 20000; i++) {
+      const drops = rollLoot(gameData, rng, [{ monsterId: normal.id }], 100, ['warrior']);
+      expect(drops.some((d) => d.rarity === 'unique')).toBe(false);
+    }
   });
 
   it('un objet tombe dans le matériau du palier de l’étage', () => {
@@ -65,14 +83,17 @@ describe('butin (onglet Butin du bestiaire)', () => {
     expect(tierOf(70)).toBe(5);
   });
 
-  it('un Unique est celui du biome pour la classe tirée', () => {
-    const rng = createRng(1);
-    expect(catalogItemFor(gameData, 'warrior', 'unique', 95, rng)).toBe(
-      gameData.equipment.uniques.find((u) => u.name === 'Épée de la Mort')!.id,
-    );
-    expect(catalogItemFor(gameData, 'mage', 'unique', 5, rng)).toBe(
-      gameData.equipment.uniques.find((u) => u.name === 'Bâton de la Singularité')!.id,
-    );
+  it('chaque étage de boss ou de dragon a son Unique : Guerrier, Mage puis Tireur du biome', () => {
+    const name = (floor: number) => uniqueForBossFloor(gameData, floor)?.name;
+    expect(name(5)).toBe('Heaume du Roi Déchu');
+    expect(name(9)).toBe('Bâton de la Singularité');
+    expect(name(10)).toBe('Bague du Dernier Souffle');
+    expect(name(95)).toBe('Épée de la Mort');
+    expect(uniqueForBossFloor(gameData, 4)).toBeNull();
+    // Les 30 Uniques sont tous lâchés, chacun par un seul étage.
+    const floors = gameData.equipment.uniques.map((u) => bossFloorOfUnique(gameData, u.id));
+    expect(floors.every((f) => f !== null)).toBe(true);
+    expect(new Set(floors).size).toBe(30);
     expect(biomeOfFloor(gameData, 55).id).toBe('ocean');
   });
 

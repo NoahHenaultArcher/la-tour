@@ -2,10 +2,13 @@
  * Inventaire, équipement et Atelier. Le serveur vérifie l'appartenance de l'objet et du personnage,
  * la classe, le palier ouvert par l'Atelier et les ressources, puis écrit tout en une transaction.
  */
+import { randomInt } from 'node:crypto';
 import type { Prisma, PrismaClient } from '@prisma/client';
 import {
   craftCost,
+  createRng,
   itemWorkTier,
+  rollCraftRarity,
   workshopMaxTier,
   workshopUpgradeCost,
   type CraftItemBody,
@@ -121,7 +124,10 @@ export async function upgradeItem(
   });
 }
 
-/** Fabrique un objet Commun +0 pour une classe de l'équipe, dans un palier ouvert par l'Atelier. */
+/**
+ * Fabrique un objet +0 pour une classe de l'équipe, dans un palier ouvert par l'Atelier.
+ * Il coûte le prix de sa version Commune ; sa rareté est tirée selon le niveau de l'Atelier.
+ */
 export async function craftItem(
   prisma: PrismaClient,
   saveId: string,
@@ -136,15 +142,19 @@ export async function craftItem(
       throw new HttpError(409, 'TIER_LOCKED', { tier: request.tier });
     const owned = await tx.character.findFirst({ where: { saveId, class: request.classId } });
     if (!owned) throw new HttpError(409, 'CLASS_NOT_OWNED');
-    const info = gameData.equipment.catalog.find(
-      (c) =>
-        c.classId === request.classId &&
-        c.slot === request.slot &&
-        c.tier === request.tier &&
-        c.rarity === 'common',
-    );
-    if (!info) throw new HttpError(404, 'NOT_FOUND');
-    await spend(tx, saveId, craftCost(gameData, info));
+    const find = (rarity: string) =>
+      gameData.equipment.catalog.find(
+        (c) =>
+          c.classId === request.classId &&
+          c.slot === request.slot &&
+          c.tier === request.tier &&
+          c.rarity === rarity,
+      );
+    const common = find('common');
+    if (!common) throw new HttpError(404, 'NOT_FOUND');
+    await spend(tx, saveId, craftCost(gameData, common));
+    const rarity = rollCraftRarity(createRng(randomInt(0, 2 ** 32 - 1)), level);
+    const info = find(rarity) ?? common;
     const item = await tx.item.create({ data: { saveId, catalogId: info.id } });
     return item.id;
   });

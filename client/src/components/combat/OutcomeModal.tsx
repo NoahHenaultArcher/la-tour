@@ -35,6 +35,11 @@ interface Props {
   next: Action | null;
   /** Rejouer l'étage (boss et dragons). */
   replay: Action | null;
+  /** « Poursuivre » : lance l'enchaînement automatique des étages (null si impossible ou déjà lancé). */
+  onChain: (() => void) | null;
+  /** Enchaînement en cours : secondes avant l'étage suivant (null sinon). */
+  chainSeconds: number | null;
+  onStopChain: () => void;
 }
 
 /**
@@ -195,7 +200,17 @@ export function defeatAdvice(mode: CombatMode) {
       : 'outcome.defeatAdvice';
 }
 
-export function OutcomeModal({ outcome, onVillage, onTower, onTeam, next, replay }: Props) {
+export function OutcomeModal({
+  outcome,
+  onVillage,
+  onTower,
+  onTeam,
+  next,
+  replay,
+  onChain,
+  chainSeconds,
+  onStopChain,
+}: Props) {
   const characters = useSession((s) => s.save?.characters ?? []);
   const classOf = (id: string) => characters.find((c) => c.id === id)?.classId;
   const { elements, buildings, huntingZones } = outcome.unlocked;
@@ -297,6 +312,14 @@ export function OutcomeModal({ outcome, onVillage, onTower, onTeam, next, replay
           </ul>
         </section>
       )}
+      {chainSeconds !== null && (
+        <div className="chain-countdown" role="status">
+          <span>{t('outcome.chainCountdown', { seconds: chainSeconds })}</span>
+          <button type="button" className="danger" onClick={onStopChain}>
+            {t('outcome.chainStop')}
+          </button>
+        </div>
+      )}
       {/* Navigation à gauche ; enchaîner (rejouer, étage suivant) à droite. */}
       <div className="modal-actions outcome-actions">
         <button type="button" onClick={onVillage}>
@@ -321,8 +344,18 @@ export function OutcomeModal({ outcome, onVillage, onTower, onTeam, next, replay
           </button>
         )}
         {next && (
-          <button type="button" className="primary" onClick={next.run}>
+          <button type="button" className={onChain ? '' : 'primary'} onClick={next.run}>
             {next.label}
+          </button>
+        )}
+        {onChain && (
+          <button
+            type="button"
+            className="primary"
+            title={t('outcome.chainHint')}
+            onClick={onChain}
+          >
+            {t('outcome.chain')}
           </button>
         )}
       </div>

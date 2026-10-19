@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { gameData } from '../data/index.ts';
 import { nextUpgradeCost } from './equipment.ts';
-import { craftCost, itemWorkTier, workshopMaxTier, workshopUpgradeCost } from './workshop.ts';
+import { createRng } from './random.ts';
+import {
+  craftCost,
+  craftRarityChances,
+  itemWorkTier,
+  rollCraftRarity,
+  workshopMaxTier,
+  workshopUpgradeCost,
+} from './workshop.ts';
 
 const item = (id: string) => gameData.equipment.catalog.find((c) => c.id === id)!;
 
@@ -37,7 +45,7 @@ describe('Atelier de fabrication', () => {
     const helm = item('GUE-CHA-UNI');
     expect(itemWorkTier(gameData.equipment, helm, 0)).toBe(1);
     expect(itemWorkTier(gameData.equipment, helm, 13)).toBe(2);
-    expect(itemWorkTier(gameData.equipment, helm, 98)).toBe(5);
+    expect(itemWorkTier(gameData.equipment, helm, 29)).toBe(3); // +30 max : niveau 31
     expect(itemWorkTier(gameData.equipment, item('MAG-AR2-P4-COM'), 0)).toBe(4);
   });
 
@@ -58,5 +66,39 @@ describe('Atelier de fabrication', () => {
       quantity: 14,
     });
     expect(() => craftCost(gameData, item('GUE-AR1-P2-EPI'))).toThrow();
+  });
+});
+
+describe('rareté des objets fabriqués', () => {
+  it('Atelier niveau 1 : 70 % Commun … 0,05 % Légendaire, jamais d’Unique', () => {
+    const chances = craftRarityChances(1);
+    expect(chances.common).toBeCloseTo(0.7, 10);
+    expect(chances.rare).toBeCloseTo(0.2, 10);
+    expect(chances.superRare).toBeCloseTo(0.07, 10);
+    expect(chances.epic).toBeCloseTo(0.025, 10);
+    expect(chances.mythic).toBeCloseTo(0.0045, 10);
+    expect(chances.legendary).toBeCloseTo(0.0005, 10);
+    expect(chances.unique).toBe(0);
+  });
+
+  it('chaque niveau d’Atelier au-delà du 1er : +10 % sur les raretés au-dessus du Commun', () => {
+    const chances = craftRarityChances(5);
+    expect(chances.rare).toBeCloseTo(0.28, 10);
+    expect(chances.legendary).toBeCloseTo(0.0007, 10);
+    expect(chances.common).toBeCloseTo(0.58, 10);
+    const total = Object.values(chances).reduce((a, b) => a + b, 0);
+    expect(total).toBeCloseTo(1, 10);
+  });
+
+  it('le tirage suit ces chances', () => {
+    const rng = createRng(42);
+    const counts: Record<string, number> = {};
+    for (let i = 0; i < 20000; i++) {
+      const rarity = rollCraftRarity(rng, 1);
+      counts[rarity] = (counts[rarity] ?? 0) + 1;
+    }
+    expect(counts.common! / 20000).toBeCloseTo(0.7, 1);
+    expect(counts.rare! / 20000).toBeCloseTo(0.2, 1);
+    expect(counts.unique).toBeUndefined();
   });
 });

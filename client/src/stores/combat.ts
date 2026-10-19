@@ -70,6 +70,11 @@ interface CombatStore {
   auto: boolean;
   /** Choix du joueur (bouton auto) : chaque combat solo suivant démarre ainsi (retenu dans le navigateur). */
   autoWanted: boolean;
+  /**
+   * Enchaînement (tour et Abysse, solo) : après chaque victoire, l'étage suivant se lance seul au bout
+   * d'un compte à rebours, en mode auto. S'arrête sur une défaite, sans étage suivant ou à la demande.
+   */
+  chain: boolean;
   /** Vitesse en cours (toujours ×1 en multi). */
   speed: Speed;
   /** Choix du joueur (boutons de vitesse) : repris à chaque combat solo (retenu dans le navigateur). */
@@ -99,6 +104,9 @@ interface CombatStore {
   retreat: () => Promise<void>;
   winWave: () => Promise<void>;
   setAuto: (auto: boolean) => void;
+  /** Lance l'enchaînement (le combat suivant démarre en mode auto). */
+  startChain: () => void;
+  stopChain: () => void;
   setSpeed: (speed: Speed) => void;
   selectHero: (heroId: string) => void;
   selectSkill: (skillId: string | null) => void;
@@ -189,8 +197,9 @@ export const useCombat = create<CombatStore>((set, get) => {
   };
   const multi = () => get().mode === 'multi';
 
-  /** Un nouveau combat solo reprend les derniers choix du joueur : auto et vitesse. */
-  const applyPreferences = () => set({ auto: get().autoWanted, speed: get().speedWanted });
+  /** Un nouveau combat solo reprend les derniers choix du joueur : auto (forcé en enchaînement) et vitesse. */
+  const applyPreferences = () =>
+    set({ auto: get().chain || get().autoWanted, speed: get().speedWanted });
 
   const call = async (request: () => Promise<CombatResponse>, reset = false) => {
     if (get().busy) return;
@@ -198,7 +207,7 @@ export const useCombat = create<CombatStore>((set, get) => {
     try {
       receive(await request(), reset);
     } catch (error) {
-      set({ busy: false, error: errorMessage(error), auto: false });
+      set({ busy: false, error: errorMessage(error), auto: false, chain: false });
     }
   };
 
@@ -218,6 +227,7 @@ export const useCombat = create<CombatStore>((set, get) => {
     busy: false,
     error: null,
     auto: false,
+    chain: false,
     autoWanted: readAuto(),
     speed: readSpeed(),
     speedWanted: readSpeed(),
@@ -300,6 +310,8 @@ export const useCombat = create<CombatStore>((set, get) => {
       remember(AUTO_KEY, auto ? '1' : '0');
       set({ auto, autoWanted: auto });
     },
+    startChain: () => set({ chain: true }),
+    stopChain: () => set({ chain: false }),
     setSpeed: (speed) => {
       remember(SPEED_KEY, String(speed));
       set({ speed, speedWanted: speed });
@@ -311,7 +323,11 @@ export const useCombat = create<CombatStore>((set, get) => {
       const { queue, view, target, pendingOutcome, pendingMulti } = get();
       if (queue.length === 0) {
         if (target && view !== target) set({ view: target, activeId: null, activeSkillId: null });
-        if (pendingOutcome) set({ outcome: pendingOutcome, pendingOutcome: null, auto: false });
+        if (pendingOutcome) {
+          // L'enchaînement s'arrête sur une défaite (ou un abandon).
+          const chain = get().chain && pendingOutcome.result === 'victory';
+          set({ outcome: pendingOutcome, pendingOutcome: null, auto: false, chain });
+        }
         if (pendingMulti)
           set({ multiOutcome: pendingMulti, pendingMulti: null, turnDeadline: null });
         return false;
@@ -497,6 +513,7 @@ export const useCombat = create<CombatStore>((set, get) => {
 
     clearOutcome: () =>
       set({
+        chain: false,
         outcome: null,
         multiOutcome: null,
         pendingMulti: null,

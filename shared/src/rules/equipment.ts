@@ -34,9 +34,14 @@ export function findRarity(data: EquipmentData, rarity: RarityId): RarityInfo {
   return info;
 }
 
+/** Amélioration maximale : celle du palier, ou celle commune à tous les Uniques (balance.ts). */
+export function maxUpgrade(item: CatalogItem): number {
+  return item.rarity === 'unique' ? UNIQUE_ITEMS.maxUpgrade : item.maxUpgrade;
+}
+
 /** L'amélioration ne peut dépasser le maximum de l'objet (palier ou Unique). */
 export function clampUpgrade(item: CatalogItem, upgrade: number): number {
-  return Math.min(Math.max(0, Math.round(upgrade)), item.maxUpgrade);
+  return Math.min(Math.max(0, Math.round(upgrade)), maxUpgrade(item));
 }
 
 /** Niveau effectif = niveau de base du matériau (ou de l'Unique) + amélioration. */
@@ -69,19 +74,47 @@ export function statsAtLevel(
 }
 
 /**
- * Niveau utilisé pour les stats : le niveau effectif de l'objet ; un Unique porté vaut au moins le
- * niveau de son porteur, sans dépasser son niveau maximum (balance.ts, UNIQUE_ITEMS).
+ * Niveau utilisé pour les stats : le niveau effectif de l'objet. Un Unique vaut le niveau de son
+ * porteur (au moins celui de son biome, au plus 100) ; son amélioration s'y ajoute en bonus
+ * (balance.ts, UNIQUE_ITEMS).
  */
-export function statLevel(item: CatalogItem, upgrade: number, wearerLevel?: number): number {
-  const own = effectiveLevel(item, upgrade);
-  if (item.rarity !== 'unique' || !wearerLevel) return own;
-  return Math.max(own, Math.min(wearerLevel, item.baseLevel + item.maxUpgrade));
+export function statLevel(
+  data: EquipmentData,
+  item: CatalogItem,
+  upgrade: number,
+  wearerLevel?: number,
+): number {
+  if (item.rarity !== 'unique') return effectiveLevel(item, upgrade);
+  return Math.max(item.baseLevel, Math.min(wearerLevel ?? 0, data.params.levelCurve.maxLevel));
+}
+
+/**
+ * Bonus d'amélioration d'un Unique : +1 % par niveau sur chaque stat. La stat principale de l'objet
+ * (rang 1 de son profil) gagne au moins un cran par niveau (1 point, ou 0,1 %), pour que chaque
+ * amélioration se voie ; l'imposer sur toutes les lignes doublait presque l'objet à +30.
+ */
+function uniqueUpgradeBonus(
+  data: EquipmentData,
+  profile: ItemProfile,
+  base: StatBlock,
+  upgrade: number,
+): StatBlock {
+  if (upgrade === 0) return base;
+  const stats = { ...base };
+  for (const info of data.stats) {
+    const value = base[info.id];
+    if (value <= 0) continue;
+    const scaled = value * (1 + UNIQUE_ITEMS.bonusPerUpgrade * upgrade);
+    const minimum = profile.ranks[info.id] === 1 ? value + upgrade * 10 ** -info.decimals : 0;
+    stats[info.id] = excelRound(Math.max(scaled, minimum), info.decimals);
+  }
+  return stats;
 }
 
 /**
  * Stats d'un objet à un niveau d'amélioration. `wearerLevel` : niveau du héros qui le porte
  * (ou le porterait) ; seuls les Uniques en tiennent compte. Les Uniques ont leur propre
- * multiplicateur (balance.ts) ; les autres raretés suivent le classeur.
+ * multiplicateur et leur bonus d'amélioration (balance.ts) ; les autres raretés suivent le classeur.
  */
 export function itemStats(
   data: EquipmentData,
@@ -90,12 +123,16 @@ export function itemStats(
   wearerLevel?: number,
 ): StatBlock {
   const rarity = findRarity(data, item.rarity);
-  return statsAtLevel(
+  const profile = findProfile(data, item.classId, item.slot);
+  const level = statLevel(data, item, upgrade, wearerLevel);
+  if (item.rarity !== 'unique') return statsAtLevel(data, profile, rarity, level);
+  const base = statsAtLevel(
     data,
-    findProfile(data, item.classId, item.slot),
-    item.rarity === 'unique' ? { ...rarity, statMultiplier: UNIQUE_ITEMS.statMultiplier } : rarity,
-    statLevel(item, upgrade, wearerLevel),
+    profile,
+    { ...rarity, statMultiplier: UNIQUE_ITEMS.statMultiplier },
+    level,
   );
+  return uniqueUpgradeBonus(data, profile, base, clampUpgrade(item, upgrade));
 }
 
 /** Puissance indicative d'un objet : somme des stats rapportées à leur valeur de référence K. */
@@ -153,7 +190,7 @@ export function nextUpgradeCost(
   upgrade: number,
 ): UpgradeCost | null {
   const current = clampUpgrade(item, upgrade);
-  if (current >= item.maxUpgrade) return null;
+  if (current >= maxUpgrade(item)) return null;
   return {
     resourceId: upgradeResource(data, item, current),
     quantity: upgradeQuantity(data, item.rarity, current + 1),

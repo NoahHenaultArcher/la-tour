@@ -9,6 +9,7 @@ import {
   findRarity,
   itemPower,
   itemStats,
+  maxUpgrade,
   nextUpgradeCost,
   statsAtLevel,
   tierForFloor,
@@ -46,19 +47,41 @@ describe('stats des objets', () => {
             c.rarity === 'legendary' &&
             c.tier === 5,
         )!;
-        const ratio = power(u, u.maxUpgrade) / itemPower(data, itemStats(data, legendary, 30));
+        const ratio = power(u, 0, 100) / itemPower(data, itemStats(data, legendary, 30));
         expect(ratio, u.id).toBeGreaterThan(1.04);
         expect(ratio, u.id).toBeLessThan(1.12);
       }
     });
 
-    it('grandissent avec leur porteur, sans dépasser leur niveau maximum', () => {
+    it('grandissent avec leur porteur, du niveau de leur biome jusqu’au niveau 100', () => {
       const forest = uniques.find((u) => u.baseLevel === 1)!;
+      const demon = uniques.find((u) => u.baseLevel === 91)!;
       expect(power(forest, 0, 85)).toBeGreaterThan(power(forest, 0) * 5);
-      expect(itemStats(data, forest, 0, 85)).toEqual(itemStats(data, forest, 84));
-      // L'amélioration sert à dépasser le niveau du héros.
-      expect(itemStats(data, forest, 95, 50)).toEqual(itemStats(data, forest, 95));
-      expect(itemStats(data, forest, 0, 150)).toEqual(itemStats(data, forest, forest.maxUpgrade));
+      expect(itemStats(data, forest, 0, 150)).toEqual(itemStats(data, forest, 0, 100));
+      expect(itemStats(data, demon, 0, 20)).toEqual(itemStats(data, demon, 0));
+    });
+
+    it('chaque amélioration ajoute des stats, jusqu’à +30 (+1 % par niveau)', () => {
+      expect(uniques.every((u) => maxUpgrade(u) === 30)).toBe(true);
+      for (const u of uniques) {
+        const profile = findProfile(data, u.classId, u.slot);
+        const main = STAT_IDS.find((id) => profile.ranks[id] === 1)!;
+        for (const wearer of [1, 50, 100]) {
+          for (let up = 1; up <= 30; up++) {
+            const before = itemStats(data, u, up - 1, wearer);
+            const after = itemStats(data, u, up, wearer);
+            // La stat principale gagne à chaque niveau ; les autres ne baissent jamais.
+            expect(after[main], `${u.id} +${up}`).toBeGreaterThan(before[main]);
+            for (const id of STAT_IDS) expect(after[id]).toBeGreaterThanOrEqual(before[id]);
+          }
+        }
+        const ratio = power(u, 30, 100) / power(u, 0, 100);
+        expect(ratio, u.id).toBeGreaterThan(1.29);
+        expect(ratio, u.id).toBeLessThan(1.5);
+      }
+      const forest = uniques.find((u) => u.baseLevel === 1)!;
+      expect(itemStats(data, forest, 99, 50)).toEqual(itemStats(data, forest, 30, 50));
+      expect(nextUpgradeCost(data, forest, 30)).toBeNull();
     });
 
     it('les autres raretés ignorent le niveau du porteur', () => {
@@ -156,7 +179,8 @@ describe('amélioration des objets', () => {
     expect(helm.material).toBeNull();
     expect(upgradeResource(data, helm, 0)).toBe('cuir');
     expect(upgradeResource(data, helm, 13)).toBe('fer'); // niveau 15 visé → palier 2
-    expect(upgradeResource(data, helm, 98)).toBe('adamantite');
+    expect(upgradeResource(data, helm, 29)).toBe('acier'); // +30 : niveau 31 → palier 3
+    expect(upgradeResource(data, itemById('GUE-AR1-UNI'), 0)).toBe('adamantite');
   });
 });
 

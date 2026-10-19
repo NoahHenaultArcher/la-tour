@@ -1,7 +1,10 @@
 import {
   STAT_IDS,
-  effectiveLevel,
+  UNIQUE_ITEMS,
+  bossFloorOfUnique,
+  clampUpgrade,
   itemWorkTier,
+  maxUpgrade,
   statLevel,
   workshopMaxTier,
   workshopUpgradeCost,
@@ -59,8 +62,17 @@ export function ItemTooltip({ item, save, resources, compareWith }: Props) {
   // Un Unique grandit avec le héros qui le porte (ou le porterait).
   const stats = statsOf(item, save, owner);
   const unique = gameData.equipment.uniques.find((u) => u.id === info.id);
-  const ownLevel = effectiveLevel(info, item.upgradeLevel);
-  const usedLevel = statLevel(info, item.upgradeLevel, wearerLevel(save, owner));
+  const usedLevel = statLevel(
+    gameData.equipment,
+    info,
+    item.upgradeLevel,
+    wearerLevel(save, owner),
+  );
+  const uniqueFloor = unique ? bossFloorOfUnique(gameData, info.id) : null;
+  const uniqueBoss = gameData.floors.floors.find((f) => f.floor === uniqueFloor)?.bossName;
+  const uniqueBonus = Math.round(
+    clampUpgrade(info, item.upgradeLevel) * UNIQUE_ITEMS.bonusPerUpgrade * 100,
+  );
 
   const workshopLevel = save.buildings.atelier_fabrication;
   const cost = workshopUpgradeCost(gameData.equipment, info, item.upgradeLevel, workshopLevel ?? 0);
@@ -80,12 +92,11 @@ export function ItemTooltip({ item, save, resources, compareWith }: Props) {
       <span className="muted">
         {rarity.name} · {t(`class.name.${info.classId}`)} · {t(`slot.${info.slot}`)}
       </span>
-      <span>{t('item.upgrade', { level: item.upgradeLevel, max: info.maxUpgrade })}</span>
+      <span>{t('item.upgrade', { level: item.upgradeLevel, max: maxUpgrade(info) })}</span>
       {unique && (
         <span className="muted small">
-          {usedLevel > ownLevel
-            ? t('item.uniqueScaled', { level: usedLevel, own: ownLevel })
-            : t('item.uniqueScales', { level: ownLevel })}
+          {t('item.uniqueScales', { level: usedLevel })}
+          {uniqueBonus > 0 && ` · ${t('item.uniqueBonus', { bonus: uniqueBonus })}`}
         </span>
       )}
       <ul className="stat-lines">
@@ -98,6 +109,11 @@ export function ItemTooltip({ item, save, resources, compareWith }: Props) {
       {unique && (
         <span className="unique-passive">
           <strong>{unique.passiveName}</strong> : {unique.passiveEffect} ({unique.passiveLimit})
+        </span>
+      )}
+      {uniqueFloor && (
+        <span className="muted small">
+          {t('item.uniqueDroppedBy', { boss: uniqueBoss ?? '', floor: uniqueFloor })}
         </span>
       )}
       {cost ? (

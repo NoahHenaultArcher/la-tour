@@ -4,15 +4,16 @@
  *  2. si réussi : le nombre d'objets du rang (+1 avec la chance d'objet bonus) ;
  *  3. pour chaque objet : une classe au hasard (les trois, même hors de l'équipe), une rareté tirée
  *     dans la table du biome (monstres, boss ou dragon), un slot au hasard, le matériau du palier de l'étage, amélioration +0.
- *  Si la rareté tirée est Unique : l'Unique du biome pour cette classe.
+ *  Uniques : seuls les boss et les dragons en lâchent, chacun un Unique précis (uniqueForBossFloor) ;
+ *  un autre monstre ne tire jamais la rareté Unique.
  * Abysse : tables du dernier biome (palier adamantite), Mythique et Légendaire plus fréquents avec la
- * profondeur, Uniques du biome d'origine du monstre (boss, dragon), butin garanti sur un alpha.
+ * profondeur, Unique de l'étage d'origine du boss ou du dragon, butin garanti sur un alpha.
  */
-import { RARITY_IDS, SLOT_IDS, type ClassId, type RarityId } from '../constants.ts';
+import { CLASS_IDS, RARITY_IDS, SLOT_IDS, type ClassId, type RarityId } from '../constants.ts';
 import type { ElementsData, EquipmentData, LootData, MonstersData } from '../data/schemas.ts';
 import { ABYSS } from '../balance.ts';
 import { abyssHighRarityBoost } from './abyss.ts';
-import { tierForFloor } from './equipment.ts';
+import { tierForFloor, type CatalogItem } from './equipment.ts';
 import { chance, nextFloat, pick, type Rng } from './random.ts';
 import { byId } from './lookup.ts';
 
@@ -36,7 +37,8 @@ export function biomeOfFloor(data: { elements: ElementsData }, floor: number) {
   return biome;
 }
 
-function weightedRarity(rng: Rng, weights: Record<RarityId, number>): RarityId {
+/** Rareté tirée selon des poids (pas forcément de somme 1). */
+export function weightedRarity(rng: Rng, weights: Record<RarityId, number>): RarityId {
   const total = RARITY_IDS.reduce((sum, id) => sum + weights[id], 0);
   let roll = nextFloat(rng) * total;
   for (const id of RARITY_IDS) {
@@ -46,25 +48,56 @@ function weightedRarity(rng: Rng, weights: Record<RarityId, number>): RarityId {
   return 'common';
 }
 
-/** Objet du catalogue correspondant à un tirage. */
+const dropsUnique = (rank: string) => rank === 'boss' || rank === 'dragon';
+
+/**
+ * Unique lâché par le boss ou le dragon d'un étage (décision du 19/10/2026) : chaque biome a 3 Uniques
+ * (un par classe) et 3 étages de boss ou de dragon ; dans l'ordre des étages, ils donnent l'Unique du
+ * Guerrier, du Mage puis du Tireur (Forêt : 5 → Guerrier, 9 → Mage, 10 → Tireur).
+ * null si l'étage n'a ni boss ni dragon.
+ */
+export function uniqueForBossFloor(
+  data: Pick<LootRulesData, 'loot' | 'equipment' | 'elements' | 'monsters'>,
+  floor: number,
+): CatalogItem | null {
+  const biome = biomeOfFloor(data, floor);
+  const bossFloors = [
+    ...new Set(
+      data.monsters.monsters
+        .filter(
+          (m) =>
+            dropsUnique(m.rank) && m.zoneFloor >= biome.floorMin && m.zoneFloor <= biome.floorMax,
+        )
+        .map((m) => m.zoneFloor),
+    ),
+  ].sort((a, b) => a - b);
+  const classId = CLASS_IDS[bossFloors.indexOf(floor)];
+  if (!classId) return null;
+  const entry = data.loot.uniquesByBiome.find((u) => u.biome === biome.id);
+  const unique = data.equipment.uniques.find(
+    (u) => u.classId === classId && u.name === entry?.uniques[classId],
+  );
+  if (!unique) throw new Error(`Unique introuvable (${biome.id}, ${classId})`);
+  return data.equipment.catalog.find((c) => c.id === unique.id) ?? null;
+}
+
+/** Étage du boss ou du dragon qui lâche un Unique (null pour un autre objet). */
+export function bossFloorOfUnique(
+  data: Pick<LootRulesData, 'loot' | 'equipment' | 'elements' | 'monsters'>,
+  catalogId: string,
+): number | null {
+  const floors = data.monsters.monsters.filter((m) => dropsUnique(m.rank)).map((m) => m.zoneFloor);
+  return floors.find((floor) => uniqueForBossFloor(data, floor)?.id === catalogId) ?? null;
+}
+
+/** Objet du catalogue (hors Unique) correspondant à un tirage. */
 export function catalogItemFor(
   data: LootRulesData,
   classId: ClassId,
   rarity: RarityId,
   floor: number,
   rng: Rng,
-  /** Étage dont le biome donne l'Unique (par défaut, celui de l'étage). */
-  uniqueFloor = floor,
 ): string {
-  if (rarity === 'unique') {
-    const biome = biomeOfFloor(data, uniqueFloor);
-    const entry = data.loot.uniquesByBiome.find((u) => u.biome === biome.id);
-    const unique = data.equipment.uniques.find(
-      (u) => u.classId === classId && u.name === entry?.uniques[classId],
-    );
-    if (!unique) throw new Error(`Unique introuvable (${biome.id}, ${classId})`);
-    return unique.id;
-  }
   const slot = pick(rng, SLOT_IDS);
   const tier = tierForFloor(data.equipment, floor);
   const item = data.equipment.catalog.find(
@@ -100,17 +133,19 @@ export function rollLoot(
     const count = rule.itemsPerDrop + (chance(rng, rule.bonusItemChance) ? 1 : 0);
     const table = data.loot.rarityTables[rule.rarityTable].find((t) => t.biome === biome.id);
     if (!table) continue;
-    const weights = abyssFloor ? boostHighRarities(table.weights, abyssFloor) : table.weights;
-    // Abysse : l'Unique d'un boss ou d'un dragon vient de son biome d'origine.
-    const uniqueFloor = abyssFloor ? monster.zoneFloor : lootFloor;
+    // Seuls les boss et les dragons lâchent un Unique : le leur, celui de leur étage d'origine
+    // (le même que l'étage joué dans la tour ; dans l'Abysse, l'étage de la tour d'où ils viennent).
+    const unique = dropsUnique(monster.rank) ? uniqueForBossFloor(data, monster.zoneFloor) : null;
+    const tableWeights = unique ? table.weights : { ...table.weights, unique: 0 };
+    const weights = abyssFloor ? boostHighRarities(tableWeights, abyssFloor) : tableWeights;
     for (let i = 0; i < count; i++) {
       const classId = pick(rng, classes);
       const rarity = weightedRarity(rng, weights);
-      drops.push({
-        classId,
-        rarity,
-        catalogId: catalogItemFor(data, classId, rarity, lootFloor, rng, uniqueFloor),
-      });
+      drops.push(
+        rarity === 'unique' && unique
+          ? { classId: unique.classId, rarity, catalogId: unique.id }
+          : { classId, rarity, catalogId: catalogItemFor(data, classId, rarity, lootFloor, rng) },
+      );
     }
   }
   return drops;

@@ -232,11 +232,17 @@ export type AlphaTraitId = (typeof ALPHA_TRAIT_IDS)[number];
  * début de son biome (1 en Forêt, 91 au Palais démoniaque) : à +0, il était bien plus faible qu'un
  * Mythique adamantite amélioré. Désormais :
  * - multiplicateur ×2,6 (+8 % sur un Légendaire du même niveau) ;
- * - un Unique porté compte au moins au niveau de son porteur (plafonné à son niveau maximum, 100) :
- *   il grandit avec le héros ; l'améliorer sert à dépasser le niveau du héros.
+ * - un Unique porté compte au niveau de son porteur (au moins le niveau de son biome, au plus 100) :
+ *   il grandit avec le héros.
+ * Amélioration (décision du 19/10/2026) : avant, elle ne servait qu'à dépasser le niveau du héros, si
+ * bien que la plupart des améliorations ne changeaient rien. Désormais chaque amélioration ajoute
+ * +1 % à toutes les stats de l'Unique (au moins un cran de plus sur chaque ligne : +1 point ou +0,1 %),
+ * et tous les Uniques plafonnent à +30 (au lieu de « 100 − niveau du biome » dans le classeur).
  */
 export const UNIQUE_ITEMS = {
   statMultiplier: 2.6,
+  maxUpgrade: 30,
+  bonusPerUpgrade: 0.01,
 } as const;
 
 /**
@@ -246,6 +252,19 @@ export const UNIQUE_ITEMS = {
  */
 export const CRAFTING = {
   costShare: 1,
+  /**
+   * Rareté de l'objet fabriqué (décision de l'utilisateur, 19/10/2026) : même coût, mais une chance
+   * d'obtenir mieux qu'un Commun. Jamais d'Unique. Chances de base (Atelier niveau 1)…
+   */
+  rarityChances: {
+    rare: 0.2,
+    superRare: 0.07,
+    epic: 0.025,
+    mythic: 0.0045,
+    legendary: 0.0005,
+  },
+  /** …et chaque niveau d'Atelier au-delà du 1er les multiplie par 1 + 10 % (le Commun prend le reste). */
+  bonusPerWorkshopLevel: 0.1,
 } as const;
 
 export const COMBAT_RULES = {

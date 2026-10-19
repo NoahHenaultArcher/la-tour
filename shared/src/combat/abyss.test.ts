@@ -183,13 +183,10 @@ describe('Abysse : butin', () => {
     expect(high(60)).toBeGreaterThan(high(1) * 1.5);
   });
 
-  it("un boss de l'Abysse lâche l'Unique de son biome d'origine", () => {
+  it("un boss de l'Abysse lâche l'Unique de son étage d'origine", () => {
     const forestBoss = gameData.monsters.monsters.find(
       (m) => m.rank === 'boss' && m.zoneFloor === 5,
     )!;
-    const forestUniques = new Set(
-      Object.values(gameData.loot.uniquesByBiome.find((u) => u.biome === 'forest')!.uniques),
-    );
     const rng = createRng(11);
     const uniques = Array.from({ length: 400 }, () =>
       rollLoot(gameData, rng, [{ monsterId: forestBoss.id }], 1, ['warrior'], { abyssFloor: 5 }),
@@ -197,9 +194,6 @@ describe('Abysse : butin', () => {
       .flat()
       .filter((d) => d.rarity === 'unique');
     expect(uniques.length).toBeGreaterThan(0);
-    for (const d of uniques) {
-      const unique = gameData.equipment.uniques.find((u) => u.id === d.catalogId)!;
-      expect(forestUniques.has(unique.name)).toBe(true);
-    }
+    for (const d of uniques) expect(d.catalogId).toBe('GUE-CHA-UNI');
   });
 });

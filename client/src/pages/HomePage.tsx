@@ -625,7 +625,7 @@ function GoalsCard({ save }: { save: SaveDto }) {
   goals.sort((a, b) => a.floor - b.floor);
 
   const bestLevel = Math.max(...save.characters.map((c) => c.level));
-  const heritageReady = canInherit(save.characters, MAX_HERO_LEVEL);
+  const heritageReady = canInherit(save);
 
   return (
     <Card title={t('home.goalsTitle')}>
@@ -647,7 +647,7 @@ function GoalsCard({ save }: { save: SaveDto }) {
       ) : (
         <div className="home-heritage">
           <span className="small">
-            {t('home.heritageAt', { level: bestLevel, max: MAX_HERO_LEVEL })}
+            {t('home.heritageAt', { level: bestLevel, max: MAX_HERO_LEVEL, floor: TOWER_FLOORS })}
           </span>
           <ProgressBar value={bestLevel} max={MAX_HERO_LEVEL} />
         </div>

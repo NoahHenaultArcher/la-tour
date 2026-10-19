@@ -5,6 +5,7 @@
  * Ces règles sont écrites en texte dans le classeur : elles sont traduites ici.
  */
 import { CRAFTING } from '../balance.ts';
+import type { RarityId } from '../constants.ts';
 import type { EquipmentData, ShopData } from '../data/schemas.ts';
 import {
   clampUpgrade,
@@ -13,7 +14,9 @@ import {
   type CatalogItem,
   type UpgradeCost,
 } from './equipment.ts';
+import { weightedRarity } from './loot.ts';
 import { excelRound } from './math.ts';
+import type { Rng } from './random.ts';
 
 /** Niveau d'Atelier qui accorde la réduction sur les ressources d'amélioration. */
 export const WORKSHOP_DISCOUNT_LEVEL = 5;
@@ -48,8 +51,30 @@ export function workshopUpgradeCost(
 }
 
 /**
- * Fabrication d'un objet Commun +0 (PROPOSITION, absente des classeurs, voir balance.ts) :
- * autant d'unités de son matériau que son prix en boutique en vaut (prix Commun ÷ prix unitaire).
+ * Chances de chaque rareté pour un objet fabriqué (balance.ts, CRAFTING) : les raretés au-dessus
+ * du Commun gagnent 10 % par niveau d'Atelier au-delà du 1er ; le Commun prend le reste.
+ */
+export function craftRarityChances(workshopLevel: number): Record<RarityId, number> {
+  const boost = 1 + CRAFTING.bonusPerWorkshopLevel * Math.max(0, workshopLevel - 1);
+  const chances = { common: 0, unique: 0 } as Record<RarityId, number>;
+  let better = 0;
+  for (const [rarity, base] of Object.entries(CRAFTING.rarityChances)) {
+    chances[rarity as RarityId] = base * boost;
+    better += base * boost;
+  }
+  chances.common = 1 - better;
+  return chances;
+}
+
+/** Rareté d'un objet fabriqué, tirée selon le niveau de l'Atelier. */
+export function rollCraftRarity(rng: Rng, workshopLevel: number): RarityId {
+  return weightedRarity(rng, craftRarityChances(workshopLevel));
+}
+
+/**
+ * Fabrication d'un objet +0 (PROPOSITION, absente des classeurs, voir balance.ts) : le prix est
+ * celui de sa version Commune, autant d'unités de son matériau que son prix en boutique en vaut
+ * (prix Commun ÷ prix unitaire). La rareté est tirée ensuite (rollCraftRarity).
  */
 export function craftCost(
   data: { equipment: EquipmentData; shop: ShopData },

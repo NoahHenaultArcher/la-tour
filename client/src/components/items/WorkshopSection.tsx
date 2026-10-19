@@ -3,6 +3,7 @@ import {
   RARITY_IDS,
   SLOT_IDS,
   craftCost,
+  craftRarityChances,
   itemWorkTier,
   workshopMaxTier,
   workshopUpgradeCost,
@@ -12,7 +13,7 @@ import {
 } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { useState } from 'react';
-import { catalogItem, equippedIn } from '../../game/items.ts';
+import { catalogItem, equippedIn, rarityInfo } from '../../game/items.ts';
 import { resourceById, useVillageView } from '../../game/village.ts';
 import { errorMessage, formatNumber, t } from '../../i18n/index.ts';
 import { useNotifications } from '../../stores/notifications.ts';
@@ -34,6 +35,10 @@ function compareItems(a: ItemDto, b: ItemDto): number {
     b.upgradeLevel - a.upgradeLevel
   );
 }
+
+/** Chance en pourcentage : 70 %, 2,5 %, 0,05 %. */
+const formatChance = (value: number) =>
+  `${(value * 100).toLocaleString('fr-FR', { maximumFractionDigits: 2 })} %`;
 
 /** Coût d'une ressource, en rouge s'il en manque, avec le stock actuel. */
 function ResourceCost({
@@ -81,11 +86,11 @@ export function WorkshopSection({ level }: { level: number }) {
   });
   const [pending, setPending] = useState(false);
 
-  const run = async (action: () => Promise<void>, success: string) => {
+  const run = async <T,>(action: () => Promise<T>, success: string | ((result: T) => string)) => {
     setPending(true);
     try {
-      await action();
-      notify('success', success);
+      const result = await action();
+      notify('success', typeof success === 'string' ? success : success(result));
     } catch (error) {
       notify('error', errorMessage(error));
     } finally {
@@ -154,6 +159,7 @@ export function WorkshopSection({ level }: { level: number }) {
     ? { id: 'preview', catalogId: craftTarget.id, upgradeLevel: 0, equippedBy: null, slot: null }
     : null;
   const craftReference = owner ? equippedIn(save, owner.id, craft.slot) : null;
+  const craftChances = craftRarityChances(level);
 
   // Amélioration de l'objet choisi.
   const selectedInfo = selected ? catalogItem(selected.catalogId) : null;
@@ -245,6 +251,14 @@ export function WorkshopSection({ level }: { level: number }) {
                     quantity={craftPrice.quantity}
                     have={have(craftPrice.resourceId)}
                   />
+                  <p className="muted small">{t('workshop.craftChances')}</p>
+                  <ul className="craft-chances">
+                    {RARITY_IDS.filter((r) => craftChances[r] > 0).map((r) => (
+                      <li key={r} style={{ color: rarityInfo(r).color }}>
+                        {rarityInfo(r).name} {formatChance(craftChances[r])}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
               <button
@@ -255,7 +269,14 @@ export function WorkshopSection({ level }: { level: number }) {
                   craftTarget &&
                   void run(
                     () => craftItem({ classId, ...craft }),
-                    t('workshop.crafted', { name: craftTarget.name }),
+                    // L'objet obtenu est annoncé avec sa rareté.
+                    (crafted) => {
+                      const info = crafted ? catalogItem(crafted.catalogId) : craftTarget;
+                      return t('workshop.crafted', {
+                        name: info.name,
+                        rarity: rarityInfo(info.rarity).name,
+                      });
+                    },
                   )
                 }
               >

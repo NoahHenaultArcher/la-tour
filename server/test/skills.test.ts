@@ -201,17 +201,20 @@ describeWithDb('deck, fusions, Tour d’amélioration et héritage', () => {
     );
   });
 
-  it('héritage : dès un héros niveau 100, tout le compte repart avec +25 %', async () => {
+  it('héritage : un héros niveau 100 et la tour conquise, tout le compte repart avec +25 %', async () => {
     expect((await post('/api/save/heritage')).json().error.code).toBe('HERITAGE_LOCKED');
     await setLevel(100);
+    // Niveau 100 mais tour pas encore conquise.
+    await ctx.prisma.save.update({ where: { id: saveId }, data: { highestFloorCleared: 99 } });
+    expect((await post('/api/save/heritage')).json().error.code).toBe('HERITAGE_LOCKED');
     await ctx.prisma.character.update({
       where: { id: mageId },
       data: { statPoints: { magic: 20 } },
     });
     await unlock(['neutral', 'earth'], {
-      currentFloor: 42,
-      highestFloorCleared: 41,
-      bestFloorEver: 41,
+      currentFloor: 100,
+      highestFloorCleared: 100,
+      bestFloorEver: 100,
       gold: 1234n,
     });
     await setDeck([
@@ -225,7 +228,7 @@ describeWithDb('deck, fusions, Tour d’amélioration et héritage', () => {
       heritageCount: 1,
       currentFloor: 1,
       highestFloorCleared: 0,
-      bestFloorEver: 41,
+      bestFloorEver: 100,
       gold: 1234,
       unlockedElements: ['neutral', 'earth'],
     });
@@ -243,7 +246,10 @@ describeWithDb('deck, fusions, Tour d’amélioration et héritage', () => {
         ])
       ).statusCode,
     ).toBe(200);
-    // Plus de niveau 100 : pas de second héritage d'affilée.
+    // Plus de niveau 100 ni de tour conquise : pas de second héritage d'affilée.
+    expect((await post('/api/save/heritage')).json().error.code).toBe('HERITAGE_LOCKED');
+    // Un héros remonté au niveau 100 ne suffit pas : il faut reconquérir la tour.
+    await setLevel(100);
     expect((await post('/api/save/heritage')).json().error.code).toBe('HERITAGE_LOCKED');
   });
 });
