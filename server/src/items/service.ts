@@ -7,6 +7,8 @@ import type { Prisma, PrismaClient } from '@prisma/client';
 import {
   craftCost,
   createRng,
+  evolutionTier,
+  hasThirdWeapon,
   itemWorkTier,
   rollCraftRarity,
   workshopMaxTier,
@@ -34,12 +36,16 @@ async function ownedItem(tx: Tx, saveId: string, itemId: string) {
   return item;
 }
 
-/** Équipe un objet sur un personnage ; l'objet déjà porté dans ce slot retourne dans l'inventaire. */
+/**
+ * Équipe un objet sur un personnage ; l'objet déjà porté dans ce slot retourne dans l'inventaire.
+ * `slot` = weapon3 : 3e arme du Maître d'armes (une épée ou un bouclier).
+ */
 export async function equipItem(
   prisma: PrismaClient,
   saveId: string,
   itemId: string,
   characterId: string,
+  slot?: 'weapon3',
 ): Promise<void> {
   await prisma.$transaction(async (tx) => {
     await lockSave(tx, saveId);
@@ -48,14 +54,26 @@ export async function equipItem(
     if (!character) throw new HttpError(404, 'NOT_FOUND');
     const info = catalogItem(item.catalogId);
     if (info.classId !== character.class) throw new HttpError(409, 'WRONG_CLASS');
+    let target: typeof item.equippedSlot = info.slot;
+    if (slot === 'weapon3') {
+      const save = await tx.save.findUniqueOrThrow({
+        where: { id: saveId },
+        select: { heritageCount: true },
+      });
+      if (!hasThirdWeapon(character.class, evolutionTier(save.heritageCount)))
+        throw new HttpError(409, 'SLOT_LOCKED');
+      if (info.slot !== 'weapon1' && info.slot !== 'weapon2')
+        throw new HttpError(409, 'WRONG_SLOT');
+      target = 'weapon3';
+    }
 
     await tx.item.updateMany({
-      where: { equippedById: characterId, equippedSlot: info.slot, NOT: { id: itemId } },
+      where: { equippedById: characterId, equippedSlot: target, NOT: { id: itemId } },
       data: { equippedById: null, equippedSlot: null },
     });
     await tx.item.update({
       where: { id: itemId },
-      data: { equippedById: characterId, equippedSlot: info.slot },
+      data: { equippedById: characterId, equippedSlot: target },
     });
   });
 }

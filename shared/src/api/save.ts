@@ -4,7 +4,7 @@ import {
   CLASS_IDS,
   type ClassId,
   type ElementId,
-  type SlotId,
+  type EquipSlotId,
   type UpgradeTowerBranchId,
 } from '../constants.ts';
 
@@ -16,6 +16,8 @@ export interface CharacterSkillDto {
   position: number;
   skillId: string;
   fusionElement: ElementId | null;
+  /** Archimage : deuxième élément fusionné. */
+  fusionElement2: ElementId | null;
 }
 
 export interface CharacterDto {
@@ -38,7 +40,8 @@ export interface ItemDto {
   catalogId: string;
   upgradeLevel: number;
   equippedBy: string | null;
-  slot: SlotId | null;
+  /** Emplacement où l'objet est porté (weapon3 : 3e arme du Maître d'armes). */
+  slot: EquipSlotId | null;
 }
 
 /** État complet de la sauvegarde, tel que calculé par le serveur. */

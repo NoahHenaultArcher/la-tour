@@ -3,8 +3,11 @@ import {
   RARITY_IDS,
   SLOT_IDS,
   STAT_IDS,
+  evolutionTier,
+  hasThirdWeapon,
   sellPrice,
   type ClassId,
+  type EquipSlotId,
   type ItemDto,
   type SaveDto,
   type SlotId,
@@ -19,7 +22,7 @@ import { RelicsPanel } from '../components/relics/RelicsPanel.tsx';
 import { StatSheet } from '../components/team/StatSheet.tsx';
 import { Tooltip } from '../components/Tooltip.tsx';
 import { TopBar } from '../components/TopBar.tsx';
-import { CLASS_IMAGES } from '../game/assets.ts';
+import { heroImage, heroName, saveTier } from '../game/evolution.ts';
 import { catalogItem, equippedIn, formatStat, statInfo, statsOf } from '../game/items.ts';
 import { useVillageView } from '../game/village.ts';
 import { errorMessage, formatNumber, t } from '../i18n/index.ts';
@@ -28,6 +31,14 @@ import { useSession } from '../stores/session.ts';
 
 const priceOf = (item: ItemDto) =>
   sellPrice(gameData, catalogItem(item.catalogId), item.upgradeLevel);
+
+/** La 3e arme du Maître d'armes reçoit une épée ou un bouclier (Arme 1 ou Arme 2). */
+const fitsSlot = (itemSlot: SlotId, slot: EquipSlotId) =>
+  slot === 'weapon3' ? itemSlot === 'weapon1' || itemSlot === 'weapon2' : itemSlot === slot;
+
+/** Emplacements d'un héros : les 10 du catalogue, plus « Arme 3 » pour le Maître d'armes. */
+const characterSlotsOf = (thirdWeapon: boolean): EquipSlotId[] =>
+  thirdWeapon ? [...SLOT_IDS, 'weapon3'] : [...SLOT_IDS];
 
 /** Ordre de l'inventaire : par emplacement, puis du plus fort au plus faible. */
 function compareItems(a: ItemDto, b: ItemDto): number {
@@ -61,13 +72,18 @@ export function TeamPage() {
   const view = useVillageView();
   const [characterId, setCharacterId] = useState(save.characters[0]!.id);
   const [inventoryClass, setInventoryClass] = useState<ClassId>(save.characters[0]!.classId);
-  const [slot, setSlot] = useState<SlotId | null>(null);
+  const [slot, setSlot] = useState<EquipSlotId | null>(null);
   const [pending, setPending] = useState(false);
   const [confirmSellAll, setConfirmSellAll] = useState(false);
   // Onglet « Reliques » (à côté des héros) : reliques et œufs de dragon de toute l'équipe.
   const [showRelics, setShowRelics] = useState(false);
 
   const character = save.characters.find((c) => c.id === characterId) ?? save.characters[0]!;
+  const tier = saveTier(save);
+  // Maître d'armes : un 3e emplacement d'arme.
+  const thirdWeapon = (classId: ClassId) =>
+    hasThirdWeapon(classId, evolutionTier(save.heritageCount));
+  const characterSlots = characterSlotsOf(thirdWeapon(character.classId));
   // Héros qui recevrait les objets de l'onglet d'inventaire affiché (null : classe pas encore achetée).
   const owner = save.characters.find((c) => c.classId === inventoryClass) ?? null;
 
@@ -88,7 +104,7 @@ export function TeamPage() {
   const shown = unequipped
     .filter((i) => {
       const info = catalogItem(i.catalogId);
-      return info.classId === inventoryClass && (!slot || info.slot === slot);
+      return info.classId === inventoryClass && (!slot || fitsSlot(info.slot, slot));
     })
     .sort(compareItems);
   const shownValue = shown.reduce((sum, item) => sum + priceOf(item), 0);
@@ -136,7 +152,7 @@ export function TeamPage() {
                   selectCharacter(c.id);
                 }}
               >
-                {t(`class.name.${c.classId}`)}
+                {heroName(c.classId, tier)}
               </button>
             ))}
             <button
@@ -156,9 +172,9 @@ export function TeamPage() {
           <>
             <section className="panel hero-sheet">
               <div className="hero-identity">
-                <PixelImage src={CLASS_IMAGES[character.classId]} alt="" size={96} />
+                <PixelImage src={heroImage(character.classId, tier)} alt="" size={96} />
                 <div>
-                  <h2>{t(`class.name.${character.classId}`)}</h2>
+                  <h2>{heroName(character.classId, tier)}</h2>
                   <p>{t('home.level', { level: character.level })}</p>
                   <p className="muted">
                     {character.xpToNextLevel === null
@@ -179,7 +195,7 @@ export function TeamPage() {
               <h2>{t('team.equipment')}</h2>
               <p className="muted small">{t('team.slotHint')}</p>
               <div className="slot-list">
-                {SLOT_IDS.map((id) => {
+                {characterSlots.map((id) => {
                   const item = equippedIn(save, character.id, id);
                   const selected = slot === id && inventoryClass === character.classId;
                   return (
@@ -280,11 +296,13 @@ export function TeamPage() {
                   }}
                 >
                   <option value="">{t('team.filterAll')}</option>
-                  {SLOT_IDS.map((id) => (
-                    <option key={id} value={id}>
-                      {t(`slot.${id}`)}
-                    </option>
-                  ))}
+                  {(owner && thirdWeapon(owner.classId) ? characterSlotsOf(true) : SLOT_IDS).map(
+                    (id) => (
+                      <option key={id} value={id}>
+                        {t(`slot.${id}`)}
+                      </option>
+                    ),
+                  )}
                 </select>
                 <span className="spacer" />
                 <button
@@ -314,7 +332,7 @@ export function TeamPage() {
               )}
               {owner ? (
                 <p className="muted small">
-                  {t('team.compareHint', { hero: t(`class.name.${owner.classId}`) })}
+                  {t('team.compareHint', { hero: heroName(owner.classId, tier) })}
                 </p>
               ) : (
                 <p className="warning">
@@ -332,8 +350,18 @@ export function TeamPage() {
                       save={save}
                       resources={view.resources}
                       ownerId={owner?.id ?? null}
+                      targetSlot={slot === 'weapon3' ? 'weapon3' : null}
                       pending={pending}
-                      onEquip={() => void run(() => equipItem(item.id, owner!.id))}
+                      onEquip={() =>
+                        void run(() =>
+                          equipItem(item.id, owner!.id, slot === 'weapon3' ? 'weapon3' : undefined),
+                        )
+                      }
+                      onEquipThird={
+                        owner && thirdWeapon(owner.classId) && slot !== 'weapon3'
+                          ? () => void run(() => equipItem(item.id, owner.id, 'weapon3'))
+                          : null
+                      }
                       onSell={() => sellOne(item)}
                     />
                   ))}
@@ -353,8 +381,12 @@ interface InventoryRowProps {
   resources: Record<string, number>;
   /** Héros de la classe de l'objet (null : pas encore acheté, l'objet ne peut pas être équipé). */
   ownerId: string | null;
+  /** Filtre « Arme 3 » : comparer avec la 3e arme plutôt qu'avec l'emplacement de l'objet. */
+  targetSlot: 'weapon3' | null;
   pending: boolean;
   onEquip: () => void;
+  /** Maître d'armes : équiper une épée ou un bouclier dans la 3e arme (null sinon). */
+  onEquipThird: (() => void) | null;
   onSell: () => void;
 }
 
@@ -364,12 +396,15 @@ function InventoryRow({
   save,
   resources,
   ownerId,
+  targetSlot,
   pending,
   onEquip,
+  onEquipThird,
   onSell,
 }: InventoryRowProps) {
   const info = catalogItem(item.catalogId);
-  const reference = ownerId ? equippedIn(save, ownerId, info.slot) : null;
+  const weapon = info.slot === 'weapon1' || info.slot === 'weapon2';
+  const reference = ownerId ? equippedIn(save, ownerId, targetSlot ?? info.slot) : null;
   return (
     <li>
       <Tooltip
@@ -391,6 +426,11 @@ function InventoryRow({
       {ownerId && (
         <button type="button" disabled={pending} onClick={onEquip}>
           {t('team.equip')}
+        </button>
+      )}
+      {ownerId && weapon && onEquipThird && (
+        <button type="button" disabled={pending} onClick={onEquipThird}>
+          {t('team.equipThird')}
         </button>
       )}
       <button type="button" className="danger" disabled={pending} onClick={onSell}>

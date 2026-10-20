@@ -16,6 +16,7 @@ import type {
 } from '../data/schemas.ts';
 import type { AlphaTraitId } from '../balance.ts';
 import type { Rng } from '../rules/random.ts';
+import type { EvolutionTier } from '../rules/evolution.ts';
 
 /** Données du jeu dont le moteur a besoin (passées explicitement : le moteur reste pur). */
 export interface CombatData {
@@ -72,6 +73,8 @@ export interface CombatSkill {
   remaining: number;
   /** Second élément d'une fusion (Tour d'alchimie), sinon null. */
   fusion?: ElementId | null;
+  /** Archimage : deuxième élément fusionné (avec `fusion`), sinon absent. */
+  fusion2?: ElementId | null;
 }
 
 /** Stats qu'un effet temporaire peut augmenter ou réduire (en %). */
@@ -128,6 +131,8 @@ export interface Combatant {
   /** Personnage (héros) ou identifiant de monstre du bestiaire. */
   refId: string;
   classId: ClassId | null;
+  /** Héros : palier d'évolution de la classe (absent dans les combats enregistrés avant : 0). */
+  evolution?: EvolutionTier;
   level: number;
   element: ElementId;
   rank: MonsterRankId | null;
@@ -247,6 +252,10 @@ export type CombatEvent =
   | { type: 'uniquePassive'; actorId: string; itemId: string }
   /** Pierre ancestrale : le Guerrier attire l'attaque. */
   | { type: 'taunt'; targetId: string }
+  /** Arbalétier : l'attaque est portée une deuxième fois. */
+  | { type: 'secondAttack'; actorId: string; skillId: string }
+  /** Tireur magique : aucun héros ne peut être visé, le monstre perd son attaque. */
+  | { type: 'noTarget'; actorId: string }
   /** Un monstre de l'Abysse déclenche sa fusion (élément du monstre + `fusion`). */
   | { type: 'fusion'; actorId: string; element: ElementId; fusion: ElementId }
   | { type: 'end'; outcome: 'victory' | 'defeat' | 'retreat' };

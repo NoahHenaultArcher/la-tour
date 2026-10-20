@@ -41,6 +41,7 @@ import {
   type HeroSetup,
 } from './setup.ts';
 import { attackEffectOf, dealsDamage, skillById } from './skills.ts';
+import { targetableHeroes } from './evolution.ts';
 import {
   uniquesAfterSkill,
   uniquesAtCombatStart,
@@ -376,9 +377,10 @@ export function chooseHeroAction(
     if (!dealsDamage(skill)) continue;
     const effect = attackEffectOf(skill, slot.fusion);
     const area = skill.target === 'area';
+    const fusions = slot.fusion ? (slot.fusion2 ? 2 : 1) : 0;
     const score =
       skill.power *
-        (slot.fusion ? data.skills.params.fusionPowerBonus : 1) *
+        data.skills.params.fusionPowerBonus ** fusions *
         (area ? targets.length : 1) *
         (1 + (effect.bonusCrit ?? 0) + (effect.damageBonus ?? 0)) +
       // À puissance égale, les compétences à recharge passent avant celles sans recharge.
@@ -649,7 +651,8 @@ const playsLast = (c: Combatant) => c.modifiers.some((m) => m.playsLast);
 function monsterAct(ctx: Ctx, monster: Combatant, action = 0): void {
   const { state, data, events } = ctx;
   const rng = state.rng;
-  const heroes = state.heroes.filter(alive);
+  // Tireur magique camouflé : les monstres ne peuvent pas le viser, même avec une attaque de zone.
+  const heroes = targetableHeroes(state).filter(alive);
 
   // Soutien : soigne l'allié le plus blessé s'il passe sous le seuil.
   if (monster.role === 'support') {
@@ -667,6 +670,11 @@ function monsterAct(ctx: Ctx, monster: Combatant, action = 0): void {
       events.push({ type: 'heal', sourceId: monster.id, targetId: wounded.id, amount });
       return;
     }
+  }
+
+  if (heroes.length === 0) {
+    events.push({ type: 'noTarget', actorId: monster.id });
+    return;
   }
 
   // Lave (fusion Magma) : le monstre se brûle en attaquant.

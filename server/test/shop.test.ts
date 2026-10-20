@@ -169,6 +169,44 @@ describeWithDb('taverne', () => {
     );
   });
 
+  it('annuler une vente : l’objet revient (même identifiant, même amélioration) contre l’or reçu', async () => {
+    const info = gameData.equipment.catalog.find(
+      (c) => c.classId === 'mage' && c.slot === 'ring1' && c.rarity === 'epic' && c.tier === 2,
+    )!;
+    const a = await ctx.prisma.item.create({
+      data: { saveId, catalogId: info.id, upgradeLevel: 4 },
+    });
+    const b = await ctx.prisma.item.create({ data: { saveId, catalogId: info.id } });
+    const sold = (await post('/api/shop/sell-many', { itemIds: [a.id, b.id] })).json();
+    const total = sellPrice(gameData, info, 4) + sellPrice(gameData, info, 0);
+    expect(sold.gold).toBe(total);
+
+    // L'or a été dépensé entre-temps : impossible de racheter.
+    await setGold(total - 1);
+    expect((await post('/api/shop/buy-back', { itemIds: [a.id, b.id] })).json().error.code).toBe(
+      'NOT_ENOUGH_GOLD',
+    );
+    await setGold(total + 10);
+    const back = await post('/api/shop/buy-back', { itemIds: [a.id] });
+    expect(back.statusCode, back.body).toBe(200);
+    expect(back.json()).toMatchObject({ gold: sellPrice(gameData, info, 4) });
+    const save = back.json().save as SaveDto;
+    expect(save.gold).toBe(total + 10 - sellPrice(gameData, info, 4));
+    expect(save.items).toEqual([expect.objectContaining({ id: a.id, upgradeLevel: 4 })]);
+
+    // Déjà rachetée : la vente ne s'annule pas deux fois. Une vente trop ancienne non plus.
+    expect((await post('/api/shop/buy-back', { itemIds: [a.id] })).json().error.code).toBe(
+      'SALE_EXPIRED',
+    );
+    await ctx.prisma.soldItem.update({
+      where: { id: b.id },
+      data: { soldAt: new Date(Date.now() - 2 * 60 * 60 * 1000) },
+    });
+    expect((await post('/api/shop/buy-back', { itemIds: [b.id] })).json().error.code).toBe(
+      'SALE_EXPIRED',
+    );
+  });
+
   it('debug : réinitialiser la boutique', async () => {
     await setGold(1_000_000);
     const shop = await getShop();

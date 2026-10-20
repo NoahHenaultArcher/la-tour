@@ -12,6 +12,7 @@ import {
 import { STAT_IDS, type ClassId, type StatBlock, type StatId } from '../constants.ts';
 import type { StatsData } from '../data/schemas.ts';
 import { baseInitiative, heritageMultiplier } from './character.ts';
+import { evolutionStatBonus, evolutionTier } from './evolution.ts';
 import { excelRound, levelFactor } from './math.ts';
 import { allocationBonus, type StatAllocation } from './statPoints.ts';
 
@@ -60,7 +61,10 @@ export interface HeroStatsInput {
   allocation?: StatAllocation;
 }
 
-/** Stats finales hors combat : base + points répartis + équipement, stats principales × héritage. */
+/**
+ * Stats finales hors combat : base + points répartis + équipement, stats principales × héritage,
+ * puis bonus d'évolution de la classe (Mage arcaniste, Épéiste).
+ */
 export function heroStats(data: StatsData, input: HeroStatsInput): StatBlock {
   const stats = heroBaseStats(data, input.classId, input.level);
   if (input.allocation) {
@@ -71,6 +75,10 @@ export function heroStats(data: StatsData, input: HeroStatsInput): StatBlock {
   for (const item of input.equipment) for (const id of STAT_IDS) stats[id] += item[id];
   const heritage = heritageMultiplier(input.heritageCount);
   for (const id of MAIN_STAT_IDS) stats[id] = excelRound(stats[id] * heritage);
+  const evolution = evolutionStatBonus(input.classId, evolutionTier(input.heritageCount));
+  stats.magic = excelRound(stats.magic * (1 + evolution.magic));
+  stats.strength = excelRound(stats.strength * (1 + evolution.strength));
+  stats.penetration += evolution.penetration;
   return stats;
 }
 

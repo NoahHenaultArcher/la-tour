@@ -14,7 +14,7 @@ import { BuildingPanel } from '../components/BuildingPanel.tsx';
 import { PixelImage } from '../components/PixelImage.tsx';
 import { ResourceBar } from '../components/ResourceBar.tsx';
 import { TopBar } from '../components/TopBar.tsx';
-import { CLASS_IMAGES } from '../game/assets.ts';
+import { heroImage, heroName, saveTier } from '../game/evolution.ts';
 import { resourceById, useVillageView, type VillageView } from '../game/village.ts';
 import { formatNumber, t } from '../i18n/index.ts';
 import { useSession } from '../stores/session.ts';
@@ -233,12 +233,12 @@ export function VillagePage() {
             {save.characters.map((character) => (
               <li key={character.id}>
                 <PixelImage
-                  src={CLASS_IMAGES[character.classId]}
-                  alt={t(`class.name.${character.classId}`)}
+                  src={heroImage(character.classId, saveTier(save))}
+                  alt={heroName(character.classId, saveTier(save))}
                   size={48}
                 />
                 <div>
-                  <strong>{t(`class.name.${character.classId}`)}</strong>
+                  <strong>{heroName(character.classId, saveTier(save))}</strong>
                   <div>{t('home.level', { level: character.level })}</div>
                   <div className="muted">
                     {character.xpToNextLevel === null

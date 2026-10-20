@@ -15,4 +15,5 @@ export {
 export type { AttackEffect, PassiveEffect, SupportEffect } from './effects.ts';
 export type { ModifierSpec } from './modifiers.ts';
 export { attackEffectOf, dealsDamage } from './skills.ts';
+export { isCamouflaged } from './evolution.ts';
 export { dodgeChance, dodgeFromAgility, hitChance, levelConstants } from './damage.ts';

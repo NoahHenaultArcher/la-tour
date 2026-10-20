@@ -3,6 +3,7 @@ import { byId, fusionOf } from '@la-tour/shared';
 import type { CombatEvent, CombatView } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import { t } from '../i18n/index.ts';
+import { heroName } from './evolution.ts';
 
 /** Multijoueur : pseudo du joueur de chaque héros (h0, h1…), renseigné par le salon. */
 let heroNames: Record<string, string> = {};
@@ -16,7 +17,7 @@ export function combatantName(view: CombatView | null, id: string | null): strin
   const c = view && [...view.heroes, ...view.monsters].find((x) => x.id === id);
   if (!c) return id.startsWith('h') ? (heroNames[id] ?? t('combat.hero')) : t('combat.monster');
   if (!c.classId) return c.name;
-  const className = t(`class.name.${c.classId}`);
+  const className = heroName(c.classId, c.evolution ?? 0);
   return heroNames[c.id]
     ? t('combat.playerHero', { player: heroNames[c.id]!, hero: className })
     : className;
@@ -125,6 +126,13 @@ export function describeEvent(event: CombatEvent, view: CombatView | null): stri
       });
     case 'taunt':
       return t('combat.log.taunt', { target: name(event.targetId) });
+    case 'secondAttack':
+      return t('combat.log.secondAttack', {
+        actor: name(event.actorId),
+        skill: skillName(event.skillId),
+      });
+    case 'noTarget':
+      return t('combat.log.noTarget', { actor: name(event.actorId) });
     case 'fusion':
       return t('combat.log.fusion', {
         actor: name(event.actorId),

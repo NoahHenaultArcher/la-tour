@@ -21,6 +21,9 @@ import { lockSave } from '../village/service.ts';
 
 type Tx = Prisma.TransactionClient;
 
+/** Délai pendant lequel une vente peut être annulée. */
+const SALE_UNDO_MS = 60 * 60 * 1000;
+
 interface ShopState {
   offers: ShopOffers;
   purchases: string[];
@@ -130,8 +133,9 @@ export async function sellItem(
   prisma: PrismaClient,
   saveId: string,
   itemId: string,
+  now = new Date(),
 ): Promise<number> {
-  return sellItems(prisma, saveId, [itemId]);
+  return sellItems(prisma, saveId, [itemId], now);
 }
 
 /** Revend plusieurs objets d'un coup (« Tout vendre ») : tous ou aucun. Renvoie l'or gagné. */
@@ -139,6 +143,7 @@ export async function sellItems(
   prisma: PrismaClient,
   saveId: string,
   itemIds: readonly string[],
+  now = new Date(),
 ): Promise<number> {
   const ids = [...new Set(itemIds)];
   return prisma.$transaction(async (tx) => {
@@ -147,13 +152,56 @@ export async function sellItems(
     if (items.length !== ids.length) throw new HttpError(404, 'NOT_FOUND');
     if (items.some((item) => item.equippedById)) throw new HttpError(409, 'ITEM_EQUIPPED');
     let total = 0;
-    for (const item of items) {
+    const sold = items.map((item) => {
       const info = gameData.equipment.catalog.find((c) => c.id === item.catalogId);
       if (!info) throw new Error(`Objet inconnu : ${item.catalogId}`);
-      total += sellPrice(gameData, info, item.upgradeLevel);
-    }
+      const gold = sellPrice(gameData, info, item.upgradeLevel);
+      total += gold;
+      const { id, catalogId, upgradeLevel, acquiredAt } = item;
+      return { id, saveId, catalogId, upgradeLevel, acquiredAt, gold, soldAt: now };
+    });
     await tx.item.deleteMany({ where: { id: { in: ids }, saveId } });
+    // Les ventes trop anciennes ne s'annulent plus : on les oublie au passage.
+    await tx.soldItem.deleteMany({
+      where: { saveId, soldAt: { lt: new Date(now.getTime() - SALE_UNDO_MS) } },
+    });
+    await tx.soldItem.createMany({ data: sold });
     await tx.save.update({ where: { id: saveId }, data: { gold: { increment: BigInt(total) } } });
+    return total;
+  });
+}
+
+/**
+ * Annule des ventes récentes (bouton « Annuler ») : les objets reviennent avec le même identifiant
+ * et la même amélioration, contre l'or reçu à la vente. Tous ou aucun. Renvoie l'or rendu.
+ */
+export async function buyBackItems(
+  prisma: PrismaClient,
+  saveId: string,
+  itemIds: readonly string[],
+  now = new Date(),
+): Promise<number> {
+  const ids = [...new Set(itemIds)];
+  return prisma.$transaction(async (tx) => {
+    await lockSave(tx, saveId);
+    const sold = await tx.soldItem.findMany({
+      where: { id: { in: ids }, saveId, soldAt: { gte: new Date(now.getTime() - SALE_UNDO_MS) } },
+    });
+    if (sold.length !== ids.length) throw new HttpError(409, 'SALE_EXPIRED');
+    const total = sold.reduce((sum, s) => sum + s.gold, 0);
+    const save = await tx.save.findUniqueOrThrow({ where: { id: saveId }, select: { gold: true } });
+    if (save.gold < BigInt(total)) throw new HttpError(409, 'NOT_ENOUGH_GOLD');
+    await tx.soldItem.deleteMany({ where: { id: { in: ids }, saveId } });
+    await tx.item.createMany({
+      data: sold.map(({ id, catalogId, upgradeLevel, acquiredAt }) => ({
+        id,
+        saveId,
+        catalogId,
+        upgradeLevel,
+        acquiredAt,
+      })),
+    });
+    await tx.save.update({ where: { id: saveId }, data: { gold: { decrement: BigInt(total) } } });
     return total;
   });
 }

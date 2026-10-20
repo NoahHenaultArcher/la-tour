@@ -25,6 +25,7 @@ export * from './rules/shop.ts';
 export * from './rules/leaderboard.ts';
 export * from './rules/abyss.ts';
 export * from './rules/relics.ts';
+export * from './rules/evolution.ts';
 export * from './balance.ts';
 export * from './combat/index.ts';
 export * from './api/common.ts';

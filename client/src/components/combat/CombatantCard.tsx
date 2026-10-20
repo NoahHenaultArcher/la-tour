@@ -4,14 +4,16 @@ import {
   COMBAT_RULES,
   DRAGON_RULES,
   byId,
+  camouflageRounds,
   fusionOf,
+  isCamouflaged,
   type AlphaTraitId,
   type CombatView,
   type ElementId,
 } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
 import type { CSSProperties, ReactNode } from 'react';
-import { CLASS_IMAGES } from '../../game/assets.ts';
+import { heroImage, heroName } from '../../game/evolution.ts';
 import { alterationName, combatantName, uniquePassiveName } from '../../game/combatText.ts';
 import { elementStyle, fusionColor } from '../../game/elements.ts';
 import { formatNumber, t } from '../../i18n/index.ts';
@@ -271,7 +273,7 @@ function HeroTooltip({ c }: { c: CombatantView }) {
   const s = c.stats;
   return (
     <div className="tooltip-body">
-      <strong>{t(`class.name.${c.classId!}`)}</strong>
+      <strong>{heroName(c.classId!, c.evolution ?? 0)}</strong>
       <span>{t('combat.level', { level: c.level })}</span>
       <span>
         {t('combat.stat.attack', {
@@ -319,8 +321,11 @@ export function CombatantCard({
 }: Props) {
   const image =
     c.side === 'hero'
-      ? CLASS_IMAGES[c.classId!]
+      ? heroImage(c.classId!, c.evolution ?? 0)
       : (byId(gameData.monsters.monsters, c.refId)?.image ?? null);
+  // Tireur magique : inciblable pendant les premières manches du combat.
+  const camouflaged = !!c.classId && isCamouflaged(view, c);
+  const camouflageEnd = c.classId ? camouflageRounds(c.classId, c.evolution ?? 0) : 0;
   const ratio = Math.max(0, c.hp / c.stats.maxHp);
   const dead = c.hp <= 0;
   const clickable = !!onClick && !dead;
@@ -339,6 +344,24 @@ export function CombatantCard({
         ),
       };
     }),
+    ...(camouflaged
+      ? [
+          {
+            key: 'camouflage',
+            label: t('evolution.camouflaged', { rounds: camouflageEnd - view.round + 1 }),
+            node: (
+              <Tooltip
+                key="camouflage"
+                content={<span>{t('evolution.camouflagedHint', { round: camouflageEnd })}</span>}
+              >
+                <span className="modifier buff">
+                  {t('evolution.camouflaged', { rounds: camouflageEnd - view.round + 1 })}
+                </span>
+              </Tooltip>
+            ),
+          },
+        ]
+      : []),
     ...(c.stunnedThisPhase
       ? [
           {
@@ -383,6 +406,7 @@ export function CombatantCard({
         targetable ? 'targetable' : '',
         c.isBoss ? 'boss' : '',
         c.alpha ? 'alpha' : '',
+        camouflaged ? 'camouflaged' : '',
       ].join(' ')}
       role={clickable ? 'button' : undefined}
       tabIndex={clickable ? 0 : undefined}

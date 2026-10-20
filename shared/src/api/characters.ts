@@ -19,17 +19,21 @@ export type AllocateStatPointsBody = z.infer<typeof allocateStatPointsBodySchema
 export const characterIdBodySchema = z.strictObject({ characterId: z.uuid() });
 export type CharacterIdBody = z.infer<typeof characterIdBodySchema>;
 
-/** Nouveau deck complet d'un héros (le serveur vérifie déblocages, ultime et fusions). */
+/**
+ * Nouveau deck complet d'un héros (le serveur vérifie déblocages, ultime et fusions).
+ * Position 5 et `fusionElement2` : 4e active et double fusion de l'Archimage.
+ */
 export const setDeckBodySchema = z.strictObject({
   characterId: z.uuid(),
   deck: z
     .array(
       z.strictObject({
-        position: z.int().min(0).max(4),
+        position: z.int().min(0).max(5),
         skillId: z.string().min(1).max(32),
         fusionElement: z.enum(ELEMENT_IDS).nullable(),
+        fusionElement2: z.enum(ELEMENT_IDS).nullable().optional(),
       }),
     )
-    .max(5),
+    .max(6),
 });
 export type SetDeckBody = z.infer<typeof setDeckBodySchema>;

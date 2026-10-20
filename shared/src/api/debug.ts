@@ -27,6 +27,11 @@ export const debugSetLevelSchema = z.strictObject({
   level: z.int().min(1).max(100),
 });
 
+/** Nombre d'héritages du compte (tester les évolutions des classes, 10 et 20). */
+export const debugSetHeritageSchema = z.strictObject({
+  count: z.int().min(0).max(100),
+});
+
 export const debugGoToFloorSchema = z.strictObject({
   floor: z.int().min(1).max(100),
 });

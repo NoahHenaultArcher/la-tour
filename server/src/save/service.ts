@@ -16,7 +16,7 @@ import {
   type ClassId,
   type ElementId,
   type SaveDto,
-  type SlotId,
+  type EquipSlotId,
   type UpgradeTowerBranchId,
 } from '@la-tour/shared';
 import { gameData } from '@la-tour/shared/data';
@@ -92,6 +92,7 @@ export async function loadSave(db: Db, userId: string): Promise<SaveDto> {
         position: s.position,
         skillId: s.skillId,
         fusionElement: s.fusionElement as ElementId | null,
+        fusionElement2: s.fusionElement2 as ElementId | null,
       })),
     })),
     items: save.items.map((i) => ({
@@ -99,7 +100,7 @@ export async function loadSave(db: Db, userId: string): Promise<SaveDto> {
       catalogId: i.catalogId,
       upgradeLevel: i.upgradeLevel,
       equippedBy: i.equippedById,
-      slot: i.equippedSlot as SlotId | null,
+      slot: i.equippedSlot as EquipSlotId | null,
     })),
     relics: save.relics.map((r) => ({ relicId: r.relicId, slot: r.slot })),
     resources: Object.fromEntries(save.resources.map((r) => [r.resourceId, r.amount])),

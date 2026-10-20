@@ -451,6 +451,14 @@ export const useCombat = create<CombatStore>((set, get) => {
               kind: 'critical',
             });
             break;
+          case 'secondAttack':
+            floaters.push({
+              id: floaterId++,
+              targetId: event.actorId,
+              text: t('combat.secondAttack'),
+              kind: 'critical',
+            });
+            break;
           case 'fusion':
             floaters.push({
               id: floaterId++,

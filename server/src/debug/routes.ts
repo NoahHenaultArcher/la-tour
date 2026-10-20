@@ -17,6 +17,9 @@ import {
   debugGoToAbyssSchema,
   debugGoToFloorSchema,
   debugSetLevelSchema,
+  debugSetHeritageSchema,
+  EXTRA_ACTIVE_POSITION,
+  evolutionTier,
   debugUnlockElementSchema,
   RELIC_IDS,
   TOWER_FLOORS,
@@ -112,6 +115,26 @@ export async function debugRoutes(
     await prisma.character.update({
       where: { id: character.id },
       data: { level, xp: 0, bestLevel: Math.max(character.bestLevel, level) },
+    });
+  });
+
+  // Héritages : seul le compteur change (évolutions des classes). En repassant sous un palier,
+  // ce qu'il débloquait est retiré (3e arme, 4e active, deuxièmes fusions).
+  action('heritage', debugSetHeritageSchema, async ({ count }, saveId) => {
+    await prisma.$transaction(async (tx) => {
+      await tx.save.update({ where: { id: saveId }, data: { heritageCount: count } });
+      if (evolutionTier(count) >= 2) return;
+      await tx.item.updateMany({
+        where: { saveId, equippedSlot: 'weapon3' },
+        data: { equippedById: null, equippedSlot: null },
+      });
+      await tx.characterSkill.deleteMany({
+        where: { character: { saveId }, position: EXTRA_ACTIVE_POSITION },
+      });
+      await tx.characterSkill.updateMany({
+        where: { character: { saveId } },
+        data: { fusionElement2: null },
+      });
     });
   });
 

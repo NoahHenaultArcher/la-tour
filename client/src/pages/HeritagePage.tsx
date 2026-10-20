@@ -1,7 +1,16 @@
-import { GAME_RULES, MAX_HERO_LEVEL, TOWER_FLOORS, heritageStatus } from '@la-tour/shared';
+import {
+  CLASS_EVOLUTIONS,
+  GAME_RULES,
+  MAX_HERO_LEVEL,
+  TOWER_FLOORS,
+  evolutionTier,
+  heritageStatus,
+} from '@la-tour/shared';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { EvolutionPanel } from '../components/EvolutionPanel.tsx';
 import { TopBar } from '../components/TopBar.tsx';
+import { heroName } from '../game/evolution.ts';
 import { errorMessage, t } from '../i18n/index.ts';
 import { useNotifications } from '../stores/notifications.ts';
 import { useSession } from '../stores/session.ts';
@@ -23,8 +32,15 @@ export function HeritagePage() {
   const confirm = async () => {
     setPending(true);
     try {
+      const before = evolutionTier(save.heritageCount);
       await inherit();
       notify('success', t('heritage.done'));
+      // 10e et 20e héritages : les héros prennent leur évolution.
+      const after = evolutionTier(save.heritageCount + 1);
+      if (after > before) {
+        const names = save.characters.map((c) => heroName(c.classId, after)).join(', ');
+        notify('success', t('evolution.unlocked', { names }));
+      }
       navigate('/village');
     } catch (error) {
       notify('error', errorMessage(error));
@@ -68,9 +84,20 @@ export function HeritagePage() {
             <h2>{t('heritage.gained')}</h2>
             <ul>
               <li>{t('heritage.gained.bonus', { bonus: percentBonus(save.heritageCount + 1) })}</li>
+              {evolutionTier(save.heritageCount + 1) > evolutionTier(save.heritageCount) &&
+                save.characters.map((c) => {
+                  const tier = evolutionTier(save.heritageCount + 1);
+                  const evolution = CLASS_EVOLUTIONS[c.classId][tier - 1]!;
+                  return (
+                    <li key={c.id} className="ok">
+                      {heroName(c.classId, tier)} : {t(`evolution.bonus.${evolution}`)}
+                    </li>
+                  );
+                })}
             </ul>
           </section>
         </div>
+        <EvolutionPanel heritageCount={save.heritageCount} />
         {status.ready ? (
           <section className="panel heritage-confirm">
             <label>

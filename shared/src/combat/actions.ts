@@ -6,6 +6,7 @@
 import { ALCHEMY, COMBAT_RULES } from '../balance.ts';
 import type { ElementId } from '../constants.ts';
 import { eggDamageBonus, relicBonus } from '../rules/relics.ts';
+import { secondAttackChance } from '../rules/evolution.ts';
 import { chance, pick, type Rng } from '../rules/random.ts';
 import {
   activeAlteration,
@@ -135,7 +136,20 @@ export function useHeroSkill(
     useSupport(ctx, hero, skill, target, passives);
     return;
   }
-  performAttack(ctx, hero, skill, slot.fusion ?? null, target, passives);
+  const fusion = slot.fusion ?? null;
+  const fusion2 = fusion ? (slot.fusion2 ?? null) : null;
+  performAttack(ctx, hero, skill, fusion, target, passives, fusion2);
+  // Arbalétier : l'attaque peut être portée une deuxième fois (même cible si elle tient encore).
+  const second = hero.classId ? secondAttackChance(hero.classId, hero.evolution ?? 0) : 0;
+  if (
+    second > 0 &&
+    alive(hero) &&
+    ctx.state.monsters.some(alive) &&
+    chance(ctx.state.rng, second)
+  ) {
+    ctx.events.push({ type: 'secondAttack', actorId: hero.id, skillId: skill.id });
+    performAttack(ctx, hero, skill, fusion, target, passives, fusion2);
+  }
 }
 
 function useSupport(
@@ -187,6 +201,7 @@ function useSupport(
 
 /**
  * Attaque complète d'une compétence : coups, rebonds, altérations, effets de fusion et passifs.
+ * `fusion2` : deuxième élément fusionné (Archimage), dont l'effet s'ajoute à celui de `fusion`.
  * Renvoie le résultat de chaque coup porté.
  */
 export function performAttack(
@@ -196,11 +211,14 @@ export function performAttack(
   fusion: ElementId | null,
   chosen: Combatant | null,
   passives: readonly PassiveEffect[],
+  fusion2: ElementId | null = null,
 ): AttackResult[] {
   const { data, state, events } = ctx;
   const rng = state.rng;
   const base = baseAttackEffect(skill);
-  const elemental = elementalAttackEffect(skill, fusion);
+  const firstFusion = elementalAttackEffect(skill, fusion);
+  const secondFusion = fusion && fusion2 ? elementalAttackEffect(skill, fusion2) : null;
+  const elemental = secondFusion ? mergeEffects(firstFusion, secondFusion) : firstFusion;
   const effect = mergeEffects(base, elemental);
   const area = skill.target === 'area';
   const living = state.monsters.filter(alive);
@@ -215,7 +233,10 @@ export function performAttack(
   let actionBonus =
     consumeNextAttackBonus(hero, area) +
     (effect.damageBonus ?? 0) +
-    eggDamageBonus(relics, skill.element, fusion);
+    eggDamageBonus(relics, skill.element, fusion) +
+    (secondFusion && fusion2 !== skill.element && fusion2 !== fusion
+      ? (relics.fusionDamage[fusion2!] ?? 0)
+      : 0);
   actionBonus += passiveSum(passives, (p) =>
     p.elementDamage?.element === skill.element ? p.elementDamage.bonus : 0,
   );
@@ -256,7 +277,9 @@ export function performAttack(
       ? COMBAT_RULES.neutralResistanceIgnore +
         passiveSum(passives, (p) => p.neutralResistanceIgnore)
       : 0);
-  const power = skill.power * (fusion ? data.skills.params.fusionPowerBonus : 1);
+  // Chaque élément fusionné multiplie la puissance (×1,10, deux fois pour une double fusion).
+  const fusionCount = (fusion ? 1 : 0) + (secondFusion ? 1 : 0);
+  const power = skill.power * data.skills.params.fusionPowerBonus ** fusionCount;
   const hits = Math.max(1, effect.hits ?? 1);
   const lifesteal =
     (effect.lifesteal ?? 0) + passiveSum(passives, (p) => p.lifesteal) + relics.lifesteal;
@@ -447,10 +470,13 @@ export function performAttack(
 
   // Effets temporaires.
   const fusionTag = fusion ? `fusion:${fusionKey(skill.element, fusion)}` : skill.baseId;
-  for (const [source, key] of [
+  const sources: [AttackEffect, string][] = [
     [base, skill.baseId],
-    [elemental, fusionTag],
-  ] as [AttackEffect, string][]) {
+    [firstFusion, fusionTag],
+  ];
+  // Double fusion : chaque fusion pose ses propres effets temporaires.
+  if (secondFusion) sources.push([secondFusion, `fusion:${fusionKey(skill.element, fusion2!)}`]);
+  for (const [source, key] of sources) {
     if (source.targetModifier) {
       const { requires, ...spec } = source.targetModifier;
       for (const target of struck) {

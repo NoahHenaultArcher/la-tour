@@ -6,6 +6,7 @@
 import { z } from 'zod';
 import type { CombatEvent, CombatMode } from '../combat/types.ts';
 import type { ClassId } from '../constants.ts';
+import type { EvolutionTier } from '../rules/evolution.ts';
 import { ABYSS_MAX_FLOOR, isAbyssUnlocked } from '../rules/abyss.ts';
 import { isReplayable, unlockedHuntingZones } from '../rules/tower.ts';
 import type { ZonesData } from '../data/schemas.ts';
@@ -76,6 +77,8 @@ export interface RoomPlayerView {
   isHost: boolean;
   characterId: string | null;
   classId: ClassId | null;
+  /** Palier d'évolution de la classe (héritages du joueur). */
+  evolution: EvolutionTier;
   level: number | null;
   ready: boolean;
   connected: boolean;
@@ -109,6 +112,7 @@ export interface MultiPlayerReward {
   userId: string;
   username: string;
   classId: ClassId | null;
+  evolution: EvolutionTier;
   xp: number;
   gold: number;
   levelUp: { from: number; to: number } | null;

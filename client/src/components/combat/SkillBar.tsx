@@ -20,23 +20,33 @@ const TARGETS: Record<
 
 /**
  * Infobulle d'une compétence : élément (ou fusion), puissance, recharge, cible, effet, déblocage.
+ * `fusion2` : deuxième fusion de l'Archimage.
  */
 export function SkillTooltip({
   skill,
   fusion = null,
+  fusion2 = null,
 }: {
   skill: Skill;
   fusion?: ElementId | null;
+  fusion2?: ElementId | null;
 }) {
   const fused = fusion ? fusionOf(gameData, skill.element, fusion) : null;
-  const fusedPower = Math.round(skill.power * gameData.skills.params.fusionPowerBonus * 100) / 100;
+  const fused2 = fused && fusion2 ? fusionOf(gameData, skill.element, fusion2) : null;
+  const fusionCount = (fused ? 1 : 0) + (fused2 ? 1 : 0);
+  const fusedPower =
+    Math.round(skill.power * gameData.skills.params.fusionPowerBonus ** fusionCount * 100) / 100;
+  const names = [fused?.name, fused2?.name].filter(Boolean).join(' + ');
   return (
     <div className="tooltip-body">
-      <strong>{fused ? `${skill.name} · ${fused.name}` : skill.name}</strong>
+      <strong>{fused ? `${skill.name} · ${names}` : skill.name}</strong>
       <span>
         {t('tower.element')} :{' '}
         {fused && fusion ? (
-          <FusionBadge a={skill.element} b={fusion} name={fused.name} />
+          <>
+            <FusionBadge a={skill.element} b={fusion} name={fused.name} />
+            {fused2 && fusion2 && <FusionBadge a={skill.element} b={fusion2} name={fused2.name} />}
+          </>
         ) : (
           <ElementBadge element={skill.element} />
         )}
@@ -58,9 +68,16 @@ export function SkillTooltip({
       )}
       <span>{skill.baseEffect}</span>
       {fused ? (
-        <span className="unique-passive">
-          {t('skill.fusion', { name: fused.name, effect: fused.combatEffect })}
-        </span>
+        <>
+          <span className="unique-passive">
+            {t('skill.fusion', { name: fused.name, effect: fused.combatEffect })}
+          </span>
+          {fused2 && (
+            <span className="unique-passive">
+              {t('skill.fusion', { name: fused2.name, effect: fused2.combatEffect })}
+            </span>
+          )}
+        </>
       ) : (
         skill.elementEffect && (
           <span className="muted">{t('skill.elementEffect', { effect: skill.elementEffect })}</span>
@@ -102,10 +119,14 @@ export function SkillBar({
         const skill = skillOf(slot.skillId);
         const ready = slot.remaining === 0;
         const fused = slot.fusion ? fusionOf(gameData, skill.element, slot.fusion) : null;
+        const fused2 =
+          fused && slot.fusion2 ? fusionOf(gameData, skill.element, slot.fusion2) : null;
         return (
           <Tooltip
             key={slot.skillId}
-            content={<SkillTooltip skill={skill} fusion={slot.fusion ?? null} />}
+            content={
+              <SkillTooltip skill={skill} fusion={slot.fusion ?? null} fusion2={slot.fusion2} />
+            }
           >
             <button
               type="button"
@@ -117,7 +138,9 @@ export function SkillBar({
               <PixelImage src={skill.image} alt="" size={32} />
               <span className="skill-name">{skill.name}</span>
               {/* Ligne réservée même sans fusion : la carte garde sa hauteur. */}
-              <span className="skill-fusion">{fused?.name ?? ''}</span>
+              <span className="skill-fusion">
+                {[fused?.name, fused2?.name].filter(Boolean).join(' + ')}
+              </span>
               <span className="skill-cooldown">
                 {ready
                   ? slot.cooldown === 0

@@ -5,7 +5,7 @@ import { Navigate, useNavigate } from 'react-router';
 import { Modal } from '../components/Modal.tsx';
 import { PixelImage } from '../components/PixelImage.tsx';
 import { TopBar } from '../components/TopBar.tsx';
-import { CLASS_IMAGES } from '../game/assets.ts';
+import { heroImage, heroName, saveTier } from '../game/evolution.ts';
 import { errorMessage, t } from '../i18n/index.ts';
 import { useNotifications } from '../stores/notifications.ts';
 import { useRoom } from '../stores/room.ts';
@@ -109,7 +109,7 @@ export function RoomPage() {
             {room.players.map((p) => (
               <li key={p.userId} className={p.connected ? '' : 'offline'}>
                 {p.classId ? (
-                  <PixelImage src={CLASS_IMAGES[p.classId]} alt="" size={48} />
+                  <PixelImage src={heroImage(p.classId, p.evolution)} alt="" size={48} />
                 ) : (
                   <span className="slot-empty" />
                 )}
@@ -121,7 +121,7 @@ export function RoomPage() {
                   </strong>
                   <span className="muted small">
                     {p.classId
-                      ? `${t(`class.name.${p.classId}`)} · ${t('home.level', { level: p.level ?? 1 })}`
+                      ? `${heroName(p.classId, p.evolution)} · ${t('home.level', { level: p.level ?? 1 })}`
                       : t('room.noCharacter')}
                     {!p.connected && ` · ${t('room.offline')}`}
                   </span>
@@ -239,8 +239,8 @@ export function RoomPage() {
                 void run(() => actions.chooseCharacter(c.id)).then(() => setPicking(false))
               }
             >
-              <PixelImage src={CLASS_IMAGES[c.classId]} alt="" size={64} />
-              <strong>{t(`class.name.${c.classId}`)}</strong>
+              <PixelImage src={heroImage(c.classId, saveTier(save))} alt="" size={64} />
+              <strong>{heroName(c.classId, saveTier(save))}</strong>
               <span className="muted">{t('home.level', { level: c.level })}</span>
             </button>
           ))}

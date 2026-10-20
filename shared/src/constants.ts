@@ -21,6 +21,13 @@ export const SLOT_IDS = [
 ] as const;
 export type SlotId = (typeof SLOT_IDS)[number];
 
+/**
+ * Emplacements où un objet peut être porté : ceux du catalogue, plus la 3e arme du Maître d'armes
+ * (2e évolution du Guerrier), qui reçoit une épée ou un bouclier.
+ */
+export const EQUIP_SLOT_IDS = [...SLOT_IDS, 'weapon3'] as const;
+export type EquipSlotId = (typeof EQUIP_SLOT_IDS)[number];
+
 /** Statistiques portées par l'équipement, dans l'ordre des colonnes des classeurs. */
 export const STAT_IDS = [
   'vitality',

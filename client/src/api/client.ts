@@ -86,6 +86,8 @@ export const api = {
     request<{ gold: number; save: SaveDto }>('POST', '/api/shop/sell', body),
   sellItems: (body: ItemIdsBody) =>
     request<{ gold: number; save: SaveDto }>('POST', '/api/shop/sell-many', body),
+  buyBackItems: (body: ItemIdsBody) =>
+    request<{ gold: number; save: SaveDto }>('POST', '/api/shop/buy-back', body),
   debugResetShop: () => request<ShopDto>('POST', '/api/debug/reset-shop', {}),
   debugWinWave: () => request<CombatResponse>('POST', '/api/debug/win-wave', {}),
   equipItem: (body: EquipItemBody) => request<SaveDto>('POST', '/api/items/equip', body),

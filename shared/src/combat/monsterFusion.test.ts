@@ -132,6 +132,8 @@ describe('fusions ennemies : effets', () => {
     const run = (element: ElementId, second: ElementId, seed: number) => {
       const state = trio();
       state.rng = createRng(seed);
+      // Après le camouflage du Tireur magique (20 héritages) : toute l'équipe est visable.
+      state.round = 4;
       const m = createMonsterCombatant(
         gameData,
         { monsterId: normalId, level: 110, abyssFloor: 1, fusion: second },

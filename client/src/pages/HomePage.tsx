@@ -11,7 +11,10 @@ import {
   abyssFloorType,
   isAbyssUnlocked,
   classAttackStat,
+  deckDisplayOrder,
   excelRound,
+  hasThirdWeapon,
+  isActivePosition,
   itemPower,
   nextBuildingUpgrade,
   tavernOffers,
@@ -33,7 +36,7 @@ import { RelicIcon, RelicTooltip } from '../components/relics/RelicIcon.tsx';
 import { PixelImage } from '../components/PixelImage.tsx';
 import { Tooltip } from '../components/Tooltip.tsx';
 import { TopBar } from '../components/TopBar.tsx';
-import { CLASS_IMAGES } from '../game/assets.ts';
+import { heroImage, heroName, saveTier } from '../game/evolution.ts';
 import { elementName, elementStyle } from '../game/elements.ts';
 import { catalogItem, characterStats, equippedIn, statsOf } from '../game/items.ts';
 import { relicSlots } from '../game/relics.ts';
@@ -383,14 +386,20 @@ function HeroSummary({
   const attack = classAttackStat(character.classId);
   const better = betterItemsCount(save, character);
   const empty = SLOT_IDS.filter((slot) => !equippedIn(save, character.id, slot)).length;
-  const deck = [...character.skills].sort((a, b) => a.position - b.position);
+  // Actives d'abord (la 4e de l'Archimage comprise), puis les passifs.
+  const deck = [...character.skills].sort(
+    (a, b) => deckDisplayOrder(a.position) - deckDisplayOrder(b.position),
+  );
+  const slots = hasThirdWeapon(character.classId, saveTier(save))
+    ? [...SLOT_IDS, 'weapon3' as const]
+    : SLOT_IDS;
 
   return (
     <article className="home-hero">
       <div className="home-hero-identity">
-        <PixelImage src={CLASS_IMAGES[character.classId]} alt="" size={64} />
+        <PixelImage src={heroImage(character.classId, saveTier(save))} alt="" size={64} />
         <div className="home-hero-text">
-          <strong>{t(`class.name.${character.classId}`)}</strong>
+          <strong>{heroName(character.classId, saveTier(save))}</strong>
           <span>{t('home.level', { level: character.level })}</span>
           {character.xpToNextLevel === null ? (
             <span className="muted small">{t('home.xpMax')}</span>
@@ -423,7 +432,7 @@ function HeroSummary({
         </div>
       </dl>
       <div className="home-equipment">
-        {SLOT_IDS.map((slot) => {
+        {slots.map((slot) => {
           const item = equippedIn(save, character.id, slot);
           return item ? (
             <Tooltip
@@ -448,9 +457,15 @@ function HeroSummary({
           return (
             <Tooltip
               key={slot.position}
-              content={<SkillTooltip skill={skill} fusion={slot.fusionElement} />}
+              content={
+                <SkillTooltip
+                  skill={skill}
+                  fusion={slot.fusionElement}
+                  fusion2={slot.fusionElement2}
+                />
+              }
             >
-              <span tabIndex={0} className={slot.position >= 3 ? 'home-passive' : ''}>
+              <span tabIndex={0} className={isActivePosition(slot.position) ? '' : 'home-passive'}>
                 <PixelImage src={skill.image} alt={skill.name} size={28} />
               </span>
             </Tooltip>
@@ -482,12 +497,12 @@ function RecruitHint({ save }: { save: SaveDto }) {
     <article className="home-hero home-recruit">
       <div className="home-recruit-portraits">
         {missing.map((classId) => (
-          <PixelImage key={classId} src={CLASS_IMAGES[classId]} alt="" size={48} />
+          <PixelImage key={classId} src={heroImage(classId, saveTier(save))} alt="" size={48} />
         ))}
       </div>
       <strong>{t('home.recruitTitle')}</strong>
       <span className="small">
-        {missing.map((c) => t(`class.name.${c}`)).join(' · ')} :{' '}
+        {missing.map((c) => heroName(c, saveTier(save))).join(' · ')} :{' '}
         {t('home.recruitPrice', { price: formatNumber(price) })}
       </span>
       <ProgressBar value={save.gold} max={price} />

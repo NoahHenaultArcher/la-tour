@@ -18,6 +18,7 @@ import { attack, directDamage, type AttackResult, type AttackSpec } from './dama
 import { FUSION_EFFECTS, fusionKey, type AlterationSpec } from './effects.ts';
 import { addModifier, addShield, consumeNextAttackBonus, heal } from './modifiers.ts';
 import type { CombatData, CombatEvent, CombatState, Combatant } from './types.ts';
+import { targetableHeroes } from './evolution.ts';
 
 interface FusionCtx {
   data: CombatData;
@@ -62,7 +63,8 @@ export function monsterFusionAttack(
   const effect = FUSION_EFFECTS[fusionKey(monster.element, second)] ?? {};
   events.push({ type: 'fusion', actorId: monster.id, element: monster.element, fusion: second });
 
-  const heroes = state.heroes;
+  // Tireur magique camouflé : ni rebond ni propagation sur lui.
+  const heroes = targetableHeroes(state);
   const odd = state.round % 2 === 1;
   let actionBonus = consumeNextAttackBonus(monster, false) + (effect.damageBonus ?? 0);
   if (effect.special === 'surcharge') {

@@ -1,7 +1,7 @@
 import type { ItemDto, LotOffer, ShopDto } from '@la-tour/shared';
 import { useCallback, useEffect, useState } from 'react';
 import { api } from '../api/client.ts';
-import { CLASS_IMAGES } from '../game/assets.ts';
+import { heroImage, heroName, saveTier } from '../game/evolution.ts';
 import { catalogItem } from '../game/items.ts';
 import { resourceById, useVillageView } from '../game/village.ts';
 import { errorMessage, formatNumber, t } from '../i18n/index.ts';
@@ -115,9 +115,9 @@ export function TavernSection() {
             {shop.characters.map((offer) => (
               <li key={offer.offerId}>
                 <span className="inventory-item">
-                  <PixelImage src={CLASS_IMAGES[offer.classId]} alt="" size={48} />
+                  <PixelImage src={heroImage(offer.classId, saveTier(save))} alt="" size={48} />
                   <span>
-                    <strong>{t(`class.name.${offer.classId}`)}</strong>
+                    <strong>{heroName(offer.classId, saveTier(save))}</strong>
                     <span className="muted"> · {t('tavern.characterNote')}</span>
                   </span>
                 </span>
@@ -125,7 +125,7 @@ export function TavernSection() {
                 {buyButton(
                   offer.offerId,
                   offer.price,
-                  t('tavern.recruited', { name: t(`class.name.${offer.classId}`) }),
+                  t('tavern.recruited', { name: heroName(offer.classId, saveTier(save)) }),
                 )}
               </li>
             ))}

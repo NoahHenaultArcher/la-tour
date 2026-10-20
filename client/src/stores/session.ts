@@ -35,7 +35,8 @@ interface SessionState {
   /** Collecte la production idle sur le serveur ; `showReport` affiche la fenêtre d'absence. */
   collect: (showReport?: boolean) => Promise<void>;
   upgradeBuilding: (buildingId: string) => Promise<void>;
-  equipItem: (itemId: string, characterId: string) => Promise<void>;
+  /** `slot` = weapon3 : 3e arme du Maître d'armes. */
+  equipItem: (itemId: string, characterId: string, slot?: 'weapon3') => Promise<void>;
   unequipItem: (itemId: string) => Promise<void>;
   /** Reliques : équiper dans un emplacement (0 à 5), ou retirer. */
   equipRelic: (relicId: string, slot: number) => Promise<void>;
@@ -51,6 +52,8 @@ interface SessionState {
   sellItem: (itemId: string) => Promise<number>;
   /** Revente groupée (« Tout vendre ») ; renvoie l'or gagné. */
   sellItems: (itemIds: string[]) => Promise<number>;
+  /** Annule des ventes récentes (rachat au même prix) ; renvoie l'or rendu. */
+  buyBackItems: (itemIds: string[]) => Promise<number>;
   /** Nouveau deck d'un héros (les fusions nouvelles sont payées par le serveur). */
   setDeck: (body: SetDeckBody) => Promise<void>;
   upgradeTowerBranch: (branch: UpgradeTowerBranchId) => Promise<void>;
@@ -123,8 +126,8 @@ export const useSession = create<SessionState>((set, get) => {
     upgradeBuilding: async (buildingId) => {
       set(withSave(await api.upgradeBuilding({ buildingId })));
     },
-    equipItem: async (itemId, characterId) => {
-      set(withSave(await api.equipItem({ itemId, characterId })));
+    equipItem: async (itemId, characterId, slot) => {
+      set(withSave(await api.equipItem({ itemId, characterId, ...(slot ? { slot } : {}) })));
     },
     unequipItem: async (itemId) => {
       set(withSave(await api.unequipItem({ itemId })));
@@ -162,6 +165,11 @@ export const useSession = create<SessionState>((set, get) => {
     },
     sellItems: async (itemIds) => {
       const { gold, save } = await api.sellItems({ itemIds });
+      set(withSave(save));
+      return gold;
+    },
+    buyBackItems: async (itemIds) => {
+      const { gold, save } = await api.buyBackItems({ itemIds });
       set(withSave(save));
       return gold;
     },

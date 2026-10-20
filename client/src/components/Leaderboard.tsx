@@ -1,7 +1,8 @@
 import { LEADERBOARD_SCORE, type LeaderboardDto, type LeaderboardEntryDto } from '@la-tour/shared';
 import { useEffect, useState } from 'react';
 import { api } from '../api/client.ts';
-import { CLASS_IMAGES } from '../game/assets.ts';
+import { evolutionTier } from '@la-tour/shared';
+import { heroImage, heroName } from '../game/evolution.ts';
 import { errorMessage, formatNumber, t } from '../i18n/index.ts';
 import { PixelImage } from './PixelImage.tsx';
 
@@ -16,8 +17,12 @@ function Row({ entry }: { entry: LeaderboardEntryDto }) {
       <td>
         <span className="leaderboard-heroes">
           {entry.heroes.map((hero, i) => (
-            <span key={i} title={t(`class.name.${hero.classId}`)}>
-              <PixelImage src={CLASS_IMAGES[hero.classId]} alt="" size={24} />
+            <span key={i} title={heroName(hero.classId, evolutionTier(entry.heritageCount))}>
+              <PixelImage
+                src={heroImage(hero.classId, evolutionTier(entry.heritageCount))}
+                alt=""
+                size={24}
+              />
               {hero.level}
             </span>
           ))}

@@ -42,28 +42,134 @@ interface Props {
   onStopChain: () => void;
 }
 
+/** Action du butin avec signalement des erreurs ; `pending` bloque les boutons pendant ce temps. */
+function useLootAction() {
+  const notify = useNotifications((s) => s.notify);
+  const [pending, setPending] = useState(false);
+  const run = async (action: () => Promise<void>) => {
+    setPending(true);
+    try {
+      await action();
+    } catch (error) {
+      notify('error', errorMessage(error));
+    } finally {
+      setPending(false);
+    }
+  };
+  return { pending, run };
+}
+
+/**
+ * Butin d'un combat : une ligne par objet, « Tout vendre » pour les objets restés dans
+ * l'inventaire et « Annuler » pour racheter ce qui vient d'être vendu (erreur de clic).
+ */
+export function LootList({ drops }: { drops: readonly { itemId: string; catalogId: string }[] }) {
+  const save = useSession((s) => s.save);
+  const sellItems = useSession((s) => s.sellItems);
+  const buyBackItems = useSession((s) => s.buyBackItems);
+  const notify = useNotifications((s) => s.notify);
+  const { pending, run } = useLootAction();
+  /** Or reçu pour chaque objet vendu depuis cette fenêtre. */
+  const [sold, setSold] = useState<Record<string, number>>({});
+  const priceOf = (itemId: string) => {
+    const item = save?.items.find((i) => i.id === itemId);
+    return item ? sellPrice(gameData, catalogItem(item.catalogId), item.upgradeLevel) : 0;
+  };
+  const sellable = drops.filter((d) => {
+    const item = save?.items.find((i) => i.id === d.itemId);
+    return item && !item.equippedBy;
+  });
+  const sellableValue = sellable.reduce((sum, d) => sum + priceOf(d.itemId), 0);
+  const soldIds = drops.map((d) => d.itemId).filter((id) => sold[id] !== undefined);
+
+  const markSold = (prices: Record<string, number>) => setSold((prev) => ({ ...prev, ...prices }));
+  const unmark = (ids: string[]) =>
+    setSold((prev) => Object.fromEntries(Object.entries(prev).filter(([id]) => !ids.includes(id))));
+
+  const sellAll = () =>
+    run(async () => {
+      // Prix lus avant la vente : les objets disparaissent ensuite de la sauvegarde.
+      const prices = Object.fromEntries(sellable.map((d) => [d.itemId, priceOf(d.itemId)]));
+      const gold = await sellItems(Object.keys(prices));
+      markSold(prices);
+      notify('success', t('team.soldMany', { count: sellable.length, gold: formatNumber(gold) }));
+    });
+  const undoAll = () =>
+    run(async () => {
+      const gold = await buyBackItems(soldIds);
+      unmark(soldIds);
+      notify(
+        'success',
+        t('outcome.boughtBack', { count: soldIds.length, gold: formatNumber(gold) }),
+      );
+    });
+
+  return (
+    <>
+      {(sellable.length > 1 || soldIds.length > 1) && (
+        <div className="loot-bulk">
+          {soldIds.length > 1 && (
+            <button type="button" disabled={pending} onClick={() => void undoAll()}>
+              {t('outcome.undoAll', { count: soldIds.length })}
+            </button>
+          )}
+          {sellable.length > 1 && (
+            <button
+              type="button"
+              className="danger"
+              disabled={pending}
+              onClick={() => void sellAll()}
+            >
+              {t('outcome.sellAll', { count: sellable.length, gold: formatNumber(sellableValue) })}
+            </button>
+          )}
+        </div>
+      )}
+      <ul className="outcome-loot">
+        {drops.map((drop, index) => (
+          <LootRow
+            key={drop.itemId}
+            itemId={drop.itemId}
+            catalogId={drop.catalogId}
+            index={index}
+            soldFor={sold[drop.itemId] ?? null}
+            onSold={(gold) => markSold({ [drop.itemId]: gold })}
+            onBoughtBack={() => unmark([drop.itemId])}
+          />
+        ))}
+      </ul>
+    </>
+  );
+}
+
 /**
  * Objet tombé : comparaison avec l'objet porté par le héros de sa classe et bouton Équiper.
  * Lit la sauvegarde à jour (pas celle de la fin de combat) pour suivre les objets équipés ici.
  */
-export function LootRow({
+function LootRow({
   itemId,
   catalogId,
-  index = 0,
+  index,
+  soldFor,
+  onSold,
+  onBoughtBack,
 }: {
   itemId: string;
   catalogId: string;
   /** Rang dans la liste : les objets apparaissent l'un après l'autre. */
-  index?: number;
+  index: number;
+  /** Or reçu si l'objet a été vendu depuis cette fenêtre. */
+  soldFor: number | null;
+  onSold: (gold: number) => void;
+  onBoughtBack: () => void;
 }) {
   const save = useSession((s) => s.save);
   const equipItem = useSession((s) => s.equipItem);
   const sellItem = useSession((s) => s.sellItem);
+  const buyBackItems = useSession((s) => s.buyBackItems);
   const notify = useNotifications((s) => s.notify);
   const view = useVillageView();
-  const [pending, setPending] = useState(false);
-  /** Or reçu si l'objet a été vendu depuis cette fenêtre. */
-  const [soldFor, setSoldFor] = useState<number | null>(null);
+  const { pending, run } = useLootAction();
   const info = catalogItem(catalogId);
   const item = save?.items.find((i) => i.id === itemId);
   const hero = save?.characters.find((c) => c.classId === info.classId);
@@ -75,14 +181,28 @@ export function LootRow({
   } as CSSProperties;
 
   if (!save || !item) {
+    const buyBack = () =>
+      run(async () => {
+        const gold = await buyBackItems([itemId]);
+        onBoughtBack();
+        notify(
+          'success',
+          t('outcome.boughtBackOne', { name: info.name, gold: formatNumber(gold) }),
+        );
+      });
     return (
-      <li className="loot-reveal" style={reveal}>
+      <li className="loot-reveal sold" style={reveal}>
         <ItemIcon catalogId={catalogId} scale={1.5} />
         <ItemName catalogId={catalogId} />
         {soldFor !== null && (
-          <strong className="muted outcome-sold">
-            {t('outcome.sold', { gold: formatNumber(soldFor) })}
-          </strong>
+          <>
+            <strong className="muted outcome-sold">
+              {t('outcome.sold', { gold: formatNumber(soldFor) })}
+            </strong>
+            <button type="button" disabled={pending} onClick={() => void buyBack()}>
+              {t('outcome.undo')}
+            </button>
+          </>
         )}
       </li>
     );
@@ -90,16 +210,6 @@ export function LootRow({
   const equipped = !!hero && item.equippedBy === hero.id;
   const reference = hero && !equipped ? equippedIn(save, hero.id, info.slot) : null;
 
-  const run = async (action: () => Promise<void>) => {
-    setPending(true);
-    try {
-      await action();
-    } catch (error) {
-      notify('error', errorMessage(error));
-    } finally {
-      setPending(false);
-    }
-  };
   const equip = () =>
     run(async () => {
       if (hero) await equipItem(item.id, hero.id);
@@ -107,7 +217,7 @@ export function LootRow({
   const sell = () =>
     run(async () => {
       const gold = await sellItem(item.id);
-      setSoldFor(gold);
+      onSold(gold);
       notify('success', t('team.sold', { name: info.name, gold: formatNumber(gold) }));
     });
 
@@ -270,16 +380,7 @@ export function OutcomeModal({
         <section>
           <h3>{t('outcome.loot')}</h3>
           <p className="muted small">{t('outcome.lootHint')}</p>
-          <ul className="outcome-loot">
-            {outcome.loot.map((drop, index) => (
-              <LootRow
-                key={drop.itemId}
-                itemId={drop.itemId}
-                catalogId={drop.catalogId}
-                index={index}
-              />
-            ))}
-          </ul>
+          <LootList drops={outcome.loot} />
         </section>
       )}
       {(elements.length > 0 ||

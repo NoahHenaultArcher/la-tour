@@ -1133,6 +1133,25 @@ button.danger {
 }
 
 /* Mort : le combattant pâlit et s'affaisse. */
+/* Tireur magique camouflé : silhouette translucide et miroitante. */
+.combatant.camouflaged .combatant-image {
+  opacity: 0.45;
+  filter: drop-shadow(0 0 4px #7fd8ff) saturate(0.6);
+  animation: camouflage-shimmer 2.4s ease-in-out infinite;
+}
+
+@keyframes camouflage-shimmer {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .combatant.camouflaged .combatant-image {
+    animation: none;
+  }
+}
+
 .combatant.dead {
   opacity: 0.35;
   filter: grayscale(1);
@@ -1927,6 +1946,18 @@ button.danger {
   margin-left: auto;
 }
 
+.outcome-loot li.sold {
+  opacity: 0.75;
+}
+
+.loot-bulk {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+}
+
 .inventory-row-main {
   display: flex;
   flex-direction: column;
@@ -2124,8 +2155,14 @@ button.danger {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
+/* Archimage : 4 actives + 2 passives. */
+.skills-page .deck.deck-wide {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
 @media (max-width: 1000px) {
-  .skills-page .deck {
+  .skills-page .deck,
+  .skills-page .deck.deck-wide {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 }
@@ -2675,6 +2712,45 @@ button.danger {
 
 .heritage-gained {
   border-color: var(--ok);
+}
+
+.evolution-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.evolution-line {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.evolution-line li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+}
+
+.evolution-line li.reached {
+  border-color: var(--ok);
+}
+
+.evolution-line li.locked img {
+  filter: grayscale(0.8) brightness(0.7);
+}
+
+.evolution-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 .heritage-confirm {

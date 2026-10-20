@@ -3,8 +3,12 @@ import {
   PASSIVE_POSITIONS,
   byId,
   canBeFused,
+  deckDisplayOrder,
+  evolutionTier,
   fusionCost,
   fusionOf,
+  hasDoubleFusion,
+  hasExtraActive,
   isSkillUnlocked,
   maxFusions,
   newFusionCount,
@@ -23,6 +27,7 @@ import { PixelImage } from '../components/PixelImage.tsx';
 import { Tooltip } from '../components/Tooltip.tsx';
 import { TopBar } from '../components/TopBar.tsx';
 import { elementName, elementStyle } from '../game/elements.ts';
+import { heroName, saveTier } from '../game/evolution.ts';
 import { useVillageView } from '../game/village.ts';
 import { errorMessage, formatNumber, t } from '../i18n/index.ts';
 import { useNotifications } from '../stores/notifications.ts';
@@ -36,17 +41,32 @@ const skillOf = (id: string) => byId(gameData.skills.catalog, id)!;
 const isPassiveSlot = (position: number) =>
   (PASSIVE_POSITIONS as readonly number[]).includes(position);
 
-/** Deck enregistré → brouillon de 5 emplacements. */
-function toDraft(character: CharacterDto): Draft {
-  return [0, 1, 2, 3, 4].map((position) => {
+/** Deck enregistré → brouillon de 5 emplacements (6 pour l'Archimage : position 5 = 4e active). */
+function toDraft(character: CharacterDto, size: number): Draft {
+  return Array.from({ length: size }, (_, position) => {
     const slot = character.skills.find((s) => s.position === position);
-    return slot ? { skillId: slot.skillId, fusionElement: slot.fusionElement } : null;
+    return slot
+      ? {
+          skillId: slot.skillId,
+          fusionElement: slot.fusionElement,
+          fusionElement2: slot.fusionElement2 ?? null,
+        }
+      : null;
   });
 }
 
 function toSlots(draft: Draft): DeckSlot[] {
   return draft.flatMap((slot, position) =>
-    slot ? [{ position, skillId: slot.skillId, fusionElement: slot.fusionElement ?? null }] : [],
+    slot
+      ? [
+          {
+            position,
+            skillId: slot.skillId,
+            fusionElement: slot.fusionElement ?? null,
+            fusionElement2: slot.fusionElement ? (slot.fusionElement2 ?? null) : null,
+          },
+        ]
+      : [],
   );
 }
 
@@ -73,7 +93,7 @@ export function SkillsPage() {
                   className={c.id === character.id ? 'toggled' : ''}
                   onClick={() => setCharacterId(c.id)}
                 >
-                  {t(`class.name.${c.classId}`)}
+                  {heroName(c.classId, saveTier(save))}
                 </button>
               ))}
             </div>
@@ -108,7 +128,15 @@ function DeckEditor({ save, character }: { save: SaveDto; character: CharacterDt
   const setDeck = useSession((s) => s.setDeck);
   const notify = useNotifications((s) => s.notify);
   const view = useVillageView();
-  const [draft, setDraft] = useState<Draft>(() => toDraft(character));
+  const tier = evolutionTier(save.heritageCount);
+  // Archimage : 4e active (position 5) et deux fusions par active, sans limite de la Tour d'alchimie.
+  const extraActive = hasExtraActive(character.classId, tier);
+  const doubleFusion = hasDoubleFusion(character.classId, tier);
+  const size = extraActive ? 6 : 5;
+  const order = Array.from({ length: size }, (_, i) => i).sort(
+    (a, b) => deckDisplayOrder(a) - deckDisplayOrder(b),
+  );
+  const [draft, setDraft] = useState<Draft>(() => toDraft(character, size));
   const [selected, setSelected] = useState(0);
   const [pending, setPending] = useState(false);
 
@@ -116,13 +144,14 @@ function DeckEditor({ save, character }: { save: SaveDto; character: CharacterDt
   const unlocked = save.unlockedElements;
   const alchemyLevel = save.buildings[ALCHEMY_TOWER] ?? 0;
   const slots = toSlots(draft);
-  const saved = toSlots(toDraft(character));
+  const saved = toSlots(toDraft(character, size));
   const changed = JSON.stringify(slots) !== JSON.stringify(saved);
   const error = validateDeck(gameData, {
     classId: character.classId,
     level,
     unlockedElements: unlocked,
     alchemyLevel,
+    heritageCount: save.heritageCount,
     deck: slots,
   });
   const newFusions = newFusionCount(saved, slots);
@@ -137,17 +166,26 @@ function DeckEditor({ save, character }: { save: SaveDto; character: CharacterDt
       current.map((slot, position) => {
         if (position === selected) {
           const keepFusion = slot && skillOf(slot.skillId).baseId === skill.baseId;
-          return { skillId: skill.id, fusionElement: keepFusion ? slot.fusionElement : null };
+          return {
+            skillId: skill.id,
+            fusionElement: keepFusion ? slot.fusionElement : null,
+            fusionElement2: keepFusion ? slot.fusionElement2 : null,
+          };
         }
         return slot && skillOf(slot.skillId).baseId === skill.baseId ? null : slot;
       }),
     );
   };
-  const setFusion = (position: number, element: ElementId | null) =>
+  /** `second` : deuxième fusion de l'Archimage. Retirer la première retire aussi la deuxième. */
+  const setFusion = (position: number, element: ElementId | null, second = false) =>
     setDraft((current) =>
-      current.map((slot, i) =>
-        i === position && slot ? { ...slot, fusionElement: element } : slot,
-      ),
+      current.map((slot, i) => {
+        if (i !== position || !slot) return slot;
+        if (second) return { ...slot, fusionElement2: element };
+        const fusionElement2 =
+          element && slot.fusionElement2 !== element ? (slot.fusionElement2 ?? null) : null;
+        return { ...slot, fusionElement: element, fusionElement2 };
+      }),
     );
   const clear = (position: number) =>
     setDraft((current) => current.map((slot, i) => (i === position ? null : slot)));
@@ -157,7 +195,11 @@ function DeckEditor({ save, character }: { save: SaveDto; character: CharacterDt
     try {
       await setDeck({
         characterId: character.id,
-        deck: slots.map((s) => ({ ...s, fusionElement: s.fusionElement ?? null })),
+        deck: slots.map((s) => ({
+          ...s,
+          fusionElement: s.fusionElement ?? null,
+          fusionElement2: s.fusionElement2 ?? null,
+        })),
       });
       notify('success', t('skills.saved'));
     } catch (e) {
@@ -186,16 +228,21 @@ function DeckEditor({ save, character }: { save: SaveDto; character: CharacterDt
     <>
       <section className="panel">
         <h2>
-          {t('skills.deck')} · {t(`class.name.${character.classId}`)}{' '}
+          {t('skills.deck')} · {heroName(character.classId, tier)}{' '}
           <span className="muted">{t('home.level', { level: character.level })}</span>
         </h2>
-        <p className="muted small">{t('skills.rules')}</p>
-        <div className="deck">
-          {draft.map((slot, position) => {
+        <p className="muted small">{t(extraActive ? 'skills.rulesArchmage' : 'skills.rules')}</p>
+        <div className={extraActive ? 'deck deck-wide' : 'deck'}>
+          {order.map((position) => {
+            const slot = draft[position] ?? null;
             const skill = slot ? skillOf(slot.skillId) : null;
             const fusion =
               skill && slot?.fusionElement
                 ? fusionOf(gameData, skill.element, slot.fusionElement)
+                : null;
+            const fusion2 =
+              skill && fusion && slot?.fusionElement2
+                ? fusionOf(gameData, skill.element, slot.fusionElement2)
                 : null;
             return (
               <div
@@ -220,7 +267,13 @@ function DeckEditor({ save, character }: { save: SaveDto; character: CharacterDt
                 {skill ? (
                   <>
                     <Tooltip
-                      content={<SkillTooltip skill={skill} fusion={slot?.fusionElement ?? null} />}
+                      content={
+                        <SkillTooltip
+                          skill={skill}
+                          fusion={slot?.fusionElement ?? null}
+                          fusion2={slot?.fusionElement2 ?? null}
+                        />
+                      }
                     >
                       {/* Le nom de la fusion est déjà sur la pastille en dessous. */}
                       <span className="deck-skill" tabIndex={0}>
@@ -229,7 +282,16 @@ function DeckEditor({ save, character }: { save: SaveDto; character: CharacterDt
                       </span>
                     </Tooltip>
                     {fusion && slot?.fusionElement ? (
-                      <FusionBadge a={skill.element} b={slot.fusionElement} name={fusion.name} />
+                      <>
+                        <FusionBadge a={skill.element} b={slot.fusionElement} name={fusion.name} />
+                        {fusion2 && slot.fusionElement2 && (
+                          <FusionBadge
+                            a={skill.element}
+                            b={slot.fusionElement2}
+                            name={fusion2.name}
+                          />
+                        )}
+                      </>
                     ) : (
                       <ElementBadge element={skill.element} />
                     )}
@@ -244,6 +306,26 @@ function DeckEditor({ save, character }: { save: SaveDto; character: CharacterDt
                       >
                         <option value="">{t('skills.fusionNone')}</option>
                         {ELEMENT_IDS.filter((id) => unlocked.includes(id)).map((id) => (
+                          <option key={id} value={id}>
+                            {fusionOf(gameData, skill.element, id)?.name ?? id} (
+                            {elementName(skill.element)} + {elementName(id)})
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                    {doubleFusion && canBeFused(skill) && slot?.fusionElement && (
+                      <select
+                        aria-label={t('skills.fusion2')}
+                        value={slot.fusionElement2 ?? ''}
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(e) =>
+                          setFusion(position, (e.target.value || null) as ElementId | null, true)
+                        }
+                      >
+                        <option value="">{t('skills.fusion2None')}</option>
+                        {ELEMENT_IDS.filter(
+                          (id) => unlocked.includes(id) && id !== slot.fusionElement,
+                        ).map((id) => (
                           <option key={id} value={id}>
                             {fusionOf(gameData, skill.element, id)?.name ?? id} (
                             {elementName(skill.element)} + {elementName(id)})
@@ -268,7 +350,9 @@ function DeckEditor({ save, character }: { save: SaveDto; character: CharacterDt
             );
           })}
         </div>
-        {alchemyLevel > 0 ? (
+        {alchemyLevel > 0 && doubleFusion ? (
+          <p className="muted small">{t('skills.fusionArchmage', { used: fusionsUsed })}</p>
+        ) : alchemyLevel > 0 ? (
           <p className="muted small">
             {t('skills.fusionLimit', {
               used: fusionsUsed,
@@ -301,7 +385,7 @@ function DeckEditor({ save, character }: { save: SaveDto; character: CharacterDt
           <button
             type="button"
             disabled={pending || !changed}
-            onClick={() => setDraft(toDraft(character))}
+            onClick={() => setDraft(toDraft(character, size))}
           >
             {t('skills.reset')}
           </button>
@@ -312,7 +396,9 @@ function DeckEditor({ save, character }: { save: SaveDto; character: CharacterDt
       <section className="panel">
         <h2>
           {passiveSlot ? t('skills.passives') : t('skills.actives')}{' '}
-          <span className="muted">· {t('skills.selectSlot', { slot: `${selected + 1}` })}</span>
+          <span className="muted">
+            · {t('skills.selectSlot', { slot: `${order.indexOf(selected) + 1}` })}
+          </span>
         </h2>
         <p className="muted small">{t('skills.catalogNote')}</p>
         <ul className="skill-catalog">

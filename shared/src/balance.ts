@@ -318,3 +318,21 @@ export const ALCHEMY = {
   /** Niveau 3 : les altérations appliquées par les fusions durent 1 manche de plus. */
   extraDurationLevel: 3,
 } as const;
+
+/**
+ * Évolutions des classes (décisions de l'utilisateur, 20/10/2026) : au 10e héritage, chaque classe
+ * prend sa 1re évolution, au 20e la 2e (qui garde les bonus de la 1re).
+ */
+export const CLASS_EVOLUTION = {
+  /** Héritages nécessaires pour chaque palier (index 0 : 1re évolution). */
+  heritages: [10, 20],
+  /** Mage arcaniste : Magie +10 %. */
+  arcanistMagic: 0.1,
+  /** Épéiste : Force +10 %, Pénétration +0,15 (ignore 15 % de l'Armure en plus). */
+  swordsmanStrength: 0.1,
+  swordsmanPenetration: 0.15,
+  /** Arbalétier : chance qu'une attaque soit portée une deuxième fois. */
+  crossbowmanSecondAttack: 0.15,
+  /** Tireur magique : manches de camouflage au début de chaque combat (inciblable, zones comprises). */
+  camouflageRounds: 3,
+} as const;

@@ -15,6 +15,8 @@ import {
   ROOM_CODE_ALPHABET,
   ROOM_CODE_LENGTH,
   createCombat,
+  evolutionTier,
+  type EvolutionTier,
   endHeroTurn,
   forfeitCombat,
   passHeroActions,
@@ -72,6 +74,8 @@ interface Player {
   saveId: string;
   characterId: string | null;
   classId: ClassId | null;
+  /** Palier d'évolution de la classe (héritages du joueur). */
+  evolution: EvolutionTier;
   level: number | null;
   ready: boolean;
   connected: boolean;
@@ -608,6 +612,7 @@ export class MultiplayerManager {
       saveId: save.id,
       characterId: only?.id ?? null,
       classId: only?.class ?? null,
+      evolution: evolutionTier(save.heritageCount),
       level: only?.level ?? null,
       ready: false,
       connected: true,
@@ -690,6 +695,7 @@ export class MultiplayerManager {
         isHost: p.userId === room.hostId,
         characterId: p.characterId,
         classId: p.classId,
+        evolution: p.evolution,
         level: p.level,
         ready: p.ready,
         connected: p.connected && !p.left,

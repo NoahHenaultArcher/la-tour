@@ -3,13 +3,14 @@ import { gameData } from '@la-tour/shared/data';
 import { useEffect } from 'react';
 import { playOutcomeSounds } from '../../game/sound.ts';
 import { formatNumber, t } from '../../i18n/index.ts';
+import { heroName } from '../../game/evolution.ts';
 import { useSession } from '../../stores/session.ts';
 import { ItemIcon } from '../items/ItemIcon.tsx';
 import { ItemName } from '../items/ItemTooltip.tsx';
 import { Modal } from '../Modal.tsx';
 import { Tooltip } from '../Tooltip.tsx';
 import { RelicIcon, RelicTooltip } from '../relics/RelicIcon.tsx';
-import { LootRow, RelicDrops, defeatAdvice } from './OutcomeModal.tsx';
+import { LootList, RelicDrops, defeatAdvice } from './OutcomeModal.tsx';
 
 interface Props {
   outcome: MultiOutcome;
@@ -53,7 +54,7 @@ export function MultiOutcomeModal({ outcome, onRoom, onVillage }: Props) {
             <li key={p.userId} className={p.userId === userId ? 'mine' : ''}>
               <div>
                 <strong>{p.username}</strong>
-                {p.classId && <span className="muted"> · {t(`class.name.${p.classId}`)}</span>}
+                {p.classId && <span className="muted"> · {heroName(p.classId, p.evolution)}</span>}
                 <span>
                   {' '}
                   · {t('outcome.multiLine', { xp: formatNumber(p.xp), gold: formatNumber(p.gold) })}
@@ -97,16 +98,7 @@ export function MultiOutcomeModal({ outcome, onRoom, onVillage }: Props) {
         <section>
           <h3>{t('outcome.yourLoot')}</h3>
           <p className="muted small">{t('outcome.lootHint')}</p>
-          <ul className="outcome-loot">
-            {mine.loot.map((drop, index) => (
-              <LootRow
-                key={drop.itemId}
-                itemId={drop.itemId}
-                catalogId={drop.catalogId}
-                index={index}
-              />
-            ))}
-          </ul>
+          <LootList drops={mine.loot} />
         </section>
       )}
 

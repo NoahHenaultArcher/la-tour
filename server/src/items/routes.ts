@@ -33,7 +33,7 @@ export async function itemRoutes(
   route(
     '/api/items/equip',
     (body) => parseInput(equipItemBodySchema, body),
-    (saveId, { itemId, characterId }) => equipItem(prisma, saveId, itemId, characterId),
+    (saveId, { itemId, characterId, slot }) => equipItem(prisma, saveId, itemId, characterId, slot),
   );
   route(
     '/api/items/unequip',

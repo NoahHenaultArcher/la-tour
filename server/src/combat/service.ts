@@ -63,11 +63,17 @@ function heroSetupOf(heritageCount: number, c: CharacterWithGear): HeroSetup {
       return itemStats(gameData.equipment, catalogItem, item.upgradeLevel, c.level);
     }),
     // Passifs des Uniques portés (shared/src/combat/uniques.ts).
-    uniques: c.equipment.filter((item) => item.catalogId.endsWith('-UNI')).map((i) => i.catalogId),
+    // Un même Unique porté deux fois (3e arme du Maître d'armes) n'a qu'une fois son passif.
+    uniques: [
+      ...new Set(
+        c.equipment.filter((item) => item.catalogId.endsWith('-UNI')).map((i) => i.catalogId),
+      ),
+    ],
     deck: c.skills.map((s) => ({
       position: s.position,
       skillId: s.skillId,
       fusionElement: s.fusionElement as ElementId | null,
+      fusionElement2: s.fusionElement2 as ElementId | null,
     })),
     allocation: toAllocation(c.statPoints),
   };

@@ -31,9 +31,8 @@ import { upgradeTowerBonus, type UpgradeTowerLevels } from '../rules/village.ts'
 import { passiveEffectsOf, skillById } from './skills.ts';
 import type { CombatData, CombatStats, Combatant, MonsterSpawn } from './types.ts';
 import { byId } from '../rules/lookup.ts';
-
-/** Positions du deck : 0 à 2 actives, 3 et 4 passives. */
-const ACTIVE_POSITIONS = [0, 1, 2];
+import { isActivePosition } from '../rules/deck.ts';
+import { evolutionTier } from '../rules/evolution.ts';
 
 export interface HeroSetup {
   characterId: string;
@@ -44,7 +43,13 @@ export interface HeroSetup {
   equipment: StatBlock[];
   /** Objets Uniques équipés (identifiants du catalogue) : leurs passifs agissent en combat. */
   uniques?: string[];
-  deck: { position: number; skillId: string; fusionElement?: ElementId | null }[];
+  deck: {
+    position: number;
+    skillId: string;
+    fusionElement?: ElementId | null;
+    /** Archimage : deuxième élément fusionné. */
+    fusionElement2?: ElementId | null;
+  }[];
   /** Points de statistiques répartis. */
   allocation?: StatAllocation;
   /** Multijoueur : Tour d'amélioration et Tour d'alchimie du propriétaire du héros. */
@@ -144,9 +149,7 @@ export function heroCombatStats(
 ): CombatStats {
   const stats = heroStats(data.stats, hero);
   let dodgeBonus = 0;
-  const passives = hero.deck
-    .filter((s) => !ACTIVE_POSITIONS.includes(s.position))
-    .map((s) => s.skillId);
+  const passives = hero.deck.filter((s) => !isActivePosition(s.position)).map((s) => s.skillId);
   for (const effect of passiveEffectsOf(data, passives)) {
     for (const [stat, value] of Object.entries(effect.multiply ?? {})) {
       stats[stat as keyof StatBlock] = Math.round(stats[stat as keyof StatBlock] * (1 + value));
@@ -212,15 +215,14 @@ export function createHeroCombatant(
   relics: RelicBonus = emptyRelicBonus(),
 ): Combatant {
   const stats = heroCombatStats(data, hero, tower, relics);
-  const passives = hero.deck
-    .filter((s) => !ACTIVE_POSITIONS.includes(s.position))
-    .map((s) => s.skillId);
+  const passives = hero.deck.filter((s) => !isActivePosition(s.position)).map((s) => s.skillId);
   return {
     id: `h${index}`,
     side: 'hero',
     name: hero.classId,
     refId: hero.characterId,
     classId: hero.classId,
+    evolution: evolutionTier(hero.heritageCount),
     level: hero.level,
     element: 'neutral',
     rank: null,
@@ -239,13 +241,14 @@ export function createHeroCombatant(
     controlImmunity: 0,
     lostLastTurn: false,
     skills: hero.deck
-      .filter((s) => ACTIVE_POSITIONS.includes(s.position))
+      .filter((s) => isActivePosition(s.position))
       .sort((a, b) => a.position - b.position)
       .map((s) => ({
         skillId: s.skillId,
         cooldown: skillById(data, s.skillId).cooldown ?? 0,
         remaining: 0,
         fusion: s.fusionElement ?? null,
+        ...(s.fusionElement && s.fusionElement2 ? { fusion2: s.fusionElement2 } : {}),
       })),
     passives,
     uniques: hero.uniques ?? [],

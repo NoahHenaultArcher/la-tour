@@ -8,6 +8,7 @@ import type { PrismaClient } from '@prisma/client';
 import {
   addXp,
   createRng,
+  evolutionTier,
   participantRewards,
   relicBonus,
   upgradeTowerBonus,
@@ -98,6 +99,7 @@ export async function rewardParticipant(
       userId: participant.userId,
       username: participant.username,
       classId: character.class,
+      evolution: evolutionTier(save.heritageCount),
       xp: rewards.xp,
       gold: rewards.gold,
       levelUp: next.levelsGained > 0 ? { from: character.level, to: next.level } : null,

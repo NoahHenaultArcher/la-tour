@@ -76,6 +76,7 @@ export function DebugPanel() {
     upgradeLevel: 0,
   });
   const [hours, setHours] = useState(8);
+  const [heritage, setHeritage] = useState(10);
 
   const run = (action: string, body: object = {}) => {
     setPending(true);
@@ -187,6 +188,20 @@ export function DebugPanel() {
               </Action>
             </>
           )}
+
+          <Action
+            title={t('debug.heritage', { count: save.heritageCount })}
+            onSubmit={() => run('heritage', { count: heritage })}
+          >
+            <input
+              type="number"
+              min={0}
+              max={100}
+              value={heritage}
+              onChange={(e) => setHeritage(Number(e.target.value))}
+            />
+            <button type="submit">{t('debug.setHeritage')}</button>
+          </Action>
 
           <Action title={t('debug.tower')} onSubmit={() => run('floor', { floor })}>
             <input

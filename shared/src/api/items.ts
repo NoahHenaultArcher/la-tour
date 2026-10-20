@@ -4,6 +4,8 @@ import { CLASS_IDS, SLOT_IDS } from '../constants.ts';
 export const equipItemBodySchema = z.strictObject({
   itemId: z.uuid(),
   characterId: z.uuid(),
+  /** Seulement pour la 3e arme du Maître d'armes ; sinon l'emplacement de l'objet. */
+  slot: z.literal('weapon3').optional(),
 });
 export type EquipItemBody = z.infer<typeof equipItemBodySchema>;
 

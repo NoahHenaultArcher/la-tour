@@ -41,6 +41,7 @@ export async function setDeck(
       level: unlockLevel(character),
       unlockedElements: save.unlockedElements as ElementId[],
       alchemyLevel,
+      heritageCount: save.heritageCount,
       deck,
     });
     if (error) throw new HttpError(409, error);
@@ -49,6 +50,7 @@ export async function setDeck(
       position: s.position,
       skillId: s.skillId,
       fusionElement: s.fusionElement as ElementId | null,
+      fusionElement2: s.fusionElement2 as ElementId | null,
     }));
     const added = newFusionCount(before, deck);
     if (added > 0) {
@@ -64,6 +66,7 @@ export async function setDeck(
         position: slot.position,
         skillId: slot.skillId,
         fusionElement: slot.fusionElement,
+        fusionElement2: slot.fusionElement2 ?? null,
       })),
     });
   });

@@ -10795,5 +10795,43 @@
    "fichier": "reliques/OEUF-ombre.png",
    "taille": 48
   }
+ ],
+ "evolutions": [
+  {
+   "classe": "Mage",
+   "evolution": "Mage arcaniste",
+   "fichier": "personnages/mage_arcaniste.png",
+   "taille": 96
+  },
+  {
+   "classe": "Mage",
+   "evolution": "Archimage",
+   "fichier": "personnages/archimage.png",
+   "taille": 96
+  },
+  {
+   "classe": "Guerrier",
+   "evolution": "Épéiste",
+   "fichier": "personnages/epeiste.png",
+   "taille": 96
+  },
+  {
+   "classe": "Guerrier",
+   "evolution": "Maître d'armes",
+   "fichier": "personnages/maitre_d_armes.png",
+   "taille": 96
+  },
+  {
+   "classe": "Tireur",
+   "evolution": "Arbalétier",
+   "fichier": "personnages/arbaletier.png",
+   "taille": 96
+  },
+  {
+   "classe": "Tireur",
+   "evolution": "Tireur magique",
+   "fichier": "personnages/tireur_magique.png",
+   "taille": 96
+  }
  ]
 }
